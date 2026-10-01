@@ -1,0 +1,15 @@
+{
+  "eslint.nodePath": "node_modules",
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "eslint.workingDirectories": [
+    {
+      "mode": "auto"
+    }
+  ],
+  "editor.detectIndentation": false,
+  "editor.insertSpaces": true,
+  "editor.tabSize": 2,
+  "editor.formatOnSave": true,
+  "editor.renderWhitespace": "boundary",
+  "js/ts.tsdk.path": "node_modules/typescript/lib"
+}

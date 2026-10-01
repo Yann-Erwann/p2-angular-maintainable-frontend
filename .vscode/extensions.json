@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "Angular.ng-template",
+    "dbaeumer.vscode-eslint",
+    "SonarSource.sonarlint-vscode",
+    "checkmarx.ast-results"
+  ]
+}
