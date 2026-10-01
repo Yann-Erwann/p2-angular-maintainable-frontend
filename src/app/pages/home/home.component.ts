@@ -9,21 +9,21 @@ import Chart from 'chart.js/auto';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  private olympicUrl = './assets/mock/olympic.json';
+  private readonly olympicUrl = './assets/mock/olympic.json';
   public pieChart!: Chart<"pie", number[], string>;
   public totalCountries: number = 0
   public totalJOs: number = 0
   public error!:string
   titlePage: string = "Medals per Country";
 
-  constructor(private router: Router, private http:HttpClient) { }
+  constructor(private readonly router: Router, private readonly http:HttpClient) { }
 
   ngOnInit() {
-    this.http.get<any[]>(this.olympicUrl).pipe().subscribe(
-      (data) => {
+    this.http.get<any[]>(this.olympicUrl).pipe().subscribe({
+      next: (data) => {
         console.log(`Liste des données : ${JSON.stringify(data)}`);
         if (data && data.length > 0) {
-          this.totalJOs = Array.from(new Set(data.map((i: any) => i.participations.map((f: any) => f.year)).flat())).length;
+          this.totalJOs = new Set(data.flatMap((i: any) => i.participations.map((f: any) => f.year)).flat()).size;
           const countries: string[] = data.map((i: any) => i.country);
           this.totalCountries = countries.length;
           const medals = data.map((i: any) => i.participations.map((i: any) => (i.medalsCount)));
@@ -31,11 +31,10 @@ export class HomeComponent implements OnInit {
           this.buildPieChart(countries, sumOfAllMedalsYears);
         }
       },
-      (error:HttpErrorResponse) => {
-        console.log(`erreur : ${error}`);
+      error: (error:HttpErrorResponse) => {
         this.error = error.message
       }
-    )
+    })
   }
 
   buildPieChart(countries: string[], sumOfAllMedalsYears: number[]) {
@@ -52,13 +51,13 @@ export class HomeComponent implements OnInit {
       },
       options: {
         aspectRatio: 2.5,
-        onClick: (e) => {
+        onClick: async (e) => {
           if (e.native) {
             const points = pieChart.getElementsAtEventForMode(e.native, 'point', { intersect: true }, true)
             if (points.length) {
               const firstPoint = points[0];
               const countryName = pieChart.data.labels ? pieChart.data.labels[firstPoint.index] : '';
-              this.router.navigate(['country', countryName]);
+              await this.router.navigate(['country', countryName]);
             }
           }
         }
