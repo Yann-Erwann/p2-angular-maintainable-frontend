@@ -1,0 +1,17 @@
+Port 22
+
+PermitRootLogin no
+PasswordAuthentication no
+PubkeyAuthentication yes
+
+AuthorizedKeysFile /home/node/.ssh/authorized_keys
+
+AllowUsers node
+
+X11Forwarding no
+AllowTcpForwarding yes
+PermitTunnel no
+
+HostKey /var/lib/ssh-host-keys/ssh_host_ed25519_key
+
+Subsystem sftp internal-sftp
