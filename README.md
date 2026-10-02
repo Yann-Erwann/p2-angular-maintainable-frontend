@@ -122,15 +122,16 @@ docker compose -f docker/compose.yaml --profile production down
 
 ## Architecture existante
 
-L'application utilise une architecture Angular avec NgModule :
+L'application utilise une architecture Angular standalone :
 
-- `src/app/app.module.ts` déclare le module principal.
-- `src/app/app-routing.module.ts` définit les routes.
+- `src/main.ts` démarre `AppComponent` avec `bootstrapApplication`.
+- `src/app/app.config.ts` fournit le routeur, le client HTTP et la détection des changements avec Zone.js.
+- `src/app/app.routes.ts` définit les routes vers les composants standalone.
 - `src/app/pages/` contient les pages `home`, `country` et `not-found`.
 - `src/assets/mock/olympic.json` contient les données utilisées par l'application.
 - `src/environments/` contient les configurations d'environnement utilisées par le build.
 
-La mise en place de Docker conserve cette architecture et les configurations Angular existantes.
+Sous Angular 21, les composants sont standalone par défaut et importent leurs dépendances de template dans leur propre métadonnée `imports`.
 
 ### Navigateur pour les tests Karma
 

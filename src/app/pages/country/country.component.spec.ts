@@ -7,6 +7,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 
+import { routes } from '../../app.routes';
 import { CountryComponent } from './country.component';
 
 describe('CountryComponent', () => {
@@ -16,12 +17,7 @@ describe('CountryComponent', () => {
     TestBed.configureTestingModule({
       imports: [CountryComponent],
       providers: [
-        provideRouter([
-          {
-            path: 'country/:countryName',
-            component: CountryComponent,
-          },
-        ]),
+        provideRouter(routes),
         provideHttpClient(),
         provideHttpClientTesting(),
       ],
