@@ -8,7 +8,6 @@ import Chart from 'chart.js/auto';
     selector: 'app-country',
     templateUrl: './country.component.html',
     styleUrls: ['./country.component.scss'],
-    standalone: true,
     imports: [RouterLink]
 })
 export class CountryComponent implements OnInit {
