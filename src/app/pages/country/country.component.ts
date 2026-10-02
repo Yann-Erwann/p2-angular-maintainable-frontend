@@ -1,14 +1,14 @@
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {Component, OnInit} from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router, RouterLink } from '@angular/router';
 import Chart from 'chart.js/auto';
 
 
 @Component({
-    selector: 'app-country',
-    templateUrl: './country.component.html',
-    styleUrls: ['./country.component.scss'],
-    imports: [RouterLink]
+  selector: 'app-country',
+  templateUrl: './country.component.html',
+  styleUrls: ['./country.component.scss'],
+  imports: [RouterLink]
 })
 export class CountryComponent implements OnInit {
   private readonly olympicUrl = './assets/mock/olympic.json';
@@ -19,8 +19,8 @@ export class CountryComponent implements OnInit {
   public totalAthletes: number = 0;
   public error!: string;
 
-  constructor(private readonly route: ActivatedRoute, private readonly router: Router, private readonly http: HttpClient) {
-  }
+  private readonly route = inject(ActivatedRoute);
+  private readonly http = inject(HttpClient);
 
   ngOnInit() {
     let countryName: string | null = null
