@@ -4,9 +4,10 @@ import { Router } from '@angular/router';
 import Chart from 'chart.js/auto';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.scss'],
+    standalone: true,
 })
 export class HomeComponent implements OnInit {
   private readonly olympicUrl = './assets/mock/olympic.json';

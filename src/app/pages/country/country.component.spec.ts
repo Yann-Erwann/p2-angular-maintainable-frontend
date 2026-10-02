@@ -9,8 +9,8 @@ describe('DetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CountryComponent ]
-    })
+    imports: [CountryComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(CountryComponent);
