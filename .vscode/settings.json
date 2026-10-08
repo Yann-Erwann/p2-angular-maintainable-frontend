@@ -1,15 +1,25 @@
 {
-  "eslint.nodePath": "node_modules",
-  "typescript.tsdk": "node_modules/typescript/lib",
+  "eslint.run": "onType",
+
+  "eslint.validate": [
+    "typescript",
+    "html"
+  ],
+
   "eslint.workingDirectories": [
     {
-      "mode": "auto"
+      "mode": "location"
     }
   ],
+
+  "eslint.quiet": false,
+
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+
   "editor.detectIndentation": false,
   "editor.insertSpaces": true,
   "editor.tabSize": 2,
-  "editor.formatOnSave": true,
-  "editor.renderWhitespace": "boundary",
-  "js/ts.tsdk.path": "node_modules/typescript/lib"
+  "editor.renderWhitespace": "boundary"
 }
