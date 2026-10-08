@@ -38,7 +38,8 @@ describe('Application routing', () => {
 
     request.flush([]);
 
-    expect(harness.routeNativeElement?.textContent).toContain('Medals per Country');
+    harness.detectChanges();
+    expect(harness.routeNativeElement?.textContent).toContain('No Olympic data available.');
   });
 
   it('should render the not-found page at its explicit URL', async () => {

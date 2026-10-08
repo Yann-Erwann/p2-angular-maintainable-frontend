@@ -1,6 +1,13 @@
 <h2>Olympic games app</h2>
 <hr/>
-<div>
+@if (state.status === 'loading') {
+  <p role="status">Loading Olympic data...</p>
+} @else if (state.status === 'error') {
+  <p role="alert">{{ state.message }}</p>
+  <a routerLink="/">Go back to home</a>
+} @else if (state.status === 'empty') {
+  <p role="status">No Olympic data available.</p>
+} @else if (state.status === 'success') {
   <app-header
     [title]="titlePage"
     [indicators]="[
@@ -8,5 +15,5 @@
       { label: 'Number of JOs', value: totalJOs }
     ]"
   />
-  <canvas id="DashboardPieChart">{{ pieChart }}</canvas>
-</div>
+  <canvas id="DashboardPieChart"></canvas>
+}

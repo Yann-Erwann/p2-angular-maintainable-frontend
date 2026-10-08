@@ -1,19 +1,33 @@
 <div>
-  <app-header
-    [title]="titlePage"
-    [indicators]="[
-      { label: 'Number of entries', value: totalEntries },
-      { label: 'Total Number of medals', value: totalMedals },
-      { label: 'Total Number of athletes', value: totalAthletes }
-    ]"
-  />
-  <div class="chart-container wrapper-container">
-    <div class="container">
-      <canvas id="countryChart">{{ lineChart }}</canvas>
-      <h2>Date</h2>
+  @if (state.status === 'loading') {
+    <p role="status">Loading Olympic data...</p>
+  } @else if (state.status === 'error') {
+    <p role="alert">{{ state.message }}</p>
+  } @else if (state.status === 'not-found') {
+    <p role="status">Country not found.</p>
+  }
+  @if (state.status === 'success' || (state.status === 'empty' && titlePage)) {
+    <app-header
+      [title]="titlePage"
+      [indicators]="[
+        { label: 'Number of entries', value: totalEntries },
+        { label: 'Total Number of medals', value: totalMedals },
+        { label: 'Total Number of athletes', value: totalAthletes }
+      ]"
+    />
+  }
+  @if (state.status === 'empty') {
+    <p role="status">No Olympic data available.</p>
+  }
+  @if (state.status === 'success') {
+    <div class="chart-container wrapper-container">
+      <div class="container">
+        <canvas id="countryChart"></canvas>
+        <h2>Date</h2>
+      </div>
     </div>
-  </div>
+  }
   <div class="center">
-    <a routerLink="">Go back</a>
+    <a routerLink="/">Go back</a>
   </div>
 </div>

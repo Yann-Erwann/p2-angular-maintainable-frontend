@@ -1,8 +1,9 @@
-import type { HttpErrorResponse } from '@angular/common/http';
-import {Component, ErrorHandler, inject, type OnInit} from '@angular/core';
-import { Router } from '@angular/router';
+import {afterNextRender, Component, ErrorHandler, inject, Injector, type OnInit} from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import Chart from 'chart.js/auto';
 import { HeaderComponent } from '../../olympics/header/header.component';
+import type { PageState } from '../../olympics/page-state';
+import { toDataLoadError } from '../../services/data-load-error';
 import { DataService } from '../../services/data.service';
 
 @Component({
@@ -10,33 +11,47 @@ import { DataService } from '../../services/data.service';
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss'],
     standalone: true,
-    imports: [HeaderComponent],
+    imports: [HeaderComponent, RouterLink],
 })
 export class HomeComponent implements OnInit {
   public pieChart!: Chart<"pie", number[], string>;
   public totalCountries = 0
   public totalJOs = 0
   public error!:string
+  public state: PageState = { status: 'loading' };
   titlePage = "Medals per Country";
 
   private readonly router = inject(Router);
   private readonly dataService = inject(DataService);
   private readonly errorHandler = inject(ErrorHandler);
+  private readonly injector = inject(Injector);
 
   ngOnInit() {
     this.dataService.getOlympics().subscribe({
       next: (data) => {
+        this.pieChart?.destroy();
         if (data && data.length > 0) {
           this.totalJOs = new Set(data.flatMap((i) => i.participations.map((f) => f.year)).flat()).size;
           const countries: string[] = data.map((i) => i.country);
           this.totalCountries = countries.length;
           const medals = data.map((i) => i.participations.map((i) => (i.medalsCount)));
           const sumOfAllMedalsYears = medals.map((i) => i.reduce((acc, i) => acc + i, 0));
-          this.buildPieChart(countries, sumOfAllMedalsYears);
+          this.state = { status: 'success' };
+          afterNextRender(() => {
+            if (this.state.status === 'success') {
+              this.buildPieChart(countries, sumOfAllMedalsYears);
+            }
+          }, { injector: this.injector });
+        } else {
+          this.totalCountries = 0;
+          this.totalJOs = 0;
+          this.state = { status: 'empty' };
         }
       },
-      error: (error:HttpErrorResponse) => {
-        this.error = error.message
+      error: (error: unknown) => {
+        this.pieChart?.destroy();
+        this.error = toDataLoadError(error).message;
+        this.state = { status: 'error', message: this.error };
       }
     })
   }

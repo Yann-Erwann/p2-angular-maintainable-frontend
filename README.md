@@ -102,6 +102,18 @@ Ouvrir l'adresse affichée par le serveur. Le script de prévisualisation utilis
 Cet outil sert à vérifier le build localement ; la conteneurisation et les
 réglages d'hébergement de production relèvent d'I19.
 
+## États des pages
+
+Les pages affichent un message pendant le chargement, les indicateurs et le
+graphique après succès, un message en l'absence de données et une erreur
+compréhensible en cas d'échec réseau ou HTTP. Un pays sans participations conserve
+son titre et ses compteurs à zéro, avec un message de série vide.
+
+`DataService` traduit les erreurs en `DataLoadError` et conserve l'erreur technique
+comme cause pour le diagnostic ; les templates affichent uniquement le message
+utilisateur. Un pays absent est distingué d'une panne HTTP. Le passage à une
+navigation par ID et le parcours complet de redirection restent des travaux de routing.
+
 ## Éditeur et architecture
 
 Ouvrir la racine du dépôt dans VS Code dans l'environnement où les dépendances
