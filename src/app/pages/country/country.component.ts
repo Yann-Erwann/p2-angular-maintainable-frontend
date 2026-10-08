@@ -1,8 +1,8 @@
-import { HttpClient, type HttpErrorResponse } from '@angular/common/http';
+import type { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, type OnInit } from '@angular/core';
 import { ActivatedRoute, type ParamMap, RouterLink } from '@angular/router';
 import Chart from 'chart.js/auto';
-import type { Olympic } from '../../models/olympic';
+import { DataService } from '../../services/data.service';
 
 
 @Component({
@@ -12,7 +12,6 @@ import type { Olympic } from '../../models/olympic';
   imports: [RouterLink]
 })
 export class CountryComponent implements OnInit {
-  private readonly olympicUrl = './assets/mock/olympic.json';
   public lineChart!: Chart<"line", number[], number>;
   public titlePage = '';
   public totalEntries = 0;
@@ -21,12 +20,12 @@ export class CountryComponent implements OnInit {
   public error!: string;
 
   private readonly route = inject(ActivatedRoute);
-  private readonly http = inject(HttpClient);
+  private readonly dataService = inject(DataService);
 
   ngOnInit() {
     let countryName: string | null = null
     this.route.paramMap.subscribe((param: ParamMap) => countryName = param.get('countryName'));
-    this.http.get<Olympic[]>(this.olympicUrl).subscribe({
+    this.dataService.getOlympics().subscribe({
       next: (data) => {
         if (data && data.length > 0) {
           const selectedCountry = data.find((i) => i.country === countryName);

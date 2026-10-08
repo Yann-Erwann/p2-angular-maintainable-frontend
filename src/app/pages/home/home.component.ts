@@ -1,8 +1,8 @@
-import {HttpClient, type HttpErrorResponse} from '@angular/common/http';
+import type { HttpErrorResponse } from '@angular/common/http';
 import {Component, ErrorHandler, inject, type OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import Chart from 'chart.js/auto';
-import type { Olympic } from '../../models/olympic';
+import { DataService } from '../../services/data.service';
 
 @Component({
     selector: 'app-home',
@@ -11,7 +11,6 @@ import type { Olympic } from '../../models/olympic';
     standalone: true,
 })
 export class HomeComponent implements OnInit {
-  private readonly olympicUrl = './assets/mock/olympic.json';
   public pieChart!: Chart<"pie", number[], string>;
   public totalCountries = 0
   public totalJOs = 0
@@ -19,11 +18,11 @@ export class HomeComponent implements OnInit {
   titlePage = "Medals per Country";
 
   private readonly router = inject(Router);
-  private readonly http = inject(HttpClient);
+  private readonly dataService = inject(DataService);
   private readonly errorHandler = inject(ErrorHandler);
 
   ngOnInit() {
-    this.http.get<Olympic[]>(this.olympicUrl).subscribe({
+    this.dataService.getOlympics().subscribe({
       next: (data) => {
         if (data && data.length > 0) {
           this.totalJOs = new Set(data.flatMap((i) => i.participations.map((f) => f.year)).flat()).size;

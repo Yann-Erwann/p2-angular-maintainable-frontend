@@ -1,37 +1,37 @@
-import { provideHttpClient } from '@angular/common/http';
-import {
-  HttpTestingController,
-  provideHttpClientTesting,
-} from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
+import { Subject } from 'rxjs';
 
 import { routes } from '../../app.routes';
+
+import type { Olympic } from '../../models/olympic';
+import { DataService } from '../../services/data.service';
 import { CountryComponent } from './country.component';
 
 describe('CountryComponent', () => {
-  let httpTesting: HttpTestingController;
+  let data: Subject<readonly Olympic[]>;
+  let dataService: jasmine.SpyObj<DataService>;
   let component: CountryComponent;
 
   beforeEach(() => {
+    data = new Subject<readonly Olympic[]>();
+    dataService = jasmine.createSpyObj<DataService>('DataService', ['getOlympics']);
+    dataService.getOlympics.and.returnValue(data.asObservable());
     TestBed.configureTestingModule({
       imports: [CountryComponent],
       providers: [
         provideZoneChangeDetection(),
         provideRouter(routes),
-        provideHttpClient(),
-        provideHttpClientTesting(),
+        { provide: DataService, useValue: dataService },
       ],
     });
-
-    httpTesting = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {
     component?.lineChart?.destroy();
-    httpTesting.verify();
+    data.complete();
   });
 
   it('should render the requested country, its totals and numeric medal chart', async () => {
@@ -44,11 +44,8 @@ describe('CountryComponent', () => {
 
     const chartSpy = spyOn(component, 'buildChart').and.callThrough();
 
-    const request = httpTesting.expectOne('./assets/mock/olympic.json');
-
-    expect(request.request.method).toBe('GET');
-
-    request.flush([
+    expect(dataService.getOlympics.calls.count()).toBe(1);
+    data.next([
       {
         id: 2,
         country: 'Italy',
@@ -105,7 +102,7 @@ describe('CountryComponent', () => {
     component = await harness.navigateByUrl('/country/France', CountryComponent);
     const chartSpy = spyOn(component, 'buildChart');
 
-    httpTesting.expectOne('./assets/mock/olympic.json').flush([
+    data.next([
       { id: 1, country: 'France', participations: [] },
     ]);
 

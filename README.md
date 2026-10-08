@@ -68,7 +68,8 @@ statiques dans `dist/olympic-games-starter/browser/`. Pour un build de développ
 pnpm run build --configuration development
 ```
 
-Les tests utilisent Karma/Jasmine et des réponses HTTP simulées. Ils couvrent
+Les tests utilisent Karma/Jasmine, des réponses HTTP simulées pour le service
+et des doubles de `DataService` pour les pages. Ils couvrent
 les routes, les statistiques affichées et les graphiques des pages connues.
 `karma.conf.cfg` détecte les exécutables Linux usuels de Chrome ou Chromium.
 Une variable `CHROME_BIN` déjà définie reste prioritaire. Si nécessaire,
@@ -115,6 +116,7 @@ La structure actuelle est la suivante :
 - `src/app/app.config.ts` fournit le routeur, HTTP et la détection des changements avec Zone.js.
 - `src/app/app.routes.ts` définit `/`, `/country/:countryName`, `/not-found` et le repli vers la page inconnue.
 - `src/app/pages/` contient les pages standalone et leurs tests.
+- `src/app/services/data.service.ts` centralise l'URL et le chargement HTTP ; les pages injectent `DataService`.
 - `src/app/models/olympic.ts` décrit les pays et participations ; il ne valide pas les réponses HTTP à l'exécution.
 - `src/assets/mock/olympic.json` contient les données de démonstration.
 - `src/test.ts` initialise les tests Angular avec `@angular/platform-browser-dynamic`.

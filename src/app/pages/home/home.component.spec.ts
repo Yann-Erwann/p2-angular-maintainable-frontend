@@ -1,48 +1,51 @@
-import { provideHttpClient } from '@angular/common/http';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { type ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { Subject } from 'rxjs';
 
+import type { Olympic } from '../../models/olympic';
+import { DataService } from '../../services/data.service';
 import { HomeComponent } from './home.component';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
-  let httpTesting: HttpTestingController;
+  let data: Subject<readonly Olympic[]>;
+  let dataService: jasmine.SpyObj<DataService>;
 
   beforeEach(async () => {
+    data = new Subject<readonly Olympic[]>();
+    dataService = jasmine.createSpyObj<DataService>('DataService', ['getOlympics']);
+    dataService.getOlympics.and.returnValue(data.asObservable());
     await TestBed.configureTestingModule({
       imports: [HomeComponent],
       providers: [
         provideZoneChangeDetection(),
         provideRouter([]),
-        provideHttpClient(),
-        provideHttpClientTesting(),
+        { provide: DataService, useValue: dataService },
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
-    httpTesting = TestBed.inject(HttpTestingController);
     fixture.detectChanges();
   });
 
   afterEach(() => {
     component.pieChart?.destroy();
-    httpTesting.verify();
+    data.complete();
   });
 
   it('should create', () => {
-    httpTesting.expectOne('./assets/mock/olympic.json').flush([]);
+    data.next([]);
+    expect(dataService.getOlympics.calls.count()).toBe(1);
     expect(component).toBeTruthy();
   });
 
   it('should render country and edition totals with the medal chart', () => {
     const chartSpy = spyOn(component, 'buildPieChart').and.callThrough();
-    const request = httpTesting.expectOne('./assets/mock/olympic.json');
-    expect(request.request.method).toBe('GET');
-    request.flush([
+    expect(dataService.getOlympics.calls.count()).toBe(1);
+    data.next([
       {
         id: 1,
         country: 'France',
