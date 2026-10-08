@@ -161,7 +161,7 @@ describe('HomeComponent', () => {
 
     const page = fixture.nativeElement as HTMLElement;
     expect(page.querySelector('[role="status"]')?.textContent).toContain('No Olympic data available');
-    expect(page.querySelector('[role="alert"]')).toBeNull();
+    expect(page.querySelector('[role="alert"]')?.textContent).toBe('');
     expect(page.querySelector('app-header')).toBeNull();
     expect(page.querySelector('canvas')).toBeNull();
     expect(chartSpy).not.toHaveBeenCalled();

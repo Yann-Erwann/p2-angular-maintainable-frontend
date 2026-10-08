@@ -5,6 +5,7 @@ import { olympicLoadState } from '../../olympics/olympic-load-state';
 import { Router, RouterLink } from '@angular/router';
 import { OlympicChartComponent } from '../../olympics/chart/chart.component';
 import { HeaderComponent } from '../../olympics/header/header.component';
+import { PageFeedbackComponent } from '../../olympics/page-feedback/page-feedback.component';
 import type { PageState } from '../../olympics/page-state';
 import { DataService } from '../../services/data.service';
 
@@ -13,7 +14,7 @@ import { DataService } from '../../services/data.service';
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss'],
     standalone: true,
-    imports: [HeaderComponent, RouterLink, OlympicChartComponent],
+    imports: [HeaderComponent, RouterLink, OlympicChartComponent, PageFeedbackComponent],
 })
 export class HomeComponent implements OnInit {
   private readonly pageState = signal<PageState<readonly Olympic[]>>({ status: 'loading' });

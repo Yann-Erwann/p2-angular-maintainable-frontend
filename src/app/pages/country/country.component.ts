@@ -6,6 +6,7 @@ import { olympicLoadState } from '../../olympics/olympic-load-state';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { OlympicChartComponent } from '../../olympics/chart/chart.component';
 import { HeaderComponent } from '../../olympics/header/header.component';
+import { PageFeedbackComponent } from '../../olympics/page-feedback/page-feedback.component';
 import type { PageState } from '../../olympics/page-state';
 import { DataService } from '../../services/data.service';
 
@@ -14,7 +15,7 @@ import { DataService } from '../../services/data.service';
   selector: 'app-country',
   templateUrl: './country.component.html',
   styleUrls: ['./country.component.scss'],
-  imports: [RouterLink, HeaderComponent, OlympicChartComponent]
+  imports: [RouterLink, HeaderComponent, OlympicChartComponent, PageFeedbackComponent]
 })
 export class CountryComponent implements OnInit {
   private readonly pageState = signal<PageState<Olympic>>({ status: 'loading' });

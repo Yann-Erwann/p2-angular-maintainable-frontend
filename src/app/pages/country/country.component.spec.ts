@@ -187,7 +187,7 @@ describe('CountryComponent', () => {
     harness.detectChanges();
 
     expect(harness.routeNativeElement?.querySelector('[role="status"]')?.textContent).toContain('No Olympic data available');
-    expect(harness.routeNativeElement?.querySelector('[role="alert"]')).toBeNull();
+    expect(harness.routeNativeElement?.querySelector('[role="alert"]')?.textContent).toBe('');
     expect(harness.routeNativeElement?.querySelector('app-header')).toBeNull();
     expect(harness.routeNativeElement?.querySelector('canvas')).toBeNull();
   });
@@ -199,7 +199,7 @@ describe('CountryComponent', () => {
     harness.detectChanges();
 
     expect(harness.routeNativeElement?.querySelector('[role="status"]')?.textContent?.trim()).toBe('Country not found.');
-    expect(harness.routeNativeElement?.querySelector('[role="alert"]')).toBeNull();
+    expect(harness.routeNativeElement?.querySelector('[role="alert"]')?.textContent).toBe('');
     expect(harness.routeNativeElement?.querySelector('app-header')).toBeNull();
     expect(harness.routeNativeElement?.querySelector('canvas')).toBeNull();
   });

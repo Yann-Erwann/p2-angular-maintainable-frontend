@@ -26,8 +26,10 @@ export class ChartRenderer {
           label: data.type === 'pie' ? 'Medals' : 'medals',
           data: [...data.values],
           backgroundColor: data.type === 'pie'
-            ? ['#0b868f', '#adc3de', '#7a3c53', '#8f6263', 'orange', '#94819d']
-            : '#0b868f',
+            ? ['#0b6470', '#486b94', '#7a3c53', '#8f6263', '#a45a00', '#35665c']
+            : '#0b6470',
+          borderColor: data.type === 'pie' ? '#ffffff' : '#0b6470',
+          borderWidth: 2,
           ...(data.type === 'pie' ? { hoverOffset: 4 } : {}),
         }],
       },

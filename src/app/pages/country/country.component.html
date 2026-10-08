@@ -1,12 +1,9 @@
 <div>
   <h1 class="page-title" tabindex="-1">{{ titlePage ? 'Olympic results for ' + titlePage : 'Country details' }}</h1>
-  @if (state.status === 'loading') {
-    <p class="page-message" role="status">Loading Olympic data...</p>
-  } @else if (state.status === 'error') {
-    <p class="page-message" role="alert">{{ state.message }}</p>
-  } @else if (state.status === 'not-found') {
-    <p class="page-message" role="status">Country not found.</p>
-  }
+  <app-page-feedback
+    [state]="state"
+    [successMessage]="'Loaded Olympic results for ' + titlePage + '.'"
+  />
   @if (state.status === 'success' || (state.status === 'empty' && titlePage)) {
     <app-header
       [title]="titlePage"
@@ -16,9 +13,6 @@
         { label: 'Total Number of athletes', value: totalAthletes }
       ]"
     />
-  }
-  @if (state.status === 'empty') {
-    <p class="page-message" role="status">No Olympic data available.</p>
   }
   @if (state.status === 'success') {
     <div class="chart-panel">

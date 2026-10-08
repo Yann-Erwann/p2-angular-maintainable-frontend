@@ -1,12 +1,11 @@
 <h1 class="page-title" tabindex="-1">Olympic games app</h1>
 <hr/>
-@if (state.status === 'loading') {
-  <p class="page-message" role="status">Loading Olympic data...</p>
-} @else if (state.status === 'error') {
-  <p class="page-message" role="alert">{{ state.message }}</p>
+<app-page-feedback
+  [state]="state"
+  [successMessage]="'Loaded medal totals for ' + totalCountries + ' countries.'"
+/>
+@if (state.status === 'error') {
   <a class="back-link" routerLink="/">Go back to home</a>
-} @else if (state.status === 'empty') {
-  <p class="page-message" role="status">No Olympic data available.</p>
 } @else if (state.status === 'success') {
   <app-header
     [title]="titlePage"
