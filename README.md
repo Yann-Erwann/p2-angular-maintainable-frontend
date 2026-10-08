@@ -151,6 +151,11 @@ reste à configurer et vérifier dans I19.
 
 ## Interface responsive
 
+Pendant le chargement, un squelette statique représente le titre, les deux
+indicateurs de l’accueil ou les trois du détail, puis le graphique. Les blocs
+sont masqués aux lecteurs d’écran ; la région de statut annonce le chargement.
+Le squelette est retiré dès la réception des données ou d’une erreur.
+
 Les pages utilisent une grille de 4 colonnes sur mobile (≤ 767 px), 8 sur
 tablette (768–1199 px) et 12 sur desktop (≥ 1200 px). Le graphique et
 le tableau sont côte à côte sur desktop ; ils sont empilés aux autres tailles.

@@ -1,0 +1,37 @@
+.loading-skeleton {
+  display: grid;
+  gap: 1rem;
+}
+
+.skeleton-title,
+.skeleton-indicator,
+.skeleton-chart {
+  background: #dbe5e8;
+  border-radius: 0.75rem;
+}
+
+.skeleton-title {
+  width: min(100%, 16rem);
+  height: 3rem;
+  justify-self: center;
+}
+
+.skeleton-indicators {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+  gap: 1rem;
+}
+
+.skeleton-indicator {
+  height: 6rem;
+}
+
+.skeleton-chart {
+  height: clamp(18rem, 45vw, 28rem);
+}
+
+@media (max-width: 767px) {
+  .skeleton-indicators {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

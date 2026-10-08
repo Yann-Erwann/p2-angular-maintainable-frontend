@@ -2,6 +2,7 @@
   <h1 class="page-title" tabindex="-1">{{ titlePage ? 'Olympic results for ' + titlePage : 'Country details' }}</h1>
   <app-page-feedback
     [state]="state"
+    [indicatorCount]="3"
     [successMessage]="'Loaded Olympic results for ' + titlePage + '.'"
   />
   @if (state.status === 'success' || (state.status === 'empty' && titlePage)) {
