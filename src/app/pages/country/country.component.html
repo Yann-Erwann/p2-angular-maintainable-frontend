@@ -17,12 +17,20 @@
   }
   @if (state.status === 'success') {
     <div class="chart-panel">
-      <app-olympic-chart
-        type="line"
-        [labels]="summary().years"
-        [values]="summary().medals"
-        dataDescriptionId="participation-caption"
-      />
+      @defer (on viewport) {
+        <app-olympic-chart
+          type="line"
+          [labels]="summary().years"
+          [values]="summary().medals"
+          dataDescriptionId="participation-caption"
+        />
+      } @placeholder {
+        <div class="chart-placeholder" aria-hidden="true"></div>
+      } @loading {
+        <div class="chart-placeholder" role="status">Loading chart...</div>
+      } @error {
+        <p class="page-message" role="alert">Unable to load the chart. Results are available in the table.</p>
+      }
       <p class="chart-caption">Olympic year</p>
     </div>
     <table class="data-table">

@@ -162,3 +162,14 @@ a {
     }
   }
 }
+
+.chart-placeholder {
+  display: grid;
+  place-items: center;
+  height: clamp(18rem, 45vw, 28rem);
+  padding: 1rem;
+  border: 1px solid #dbe5e8;
+  border-radius: 0.75rem;
+  background: #eef4f6;
+  text-align: center;
+}

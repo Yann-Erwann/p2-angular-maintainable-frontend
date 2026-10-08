@@ -1,7 +1,8 @@
+import { renderCharts } from '../../../testing/render-charts';
 import { Chart } from 'chart.js';
 import { ChartRenderer } from '../../olympics/chart/chart-renderer.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { type ComponentFixture, TestBed } from '@angular/core/testing';
+import { type ComponentFixture, DeferBlockState, TestBed } from '@angular/core/testing';
 import { ErrorHandler, provideZoneChangeDetection } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { OlympicChartComponent } from '../../olympics/chart/chart.component';
@@ -44,6 +45,7 @@ describe('HomeComponent', () => {
     fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    await renderCharts(fixture);
   });
 
   afterEach(() => {
@@ -67,20 +69,38 @@ describe('HomeComponent', () => {
     expect(data.observed).toBeFalse();
   });
 
-  it('should render only the latest response when several arrive before rendering', () => {
+  it('should render only the latest response when several arrive before rendering', async () => {
     const chartSpy = spyOn(TestBed.inject(ChartRenderer), 'create').and.callThrough();
     data.next([{ id: 1, country: 'France', participations: [] }]);
     data.next([{ id: 2, country: 'Italy', participations: [] }]);
     fixture.detectChanges();
+    await renderCharts(fixture);
     expect(chartSpy).toHaveBeenCalledTimes(1);
     expect(chartAt(fixture.nativeElement as HTMLElement).data.labels).toEqual(['Italy']);
     expect(component.totalCountries).toBe(1);
+  });
+
+  it('should expose data and keyboard links before the chart loads, including after a chunk failure', async () => {
+    data.next([{ id: 1, country: 'France', participations: [] }]);
+    fixture.detectChanges();
+    const page = fixture.nativeElement as HTMLElement;
+    expect(page.querySelector('canvas')).toBeNull();
+    expect(page.querySelector('.chart-placeholder')?.getAttribute('aria-hidden')).toBe('true');
+    expect(page.querySelector('tbody a')?.getAttribute('href')).toBe('/country/1');
+    const [block] = await fixture.getDeferBlocks();
+    await block.render(DeferBlockState.Loading);
+    expect(page.querySelector('.chart-panel [role="status"]')?.textContent).toContain('Loading chart');
+    await block.render(DeferBlockState.Error);
+    expect(page.querySelector('.chart-panel [role="alert"]')?.textContent).toContain('Unable to load the chart');
+    expect(page.querySelector('tbody a')?.getAttribute('href')).toBe('/country/1');
+    expect(page.querySelector('app-header')).not.toBeNull();
   });
 
   it('should navigate when the isolated chart emits a country selection', async () => {
     const navigate = spyOn(TestBed.inject(Router), 'navigate').and.resolveTo(true);
     data.next([{ id: 1, country: 'France', participations: [] }]);
     fixture.detectChanges();
+    await renderCharts(fixture);
     const chart = fixture.debugElement.query(By.directive(OlympicChartComponent)).componentInstance as OlympicChartComponent;
     chart.pointSelected.emit(0);
     await fixture.whenStable();
@@ -117,7 +137,7 @@ describe('HomeComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render country and edition totals with the medal chart', () => {
+  it('should render country and edition totals with the medal chart', async () => {
     const chartSpy = spyOn(TestBed.inject(ChartRenderer), 'create').and.callThrough();
     expect(dataService.getOlympics.calls.count()).toBe(1);
     data.next([
@@ -139,6 +159,7 @@ describe('HomeComponent', () => {
     ]);
 
     fixture.detectChanges();
+    await renderCharts(fixture);
 
     expect(component.totalCountries).toBe(2);
     expect(component.totalJOs).toBe(2);
@@ -169,10 +190,11 @@ describe('HomeComponent', () => {
     expect(page.querySelector('canvas')).toBeNull();
   });
 
-  it('should distinguish an empty response from a loading or failure state', () => {
+  it('should distinguish an empty response from a loading or failure state', async () => {
     const chartSpy = spyOn(TestBed.inject(ChartRenderer), 'create').and.callThrough();
     data.next([]);
     fixture.detectChanges();
+    await renderCharts(fixture);
 
     const page = fixture.nativeElement as HTMLElement;
     expect(page.querySelector('[role="status"]')?.textContent).toContain('No Olympic data available');
@@ -187,9 +209,10 @@ describe('HomeComponent', () => {
     { status: 404, message: 'Olympic data could not be found.' },
     { status: 503, message: 'Olympic data is temporarily unavailable. Please try again later.' },
   ]) {
-    it(`should display a safe error for HTTP status ${scenario.status}`, () => {
+    it(`should display a safe error for HTTP status ${scenario.status}`, async () => {
       data.error(new HttpErrorResponse({ status: scenario.status, error: 'private server details' }));
       fixture.detectChanges();
+    await renderCharts(fixture);
 
       const page = fixture.nativeElement as HTMLElement;
       expect(page.querySelector('[role="alert"]')?.textContent?.trim()).toBe(scenario.message);
@@ -201,16 +224,18 @@ describe('HomeComponent', () => {
   }
 
 
-  it('should remove previous statistics and the chart when loading fails after data was shown', () => {
+  it('should remove previous statistics and the chart when loading fails after data was shown', async () => {
     data.next([{ id: 1, country: 'France', participations: [
       { id: 1, year: 2012, city: 'London', medalsCount: 10, athleteCount: 100 },
     ] }]);
     fixture.detectChanges();
+    await renderCharts(fixture);
     const page = fixture.nativeElement as HTMLElement;
     expect(page.querySelector('canvas')).not.toBeNull();
 
     data.error(new HttpErrorResponse({ status: 503 }));
     fixture.detectChanges();
+    await renderCharts(fixture);
 
     expect(page.querySelector('[role="alert"]')?.textContent).toContain('temporarily unavailable');
     expect(page.querySelector('app-header')).toBeNull();

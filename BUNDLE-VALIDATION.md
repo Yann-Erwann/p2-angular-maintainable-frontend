@@ -62,3 +62,44 @@ canvas, pas d’un score Lighthouse ni d’une mesure de dessin final.
 Ces résultats confirment la limite du débit au premier chargement ; la
 compression gzip/Brotli et le cache des assets versionnés devront être
 vérifiés sur l’hébergement cible pour mesurer le temps réellement livré.
+
+## Chargement des graphiques à leur entrée dans la zone visible
+
+Après `bf14693`, les deux pages placent le composant graphique dans
+`@defer (on viewport)`. Les données, indicateurs et liens du tableau se
+chargent indépendamment de Chart.js. Un emplacement gris conserve la hauteur
+attendue ; un statut annonce le chargement du chunk et une erreur visible
+renvoie aux données du tableau si celui-ci échoue. Aucun changement d’URL.
+
+Build : 471,97 → 307,13 kB initiaux ; transfert estimé initial
+134,42 → 86,19 kB. Le chunk graphique partagé mesure 174,94 kB bruts
+(53,56 kB de transfert estimé) et se charge une seule fois à sa première
+utilisation. Le total initial + différé augmente légèrement à cause du
+découpage et du mécanisme de déclenchement ; le bénéfice porte sur le chemin
+critique d’affichage, pas sur une suppression de la bibliothèque.
+
+Lighthouse 13.5.0, profil mobile par défaut, Chromium local, serveur de
+production sans compression, une mesure avant et une mesure finale :
+
+| Mesure | Avant | Après |
+| --- | ---: | ---: |
+| Score performance | 79 | 83 |
+| Premier affichage (FCP) | 3,2 s | 2,5 s |
+| Plus grand affichage (LCP) | 3,7 s | 3,7 s |
+| Blocage total (TBT) | 230 ms | 200 ms |
+| Déplacement de mise en page (CLS) | 0 | 0 |
+| JavaScript inutilisé estimé | 178 KiB | 178 KiB |
+
+L’alerte ne disparaît pas si le graphique est visible pendant l’audit : le
+chunk est alors chargé et son code non exécuté au cours de ce scénario est
+comptabilisé. La valeur locale diffère des 149 KiB signalés par l’utilisateur ;
+le serveur local ne compresse pas ses réponses. Ces mesures uniques ne
+constituent pas un gain garanti sur chaque exécution ou hébergement.
+
+À 320 × 400 px, un contrôle Chromium confirme que les cinq lignes et les liens
+du tableau sont présents sans canvas ni requête du chunk graphique. Le
+défilement jusqu’à son emplacement charge le chunk et affiche le canvas sans
+débordement horizontal. Les tests rendent explicitement les blocs différés
+pour vérifier les calculs, la navigation et la destruction des graphiques ;
+un test supplémentaire couvre le tableau avant le graphique et le message
+d’erreur de chargement. 159 tests, lint et TypeScript des specs passent.

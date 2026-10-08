@@ -133,7 +133,11 @@ abonnements utilisent `takeUntilDestroyed` : quitter la page annule une requête
 HTTP encore en cours si aucun autre consommateur ne l’utilise et arrête
 l’écoute des paramètres.
 
-`OlympicChartComponent` possède son canvas et reçoit uniquement le type du
+`OlympicChartComponent` est chargé dans un bloc `@defer (on viewport)` :
+les indicateurs et le tableau restent accessibles avant le graphique. Un
+emplacement de même hauteur limite les déplacements de mise en page, et un
+message explicite signale un échec du chargement JavaScript du graphique.
+Le composant possède son canvas et reçoit uniquement le type du
 graphique, ses libellés et ses valeurs. `afterRenderEffect` crée le graphique
 une fois le canvas disponible, détruit l'instance précédente avant remplacement
 des données et libère l'instance au retrait du composant. `ChartRenderer`

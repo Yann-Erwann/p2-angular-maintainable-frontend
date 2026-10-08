@@ -1,3 +1,4 @@
+import { renderCharts } from '../../../testing/render-charts';
 import { Chart } from 'chart.js';
 import { ChartRenderer } from '../../olympics/chart/chart-renderer.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -68,6 +69,7 @@ describe('CountryComponent', () => {
     ]);
     data.complete();
     harness.detectChanges();
+    await renderCharts(harness.fixture);
     expect(component.titlePage).toBe('France');
 
     dataService.getCountryById.and.returnValue(of({ id: 2, country: 'Italy', participations: [] }));
@@ -120,6 +122,7 @@ describe('CountryComponent', () => {
     ]);
 
     harness.detectChanges();
+    await renderCharts(harness.fixture);
 
     expect(component).toBeTruthy();
     expect(component.titlePage).toBe('France');
@@ -164,6 +167,7 @@ describe('CountryComponent', () => {
     expect(component.totalAthletes).toBe(0);
     expect(chartSpy).not.toHaveBeenCalled();
     harness.detectChanges();
+    await renderCharts(harness.fixture);
     expect(harness.routeNativeElement?.querySelector('app-header')?.textContent).toContain('France');
     expect(Array.from(harness.routeNativeElement?.querySelectorAll('.split dt, .split dd') ?? [], item => item.textContent?.trim())).toEqual([
       'Number of entries', '0', 'Total Number of medals', '0', 'Total Number of athletes', '0',
@@ -186,6 +190,7 @@ describe('CountryComponent', () => {
     component = await harness.navigateByUrl('/country/1', CountryComponent);
     data.next([]);
     harness.detectChanges();
+    await renderCharts(harness.fixture);
 
     expect(harness.routeNativeElement?.querySelector('[role="status"]')?.textContent).toContain('Country not found.');
     expect(harness.routeNativeElement?.querySelector('[role="alert"]')?.textContent).toBe('');
@@ -198,6 +203,7 @@ describe('CountryComponent', () => {
     component = await harness.navigateByUrl('/country/999', CountryComponent);
     data.next([{ id: 1, country: 'France', participations: [] }]);
     harness.detectChanges();
+    await renderCharts(harness.fixture);
 
     expect(harness.routeNativeElement?.querySelector('[role="status"]')?.textContent?.trim()).toBe('Country not found.');
     expect(harness.routeNativeElement?.querySelector('[role="alert"]')?.textContent).toBe('');
@@ -215,6 +221,7 @@ describe('CountryComponent', () => {
       component = await harness.navigateByUrl('/country/1', CountryComponent);
       data.error(new HttpErrorResponse({ status: scenario.status, error: 'private server details' }));
       harness.detectChanges();
+    await renderCharts(harness.fixture);
 
       expect(harness.routeNativeElement?.querySelector('[role="alert"]')?.textContent?.trim()).toBe(scenario.message);
       expect(harness.routeNativeElement?.textContent).not.toContain('private server details');
@@ -232,10 +239,12 @@ describe('CountryComponent', () => {
       { id: 1, year: 2012, city: 'London', medalsCount: 10, athleteCount: 100 },
     ] }]);
     harness.detectChanges();
+    await renderCharts(harness.fixture);
     expect(harness.routeNativeElement?.querySelector('canvas')).not.toBeNull();
 
     data.error(new HttpErrorResponse({ status: 503 }));
     harness.detectChanges();
+    await renderCharts(harness.fixture);
 
     expect(harness.routeNativeElement?.querySelector('[role="alert"]')?.textContent).toContain('temporarily unavailable');
     expect(harness.routeNativeElement?.querySelector('app-header')).toBeNull();
