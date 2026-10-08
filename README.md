@@ -152,6 +152,13 @@ La mise en page et les graphiques sont vérifiés à 320, 480, 768, 1024 et
 1280 pixels. Les constats, mesures, états et limites sont consignés dans
 [UI-VALIDATION.md](UI-VALIDATION.md).
 
+Chaque pays dispose d'un lien natif utilisable au clavier et les données
+des graphiques sont aussi présentées dans des tableaux. Un lien d'évitement,
+des titres de page et un focus visible accompagnent la navigation. Les
+contrastes et les régions d'annonce ont été vérifiés sur le périmètre décrit
+dans [ACCESSIBILITY.md](ACCESSIBILITY.md). L'écoute avec un lecteur d'écran
+et l'audit RGAA complet restent à réaliser.
+
 ## Éditeur et architecture
 
 Ouvrir la racine du dépôt dans VS Code dans l'environnement où les dépendances

@@ -62,3 +62,8 @@ Cette revue concerne la mise en page sous Chromium. Les appareils physiques,
 Safari et Firefox n'ont pas été testés. Les contrastes, le clavier, les
 lecteurs d'écran et les alternatives textuelles des graphiques restent dans
 l'audit d'accessibilité I15 ; aucune conformité RGAA n'est annoncée ici.
+
+Les corrections et contrôles d'accessibilité ultérieurs, dont le reflow des
+tableaux et le parcours clavier, sont consignés dans
+[ACCESSIBILITY.md](ACCESSIBILITY.md). Cette revue UI conserve les mesures
+de son propre périmètre et de sa propre révision.
