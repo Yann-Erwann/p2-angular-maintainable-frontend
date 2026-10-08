@@ -127,9 +127,14 @@ d'erreur ; les statistiques sont dérivées avec `computed`. RxJS compose le
 chargement et, pour le pays, les paramètres de route avec la dernière réponse.
 Un changement de pays réutilise cette réponse sans nouvelle requête. Les
 abonnements utilisent `takeUntilDestroyed` : quitter la page annule une requête
-HTTP encore en cours et arrête l'écoute des paramètres. Les rendus différés
-obsolètes sont annulés avant remplacement ou destruction de la page. Le cycle
-de vie complet des instances Chart.js reste un travail distinct.
+HTTP encore en cours et arrête l'écoute des paramètres.
+
+`OlympicChartComponent` possède son canvas et reçoit uniquement le type du
+graphique, ses libellés et ses valeurs. `afterRenderEffect` crée le graphique
+une fois le canvas disponible, détruit l'instance précédente avant remplacement
+des données et libère l'instance au retrait du composant. `ChartRenderer`
+encapsule Chart.js ; la sélection d'un pays remonte à la page, qui gère la
+navigation. Aucun graphique ne dépend d'un identifiant global de canvas.
 
 Les URL publiques restent `/country/:countryName`, avec le nom encodé dans
 l'URL pour les espaces et caractères spéciaux. Un pays inconnu ou un nom vide

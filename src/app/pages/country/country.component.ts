@@ -1,10 +1,10 @@
-import { afterNextRender, type AfterRenderRef, Component, computed, DestroyRef, inject, Injector, type OnInit, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, type OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { combineLatest, map } from 'rxjs';
 import type { Olympic } from '../../models/olympic';
 import { olympicLoadState } from '../../olympics/olympic-load-state';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import Chart from 'chart.js/auto';
+import { OlympicChartComponent } from '../../olympics/chart/chart.component';
 import { HeaderComponent } from '../../olympics/header/header.component';
 import type { PageState } from '../../olympics/page-state';
 import { DataService } from '../../services/data.service';
@@ -14,12 +14,11 @@ import { DataService } from '../../services/data.service';
   selector: 'app-country',
   templateUrl: './country.component.html',
   styleUrls: ['./country.component.scss'],
-  imports: [RouterLink, HeaderComponent]
+  imports: [RouterLink, HeaderComponent, OlympicChartComponent]
 })
 export class CountryComponent implements OnInit {
-  public lineChart!: Chart<"line", number[], number>;
   private readonly pageState = signal<PageState<Olympic>>({ status: 'loading' });
-  private readonly summary = computed(() => {
+  readonly summary = computed(() => {
     const state = this.pageState();
     const country = state.status === 'success' || state.status === 'empty' ? state.data : undefined;
     const participations = country?.participations ?? [];
@@ -40,12 +39,9 @@ export class CountryComponent implements OnInit {
 
   private readonly route = inject(ActivatedRoute);
   private readonly dataService = inject(DataService);
-  private readonly injector = inject(Injector);
   private readonly destroyRef = inject(DestroyRef);
-  private pendingRender?: AfterRenderRef;
 
   ngOnInit() {
-    this.destroyRef.onDestroy(() => this.pendingRender?.destroy());
     combineLatest([
       this.route.paramMap,
       olympicLoadState(this.dataService.getOlympics()),
@@ -65,36 +61,6 @@ export class CountryComponent implements OnInit {
         return { status: country.participations.length > 0 ? 'success' : 'empty', data: country };
       }),
       takeUntilDestroyed(this.destroyRef),
-    ).subscribe((state) => {
-      this.pendingRender?.destroy();
-      this.lineChart?.destroy();
-      this.pageState.set(state);
-      if (state.status === 'success') {
-        this.pendingRender = afterNextRender(() => {
-          const summary = this.summary();
-          this.buildChart(summary.years, summary.medals);
-        }, { injector: this.injector });
-      }
-    });
-  }
-
-  buildChart(years: number[], medals: number[]) {
-    const lineChart = new Chart("countryChart", {
-      type: 'line',
-      data: {
-        labels: years,
-        datasets: [
-          {
-            label: "medals",
-            data: medals,
-            backgroundColor: '#0b868f'
-          },
-        ]
-      },
-      options: {
-        aspectRatio: 2.5
-      }
-    });
-    this.lineChart = lineChart;
+    ).subscribe((state) => this.pageState.set(state));
   }
 }

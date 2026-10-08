@@ -1,3 +1,5 @@
+import Chart from 'chart.js/auto';
+import { ChartRenderer } from '../../olympics/chart/chart-renderer.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { provideZoneChangeDetection } from '@angular/core';
@@ -10,6 +12,16 @@ import { routes } from '../../app.routes';
 import type { Olympic } from '../../models/olympic';
 import { DataService } from '../../services/data.service';
 import { CountryComponent } from './country.component';
+
+
+function chartAt(page: HTMLElement | null) {
+  const canvas = page?.querySelector('canvas');
+  const chart = canvas ? Chart.getChart(canvas) : undefined;
+  if (!chart) {
+    throw new Error('Expected a rendered chart on the page.');
+  }
+  return chart;
+}
 
 describe('CountryComponent', () => {
   let data: Subject<readonly Olympic[]>;
@@ -31,14 +43,13 @@ describe('CountryComponent', () => {
   });
 
   afterEach(() => {
-    component?.lineChart?.destroy();
     data.complete();
   });
 
   it('should stop consuming route and data changes after leaving the page', async () => {
     const harness = await RouterTestingHarness.create();
     component = await harness.navigateByUrl('/country/France', CountryComponent);
-    const chartSpy = spyOn(component, 'buildChart');
+    const chartSpy = spyOn(TestBed.inject(ChartRenderer), 'create').and.callThrough();
     expect(data.observed).toBeTrue();
 
     await harness.navigateByUrl('/not-found');
@@ -74,7 +85,7 @@ describe('CountryComponent', () => {
       CountryComponent,
     );
 
-    const chartSpy = spyOn(component, 'buildChart').and.callThrough();
+    const chartSpy = spyOn(TestBed.inject(ChartRenderer), 'create').and.callThrough();
 
     expect(dataService.getOlympics.calls.count()).toBe(1);
     data.next([
@@ -114,9 +125,9 @@ describe('CountryComponent', () => {
     expect(component.totalEntries).toBe(2);
     expect(component.totalMedals).toBe(30);
     expect(component.totalAthletes).toBe(250);
-    expect(chartSpy).toHaveBeenCalledWith([2012, 2016], [10, 20]);
-    expect(component.lineChart.data.labels).toEqual([2012, 2016]);
-    expect(component.lineChart.data.datasets[0].data).toEqual([10, 20]);
+    expect(chartSpy).toHaveBeenCalledTimes(1);
+    expect(chartAt(harness.routeNativeElement).data.labels).toEqual([2012, 2016]);
+    expect(chartAt(harness.routeNativeElement).data.datasets[0].data).toEqual([10, 20]);
 
     const page = harness.routeNativeElement;
     expect(page?.querySelector('app-header .center > div')?.textContent?.trim()).toBe('France');
@@ -125,7 +136,7 @@ describe('CountryComponent', () => {
       'Total Number of medals', '30',
       'Total Number of athletes', '250',
     ]);
-    expect(page?.querySelector('canvas')).toBe(component.lineChart.canvas);
+    expect(page?.querySelector('canvas')).toBe(chartAt(harness.routeNativeElement).canvas);
     expect(page?.querySelector('a')?.textContent?.trim()).toBe('Go back');
     expect(page?.querySelector('a')?.getAttribute('href')).toBe('/');
   });
@@ -133,7 +144,7 @@ describe('CountryComponent', () => {
   it('should keep totals at zero for a country without participations', async () => {
     const harness = await RouterTestingHarness.create();
     component = await harness.navigateByUrl('/country/France', CountryComponent);
-    const chartSpy = spyOn(component, 'buildChart');
+    const chartSpy = spyOn(TestBed.inject(ChartRenderer), 'create').and.callThrough();
 
     data.next([
       { id: 1, country: 'France', participations: [] },

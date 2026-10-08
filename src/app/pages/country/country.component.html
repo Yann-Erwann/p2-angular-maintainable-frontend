@@ -22,7 +22,11 @@
   @if (state.status === 'success') {
     <div class="chart-container wrapper-container">
       <div class="container">
-        <canvas id="countryChart"></canvas>
+        <app-olympic-chart
+          type="line"
+          [labels]="summary().years"
+          [values]="summary().medals"
+        />
         <h2>Date</h2>
       </div>
     </div>

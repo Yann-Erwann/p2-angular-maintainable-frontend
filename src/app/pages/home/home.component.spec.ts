@@ -1,12 +1,26 @@
+import Chart from 'chart.js/auto';
+import { ChartRenderer } from '../../olympics/chart/chart-renderer.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { type ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { ErrorHandler, provideZoneChangeDetection } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { OlympicChartComponent } from '../../olympics/chart/chart.component';
+import { provideRouter, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 
 import type { Olympic } from '../../models/olympic';
 import { DataService } from '../../services/data.service';
 import { HomeComponent } from './home.component';
+
+
+function chartAt(page: HTMLElement | null) {
+  const canvas = page?.querySelector('canvas');
+  const chart = canvas ? Chart.getChart(canvas) : undefined;
+  if (!chart) {
+    throw new Error('Expected a rendered chart on the page.');
+  }
+  return chart;
+}
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -33,7 +47,6 @@ describe('HomeComponent', () => {
   });
 
   afterEach(() => {
-    component.pieChart?.destroy();
     data.complete();
   });
 
@@ -46,7 +59,7 @@ describe('HomeComponent', () => {
   });
 
   it('should cancel a pending chart render when destroyed', () => {
-    const chartSpy = spyOn(component, 'buildPieChart');
+    const chartSpy = spyOn(TestBed.inject(ChartRenderer), 'create').and.callThrough();
     data.next([{ id: 1, country: 'France', participations: [] }]);
     fixture.destroy();
     TestBed.tick();
@@ -55,12 +68,32 @@ describe('HomeComponent', () => {
   });
 
   it('should render only the latest response when several arrive before rendering', () => {
-    const chartSpy = spyOn(component, 'buildPieChart');
+    const chartSpy = spyOn(TestBed.inject(ChartRenderer), 'create').and.callThrough();
     data.next([{ id: 1, country: 'France', participations: [] }]);
     data.next([{ id: 2, country: 'Italy', participations: [] }]);
     fixture.detectChanges();
-    expect(chartSpy).toHaveBeenCalledOnceWith(['Italy'], [0]);
+    expect(chartSpy).toHaveBeenCalledTimes(1);
+    expect(chartAt(fixture.nativeElement as HTMLElement).data.labels).toEqual(['Italy']);
     expect(component.totalCountries).toBe(1);
+  });
+
+  it('should navigate when the isolated chart emits a country selection', async () => {
+    const navigate = spyOn(TestBed.inject(Router), 'navigate').and.resolveTo(true);
+    data.next([{ id: 1, country: 'France', participations: [] }]);
+    fixture.detectChanges();
+    const chart = fixture.debugElement.query(By.directive(OlympicChartComponent)).componentInstance as OlympicChartComponent;
+    chart.countrySelected.emit('France');
+    await fixture.whenStable();
+    expect(navigate).toHaveBeenCalledOnceWith(['/country', 'France']);
+  });
+
+  it('should keep reporting navigation errors from country selection', async () => {
+    const failure = new Error('Navigation failed');
+    spyOn(TestBed.inject(Router), 'navigate').and.rejectWith(failure);
+    const report = spyOn(TestBed.inject(ErrorHandler), 'handleError');
+    component.selectCountry('France');
+    await fixture.whenStable();
+    expect(report).toHaveBeenCalledOnceWith(failure);
   });
 
   it('should create', () => {
@@ -70,7 +103,7 @@ describe('HomeComponent', () => {
   });
 
   it('should render country and edition totals with the medal chart', () => {
-    const chartSpy = spyOn(component, 'buildPieChart').and.callThrough();
+    const chartSpy = spyOn(TestBed.inject(ChartRenderer), 'create').and.callThrough();
     expect(dataService.getOlympics.calls.count()).toBe(1);
     data.next([
       {
@@ -94,16 +127,16 @@ describe('HomeComponent', () => {
 
     expect(component.totalCountries).toBe(2);
     expect(component.totalJOs).toBe(2);
-    expect(chartSpy).toHaveBeenCalledWith(['France', 'Italy'], [30, 15]);
-    expect(component.pieChart.data.labels).toEqual(['France', 'Italy']);
-    expect(component.pieChart.data.datasets[0].data).toEqual([30, 15]);
+    expect(chartSpy).toHaveBeenCalledTimes(1);
+    expect(chartAt(fixture.nativeElement as HTMLElement).data.labels).toEqual(['France', 'Italy']);
+    expect(chartAt(fixture.nativeElement as HTMLElement).data.datasets[0].data).toEqual([30, 15]);
 
     const page = fixture.nativeElement as HTMLElement;
     expect(page.querySelector('app-header .center > div')?.textContent?.trim()).toBe('Medals per Country');
     expect(Array.from(page.querySelectorAll('app-header .split p'), item => item.textContent?.trim())).toEqual([
       'Number of countries', '2', 'Number of JOs', '2',
     ]);
-    expect(page.querySelector('canvas')).toBe(component.pieChart.canvas);
+    expect(page.querySelector('canvas')).toBe(chartAt(fixture.nativeElement as HTMLElement).canvas);
   });
 
   it('should display loading without statistics or a chart before the response', () => {
@@ -114,7 +147,7 @@ describe('HomeComponent', () => {
   });
 
   it('should distinguish an empty response from a loading or failure state', () => {
-    const chartSpy = spyOn(component, 'buildPieChart');
+    const chartSpy = spyOn(TestBed.inject(ChartRenderer), 'create').and.callThrough();
     data.next([]);
     fixture.detectChanges();
 

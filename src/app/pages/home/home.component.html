@@ -15,5 +15,10 @@
       { label: 'Number of JOs', value: totalJOs }
     ]"
   />
-  <canvas id="DashboardPieChart"></canvas>
+  <app-olympic-chart
+    type="pie"
+    [labels]="summary().countries"
+    [values]="summary().medals"
+    (countrySelected)="selectCountry($event)"
+  />
 }
