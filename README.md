@@ -111,8 +111,7 @@ son titre et ses compteurs à zéro, avec un message de série vide.
 
 `DataService` traduit les erreurs en `DataLoadError` et conserve l'erreur technique
 comme cause pour le diagnostic ; les templates affichent uniquement le message
-utilisateur. Un pays absent est distingué d'une panne HTTP. Le passage à une
-navigation par ID et le parcours complet de redirection restent des travaux de routing.
+utilisateur. Un pays absent est distingué d'une panne HTTP.
 
 Avant de transmettre une réponse aux pages, `DataService` reçoit un contenu
 `unknown` et le valide à l'exécution : collection de pays, champs obligatoires,
@@ -131,6 +130,16 @@ abonnements utilisent `takeUntilDestroyed` : quitter la page annule une requête
 HTTP encore en cours et arrête l'écoute des paramètres. Les rendus différés
 obsolètes sont annulés avant remplacement ou destruction de la page. Le cycle
 de vie complet des instances Chart.js reste un travail distinct.
+
+Les URL publiques restent `/country/:countryName`, avec le nom encodé dans
+l'URL pour les espaces et caractères spéciaux. Un pays inconnu ou un nom vide
+affiche `Country not found.` ; `/country` ou une URL hors des routes définies
+affiche la page inconnue. Tous les liens de retour ciblent `/`. Le changement
+de pays recalcule les indicateurs et remplace le graphique, même après la fin
+du chargement initial ; une réponse tardive utilise le dernier pays demandé.
+Les tests couvrent les accès directs et l'historique simulé du routeur.
+Le repli serveur nécessaire au rechargement des URL profondes en production
+reste à configurer et vérifier dans I19.
 
 ## Éditeur et architecture
 

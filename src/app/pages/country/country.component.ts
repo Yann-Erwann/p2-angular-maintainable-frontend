@@ -51,10 +51,14 @@ export class CountryComponent implements OnInit {
       olympicLoadState(this.dataService.getOlympics()),
     ]).pipe(
       map(([params, state]): PageState<Olympic> => {
+        const countryName = params.get('countryName');
+        if (!countryName?.trim()) {
+          return { status: 'not-found' };
+        }
         if (state.status !== 'success') {
           return state.status === 'empty' ? { status: 'empty' } : state;
         }
-        const country = state.data.find((item) => item.country === params.get('countryName'));
+        const country = state.data.find((item) => item.country === countryName);
         if (!country) {
           return { status: 'not-found' };
         }
