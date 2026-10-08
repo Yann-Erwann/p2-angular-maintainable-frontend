@@ -1,0 +1,727 @@
+<mxfile host="65bd71144e" compressed="false">
+    <diagram id="arborescence-cible-app" name="01 — Arborescence cible par fonctionnalité">
+        <mxGraphModel dx="2174" dy="1026" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1920" pageHeight="1510" background="#F7F9FC" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="arborescence-cible-app-node-1" parent="1" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=14;fontColor=#45657D;fontStyle=1;spacingLeft=0;" value="PROPOSITION D’ARCHITECTURE  /  OLYMPIC GAMES" vertex="1">
+                    <mxGeometry height="26" width="1810" x="55" y="28" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-app-node-2" parent="1" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=34;fontColor=#16354A;fontStyle=1;spacingLeft=0;" value="01 — Arborescence cible par fonctionnalité" vertex="1">
+                    <mxGeometry height="52" width="1810" x="55" y="66" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-app-node-3" parent="1" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=18;fontColor=#4E6273;fontStyle=0;spacingLeft=0;" value="Proposition documentaire : 12 déplacements, 15 créations et maintien d’AppModule. Aucun code modifié." vertex="1">
+                    <mxGeometry height="40" width="1810" x="55" y="124" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-app-node-4" parent="1" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#EDF3F8;strokeColor=#CCDCE8;strokeWidth=1;container=1;collapsible=0;" value="" vertex="1">
+                    <mxGeometry height="35" width="300" x="55" y="174" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-app-node-5" parent="1" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=16;fontColor=#245775;fontStyle=0;spacingLeft=0;" value="[E] chemin conservé" vertex="1">
+                    <mxGeometry height="31" width="272" x="69" y="176" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-app-node-6" parent="1" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#FFF1D5;strokeColor=#E8BF73;strokeWidth=1;container=1;collapsible=0;" value="" vertex="1">
+                    <mxGeometry height="35" width="315" x="371" y="174" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-app-node-7" parent="1" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=16;fontColor=#8A5300;fontStyle=0;spacingLeft=0;" value="[A] adaptation prévue" vertex="1">
+                    <mxGeometry height="31" width="287" x="385" y="176" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-app-node-8" parent="1" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#E2F3EB;strokeColor=#9BCDB4;strokeWidth=1;container=1;collapsible=0;" value="" vertex="1">
+                    <mxGeometry height="35" width="335" x="702" y="174" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-app-node-9" parent="1" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=16;fontColor=#146A4A;fontStyle=0;spacingLeft=0;" value="[D] déplacement proposé" vertex="1">
+                    <mxGeometry height="31" width="307" x="716" y="176" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-app-node-10" parent="1" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#F0E9FF;strokeColor=#C6B1E5;strokeWidth=1;container=1;collapsible=0;" value="" vertex="1">
+                    <mxGeometry height="35" width="300" x="1053" y="174" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-app-node-11" parent="1" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=16;fontColor=#6334A5;fontStyle=0;spacingLeft=0;" value="[N] création proposée" vertex="1">
+                    <mxGeometry height="31" width="272" x="1067" y="176" as="geometry"/>
+                </mxCell>
+                <object label="" path="src/app" kind="directory" status="E" id="arborescence-cible-app-node-12">
+                    <mxCell parent="1" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#CCDCE8;strokeWidth=1;container=1;collapsible=0;" vertex="1">
+                        <mxGeometry height="318" width="550" x="60" y="250" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="arborescence-cible-app-node-13" parent="arborescence-cible-app-node-12" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#EDF3F8;strokeColor=#CCDCE8;strokeWidth=1;container=1;collapsible=0;" value="" vertex="1">
+                    <mxGeometry height="46" width="550" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-app-node-14" parent="arborescence-cible-app-node-12" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=19;fontColor=#245775;fontStyle=1;spacingLeft=0;" value="src/app/" vertex="1">
+                    <mxGeometry height="39" width="518" x="16" y="3" as="geometry"/>
+                </mxCell>
+                <object label="[A] app-routing.module.ts" path="src/app/app-routing.module.ts" kind="file" status="A" source_path="src/app/app-routing.module.ts" id="arborescence-cible-app-node-15">
+                    <mxCell parent="arborescence-cible-app-node-12" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#FFF1D5;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#8A5300;" vertex="1">
+                        <mxGeometry height="29" width="520" x="15" y="60" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[E] app.component.html" path="src/app/app.component.html" kind="file" status="E" source_path="src/app/app.component.html" id="arborescence-cible-app-node-16">
+                    <mxCell parent="arborescence-cible-app-node-12" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#EDF3F8;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#245775;" vertex="1">
+                        <mxGeometry height="29" width="520" x="15" y="94" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[E] app.component.scss" path="src/app/app.component.scss" kind="file" status="E" source_path="src/app/app.component.scss" id="arborescence-cible-app-node-17">
+                    <mxCell parent="arborescence-cible-app-node-12" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#EDF3F8;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#245775;" vertex="1">
+                        <mxGeometry height="29" width="520" x="15" y="128" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[E] app.component.spec.ts" path="src/app/app.component.spec.ts" kind="file" status="E" source_path="src/app/app.component.spec.ts" id="arborescence-cible-app-node-18">
+                    <mxCell parent="arborescence-cible-app-node-12" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#EDF3F8;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#245775;" vertex="1">
+                        <mxGeometry height="29" width="520" x="15" y="162" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[E] app.component.ts" path="src/app/app.component.ts" kind="file" status="E" source_path="src/app/app.component.ts" id="arborescence-cible-app-node-19">
+                    <mxCell parent="arborescence-cible-app-node-12" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#EDF3F8;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#245775;" vertex="1">
+                        <mxGeometry height="29" width="520" x="15" y="196" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[A] app.module.ts" path="src/app/app.module.ts" kind="file" status="A" source_path="src/app/app.module.ts" id="arborescence-cible-app-node-20">
+                    <mxCell parent="arborescence-cible-app-node-12" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#FFF1D5;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#8A5300;" vertex="1">
+                        <mxGeometry height="29" width="520" x="15" y="230" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="arborescence-cible-app-node-21" parent="arborescence-cible-app-node-12" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=14;fontColor=#607588;fontStyle=0;spacingLeft=0;" value="Adapter les imports, conserver les URL." vertex="1">
+                    <mxGeometry height="36" width="518" x="16" y="273" as="geometry"/>
+                </mxCell>
+                <object label="" path="src/app/olympics" kind="directory" status="N" id="arborescence-cible-app-node-22">
+                    <mxCell parent="1" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#C6B1E5;strokeWidth=1;container=1;collapsible=0;" vertex="1">
+                        <mxGeometry height="225" width="1140" x="720" y="250" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="arborescence-cible-app-node-23" parent="arborescence-cible-app-node-22" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#F0E9FF;strokeColor=#C6B1E5;strokeWidth=1;container=1;collapsible=0;" value="" vertex="1">
+                    <mxGeometry height="46" width="1140" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-app-node-24" parent="arborescence-cible-app-node-22" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=19;fontColor=#6334A5;fontStyle=1;spacingLeft=0;" value="[N] olympics/" vertex="1">
+                    <mxGeometry height="39" width="1108" x="16" y="3" as="geometry"/>
+                </mxCell>
+                <object label="[N] olympic.model.ts" path="src/app/olympics/olympic.model.ts" kind="file" status="N" source_path="" id="arborescence-cible-app-node-25">
+                    <mxCell parent="arborescence-cible-app-node-22" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#F0E9FF;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#6334A5;" vertex="1">
+                        <mxGeometry height="29" width="1110" x="15" y="60" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[N] olympic.service.ts" path="src/app/olympics/olympic.service.ts" kind="file" status="N" source_path="" id="arborescence-cible-app-node-26">
+                    <mxCell parent="arborescence-cible-app-node-22" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#F0E9FF;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#6334A5;" vertex="1">
+                        <mxGeometry height="29" width="1110" x="15" y="94" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[N] olympic.service.spec.ts" path="src/app/olympics/olympic.service.spec.ts" kind="file" status="N" source_path="" id="arborescence-cible-app-node-27">
+                    <mxCell parent="arborescence-cible-app-node-22" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#F0E9FF;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#6334A5;" vertex="1">
+                        <mxGeometry height="29" width="1110" x="15" y="128" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="arborescence-cible-app-node-28" parent="arborescence-cible-app-node-22" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=14;fontColor=#607588;fontStyle=0;spacingLeft=0;" value="Modèle métier et lecture HTTP partagés entre les deux parcours." vertex="1">
+                    <mxGeometry height="36" width="1108" x="16" y="180" as="geometry"/>
+                </mxCell>
+                <object label="" path="src/app/not-found" kind="directory" status="D" id="arborescence-cible-app-node-29">
+                    <mxCell parent="1" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#9BCDB4;strokeWidth=1;container=1;collapsible=0;" vertex="1">
+                        <mxGeometry height="255" width="550" x="60" y="900" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="arborescence-cible-app-node-30" parent="arborescence-cible-app-node-29" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#E2F3EB;strokeColor=#9BCDB4;strokeWidth=1;container=1;collapsible=0;" value="" vertex="1">
+                    <mxGeometry height="46" width="550" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-app-node-31" parent="arborescence-cible-app-node-29" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=19;fontColor=#146A4A;fontStyle=1;spacingLeft=0;" value="[D] not-found/" vertex="1">
+                    <mxGeometry height="39" width="518" x="16" y="3" as="geometry"/>
+                </mxCell>
+                <object label="[D] not-found.component.ts" path="src/app/not-found/not-found.component.ts" kind="file" status="D" source_path="src/app/pages/not-found/not-found.component.ts" id="arborescence-cible-app-node-32">
+                    <mxCell parent="arborescence-cible-app-node-29" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#E2F3EB;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#146A4A;" vertex="1">
+                        <mxGeometry height="29" width="520" x="15" y="60" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[D] not-found.component.html" path="src/app/not-found/not-found.component.html" kind="file" status="D" source_path="src/app/pages/not-found/not-found.component.html" id="arborescence-cible-app-node-33">
+                    <mxCell parent="arborescence-cible-app-node-29" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#E2F3EB;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#146A4A;" vertex="1">
+                        <mxGeometry height="29" width="520" x="15" y="94" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[D] not-found.component.scss" path="src/app/not-found/not-found.component.scss" kind="file" status="D" source_path="src/app/pages/not-found/not-found.component.scss" id="arborescence-cible-app-node-34">
+                    <mxCell parent="arborescence-cible-app-node-29" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#E2F3EB;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#146A4A;" vertex="1">
+                        <mxGeometry height="29" width="520" x="15" y="128" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[D] not-found.component.spec.ts" path="src/app/not-found/not-found.component.spec.ts" kind="file" status="D" source_path="src/app/pages/not-found/not-found.component.spec.ts" id="arborescence-cible-app-node-35">
+                    <mxCell parent="arborescence-cible-app-node-29" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#E2F3EB;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#146A4A;" vertex="1">
+                        <mxGeometry height="29" width="520" x="15" y="162" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="arborescence-cible-app-node-36" parent="arborescence-cible-app-node-29" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=14;fontColor=#607588;fontStyle=0;spacingLeft=0;" value="Page 404 de l’application. Correctif A03 séparé." vertex="1">
+                    <mxGeometry height="36" width="518" x="16" y="210" as="geometry"/>
+                </mxCell>
+                <object label="" path="src/app/olympics/home" kind="directory" status="D" id="arborescence-cible-app-node-37">
+                    <mxCell parent="1" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#9BCDB4;strokeWidth=1;container=1;collapsible=0;" vertex="1">
+                        <mxGeometry height="330" width="570" x="680" y="650" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="arborescence-cible-app-node-38" parent="arborescence-cible-app-node-37" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#E2F3EB;strokeColor=#9BCDB4;strokeWidth=1;container=1;collapsible=0;" value="" vertex="1">
+                    <mxGeometry height="46" width="570" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-app-node-39" parent="arborescence-cible-app-node-37" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=19;fontColor=#146A4A;fontStyle=1;spacingLeft=0;" value="[D] home/" vertex="1">
+                    <mxGeometry height="39" width="538" x="16" y="3" as="geometry"/>
+                </mxCell>
+                <object label="[D] home.component.ts" path="src/app/olympics/home/home.component.ts" kind="file" status="D" source_path="src/app/pages/home/home.component.ts" id="arborescence-cible-app-node-40">
+                    <mxCell parent="arborescence-cible-app-node-37" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#E2F3EB;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#146A4A;" vertex="1">
+                        <mxGeometry height="29" width="540" x="15" y="60" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[D] home.component.html" path="src/app/olympics/home/home.component.html" kind="file" status="D" source_path="src/app/pages/home/home.component.html" id="arborescence-cible-app-node-41">
+                    <mxCell parent="arborescence-cible-app-node-37" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#E2F3EB;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#146A4A;" vertex="1">
+                        <mxGeometry height="29" width="540" x="15" y="94" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[D] home.component.scss" path="src/app/olympics/home/home.component.scss" kind="file" status="D" source_path="src/app/pages/home/home.component.scss" id="arborescence-cible-app-node-42">
+                    <mxCell parent="arborescence-cible-app-node-37" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#E2F3EB;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#146A4A;" vertex="1">
+                        <mxGeometry height="29" width="540" x="15" y="128" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[D] home.component.spec.ts" path="src/app/olympics/home/home.component.spec.ts" kind="file" status="D" source_path="src/app/pages/home/home.component.spec.ts" id="arborescence-cible-app-node-43">
+                    <mxCell parent="arborescence-cible-app-node-37" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#E2F3EB;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#146A4A;" vertex="1">
+                        <mxGeometry height="29" width="540" x="15" y="162" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[N] home-statistics.ts" path="src/app/olympics/home/home-statistics.ts" kind="file" status="N" source_path="" id="arborescence-cible-app-node-44">
+                    <mxCell parent="arborescence-cible-app-node-37" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#F0E9FF;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#6334A5;" vertex="1">
+                        <mxGeometry height="29" width="540" x="15" y="196" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[N] home-statistics.spec.ts" path="src/app/olympics/home/home-statistics.spec.ts" kind="file" status="N" source_path="" id="arborescence-cible-app-node-45">
+                    <mxCell parent="arborescence-cible-app-node-37" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#F0E9FF;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#6334A5;" vertex="1">
+                        <mxGeometry height="29" width="540" x="15" y="230" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="arborescence-cible-app-node-46" parent="arborescence-cible-app-node-37" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=14;fontColor=#607588;fontStyle=0;spacingLeft=0;" value="Accueil, états, navigation et calculs purs." vertex="1">
+                    <mxGeometry height="36" width="538" x="16" y="285" as="geometry"/>
+                </mxCell>
+                <object label="" path="src/app/olympics/country" kind="directory" status="D" id="arborescence-cible-app-node-47">
+                    <mxCell parent="1" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#9BCDB4;strokeWidth=1;container=1;collapsible=0;" vertex="1">
+                        <mxGeometry height="330" width="570" x="1290" y="650" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="arborescence-cible-app-node-48" parent="arborescence-cible-app-node-47" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#E2F3EB;strokeColor=#9BCDB4;strokeWidth=1;container=1;collapsible=0;" value="" vertex="1">
+                    <mxGeometry height="46" width="570" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-app-node-49" parent="arborescence-cible-app-node-47" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=19;fontColor=#146A4A;fontStyle=1;spacingLeft=0;" value="[D] country/" vertex="1">
+                    <mxGeometry height="39" width="538" x="16" y="3" as="geometry"/>
+                </mxCell>
+                <object label="[D] country.component.ts" path="src/app/olympics/country/country.component.ts" kind="file" status="D" source_path="src/app/pages/country/country.component.ts" id="arborescence-cible-app-node-50">
+                    <mxCell parent="arborescence-cible-app-node-47" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#E2F3EB;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#146A4A;" vertex="1">
+                        <mxGeometry height="29" width="540" x="15" y="60" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[D] country.component.html" path="src/app/olympics/country/country.component.html" kind="file" status="D" source_path="src/app/pages/country/country.component.html" id="arborescence-cible-app-node-51">
+                    <mxCell parent="arborescence-cible-app-node-47" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#E2F3EB;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#146A4A;" vertex="1">
+                        <mxGeometry height="29" width="540" x="15" y="94" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[D] country.component.scss" path="src/app/olympics/country/country.component.scss" kind="file" status="D" source_path="src/app/pages/country/country.component.scss" id="arborescence-cible-app-node-52">
+                    <mxCell parent="arborescence-cible-app-node-47" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#E2F3EB;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#146A4A;" vertex="1">
+                        <mxGeometry height="29" width="540" x="15" y="128" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[D] country.component.spec.ts" path="src/app/olympics/country/country.component.spec.ts" kind="file" status="D" source_path="src/app/pages/country/country.component.spec.ts" id="arborescence-cible-app-node-53">
+                    <mxCell parent="arborescence-cible-app-node-47" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#E2F3EB;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#146A4A;" vertex="1">
+                        <mxGeometry height="29" width="540" x="15" y="162" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[N] country-statistics.ts" path="src/app/olympics/country/country-statistics.ts" kind="file" status="N" source_path="" id="arborescence-cible-app-node-54">
+                    <mxCell parent="arborescence-cible-app-node-47" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#F0E9FF;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#6334A5;" vertex="1">
+                        <mxGeometry height="29" width="540" x="15" y="196" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[N] country-statistics.spec.ts" path="src/app/olympics/country/country-statistics.spec.ts" kind="file" status="N" source_path="" id="arborescence-cible-app-node-55">
+                    <mxCell parent="arborescence-cible-app-node-47" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#F0E9FF;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#6334A5;" vertex="1">
+                        <mxGeometry height="29" width="540" x="15" y="230" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="arborescence-cible-app-node-56" parent="arborescence-cible-app-node-47" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=14;fontColor=#607588;fontStyle=0;spacingLeft=0;" value="Paramètre de route, sélection et calculs purs." vertex="1">
+                    <mxGeometry height="36" width="538" x="16" y="285" as="geometry"/>
+                </mxCell>
+                <object label="" path="src/app/olympics/home/medals-pie-chart" kind="directory" status="N" id="arborescence-cible-app-node-57">
+                    <mxCell parent="1" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#C6B1E5;strokeWidth=1;container=1;collapsible=0;" vertex="1">
+                        <mxGeometry height="255" width="570" x="680" y="1100" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="arborescence-cible-app-node-58" parent="arborescence-cible-app-node-57" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#F0E9FF;strokeColor=#C6B1E5;strokeWidth=1;container=1;collapsible=0;" value="" vertex="1">
+                    <mxGeometry height="46" width="570" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-app-node-59" parent="arborescence-cible-app-node-57" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=19;fontColor=#6334A5;fontStyle=1;spacingLeft=0;" value="[N] medals-pie-chart/" vertex="1">
+                    <mxGeometry height="39" width="538" x="16" y="3" as="geometry"/>
+                </mxCell>
+                <object label="[N] medals-pie-chart.component.ts" path="src/app/olympics/home/medals-pie-chart/medals-pie-chart.component.ts" kind="file" status="N" source_path="" id="arborescence-cible-app-node-60">
+                    <mxCell parent="arborescence-cible-app-node-57" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#F0E9FF;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#6334A5;" vertex="1">
+                        <mxGeometry height="29" width="540" x="15" y="60" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[N] medals-pie-chart.component.html" path="src/app/olympics/home/medals-pie-chart/medals-pie-chart.component.html" kind="file" status="N" source_path="" id="arborescence-cible-app-node-61">
+                    <mxCell parent="arborescence-cible-app-node-57" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#F0E9FF;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#6334A5;" vertex="1">
+                        <mxGeometry height="29" width="540" x="15" y="94" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[N] medals-pie-chart.component.scss" path="src/app/olympics/home/medals-pie-chart/medals-pie-chart.component.scss" kind="file" status="N" source_path="" id="arborescence-cible-app-node-62">
+                    <mxCell parent="arborescence-cible-app-node-57" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#F0E9FF;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#6334A5;" vertex="1">
+                        <mxGeometry height="29" width="540" x="15" y="128" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[N] medals-pie-chart.component.spec.ts" path="src/app/olympics/home/medals-pie-chart/medals-pie-chart.component.spec.ts" kind="file" status="N" source_path="" id="arborescence-cible-app-node-63">
+                    <mxCell parent="arborescence-cible-app-node-57" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#F0E9FF;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#6334A5;" vertex="1">
+                        <mxGeometry height="29" width="540" x="15" y="162" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="arborescence-cible-app-node-64" parent="arborescence-cible-app-node-57" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=14;fontColor=#607588;fontStyle=0;spacingLeft=0;" value="Canvas, cycle de vie et sélection typée." vertex="1">
+                    <mxGeometry height="36" width="538" x="16" y="210" as="geometry"/>
+                </mxCell>
+                <object label="" path="src/app/olympics/country/country-medals-line-chart" kind="directory" status="N" id="arborescence-cible-app-node-65">
+                    <mxCell parent="1" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#C6B1E5;strokeWidth=1;container=1;collapsible=0;" vertex="1">
+                        <mxGeometry height="255" width="570" x="1290" y="1100" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="arborescence-cible-app-node-66" parent="arborescence-cible-app-node-65" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#F0E9FF;strokeColor=#C6B1E5;strokeWidth=1;container=1;collapsible=0;" value="" vertex="1">
+                    <mxGeometry height="46" width="570" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-app-node-67" parent="arborescence-cible-app-node-65" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=19;fontColor=#6334A5;fontStyle=1;spacingLeft=0;" value="[N] country-medals-line-chart/" vertex="1">
+                    <mxGeometry height="39" width="538" x="16" y="3" as="geometry"/>
+                </mxCell>
+                <object label="[N] country-medals-line-chart.component.ts" path="src/app/olympics/country/country-medals-line-chart/country-medals-line-chart.component.ts" kind="file" status="N" source_path="" id="arborescence-cible-app-node-68">
+                    <mxCell parent="arborescence-cible-app-node-65" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#F0E9FF;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#6334A5;" vertex="1">
+                        <mxGeometry height="29" width="540" x="15" y="60" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[N] country-medals-line-chart.component.html" path="src/app/olympics/country/country-medals-line-chart/country-medals-line-chart.component.html" kind="file" status="N" source_path="" id="arborescence-cible-app-node-69">
+                    <mxCell parent="arborescence-cible-app-node-65" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#F0E9FF;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#6334A5;" vertex="1">
+                        <mxGeometry height="29" width="540" x="15" y="94" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[N] country-medals-line-chart.component.scss" path="src/app/olympics/country/country-medals-line-chart/country-medals-line-chart.component.scss" kind="file" status="N" source_path="" id="arborescence-cible-app-node-70">
+                    <mxCell parent="arborescence-cible-app-node-65" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#F0E9FF;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#6334A5;" vertex="1">
+                        <mxGeometry height="29" width="540" x="15" y="128" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[N] country-medals-line-chart.component.spec.ts" path="src/app/olympics/country/country-medals-line-chart/country-medals-line-chart.component.spec.ts" kind="file" status="N" source_path="" id="arborescence-cible-app-node-71">
+                    <mxCell parent="arborescence-cible-app-node-65" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#F0E9FF;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#6334A5;" vertex="1">
+                        <mxGeometry height="29" width="540" x="15" y="162" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="arborescence-cible-app-node-72" parent="arborescence-cible-app-node-65" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=14;fontColor=#607588;fontStyle=0;spacingLeft=0;" value="Canvas, cycle de vie et série typée." vertex="1">
+                    <mxGeometry height="36" width="538" x="16" y="210" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-app-edge-73" edge="1" parent="1" source="arborescence-cible-app-node-12" style="edgeStyle=segmentEdgeStyle;rounded=0;html=0;endArrow=none;startArrow=none;strokeColor=#91A7B9;strokeWidth=2;exitX=1;exitY=0.07232704402515723;exitDx=0;exitDy=0;entryX=0;entryY=0.10222222222222223;entryDx=0;entryDy=0;" target="arborescence-cible-app-node-22">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="660" y="273"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="arborescence-cible-app-edge-74" edge="1" parent="1" source="arborescence-cible-app-node-12" style="edgeStyle=segmentEdgeStyle;rounded=0;html=0;endArrow=none;startArrow=none;strokeColor=#91A7B9;strokeWidth=2;exitX=0;exitY=0.07232704402515723;exitDx=0;exitDy=0;entryX=0;entryY=0.09019607843137255;entryDx=0;entryDy=0;" target="arborescence-cible-app-node-29">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="30" y="273"/>
+                            <mxPoint x="30" y="923"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="arborescence-cible-app-edge-75" edge="1" parent="1" source="arborescence-cible-app-node-22" style="edgeStyle=segmentEdgeStyle;rounded=0;html=0;endArrow=none;startArrow=none;strokeColor=#91A7B9;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="arborescence-cible-app-node-37">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1290" y="575"/>
+                            <mxPoint x="965" y="575"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="arborescence-cible-app-edge-76" edge="1" parent="1" source="arborescence-cible-app-node-22" style="edgeStyle=segmentEdgeStyle;rounded=0;html=0;endArrow=none;startArrow=none;strokeColor=#91A7B9;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="arborescence-cible-app-node-47">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1290" y="575"/>
+                            <mxPoint x="1575" y="575"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="arborescence-cible-app-edge-77" edge="1" parent="1" source="arborescence-cible-app-node-37" style="edgeStyle=segmentEdgeStyle;rounded=0;html=0;endArrow=none;startArrow=none;strokeColor=#91A7B9;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="arborescence-cible-app-node-57">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="965" y="1040"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="arborescence-cible-app-edge-78" edge="1" parent="1" source="arborescence-cible-app-node-47" style="edgeStyle=segmentEdgeStyle;rounded=0;html=0;endArrow=none;startArrow=none;strokeColor=#91A7B9;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="arborescence-cible-app-node-65">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1575" y="1040"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="arborescence-cible-app-node-79" parent="1" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=15;fontColor=#5B7081;fontStyle=0;spacingLeft=0;" value="Guide Angular : regrouper par fonctionnalité et garder les tests près du code. Cette cible conserve les noms des fichiers existants." vertex="1">
+                    <mxGeometry height="28" width="1810" x="55" y="1400" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-app-node-80" parent="1" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=15;fontColor=#5B7081;fontStyle=0;spacingLeft=0;" value="D indique un déplacement envisagé depuis pages/. Les adaptations fonctionnelles restent des changements distincts à valider." vertex="1">
+                    <mxGeometry height="28" width="1810" x="55" y="1435" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-app-node-81" parent="1" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=14;fontColor=#5B7081;fontStyle=0;spacingLeft=0;" value="Les traits représentent uniquement la hiérarchie des dossiers. Aucun dossier core/ ni Repository n’est ajouté par anticipation." vertex="1">
+                    <mxGeometry height="26" width="1810" x="55" y="1470" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+    <diagram id="arborescence-cible-projet" name="02 — Projet, configuration et ressources">
+        <mxGraphModel dx="2174" dy="1026" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1740" pageHeight="1630" background="#F7F9FC" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="arborescence-cible-projet-node-1" parent="1" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=14;fontColor=#45657D;fontStyle=1;spacingLeft=0;" value="PROPOSITION D’ARCHITECTURE  /  OLYMPIC GAMES" vertex="1">
+                    <mxGeometry height="26" width="1630" x="55" y="28" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-projet-node-2" parent="1" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=34;fontColor=#16354A;fontStyle=1;spacingLeft=0;" value="02 — Projet, configuration et ressources" vertex="1">
+                    <mxGeometry height="52" width="1630" x="55" y="66" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-projet-node-3" parent="1" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=18;fontColor=#4E6273;fontStyle=0;spacingLeft=0;" value="Configuration et ressources conservées. La réorganisation applicative est détaillée dans l’onglet 01." vertex="1">
+                    <mxGeometry height="40" width="1630" x="55" y="124" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-projet-node-4" parent="1" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#EDF3F8;strokeColor=#CCDCE8;strokeWidth=1;container=1;collapsible=0;" value="" vertex="1">
+                    <mxGeometry height="35" width="300" x="55" y="174" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-projet-node-5" parent="1" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=16;fontColor=#245775;fontStyle=0;spacingLeft=0;" value="[E] chemin conservé" vertex="1">
+                    <mxGeometry height="31" width="272" x="69" y="176" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-projet-node-6" parent="1" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#FFF1D5;strokeColor=#E8BF73;strokeWidth=1;container=1;collapsible=0;" value="" vertex="1">
+                    <mxGeometry height="35" width="315" x="371" y="174" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-projet-node-7" parent="1" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=16;fontColor=#8A5300;fontStyle=0;spacingLeft=0;" value="[A] adaptation prévue" vertex="1">
+                    <mxGeometry height="31" width="287" x="385" y="176" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-projet-node-8" parent="1" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#E2F3EB;strokeColor=#9BCDB4;strokeWidth=1;container=1;collapsible=0;" value="" vertex="1">
+                    <mxGeometry height="35" width="335" x="702" y="174" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-projet-node-9" parent="1" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=16;fontColor=#146A4A;fontStyle=0;spacingLeft=0;" value="[D] déplacement proposé" vertex="1">
+                    <mxGeometry height="31" width="307" x="716" y="176" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-projet-node-10" parent="1" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#F0E9FF;strokeColor=#C6B1E5;strokeWidth=1;container=1;collapsible=0;" value="" vertex="1">
+                    <mxGeometry height="35" width="300" x="1053" y="174" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-projet-node-11" parent="1" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=16;fontColor=#6334A5;fontStyle=0;spacingLeft=0;" value="[N] création proposée" vertex="1">
+                    <mxGeometry height="31" width="272" x="1067" y="176" as="geometry"/>
+                </mxCell>
+                <object label="" path="." kind="directory" status="E" id="arborescence-cible-projet-node-12">
+                    <mxCell parent="1" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#CCDCE8;strokeWidth=1;container=1;collapsible=0;" vertex="1">
+                        <mxGeometry height="524" width="700" x="60" y="250" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="arborescence-cible-projet-node-13" parent="arborescence-cible-projet-node-12" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#EDF3F8;strokeColor=#CCDCE8;strokeWidth=1;container=1;collapsible=0;" value="" vertex="1">
+                    <mxGeometry height="46" width="700" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-projet-node-14" parent="arborescence-cible-projet-node-12" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=19;fontColor=#245775;fontStyle=1;spacingLeft=0;" value="p2-angular-maintainable-frontend-main/" vertex="1">
+                    <mxGeometry height="39" width="668" x="16" y="3" as="geometry"/>
+                </mxCell>
+                <object label="[E] .browserslistrc" path=".browserslistrc" kind="file" status="E" source_path=".browserslistrc" id="arborescence-cible-projet-node-15">
+                    <mxCell parent="arborescence-cible-projet-node-12" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#EDF3F8;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#245775;" vertex="1">
+                        <mxGeometry height="29" width="670" x="15" y="60" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[E] .editorconfig" path=".editorconfig" kind="file" status="E" source_path=".editorconfig" id="arborescence-cible-projet-node-16">
+                    <mxCell parent="arborescence-cible-projet-node-12" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#EDF3F8;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#245775;" vertex="1">
+                        <mxGeometry height="29" width="670" x="15" y="94" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[E] .gitignore" path=".gitignore" kind="file" status="E" source_path=".gitignore" id="arborescence-cible-projet-node-17">
+                    <mxCell parent="arborescence-cible-projet-node-12" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#EDF3F8;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#245775;" vertex="1">
+                        <mxGeometry height="29" width="670" x="15" y="128" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[E] README.md" path="README.md" kind="file" status="E" source_path="README.md" id="arborescence-cible-projet-node-18">
+                    <mxCell parent="arborescence-cible-projet-node-12" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#EDF3F8;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#245775;" vertex="1">
+                        <mxGeometry height="29" width="670" x="15" y="162" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[E] angular.json" path="angular.json" kind="file" status="E" source_path="angular.json" id="arborescence-cible-projet-node-19">
+                    <mxCell parent="arborescence-cible-projet-node-12" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#EDF3F8;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#245775;" vertex="1">
+                        <mxGeometry height="29" width="670" x="15" y="196" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[E] compose.workspace.yaml" path="compose.workspace.yaml" kind="file" status="E" source_path="compose.workspace.yaml" id="arborescence-cible-projet-node-20">
+                    <mxCell parent="arborescence-cible-projet-node-12" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#EDF3F8;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#245775;" vertex="1">
+                        <mxGeometry height="29" width="670" x="15" y="230" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[E] karma.conf.ts" path="karma.conf.ts" kind="file" status="E" source_path="karma.conf.ts" id="arborescence-cible-projet-node-21">
+                    <mxCell parent="arborescence-cible-projet-node-12" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#EDF3F8;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#245775;" vertex="1">
+                        <mxGeometry height="29" width="670" x="15" y="264" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[E] package-lock.json" path="package-lock.json" kind="file" status="E" source_path="package-lock.json" id="arborescence-cible-projet-node-22">
+                    <mxCell parent="arborescence-cible-projet-node-12" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#EDF3F8;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#245775;" vertex="1">
+                        <mxGeometry height="29" width="670" x="15" y="298" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[E] package.json" path="package.json" kind="file" status="E" source_path="package.json" id="arborescence-cible-projet-node-23">
+                    <mxCell parent="arborescence-cible-projet-node-12" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#EDF3F8;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#245775;" vertex="1">
+                        <mxGeometry height="29" width="670" x="15" y="332" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[E] tsconfig.app.json" path="tsconfig.app.json" kind="file" status="E" source_path="tsconfig.app.json" id="arborescence-cible-projet-node-24">
+                    <mxCell parent="arborescence-cible-projet-node-12" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#EDF3F8;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#245775;" vertex="1">
+                        <mxGeometry height="29" width="670" x="15" y="366" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[E] tsconfig.json" path="tsconfig.json" kind="file" status="E" source_path="tsconfig.json" id="arborescence-cible-projet-node-25">
+                    <mxCell parent="arborescence-cible-projet-node-12" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#EDF3F8;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#245775;" vertex="1">
+                        <mxGeometry height="29" width="670" x="15" y="400" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[E] tsconfig.spec.json" path="tsconfig.spec.json" kind="file" status="E" source_path="tsconfig.spec.json" id="arborescence-cible-projet-node-26">
+                    <mxCell parent="arborescence-cible-projet-node-12" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#EDF3F8;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#245775;" vertex="1">
+                        <mxGeometry height="29" width="670" x="15" y="434" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="arborescence-cible-projet-node-27" parent="arborescence-cible-projet-node-12" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=14;fontColor=#607588;fontStyle=0;spacingLeft=0;" value="Configuration existante. Corrections d’outillage distinctes." vertex="1">
+                    <mxGeometry height="36" width="668" x="16" y="479" as="geometry"/>
+                </mxCell>
+                <object label="" path=".workspace" kind="directory" status="E" id="arborescence-cible-projet-node-28">
+                    <mxCell parent="1" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#CCDCE8;strokeWidth=1;container=1;collapsible=0;" vertex="1">
+                        <mxGeometry height="220" width="700" x="60" y="900" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="arborescence-cible-projet-node-29" parent="arborescence-cible-projet-node-28" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#EDF3F8;strokeColor=#CCDCE8;strokeWidth=1;container=1;collapsible=0;" value="" vertex="1">
+                    <mxGeometry height="46" width="700" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-projet-node-30" parent="arborescence-cible-projet-node-28" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=19;fontColor=#245775;fontStyle=1;spacingLeft=0;" value=".workspace/" vertex="1">
+                    <mxGeometry height="39" width="668" x="16" y="3" as="geometry"/>
+                </mxCell>
+                <object label="[E] Dockerfile" path=".workspace/Dockerfile" kind="file" status="E" source_path=".workspace/Dockerfile" id="arborescence-cible-projet-node-31">
+                    <mxCell parent="arborescence-cible-projet-node-28" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#EDF3F8;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#245775;" vertex="1">
+                        <mxGeometry height="29" width="670" x="15" y="60" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[E] entrypoint.sh" path=".workspace/entrypoint.sh" kind="file" status="E" source_path=".workspace/entrypoint.sh" id="arborescence-cible-projet-node-32">
+                    <mxCell parent="arborescence-cible-projet-node-28" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#EDF3F8;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#245775;" vertex="1">
+                        <mxGeometry height="29" width="670" x="15" y="94" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[E] sshd_config" path=".workspace/sshd_config" kind="file" status="E" source_path=".workspace/sshd_config" id="arborescence-cible-projet-node-33">
+                    <mxCell parent="arborescence-cible-projet-node-28" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#EDF3F8;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#245775;" vertex="1">
+                        <mxGeometry height="29" width="670" x="15" y="128" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="arborescence-cible-projet-node-34" parent="arborescence-cible-projet-node-28" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=14;fontColor=#607588;fontStyle=0;spacingLeft=0;" value="Workspace SSH existant." vertex="1">
+                    <mxGeometry height="36" width="668" x="16" y="175" as="geometry"/>
+                </mxCell>
+                <object label="" path=".vscode" kind="directory" status="E" id="arborescence-cible-projet-node-35">
+                    <mxCell parent="1" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#CCDCE8;strokeWidth=1;container=1;collapsible=0;" vertex="1">
+                        <mxGeometry height="186" width="700" x="60" y="1200" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="arborescence-cible-projet-node-36" parent="arborescence-cible-projet-node-35" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#EDF3F8;strokeColor=#CCDCE8;strokeWidth=1;container=1;collapsible=0;" value="" vertex="1">
+                    <mxGeometry height="46" width="700" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-projet-node-37" parent="arborescence-cible-projet-node-35" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=19;fontColor=#245775;fontStyle=1;spacingLeft=0;" value=".vscode/" vertex="1">
+                    <mxGeometry height="39" width="668" x="16" y="3" as="geometry"/>
+                </mxCell>
+                <object label="[E] extensions.json" path=".vscode/extensions.json" kind="file" status="E" source_path=".vscode/extensions.json" id="arborescence-cible-projet-node-38">
+                    <mxCell parent="arborescence-cible-projet-node-35" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#EDF3F8;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#245775;" vertex="1">
+                        <mxGeometry height="29" width="670" x="15" y="60" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[E] settings.json" path=".vscode/settings.json" kind="file" status="E" source_path=".vscode/settings.json" id="arborescence-cible-projet-node-39">
+                    <mxCell parent="arborescence-cible-projet-node-35" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#EDF3F8;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#245775;" vertex="1">
+                        <mxGeometry height="29" width="670" x="15" y="94" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="arborescence-cible-projet-node-40" parent="arborescence-cible-projet-node-35" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=14;fontColor=#607588;fontStyle=0;spacingLeft=0;" value="Configuration de l’éditeur existante." vertex="1">
+                    <mxGeometry height="36" width="668" x="16" y="141" as="geometry"/>
+                </mxCell>
+                <object label="" path="src" kind="directory" status="E" id="arborescence-cible-projet-node-41">
+                    <mxCell parent="1" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#CCDCE8;strokeWidth=1;container=1;collapsible=0;" vertex="1">
+                        <mxGeometry height="320" width="800" x="880" y="250" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="arborescence-cible-projet-node-42" parent="arborescence-cible-projet-node-41" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#EDF3F8;strokeColor=#CCDCE8;strokeWidth=1;container=1;collapsible=0;" value="" vertex="1">
+                    <mxGeometry height="46" width="800" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-projet-node-43" parent="arborescence-cible-projet-node-41" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=19;fontColor=#245775;fontStyle=1;spacingLeft=0;" value="src/" vertex="1">
+                    <mxGeometry height="39" width="768" x="16" y="3" as="geometry"/>
+                </mxCell>
+                <object label="[E] favicon.ico" path="src/favicon.ico" kind="file" status="E" source_path="src/favicon.ico" id="arborescence-cible-projet-node-44">
+                    <mxCell parent="arborescence-cible-projet-node-41" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#EDF3F8;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#245775;" vertex="1">
+                        <mxGeometry height="29" width="770" x="15" y="60" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[E] index.html" path="src/index.html" kind="file" status="E" source_path="src/index.html" id="arborescence-cible-projet-node-45">
+                    <mxCell parent="arborescence-cible-projet-node-41" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#EDF3F8;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#245775;" vertex="1">
+                        <mxGeometry height="29" width="770" x="15" y="94" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[E] main.ts" path="src/main.ts" kind="file" status="E" source_path="src/main.ts" id="arborescence-cible-projet-node-46">
+                    <mxCell parent="arborescence-cible-projet-node-41" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#EDF3F8;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#245775;" vertex="1">
+                        <mxGeometry height="29" width="770" x="15" y="128" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[E] polyfills.ts" path="src/polyfills.ts" kind="file" status="E" source_path="src/polyfills.ts" id="arborescence-cible-projet-node-47">
+                    <mxCell parent="arborescence-cible-projet-node-41" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#EDF3F8;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#245775;" vertex="1">
+                        <mxGeometry height="29" width="770" x="15" y="162" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[E] styles.scss" path="src/styles.scss" kind="file" status="E" source_path="src/styles.scss" id="arborescence-cible-projet-node-48">
+                    <mxCell parent="arborescence-cible-projet-node-41" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#EDF3F8;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#245775;" vertex="1">
+                        <mxGeometry height="29" width="770" x="15" y="196" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[E] test.ts" path="src/test.ts" kind="file" status="E" source_path="src/test.ts" id="arborescence-cible-projet-node-49">
+                    <mxCell parent="arborescence-cible-projet-node-41" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#EDF3F8;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#245775;" vertex="1">
+                        <mxGeometry height="29" width="770" x="15" y="230" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="arborescence-cible-projet-node-50" parent="arborescence-cible-projet-node-41" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=14;fontColor=#607588;fontStyle=0;spacingLeft=0;" value="Points d’entrée, styles et bootstrap de test." vertex="1">
+                    <mxGeometry height="36" width="768" x="16" y="275" as="geometry"/>
+                </mxCell>
+                <object label="" path="src/app" kind="directory" status="E" id="arborescence-cible-projet-node-51">
+                    <mxCell parent="1" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#CCDCE8;strokeWidth=1;container=1;collapsible=0;" vertex="1">
+                        <mxGeometry height="111" width="800" x="880" y="650" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="arborescence-cible-projet-node-52" parent="arborescence-cible-projet-node-51" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#EDF3F8;strokeColor=#CCDCE8;strokeWidth=1;container=1;collapsible=0;" value="" vertex="1">
+                    <mxGeometry height="46" width="800" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-projet-node-53" parent="arborescence-cible-projet-node-51" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=19;fontColor=#245775;fontStyle=1;spacingLeft=0;" value="app/  →  voir l’onglet 01" vertex="1">
+                    <mxGeometry height="39" width="768" x="16" y="3" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-projet-node-54" parent="arborescence-cible-projet-node-51" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=14;fontColor=#607588;fontStyle=0;spacingLeft=0;" value="Fonctionnalité olympics/, page not-found/ et racine Angular." vertex="1">
+                    <mxGeometry height="36" width="768" x="16" y="66" as="geometry"/>
+                </mxCell>
+                <object label="" path="src/assets" kind="directory" status="E" id="arborescence-cible-projet-node-55">
+                    <mxCell parent="1" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#CCDCE8;strokeWidth=1;container=1;collapsible=0;" vertex="1">
+                        <mxGeometry height="120" width="370" x="880" y="880" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="arborescence-cible-projet-node-56" parent="arborescence-cible-projet-node-55" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#EDF3F8;strokeColor=#CCDCE8;strokeWidth=1;container=1;collapsible=0;" value="" vertex="1">
+                    <mxGeometry height="46" width="370" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-projet-node-57" parent="arborescence-cible-projet-node-55" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=19;fontColor=#245775;fontStyle=1;spacingLeft=0;" value="assets/" vertex="1">
+                    <mxGeometry height="39" width="338" x="16" y="3" as="geometry"/>
+                </mxCell>
+                <object label="[E] .gitkeep" path="src/assets/.gitkeep" kind="file" status="E" source_path="src/assets/.gitkeep" id="arborescence-cible-projet-node-58">
+                    <mxCell parent="arborescence-cible-projet-node-55" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#EDF3F8;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#245775;" vertex="1">
+                        <mxGeometry height="29" width="340" x="15" y="60" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="" path="src/assets/images" kind="directory" status="E" id="arborescence-cible-projet-node-59">
+                    <mxCell parent="1" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#CCDCE8;strokeWidth=1;container=1;collapsible=0;" vertex="1">
+                        <mxGeometry height="120" width="360" x="1320" y="880" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="arborescence-cible-projet-node-60" parent="arborescence-cible-projet-node-59" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#EDF3F8;strokeColor=#CCDCE8;strokeWidth=1;container=1;collapsible=0;" value="" vertex="1">
+                    <mxGeometry height="46" width="360" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-projet-node-61" parent="arborescence-cible-projet-node-59" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=19;fontColor=#245775;fontStyle=1;spacingLeft=0;" value="images/" vertex="1">
+                    <mxGeometry height="39" width="328" x="16" y="3" as="geometry"/>
+                </mxCell>
+                <object label="[E] teleSport.png" path="src/assets/images/teleSport.png" kind="file" status="E" source_path="src/assets/images/teleSport.png" id="arborescence-cible-projet-node-62">
+                    <mxCell parent="arborescence-cible-projet-node-59" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#EDF3F8;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#245775;" vertex="1">
+                        <mxGeometry height="29" width="330" x="15" y="60" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="" path="src/assets/mock" kind="directory" status="E" id="arborescence-cible-projet-node-63">
+                    <mxCell parent="1" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#CCDCE8;strokeWidth=1;container=1;collapsible=0;" vertex="1">
+                        <mxGeometry height="120" width="360" x="1320" y="1090" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="arborescence-cible-projet-node-64" parent="arborescence-cible-projet-node-63" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#EDF3F8;strokeColor=#CCDCE8;strokeWidth=1;container=1;collapsible=0;" value="" vertex="1">
+                    <mxGeometry height="46" width="360" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-projet-node-65" parent="arborescence-cible-projet-node-63" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=19;fontColor=#245775;fontStyle=1;spacingLeft=0;" value="mock/" vertex="1">
+                    <mxGeometry height="39" width="328" x="16" y="3" as="geometry"/>
+                </mxCell>
+                <object label="[E] olympic.json" path="src/assets/mock/olympic.json" kind="file" status="E" source_path="src/assets/mock/olympic.json" id="arborescence-cible-projet-node-66">
+                    <mxCell parent="arborescence-cible-projet-node-63" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#EDF3F8;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#245775;" vertex="1">
+                        <mxGeometry height="29" width="330" x="15" y="60" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="" path="src/environments" kind="directory" status="E" id="arborescence-cible-projet-node-67">
+                    <mxCell parent="1" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#CCDCE8;strokeWidth=1;container=1;collapsible=0;" vertex="1">
+                        <mxGeometry height="186" width="800" x="880" y="1320" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="arborescence-cible-projet-node-68" parent="arborescence-cible-projet-node-67" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#EDF3F8;strokeColor=#CCDCE8;strokeWidth=1;container=1;collapsible=0;" value="" vertex="1">
+                    <mxGeometry height="46" width="800" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-projet-node-69" parent="arborescence-cible-projet-node-67" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=19;fontColor=#245775;fontStyle=1;spacingLeft=0;" value="environments/" vertex="1">
+                    <mxGeometry height="39" width="768" x="16" y="3" as="geometry"/>
+                </mxCell>
+                <object label="[E] environment.prod.ts" path="src/environments/environment.prod.ts" kind="file" status="E" source_path="src/environments/environment.prod.ts" id="arborescence-cible-projet-node-70">
+                    <mxCell parent="arborescence-cible-projet-node-67" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#EDF3F8;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#245775;" vertex="1">
+                        <mxGeometry height="29" width="770" x="15" y="60" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="[E] environment.ts" path="src/environments/environment.ts" kind="file" status="E" source_path="src/environments/environment.ts" id="arborescence-cible-projet-node-71">
+                    <mxCell parent="arborescence-cible-projet-node-67" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#EDF3F8;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=15;fontColor=#245775;" vertex="1">
+                        <mxGeometry height="29" width="770" x="15" y="94" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="arborescence-cible-projet-node-72" parent="arborescence-cible-projet-node-67" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=14;fontColor=#607588;fontStyle=0;spacingLeft=0;" value="Fichiers existants, sans ajout de nouvelle variable." vertex="1">
+                    <mxGeometry height="36" width="768" x="16" y="141" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-projet-edge-73" edge="1" parent="1" source="arborescence-cible-projet-node-12" style="edgeStyle=segmentEdgeStyle;rounded=0;html=0;endArrow=none;startArrow=none;strokeColor=#91A7B9;strokeWidth=2;exitX=1;exitY=0.04389312977099236;exitDx=0;exitDy=0;entryX=0;entryY=0.071875;entryDx=0;entryDy=0;" target="arborescence-cible-projet-node-41">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="820" y="273"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="arborescence-cible-projet-edge-74" edge="1" parent="1" source="arborescence-cible-projet-node-12" style="edgeStyle=segmentEdgeStyle;rounded=0;html=0;endArrow=none;startArrow=none;strokeColor=#91A7B9;strokeWidth=2;exitX=0;exitY=0.04389312977099236;exitDx=0;exitDy=0;entryX=0;entryY=0.10454545454545454;entryDx=0;entryDy=0;" target="arborescence-cible-projet-node-28">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="30" y="273"/>
+                            <mxPoint x="30" y="923"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="arborescence-cible-projet-edge-75" edge="1" parent="1" source="arborescence-cible-projet-node-12" style="edgeStyle=segmentEdgeStyle;rounded=0;html=0;endArrow=none;startArrow=none;strokeColor=#91A7B9;strokeWidth=2;exitX=0;exitY=0.04389312977099236;exitDx=0;exitDy=0;entryX=0;entryY=0.12365591397849462;entryDx=0;entryDy=0;" target="arborescence-cible-projet-node-35">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="30" y="273"/>
+                            <mxPoint x="30" y="1223"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="arborescence-cible-projet-edge-76" edge="1" parent="1" source="arborescence-cible-projet-node-41" style="edgeStyle=segmentEdgeStyle;rounded=0;html=0;endArrow=none;startArrow=none;strokeColor=#91A7B9;strokeWidth=2;exitX=0;exitY=0.071875;exitDx=0;exitDy=0;entryX=0;entryY=0.2072072072072072;entryDx=0;entryDy=0;" target="arborescence-cible-projet-node-51">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="850" y="273"/>
+                            <mxPoint x="850" y="673"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="arborescence-cible-projet-edge-77" edge="1" parent="1" source="arborescence-cible-projet-node-41" style="edgeStyle=segmentEdgeStyle;rounded=0;html=0;endArrow=none;startArrow=none;strokeColor=#91A7B9;strokeWidth=2;exitX=0;exitY=0.071875;exitDx=0;exitDy=0;entryX=0;entryY=0.19166666666666668;entryDx=0;entryDy=0;" target="arborescence-cible-projet-node-55">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="850" y="273"/>
+                            <mxPoint x="850" y="903"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="arborescence-cible-projet-edge-78" edge="1" parent="1" source="arborescence-cible-projet-node-41" style="edgeStyle=segmentEdgeStyle;rounded=0;html=0;endArrow=none;startArrow=none;strokeColor=#91A7B9;strokeWidth=2;exitX=0;exitY=0.071875;exitDx=0;exitDy=0;entryX=0;entryY=0.12365591397849462;entryDx=0;entryDy=0;" target="arborescence-cible-projet-node-67">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="850" y="273"/>
+                            <mxPoint x="850" y="1343"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="arborescence-cible-projet-edge-79" edge="1" parent="1" source="arborescence-cible-projet-node-55" style="edgeStyle=segmentEdgeStyle;rounded=0;html=0;endArrow=none;startArrow=none;strokeColor=#91A7B9;strokeWidth=2;exitX=1;exitY=0.19166666666666668;exitDx=0;exitDy=0;entryX=0;entryY=0.19166666666666668;entryDx=0;entryDy=0;" target="arborescence-cible-projet-node-59">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1285" y="903"/>
+                            <mxPoint x="1285" y="903"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="arborescence-cible-projet-edge-80" edge="1" parent="1" source="arborescence-cible-projet-node-55" style="edgeStyle=segmentEdgeStyle;rounded=0;html=0;endArrow=none;startArrow=none;strokeColor=#91A7B9;strokeWidth=2;exitX=1;exitY=0.19166666666666668;exitDx=0;exitDy=0;entryX=0;entryY=0.19166666666666668;entryDx=0;entryDy=0;" target="arborescence-cible-projet-node-63">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1285" y="903"/>
+                            <mxPoint x="1285" y="1113"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="arborescence-cible-projet-node-81" parent="1" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=14;fontColor=#5B7081;fontStyle=0;spacingLeft=0;" value="Source : p2-angular-maintainable-frontend-main.zip — 46 fichiers vérifiés. Cible : 12 déplacements de fichiers existants et 15 créations proposées." vertex="1">
+                    <mxGeometry height="28" width="1630" x="55" y="1550" as="geometry"/>
+                </mxCell>
+                <mxCell id="arborescence-cible-projet-node-82" parent="1" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;overflow=hidden;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=14;fontColor=#5B7081;fontStyle=0;spacingLeft=0;" value="E conserve un emplacement. Ce statut ne certifie ni la validité de son contenu, ni la résolution des constats de l’audit." vertex="1">
+                    <mxGeometry height="26" width="1630" x="55" y="1585" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
