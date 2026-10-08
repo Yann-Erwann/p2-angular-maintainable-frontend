@@ -1,7 +1,8 @@
-import { afterRenderEffect, Component, type ElementRef, inject, input, output, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, afterRenderEffect, Component, type ElementRef, inject, input, output, viewChild } from '@angular/core';
 import { ChartRenderer, type OlympicChartData } from './chart-renderer.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-olympic-chart',
   template: `<canvas #canvas role="img"
     [attr.aria-label]="type() === 'pie' ? 'Total medals by country chart' : 'Medals by Olympic year chart'"

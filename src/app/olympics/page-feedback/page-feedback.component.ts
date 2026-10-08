@@ -1,7 +1,8 @@
-import { Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import type { PageState } from '../page-state';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-page-feedback',
   template: `
     <p role="status" aria-atomic="true"

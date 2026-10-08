@@ -1,4 +1,4 @@
-import { Component, computed, DestroyRef, inject, type OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject, type OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { catchError, distinctUntilChanged, map, of, startWith, switchMap } from 'rxjs';
 import { Title } from '@angular/platform-browser';
@@ -14,6 +14,7 @@ import { DataService } from '../../services/data.service';
 
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-country',
   templateUrl: './country.component.html',
   styleUrls: ['./country.component.scss'],

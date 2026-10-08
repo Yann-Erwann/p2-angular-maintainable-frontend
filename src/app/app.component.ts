@@ -1,9 +1,10 @@
-import { afterNextRender, type AfterRenderRef, Component, DestroyRef, type ElementRef, inject, Injector, type OnInit, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, afterNextRender, type AfterRenderRef, Component, DestroyRef, type ElementRef, inject, Injector, type OnInit, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter, skip } from 'rxjs';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],

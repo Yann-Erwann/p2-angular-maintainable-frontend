@@ -1,12 +1,12 @@
 import { provideHttpClient } from '@angular/common/http';
-import { type ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { type ApplicationConfig, provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection(),
+    provideZonelessChangeDetection(),
     provideRouter(routes),
     provideHttpClient(),
   ],

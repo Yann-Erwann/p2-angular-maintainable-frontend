@@ -1,4 +1,4 @@
-import { Component, computed, DestroyRef, ErrorHandler, inject, type OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, ErrorHandler, inject, type OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import type { Olympic } from '../../models/olympic';
 import { olympicLoadState } from '../../olympics/olympic-load-state';
@@ -10,6 +10,7 @@ import type { PageState } from '../../olympics/page-state';
 import { DataService } from '../../services/data.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'app-home',
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss'],
