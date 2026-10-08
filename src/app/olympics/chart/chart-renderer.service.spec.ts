@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { ArcElement } from 'chart.js';
-import { Chart } from 'chart.js';
+import { ArcElement, Chart } from 'chart.js';
 import { ChartRenderer, type RenderedChart } from './chart-renderer.service';
 
 describe('ChartRenderer', () => {
@@ -26,9 +25,12 @@ describe('ChartRenderer', () => {
       const chart = Chart.getChart(canvas);
       expect(chart?.data.labels).toEqual([...labels]);
       expect(chart?.data.datasets[0].data).toEqual([10, 20]);
+      expect(chart?.options.animation).toBeFalse();
       expect(chart?.options.responsive).toBeTrue();
       expect(chart?.options.maintainAspectRatio).toBeFalse();
       expect(chart?.canvas).toBe(canvas);
+      expect(chart?.legend?.legendItems?.map(item => item.text)).toEqual(type === 'pie' ? labels.map(String) : ['medals']);
+      expect(chart?.isPluginEnabled('tooltip')).toBeTrue();
       rendered.destroy();
       rendered = undefined;
       expect(Chart.getChart(canvas)).toBeUndefined();

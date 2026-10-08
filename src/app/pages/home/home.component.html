@@ -15,8 +15,10 @@
       { label: 'Number of JOs', value: totalJOs }
     ]"
   />
-  <div class="chart-panel">
-    @defer (on viewport) {
+}
+  <div class="chart-panel" [hidden]="state.status !== 'success'">
+    @defer (on viewport; prefetch when state.status === 'loading' || state.status === 'success') {
+      @if (state.status === 'success') {
       <app-olympic-chart
         type="pie"
         [labels]="summary().countries"
@@ -24,6 +26,7 @@
         dataDescriptionId="country-medals-caption"
         (pointSelected)="selectCountry($event)"
       />
+      }
     } @placeholder {
       <div class="chart-placeholder" aria-hidden="true"></div>
     } @loading {
@@ -32,6 +35,7 @@
       <p class="page-message" role="alert">Unable to load the chart. Medal totals are available in the table.</p>
     }
   </div>
+@if (state.status === 'success') {
   <table class="data-table">
     <caption id="country-medals-caption">Total medals by country. Select a country to view its Olympic results.</caption>
     <thead>

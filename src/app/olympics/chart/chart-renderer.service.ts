@@ -36,6 +36,7 @@ export class ChartRenderer {
         }],
       },
       options: {
+        animation: false,
         responsive: true,
         maintainAspectRatio: false,
         onClick: (event) => {

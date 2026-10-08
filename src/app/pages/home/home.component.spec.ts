@@ -2,7 +2,7 @@ import { renderCharts } from '../../../testing/render-charts';
 import { Chart } from 'chart.js';
 import { ChartRenderer } from '../../olympics/chart/chart-renderer.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { type ComponentFixture, DeferBlockState, TestBed } from '@angular/core/testing';
+import { type ComponentFixture, DeferBlockBehavior, DeferBlockState, TestBed } from '@angular/core/testing';
 import { ErrorHandler, provideZoneChangeDetection } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { OlympicChartComponent } from '../../olympics/chart/chart.component';
@@ -34,6 +34,7 @@ describe('HomeComponent', () => {
     dataService = jasmine.createSpyObj<DataService>('DataService', ['getOlympics']);
     dataService.getOlympics.and.returnValue(data.asObservable());
     await TestBed.configureTestingModule({
+      deferBlockBehavior: DeferBlockBehavior.Manual,
       imports: [HomeComponent],
       providers: [
         provideZoneChangeDetection(),
@@ -45,7 +46,6 @@ describe('HomeComponent', () => {
     fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    await renderCharts(fixture);
   });
 
   afterEach(() => {
