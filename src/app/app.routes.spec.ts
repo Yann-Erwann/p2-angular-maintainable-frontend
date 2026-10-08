@@ -70,7 +70,7 @@ describe('Country routing', () => {
 
     const reused = await harness.navigateByUrl('/country/2', CountryComponent);
     expect(reused).toBe(country);
-    http.expectOne(url).flush(countries);
+    http.expectNone(url);
     harness.detectChanges();
     expect(destroy).toHaveBeenCalledTimes(1);
     expect(country.titlePage).toBe('Italy');
@@ -136,7 +136,11 @@ describe('Country routing', () => {
     const harness = await RouterTestingHarness.create();
     for (let visit = 0; visit < 3; visit++) {
       await harness.navigateByUrl('/', HomeComponent);
-      http.expectOne(url).flush(countries);
+      if (visit === 0) {
+        http.expectOne(url).flush(countries);
+      } else {
+        http.expectNone(url);
+      }
       harness.detectChanges();
       const pie = chartAt(harness.routeNativeElement);
       const pieCanvas = pie.canvas;
@@ -145,7 +149,7 @@ describe('Country routing', () => {
       country = await harness.navigateByUrl('/country/1', CountryComponent);
       expect(destroyPie).toHaveBeenCalledTimes(1);
       expect(Chart.getChart(pieCanvas)).toBeUndefined();
-      http.expectOne(url).flush(countries);
+      http.expectNone(url);
       harness.detectChanges();
       const line = chartAt(harness.routeNativeElement);
       const lineCanvas = line.canvas;
@@ -173,7 +177,7 @@ describe('Country routing', () => {
       expect(harness.routeNativeElement?.querySelector('canvas')).toBeNull();
 
       await harness.navigateByUrl('/country/2', CountryComponent);
-      http.expectOne(url).flush(countries);
+      http.expectNone(url);
       harness.detectChanges();
       expect(country.titlePage).toBe('Italy');
       expect(chartAt(harness.routeNativeElement).data.datasets[0].data).toEqual([15]);
@@ -205,7 +209,7 @@ describe('Country routing', () => {
     http.expectOne(url).flush(countries);
     harness.detectChanges();
     await harness.navigateByUrl('/country/2', CountryComponent);
-    http.expectOne(url).flush(countries);
+    http.expectNone(url);
     harness.detectChanges();
     const router = TestBed.inject(Router);
     const location = TestBed.inject(Location);
@@ -215,7 +219,7 @@ describe('Country routing', () => {
     location.back();
     await navigation;
     harness.detectChanges();
-    http.expectOne(url).flush(countries);
+    http.expectNone(url);
     await harness.fixture.whenStable();
     harness.detectChanges();
     expect(router.url).toBe('/country/1');
@@ -226,7 +230,7 @@ describe('Country routing', () => {
     location.forward();
     await navigation;
     harness.detectChanges();
-    http.expectOne(url).flush(countries);
+    http.expectNone(url);
     await harness.fixture.whenStable();
     harness.detectChanges();
     expect(router.url).toBe('/country/2');

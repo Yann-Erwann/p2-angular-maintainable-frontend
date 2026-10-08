@@ -54,7 +54,7 @@ describe('Accessible application navigation', () => {
     const http = TestBed.inject(HttpTestingController);
     await router.navigateByUrl('/');
     fixture.detectChanges();
-    http.expectOne('./assets/mock/olympic.json').flush([]);
+    http.expectOne('./assets/mock/olympic.json').flush([{ id: 2, country: 'Italy', participations: [] }]);
     fixture.detectChanges();
 
     const page = fixture.nativeElement as HTMLElement;
@@ -65,9 +65,7 @@ describe('Accessible application navigation', () => {
 
     await router.navigateByUrl('/country/2');
     fixture.detectChanges();
-    http.expectOne('./assets/mock/olympic.json').flush([
-      { id: 2, country: 'Italy', participations: [] },
-    ]);
+    http.expectNone('./assets/mock/olympic.json');
     fixture.detectChanges();
     await fixture.whenStable();
     expect(document.activeElement).toBe(page.querySelector('h1'));

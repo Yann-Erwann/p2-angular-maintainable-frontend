@@ -126,9 +126,12 @@ Chaque page possède un signal d'état unique contenant les données ou le messa
 d'erreur ; les statistiques sont dérivées avec `computed`. RxJS compose le
 chargement et, pour le pays, les paramètres de route avec `switchMap`.
 `ActivatedRoute` fournit l’ID ; `DataService.getCountryById` charge et sélectionne
-le pays. Un changement d’ID annule la requête précédente et relance le chargement. Les
+le pays. Un chargement validé est partagé et conservé en mémoire jusqu’au
+rechargement de l’application. Les navigations réutilisent ces données statiques ;
+les erreurs ne sont pas mémorisées et une nouvelle tentative reste possible. Les
 abonnements utilisent `takeUntilDestroyed` : quitter la page annule une requête
-HTTP encore en cours et arrête l'écoute des paramètres.
+HTTP encore en cours si aucun autre consommateur ne l’utilise et arrête
+l’écoute des paramètres.
 
 `OlympicChartComponent` possède son canvas et reçoit uniquement le type du
 graphique, ses libellés et ses valeurs. `afterRenderEffect` crée le graphique
