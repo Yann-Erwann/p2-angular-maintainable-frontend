@@ -1,23 +1,12 @@
 <div>
-  <div>
-    <div class="center">
-      <div>{{ titlePage }}</div>
-    </div>
-    <div class="split">
-      <div>
-        <p>Number of entries</p>
-        <p>{{ totalEntries }}</p>
-      </div>
-      <div>
-        <p>Total Number of medals</p>
-        <p>{{ totalMedals }}</p>
-      </div>
-      <div>
-        <p>Total Number of athletes</p>
-        <p>{{ totalAthletes }}</p>
-      </div>
-    </div>
-  </div>
+  <app-header
+    [title]="titlePage"
+    [indicators]="[
+      { label: 'Number of entries', value: totalEntries },
+      { label: 'Total Number of medals', value: totalMedals },
+      { label: 'Total Number of athletes', value: totalAthletes }
+    ]"
+  />
   <div class="chart-container wrapper-container">
     <div class="container">
       <canvas id="countryChart">{{ lineChart }}</canvas>

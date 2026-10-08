@@ -2,6 +2,7 @@ import type { HttpErrorResponse } from '@angular/common/http';
 import {Component, ErrorHandler, inject, type OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import Chart from 'chart.js/auto';
+import { HeaderComponent } from '../../olympics/header/header.component';
 import { DataService } from '../../services/data.service';
 
 @Component({
@@ -9,6 +10,7 @@ import { DataService } from '../../services/data.service';
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss'],
     standalone: true,
+    imports: [HeaderComponent],
 })
 export class HomeComponent implements OnInit {
   public pieChart!: Chart<"pie", number[], string>;

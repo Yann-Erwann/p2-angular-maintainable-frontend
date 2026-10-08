@@ -2,6 +2,7 @@ import type { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, type OnInit } from '@angular/core';
 import { ActivatedRoute, type ParamMap, RouterLink } from '@angular/router';
 import Chart from 'chart.js/auto';
+import { HeaderComponent } from '../../olympics/header/header.component';
 import { DataService } from '../../services/data.service';
 
 
@@ -9,7 +10,7 @@ import { DataService } from '../../services/data.service';
   selector: 'app-country',
   templateUrl: './country.component.html',
   styleUrls: ['./country.component.scss'],
-  imports: [RouterLink]
+  imports: [RouterLink, HeaderComponent]
 })
 export class CountryComponent implements OnInit {
   public lineChart!: Chart<"line", number[], number>;

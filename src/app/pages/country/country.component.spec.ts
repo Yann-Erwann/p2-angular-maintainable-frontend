@@ -86,8 +86,8 @@ describe('CountryComponent', () => {
 
     harness.detectChanges();
     const page = harness.routeNativeElement;
-    expect(page?.querySelector('.center > div')?.textContent?.trim()).toBe('France');
-    expect(Array.from(page?.querySelectorAll('.split p') ?? [], item => item.textContent?.trim())).toEqual([
+    expect(page?.querySelector('app-header .center > div')?.textContent?.trim()).toBe('France');
+    expect(Array.from(page?.querySelectorAll('app-header .split p') ?? [], item => item.textContent?.trim())).toEqual([
       'Number of entries', '2',
       'Total Number of medals', '30',
       'Total Number of athletes', '250',

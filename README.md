@@ -116,6 +116,7 @@ La structure actuelle est la suivante :
 - `src/app/app.config.ts` fournit le routeur, HTTP et la détection des changements avec Zone.js.
 - `src/app/app.routes.ts` définit `/`, `/country/:countryName`, `/not-found` et le repli vers la page inconnue.
 - `src/app/pages/` contient les pages standalone et leurs tests.
+- `src/app/olympics/header/` contient `HeaderComponent`, qui affiche le titre et les indicateurs fournis par les pages d'accueil et de pays.
 - `src/app/services/data.service.ts` centralise l'URL et le chargement HTTP ; les pages injectent `DataService`.
 - `src/app/models/olympic.ts` décrit les pays et participations ; il ne valide pas les réponses HTTP à l'exécution.
 - `src/assets/mock/olympic.json` contient les données de démonstration.

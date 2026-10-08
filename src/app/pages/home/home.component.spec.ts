@@ -71,8 +71,8 @@ describe('HomeComponent', () => {
 
     fixture.detectChanges();
     const page = fixture.nativeElement as HTMLElement;
-    expect(page.querySelector('.center > div')?.textContent?.trim()).toBe('Medals per Country');
-    expect(Array.from(page.querySelectorAll('.split p'), item => item.textContent?.trim())).toEqual([
+    expect(page.querySelector('app-header .center > div')?.textContent?.trim()).toBe('Medals per Country');
+    expect(Array.from(page.querySelectorAll('app-header .split p'), item => item.textContent?.trim())).toEqual([
       'Number of countries', '2', 'Number of JOs', '2',
     ]);
     expect(page.querySelector('canvas')).toBe(component.pieChart.canvas);
