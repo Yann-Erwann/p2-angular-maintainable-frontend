@@ -20,9 +20,8 @@ export class HomeComponent implements OnInit {
   constructor(private readonly router: Router, private readonly http:HttpClient) { }
 
   ngOnInit() {
-    this.http.get<any[]>(this.olympicUrl).pipe().subscribe({
+    this.http.get<any[]>(this.olympicUrl).subscribe({
       next: (data) => {
-        console.log(`Liste des données : ${JSON.stringify(data)}`);
         if (data && data.length > 0) {
           this.totalJOs = new Set(data.flatMap((i: any) => i.participations.map((f: any) => f.year)).flat()).size;
           const countries: string[] = data.map((i: any) => i.country);

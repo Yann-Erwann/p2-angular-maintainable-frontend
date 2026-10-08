@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, ParamMap, RouterLink } from '@angular/router';
 import Chart from 'chart.js/auto';
 
 
@@ -25,12 +25,12 @@ export class CountryComponent implements OnInit {
   ngOnInit() {
     let countryName: string | null = null
     this.route.paramMap.subscribe((param: ParamMap) => countryName = param.get('countryName'));
-    this.http.get<any[]>(this.olympicUrl).pipe().subscribe({
+    this.http.get<any[]>(this.olympicUrl).subscribe({
       next: (data) => {
         if (data && data.length > 0) {
           const selectedCountry = data.find((i: any) => i.country === countryName);
           this.titlePage = selectedCountry.country;
-          const participations = selectedCountry?.participations.map((i: any) => i);
+          const participations = selectedCountry?.participations;
           this.totalEntries = participations?.length ?? 0;
           const years = selectedCountry?.participations.map((i: any) => i.year) ?? [];
           const medals = selectedCountry?.participations.map((i: any) => i.medalsCount.toString()) ?? [];
