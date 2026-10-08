@@ -22,6 +22,7 @@ export class HomeComponent implements OnInit {
     const state = this.pageState();
     const data = state.status === 'success' ? state.data : [];
     return {
+      ids: data.map((country) => country.id),
       countries: data.map((country) => country.country),
       medals: data.map((country) => country.participations.reduce((total, item) => total + item.medalsCount, 0)),
       editions: new Set(data.flatMap((country) => country.participations.map((item) => item.year))).size,
@@ -43,8 +44,12 @@ export class HomeComponent implements OnInit {
     ).subscribe((state) => this.pageState.set(state));
   }
 
-  selectCountry(country: string) {
-    void this.router.navigate(['/country', country]).catch((error: unknown) => {
+  selectCountry(index: number) {
+    const id = this.summary().ids[index];
+    if (id === undefined) {
+      return;
+    }
+    void this.router.navigate(['/country', id]).catch((error: unknown) => {
       this.errorHandler.handleError(error);
     });
   }

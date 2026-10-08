@@ -19,7 +19,7 @@
     [labels]="summary().countries"
     [values]="summary().medals"
     dataDescriptionId="country-medals-caption"
-    (countrySelected)="selectCountry($event)"
+    (pointSelected)="selectCountry($event)"
   />
   <table class="data-table">
     <caption id="country-medals-caption">Total medals by country. Select a country to view its Olympic results.</caption>
@@ -29,7 +29,7 @@
     <tbody>
       @for (country of summary().countries; track $index) {
         <tr>
-          <th scope="row"><a [routerLink]="['/country', country]">{{ country }}</a></th>
+          <th scope="row"><a [routerLink]="['/country', summary().ids[$index]]">{{ country }}</a></th>
           <td>{{ summary().medals[$index] }}</td>
         </tr>
       }

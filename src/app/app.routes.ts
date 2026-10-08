@@ -12,15 +12,8 @@ export const routes: Routes = [
     title: 'Medals by country | Olympic Games',
   },
   {
-    path: 'country/:countryName',
+    path: 'country/:id',
     component: CountryComponent,
-    title: (route) => {
-      const name = route.paramMap.get('countryName')?.trim();
-      if (!name?.length) {
-        return 'Country not found | Olympic Games';
-      }
-      return `${name} | Olympic Games`;
-    },
   },
   {
     path: 'not-found',

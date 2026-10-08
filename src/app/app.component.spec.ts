@@ -63,10 +63,10 @@ describe('Accessible application navigation', () => {
     expect(page.querySelectorAll('h1').length).toBe(1);
     expect(document.title).toBe('Medals by country | Olympic Games');
 
-    await router.navigateByUrl('/country/Italy');
+    await router.navigateByUrl('/country/2');
     fixture.detectChanges();
     http.expectOne('./assets/mock/olympic.json').flush([
-      { id: 1, country: 'Italy', participations: [] },
+      { id: 2, country: 'Italy', participations: [] },
     ]);
     fixture.detectChanges();
     await fixture.whenStable();

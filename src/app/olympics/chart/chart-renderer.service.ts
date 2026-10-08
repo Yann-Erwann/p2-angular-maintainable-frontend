@@ -16,7 +16,7 @@ export class ChartRenderer {
   create(
     canvas: HTMLCanvasElement,
     data: OlympicChartData,
-    onCountrySelected: (country: string) => void,
+    onPointSelected: (index: number) => void,
   ): RenderedChart {
     const chart = new Chart(canvas, {
       type: data.type,
@@ -41,9 +41,8 @@ export class ChartRenderer {
             return;
           }
           const points = chart.getElementsAtEventForMode(event.native, 'point', { intersect: true }, true);
-          const country = points.length > 0 ? chart.data.labels?.[points[0].index] : undefined;
-          if (typeof country === 'string') {
-            onCountrySelected(country);
+          if (points.length > 0) {
+            onPointSelected(points[0].index);
           }
         },
       },

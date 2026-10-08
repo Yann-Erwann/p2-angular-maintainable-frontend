@@ -73,10 +73,10 @@ describe('OlympicChartComponent', () => {
 
   it('should emit the country selection received from the renderer', () => {
     const selected = jasmine.createSpy('selected');
-    fixture.componentInstance.countrySelected.subscribe(selected);
+    fixture.componentInstance.pointSelected.subscribe(selected);
     fixture.detectChanges();
-    renderer.create.calls.mostRecent().args[2]('France');
-    expect(selected).toHaveBeenCalledOnceWith('France');
+    renderer.create.calls.mostRecent().args[2](0);
+    expect(selected).toHaveBeenCalledOnceWith(0);
   });
 
   it('should pass distinct canvases to concurrent chart instances', () => {

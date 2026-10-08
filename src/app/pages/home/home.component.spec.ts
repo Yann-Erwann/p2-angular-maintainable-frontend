@@ -82,16 +82,31 @@ describe('HomeComponent', () => {
     data.next([{ id: 1, country: 'France', participations: [] }]);
     fixture.detectChanges();
     const chart = fixture.debugElement.query(By.directive(OlympicChartComponent)).componentInstance as OlympicChartComponent;
-    chart.countrySelected.emit('France');
+    chart.pointSelected.emit(0);
     await fixture.whenStable();
-    expect(navigate).toHaveBeenCalledOnceWith(['/country', 'France']);
+    expect(navigate).toHaveBeenCalledOnceWith(['/country', 1]);
+  });
+
+  it('should navigate by ID for duplicate names and ignore invalid chart indices', async () => {
+    const navigate = spyOn(TestBed.inject(Router), 'navigate').and.resolveTo(true);
+    data.next([
+      { id: 1, country: 'France', participations: [] },
+      { id: 5, country: 'France', participations: [] },
+    ]);
+    component.selectCountry(-1);
+    component.selectCountry(2);
+    expect(navigate).not.toHaveBeenCalled();
+    component.selectCountry(1);
+    await fixture.whenStable();
+    expect(navigate).toHaveBeenCalledOnceWith(['/country', 5]);
   });
 
   it('should keep reporting navigation errors from country selection', async () => {
     const failure = new Error('Navigation failed');
     spyOn(TestBed.inject(Router), 'navigate').and.rejectWith(failure);
     const report = spyOn(TestBed.inject(ErrorHandler), 'handleError');
-    component.selectCountry('France');
+    data.next([{ id: 1, country: 'France', participations: [] }]);
+    component.selectCountry(0);
     await fixture.whenStable();
     expect(report).toHaveBeenCalledOnceWith(failure);
   });
@@ -140,7 +155,7 @@ describe('HomeComponent', () => {
     expect(Array.from(page.querySelectorAll('tbody tr'), row =>
       Array.from(row.querySelectorAll('th, td'), cell => cell.textContent?.trim()),
     )).toEqual([['France', '30'], ['Italy', '15']]);
-    expect(Array.from(page.querySelectorAll('tbody a'), link => link.getAttribute('href'))).toEqual(['/country/France', '/country/Italy']);
+    expect(Array.from(page.querySelectorAll('tbody a'), link => link.getAttribute('href'))).toEqual(['/country/1', '/country/2']);
     expect(page.querySelector('canvas')?.getAttribute('aria-describedby')).toBe(page.querySelector('caption')?.id);
     expect(page.querySelector('canvas')?.getAttribute('role')).toBe('img');
     expect(page.querySelectorAll('thead th[scope="col"]').length).toBe(2);

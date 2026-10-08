@@ -5,7 +5,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
-import { Subject } from 'rxjs';
+import { map, of, Subject } from 'rxjs';
 
 import { routes } from '../../app.routes';
 
@@ -30,8 +30,8 @@ describe('CountryComponent', () => {
 
   beforeEach(() => {
     data = new Subject<readonly Olympic[]>();
-    dataService = jasmine.createSpyObj<DataService>('DataService', ['getOlympics']);
-    dataService.getOlympics.and.returnValue(data.asObservable());
+    dataService = jasmine.createSpyObj<DataService>('DataService', ['getCountryById']);
+    dataService.getCountryById.and.callFake(id => data.pipe(map(countries => countries.find(country => country.id === id))));
     TestBed.configureTestingModule({
       imports: [CountryComponent],
       providers: [
@@ -48,7 +48,7 @@ describe('CountryComponent', () => {
 
   it('should stop consuming route and data changes after leaving the page', async () => {
     const harness = await RouterTestingHarness.create();
-    component = await harness.navigateByUrl('/country/France', CountryComponent);
+    component = await harness.navigateByUrl('/country/1', CountryComponent);
     const chartSpy = spyOn(TestBed.inject(ChartRenderer), 'create').and.callThrough();
     expect(data.observed).toBeTrue();
 
@@ -61,7 +61,7 @@ describe('CountryComponent', () => {
 
   it('should derive the selected country from new route parameters after the response completes', async () => {
     const harness = await RouterTestingHarness.create();
-    component = await harness.navigateByUrl('/country/France', CountryComponent);
+    component = await harness.navigateByUrl('/country/1', CountryComponent);
     data.next([
       { id: 1, country: 'France', participations: [] },
       { id: 2, country: 'Italy', participations: [] },
@@ -70,10 +70,11 @@ describe('CountryComponent', () => {
     harness.detectChanges();
     expect(component.titlePage).toBe('France');
 
-    const reused = await harness.navigateByUrl('/country/Italy', CountryComponent);
+    dataService.getCountryById.and.returnValue(of({ id: 2, country: 'Italy', participations: [] }));
+    const reused = await harness.navigateByUrl('/country/2', CountryComponent);
     expect(reused).toBe(component);
     expect(component.titlePage).toBe('Italy');
-    expect(dataService.getOlympics.calls.count()).toBe(1);
+    expect(dataService.getCountryById.calls.allArgs()).toEqual([[1], [2]]);
     expect(harness.routeNativeElement?.querySelector('app-header')?.textContent).toContain('Italy');
   });
 
@@ -81,13 +82,13 @@ describe('CountryComponent', () => {
     const harness = await RouterTestingHarness.create();
 
     component = await harness.navigateByUrl(
-      '/country/France',
+      '/country/1',
       CountryComponent,
     );
 
     const chartSpy = spyOn(TestBed.inject(ChartRenderer), 'create').and.callThrough();
 
-    expect(dataService.getOlympics.calls.count()).toBe(1);
+    expect(dataService.getCountryById.calls.count()).toBe(1);
     data.next([
       {
         id: 2,
@@ -151,7 +152,7 @@ describe('CountryComponent', () => {
 
   it('should keep totals at zero for a country without participations', async () => {
     const harness = await RouterTestingHarness.create();
-    component = await harness.navigateByUrl('/country/France', CountryComponent);
+    component = await harness.navigateByUrl('/country/1', CountryComponent);
     const chartSpy = spyOn(TestBed.inject(ChartRenderer), 'create').and.callThrough();
 
     data.next([
@@ -173,20 +174,20 @@ describe('CountryComponent', () => {
 
   it('should display loading before country data arrives', async () => {
     const harness = await RouterTestingHarness.create();
-    component = await harness.navigateByUrl('/country/France', CountryComponent);
+    component = await harness.navigateByUrl('/country/1', CountryComponent);
 
     expect(harness.routeNativeElement?.querySelector('[role="status"]')?.textContent).toContain('Loading Olympic data');
     expect(harness.routeNativeElement?.querySelector('app-header')).toBeNull();
     expect(harness.routeNativeElement?.querySelector('canvas')).toBeNull();
   });
 
-  it('should display an empty collection without a country header or chart', async () => {
+  it('should report a missing country for an empty collection', async () => {
     const harness = await RouterTestingHarness.create();
-    component = await harness.navigateByUrl('/country/France', CountryComponent);
+    component = await harness.navigateByUrl('/country/1', CountryComponent);
     data.next([]);
     harness.detectChanges();
 
-    expect(harness.routeNativeElement?.querySelector('[role="status"]')?.textContent).toContain('No Olympic data available');
+    expect(harness.routeNativeElement?.querySelector('[role="status"]')?.textContent).toContain('Country not found.');
     expect(harness.routeNativeElement?.querySelector('[role="alert"]')?.textContent).toBe('');
     expect(harness.routeNativeElement?.querySelector('app-header')).toBeNull();
     expect(harness.routeNativeElement?.querySelector('canvas')).toBeNull();
@@ -194,7 +195,7 @@ describe('CountryComponent', () => {
 
   it('should distinguish a missing country from an HTTP failure', async () => {
     const harness = await RouterTestingHarness.create();
-    component = await harness.navigateByUrl('/country/Unknown', CountryComponent);
+    component = await harness.navigateByUrl('/country/999', CountryComponent);
     data.next([{ id: 1, country: 'France', participations: [] }]);
     harness.detectChanges();
 
@@ -211,7 +212,7 @@ describe('CountryComponent', () => {
   ]) {
     it(`should display a safe error for HTTP status ${scenario.status}`, async () => {
       const harness = await RouterTestingHarness.create();
-      component = await harness.navigateByUrl('/country/France', CountryComponent);
+      component = await harness.navigateByUrl('/country/1', CountryComponent);
       data.error(new HttpErrorResponse({ status: scenario.status, error: 'private server details' }));
       harness.detectChanges();
 
@@ -226,7 +227,7 @@ describe('CountryComponent', () => {
 
   it('should remove previous country statistics and the chart when data loading fails', async () => {
     const harness = await RouterTestingHarness.create();
-    component = await harness.navigateByUrl('/country/France', CountryComponent);
+    component = await harness.navigateByUrl('/country/1', CountryComponent);
     data.next([{ id: 1, country: 'France', participations: [
       { id: 1, year: 2012, city: 'London', medalsCount: 10, athleteCount: 100 },
     ] }]);

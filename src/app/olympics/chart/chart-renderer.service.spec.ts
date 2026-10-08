@@ -35,7 +35,7 @@ describe('ChartRenderer', () => {
     });
   }
 
-  it('should emit the selected pie label and ignore clicks outside a country', () => {
+  it('should emit the selected pie index and ignore clicks outside a country', () => {
     const selected = jasmine.createSpy('selected');
     rendered = TestBed.inject(ChartRenderer).create(canvas, {
       type: 'pie', labels: ['France', 'Italy'], values: [10, 20],
@@ -50,6 +50,6 @@ describe('ChartRenderer', () => {
     expect(selected).not.toHaveBeenCalled();
     hits.and.returnValue([{ index: 1, datasetIndex: 0, element: new ArcElement({}) }]);
     chart.options.onClick?.call(chart, event, [], chart);
-    expect(selected).toHaveBeenCalledOnceWith('Italy');
+    expect(selected).toHaveBeenCalledOnceWith(1);
   });
 });

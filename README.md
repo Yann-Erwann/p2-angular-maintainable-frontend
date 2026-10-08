@@ -98,7 +98,7 @@ pnpm run preview
 
 Ouvrir l'adresse affichée par le serveur. Le script de prévisualisation utilise
 `pnpm dlx serve -s dist/olympic-games-starter/browser` : il peut télécharger
-`serve` et applique un repli SPA pour les URL comme `/country/France`.
+`serve` et applique un repli SPA pour les URL comme `/country/1`.
 Cet outil sert à vérifier le build localement ; la conteneurisation et les
 réglages d'hébergement de production relèvent d'I19.
 
@@ -124,8 +124,9 @@ Un contenu invalide fait échouer toute la réponse et affiche une erreur de don
 
 Chaque page possède un signal d'état unique contenant les données ou le message
 d'erreur ; les statistiques sont dérivées avec `computed`. RxJS compose le
-chargement et, pour le pays, les paramètres de route avec la dernière réponse.
-Un changement de pays réutilise cette réponse sans nouvelle requête. Les
+chargement et, pour le pays, les paramètres de route avec `switchMap`.
+`ActivatedRoute` fournit l’ID ; `DataService.getCountryById` charge et sélectionne
+le pays. Un changement d’ID annule la requête précédente et relance le chargement. Les
 abonnements utilisent `takeUntilDestroyed` : quitter la page annule une requête
 HTTP encore en cours et arrête l'écoute des paramètres.
 
@@ -136,13 +137,15 @@ des données et libère l'instance au retrait du composant. `ChartRenderer`
 encapsule Chart.js ; la sélection d'un pays remonte à la page, qui gère la
 navigation. Aucun graphique ne dépend d'un identifiant global de canvas.
 
-Les URL publiques restent `/country/:countryName`, avec le nom encodé dans
-l'URL pour les espaces et caractères spéciaux. Un pays inconnu ou un nom vide
-affiche `Country not found.` ; `/country` ou une URL hors des routes définies
-affiche la page inconnue. Tous les liens de retour ciblent `/`. Le changement
-de pays recalcule les indicateurs et remplace le graphique, même après la fin
-du chargement initial ; une réponse tardive utilise le dernier pays demandé.
-Les tests couvrent les accès directs et l'historique simulé du routeur.
+Les URL publiques utilisent `/country/:id`, avec un identifiant entier positif
+sûr (par exemple `/country/1`). Les anciennes URL par nom ne sont plus valides.
+Un ID mal formé est rejeté sans requête HTTP ; un ID absent de la collection
+validée affiche `Country not found.`. `/country` et les URL hors des routes
+définies affichent la page inconnue. Tous les liens de retour ciblent `/`.
+Le titre du document reprend le nom du pays chargé. Le clic du graphique et
+les liens du tableau utilisent les mêmes ID, indépendamment des libellés.
+Les tests couvrent les accès directs, l’historique simulé et l’annulation des
+requêtes lors de changements rapides de pays.
 Le repli serveur nécessaire au rechargement des URL profondes en production
 reste à configurer et vérifier dans I19.
 
@@ -171,7 +174,7 @@ La structure actuelle est la suivante :
 
 - `src/main.ts` démarre `AppComponent` avec `bootstrapApplication` et signale les erreurs.
 - `src/app/app.config.ts` fournit le routeur, HTTP et la détection des changements avec Zone.js.
-- `src/app/app.routes.ts` définit `/`, `/country/:countryName`, `/not-found` et le repli vers la page inconnue.
+- `src/app/app.routes.ts` définit `/`, `/country/:id`, `/not-found` et le repli vers la page inconnue.
 - `src/app/pages/` contient les pages standalone et leurs tests.
 - `src/app/olympics/header/` contient `HeaderComponent`, qui affiche le titre et les indicateurs fournis par les pages d'accueil et de pays.
 - `src/app/services/data.service.ts` centralise l'URL et le chargement HTTP ; les pages injectent `DataService`.

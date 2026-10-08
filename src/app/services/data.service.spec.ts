@@ -118,4 +118,46 @@ describe('DataService', () => {
     }));
   });
 
+  it('should select a country by ID even when names are identical', () => {
+    const countries = [
+      { id: 1, country: 'France', participations: [] },
+      { id: 2, country: 'France', participations: [] },
+    ];
+    const next = jasmine.createSpy('next');
+    service.getCountryById(2).subscribe(next);
+    httpTesting.expectOne('./assets/mock/olympic.json').flush(countries);
+    expect(next).toHaveBeenCalledOnceWith(countries[1]);
+  });
+
+  for (const countries of [[], [{ id: 1, country: 'France', participations: [] }]]) {
+    it('should return undefined for an ID absent from the validated collection', () => {
+      const next = jasmine.createSpy('next');
+      service.getCountryById(2).subscribe(next);
+      httpTesting.expectOne('./assets/mock/olympic.json').flush(countries);
+      expect(next).toHaveBeenCalledOnceWith(undefined);
+    });
+  }
+
+  for (const id of [0, -1, 1.5, NaN, Infinity, Number.MAX_SAFE_INTEGER + 1]) {
+    it(`should reject invalid numeric ID ${id} without HTTP`, () => {
+      const next = jasmine.createSpy('next');
+      service.getCountryById(id).subscribe(next);
+      expect(next).toHaveBeenCalledOnceWith(undefined);
+      httpTesting.expectNone('./assets/mock/olympic.json');
+    });
+  }
+
+  it('should preserve country loading errors instead of reporting a missing ID', () => {
+    const next = jasmine.createSpy('next');
+    const error = jasmine.createSpy('error');
+    service.getCountryById(1).subscribe({ next, error });
+    httpTesting.expectOne('./assets/mock/olympic.json').flush('Unavailable', {
+      status: 503, statusText: 'Service Unavailable',
+    });
+    expect(next).not.toHaveBeenCalled();
+    expect(error).toHaveBeenCalledOnceWith(jasmine.objectContaining({
+      cause: jasmine.objectContaining({ status: 503 }),
+    }));
+  });
+
 });

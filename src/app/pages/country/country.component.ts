@@ -1,8 +1,10 @@
 import { Component, computed, DestroyRef, inject, type OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { combineLatest, map } from 'rxjs';
+import { catchError, distinctUntilChanged, map, of, startWith, switchMap } from 'rxjs';
+import { Title } from '@angular/platform-browser';
 import type { Olympic } from '../../models/olympic';
-import { olympicLoadState } from '../../olympics/olympic-load-state';
+import { parseCountryId } from '../../olympics/country-id';
+import { toDataLoadError } from '../../services/data-load-error';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { OlympicChartComponent } from '../../olympics/chart/chart.component';
 import { HeaderComponent } from '../../olympics/header/header.component';
@@ -42,27 +44,28 @@ export class CountryComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly dataService = inject(DataService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly documentTitle = inject(Title);
 
   ngOnInit() {
-    combineLatest([
-      this.route.paramMap,
-      olympicLoadState(this.dataService.getOlympics()),
-    ]).pipe(
-      map(([params, state]): PageState<Olympic> => {
-        const countryName = params.get('countryName');
-        if (!countryName?.trim()) {
-          return { status: 'not-found' };
-        }
-        if (state.status !== 'success') {
-          return state.status === 'empty' ? { status: 'empty' } : state;
-        }
-        const country = state.data.find((item) => item.country === countryName);
-        if (!country) {
-          return { status: 'not-found' };
-        }
-        return { status: country.participations.length > 0 ? 'success' : 'empty', data: country };
-      }),
+    this.route.paramMap.pipe(
+      map((params) => parseCountryId(params.get('id'))),
+      distinctUntilChanged(),
+      switchMap((id) => id === null
+        ? of<PageState<Olympic>>({ status: 'not-found' })
+        : this.dataService.getCountryById(id).pipe(
+          map((country): PageState<Olympic> => country
+            ? { status: country.participations.length > 0 ? 'success' : 'empty', data: country }
+            : { status: 'not-found' }),
+          catchError((error: unknown) => of<PageState<Olympic>>({ status: 'error', message: toDataLoadError(error).message })),
+          startWith({ status: 'loading' } as const),
+        )),
       takeUntilDestroyed(this.destroyRef),
-    ).subscribe((state) => this.pageState.set(state));
+    ).subscribe((state) => {
+      this.pageState.set(state);
+      const title = state.status === 'success' || state.status === 'empty'
+        ? state.data?.country ?? 'Country details'
+        : state.status === 'not-found' ? 'Country not found' : 'Country details';
+      this.documentTitle.setTitle(`${title} | Olympic Games`);
+    });
   }
 }

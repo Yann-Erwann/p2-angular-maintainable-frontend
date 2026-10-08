@@ -13,7 +13,7 @@ export class OlympicChartComponent {
   readonly labels = input.required<readonly (string | number)[]>();
   readonly values = input.required<readonly number[]>();
   readonly dataDescriptionId = input.required<string>();
-  readonly countrySelected = output<string>();
+  readonly pointSelected = output<number>();
   private readonly canvas = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
   private readonly renderer = inject(ChartRenderer);
 
@@ -23,7 +23,7 @@ export class OlympicChartComponent {
         type: this.type(),
         labels: this.labels(),
         values: this.values(),
-      }, (country) => this.countrySelected.emit(country));
+      }, (index) => this.pointSelected.emit(index));
       onCleanup(() => chart.destroy());
     });
   }

@@ -42,7 +42,7 @@ describe('Application routing', () => {
     expect(harness.routeNativeElement?.textContent).toContain('No Olympic data available.');
   });
 
-  for (const url of ['/', '/country/France']) {
+  for (const url of ['/', '/country/1']) {
     it(`should cancel the pending HTTP request when leaving ${url}`, async () => {
       const harness = await RouterTestingHarness.create();
       await harness.navigateByUrl(url);
@@ -71,7 +71,7 @@ describe('Application routing', () => {
     expect(harness.routeNativeElement?.textContent).toContain('No corresponding page found');
   });
 
-  for (const url of ['/', '/country/France']) {
+  for (const url of ['/', '/country/1']) {
     it(`should show a data validation error at ${url} without statistics or a chart`, async () => {
       const harness = await RouterTestingHarness.create();
       await harness.navigateByUrl(url);
