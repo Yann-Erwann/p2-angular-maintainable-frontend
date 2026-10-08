@@ -1,5 +1,8 @@
 # OlympicGamesStarter
 
+Les conventions de contribution, de commits atomiques et de traçabilité sont
+décrites dans [CONTRIBUTING.md](CONTRIBUTING.md).
+
 Application Angular 18. Le développement, l'installation des dépendances, la compilation et les tests s'exécutent dans Docker. Aucune installation locale de Node.js, npm, Angular CLI, Java ou Chromium n'est nécessaire.
 
 ## Prérequis
