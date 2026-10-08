@@ -38,7 +38,7 @@ describe('CountryComponent', () => {
       CountryComponent,
     );
 
-    spyOn(component, 'buildChart');
+    const chartSpy = spyOn(component, 'buildChart');
 
     const request = httpTesting.expectOne('./assets/mock/olympic.json');
 
@@ -55,10 +55,22 @@ describe('CountryComponent', () => {
             medalsCount: 10,
             athleteCount: 100,
           },
+          {
+            id: 2,
+            year: 2016,
+            city: 'Rio de Janeiro',
+            medalsCount: 20,
+            athleteCount: 150,
+          },
         ],
       },
     ]);
 
     expect(component).toBeTruthy();
+    expect(component.titlePage).toBe('France');
+    expect(component.totalEntries).toBe(2);
+    expect(component.totalMedals).toBe(30);
+    expect(component.totalAthletes).toBe(250);
+    expect(chartSpy).toHaveBeenCalledWith([2012, 2016], ['10', '20']);
   });
 });
