@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import Chart from 'chart.js/auto';
+import { ArcElement, CategoryScale, Chart, Legend, LinearScale, LineController, LineElement, PieController, PointElement, Tooltip } from 'chart.js';
+
+Chart.register(ArcElement, CategoryScale, Legend, LinearScale, LineController, LineElement, PieController, PointElement, Tooltip);
 
 export interface OlympicChartData {
   readonly type: 'pie' | 'line';

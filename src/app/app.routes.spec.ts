@@ -1,4 +1,4 @@
-import Chart from 'chart.js/auto';
+import { Chart } from 'chart.js';
 import { Location } from '@angular/common';
 import { provideLocationMocks } from '@angular/common/testing';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';

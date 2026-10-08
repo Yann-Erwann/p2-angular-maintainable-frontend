@@ -1,4 +1,4 @@
-import Chart from 'chart.js/auto';
+import { Chart } from 'chart.js';
 import { ChartRenderer } from '../../olympics/chart/chart-renderer.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { type ComponentFixture, TestBed } from '@angular/core/testing';

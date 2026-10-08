@@ -134,7 +134,8 @@ HTTP encore en cours et arrête l'écoute des paramètres.
 graphique, ses libellés et ses valeurs. `afterRenderEffect` crée le graphique
 une fois le canvas disponible, détruit l'instance précédente avant remplacement
 des données et libère l'instance au retrait du composant. `ChartRenderer`
-encapsule Chart.js ; la sélection d'un pays remonte à la page, qui gère la
+enregistre uniquement les contrôleurs pie/line, leurs éléments et échelles,
+ainsi que la légende et les infobulles de Chart.js ; la sélection d'un pays remonte à la page, qui gère la
 navigation. Aucun graphique ne dépend d'un identifiant global de canvas.
 
 Les URL publiques utilisent `/country/:id`, avec un identifiant entier positif

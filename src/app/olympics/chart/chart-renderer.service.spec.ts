@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { ArcElement } from 'chart.js';
-import Chart from 'chart.js/auto';
+import { Chart } from 'chart.js';
 import { ChartRenderer, type RenderedChart } from './chart-renderer.service';
 
 describe('ChartRenderer', () => {
