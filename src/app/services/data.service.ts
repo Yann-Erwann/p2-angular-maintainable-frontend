@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { catchError, type Observable, throwError } from 'rxjs';
+import { catchError, map, type Observable, throwError } from 'rxjs';
 
 import type { Olympic } from '../models/olympic';
 import { toDataLoadError } from './data-load-error';
+import { validateOlympicData } from './olympic-data.validator';
 
 @Injectable({ providedIn: 'root' })
 export class DataService {
@@ -11,7 +12,8 @@ export class DataService {
   private readonly olympicUrl = './assets/mock/olympic.json';
 
   getOlympics(): Observable<readonly Olympic[]> {
-    return this.http.get<readonly Olympic[]>(this.olympicUrl).pipe(
+    return this.http.get<unknown>(this.olympicUrl).pipe(
+      map(validateOlympicData),
       catchError((error: unknown) => throwError(() => toDataLoadError(error))),
     );
   }

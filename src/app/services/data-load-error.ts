@@ -1,4 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
+import { OlympicDataValidationError } from './olympic-data.validator';
 
 export class DataLoadError extends Error {
   override readonly name = 'DataLoadError';
@@ -10,7 +11,9 @@ export function toDataLoadError(cause: unknown): DataLoadError {
   }
 
   let message = 'Unable to load Olympic data. Please try again.';
-  if (cause instanceof HttpErrorResponse) {
+  if (cause instanceof OlympicDataValidationError) {
+    message = 'Olympic data is invalid. Please try again later.';
+  } else if (cause instanceof HttpErrorResponse) {
     if (cause.status === 0) {
       message = 'Unable to connect. Check your connection and try again.';
     } else if (cause.status === 404) {

@@ -57,4 +57,22 @@ describe('Application routing', () => {
 
     expect(harness.routeNativeElement?.textContent).toContain('No corresponding page found');
   });
+
+  for (const url of ['/', '/country/France']) {
+    it(`should show a data validation error at ${url} without statistics or a chart`, async () => {
+      const harness = await RouterTestingHarness.create();
+      await harness.navigateByUrl(url);
+
+      httpTesting.expectOne('./assets/mock/olympic.json').flush([
+        { id: 1, country: 'private server details', participations: 'invalid' },
+      ]);
+      harness.detectChanges();
+
+      expect(harness.routeNativeElement?.querySelector('[role="alert"]')?.textContent?.trim())
+        .toBe('Olympic data is invalid. Please try again later.');
+      expect(harness.routeNativeElement?.textContent).not.toContain('private server details');
+      expect(harness.routeNativeElement?.querySelector('app-header')).toBeNull();
+      expect(harness.routeNativeElement?.querySelector('canvas')).toBeNull();
+    });
+  }
 });

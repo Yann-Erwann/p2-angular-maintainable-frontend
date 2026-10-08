@@ -114,6 +114,15 @@ comme cause pour le diagnostic ; les templates affichent uniquement le message
 utilisateur. Un pays absent est distingué d'une panne HTTP. Le passage à une
 navigation par ID et le parcours complet de redirection restent des travaux de routing.
 
+Avant de transmettre une réponse aux pages, `DataService` reçoit un contenu
+`unknown` et le valide à l'exécution : collection de pays, champs obligatoires,
+textes non vides, compteurs numériques finis et non négatifs, identifiants et
+années entiers positifs sûrs. Les identifiants de pays sont uniques dans la
+collection ; ceux des participations sont uniques au sein de chaque pays.
+Une collection vide ou un pays sans participations reste valide. Les champs
+supplémentaires sont conservés et aucune conversion implicite n'est appliquée.
+Un contenu invalide fait échouer toute la réponse et affiche une erreur de données.
+
 ## Éditeur et architecture
 
 Ouvrir la racine du dépôt dans VS Code dans l'environnement où les dépendances

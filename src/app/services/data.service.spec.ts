@@ -5,6 +5,7 @@ import { TestBed } from '@angular/core/testing';
 import type { Olympic } from '../models/olympic';
 import type { DataLoadError } from './data-load-error';
 import { DataService } from './data.service';
+import { OlympicDataValidationError } from './olympic-data.validator';
 
 describe('DataService', () => {
   let service: DataService;
@@ -47,6 +48,32 @@ describe('DataService', () => {
 
     expect(nextSpy).toHaveBeenCalledOnceWith([]);
   });
+
+  for (const scenario of [
+    { name: 'a non-array payload', payload: { details: 'private server details' } },
+    { name: 'a malformed participation', payload: [{
+      id: 1, country: 'France', participations: [{
+        id: 1, year: 2012, city: 'London', medalsCount: '10', athleteCount: 100,
+      }],
+    }] },
+    { name: 'duplicate country IDs', payload: [
+      { id: 1, country: 'France', participations: [] },
+      { id: 1, country: 'Italy', participations: [] },
+    ] },
+  ]) {
+    it(`should propagate ${scenario.name} as a data error without emitting success`, () => {
+      const nextSpy = jasmine.createSpy<(data: readonly Olympic[]) => void>('next');
+      const errorSpy = jasmine.createSpy<(error: DataLoadError) => void>('error');
+      service.getOlympics().subscribe({ next: nextSpy, error: errorSpy });
+      httpTesting.expectOne('./assets/mock/olympic.json').flush(scenario.payload);
+
+      expect(nextSpy).not.toHaveBeenCalled();
+      expect(errorSpy).toHaveBeenCalledOnceWith(jasmine.objectContaining({
+        message: 'Olympic data is invalid. Please try again later.',
+        cause: jasmine.any(OlympicDataValidationError),
+      }));
+    });
+  }
 
   it('should propagate HTTP errors instead of returning an empty collection', () => {
     const nextSpy = jasmine.createSpy<(data: readonly Olympic[]) => void>('next');
