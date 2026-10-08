@@ -1,0 +1,4 @@
+# Allow crawlers to read the noindex directive in HTML and HTTP headers.
+# Indexing is disabled by meta robots and X-Robots-Tag, not by robots.txt.
+User-agent: *
+Allow: /

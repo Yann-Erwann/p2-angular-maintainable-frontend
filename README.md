@@ -171,6 +171,25 @@ requêtes lors de changements rapides de pays.
 Le repli serveur nécessaire au rechargement des URL profondes en production
 reste à configurer et vérifier dans I19.
 
+## Métadonnées et absence d’indexation
+
+Le document HTML fournit une description, le nom de l’application, une couleur
+de thème et les métadonnées Open Graph de base pour les aperçus de liens. La
+langue reste anglaise, comme l’interface, et les titres de pages sont gérés
+par le routeur et les données du pays.
+
+Le site demande à rester hors des résultats des moteurs : balise
+`robots="noindex, nofollow"` dans le HTML et en-tête HTTP
+`X-Robots-Tag: noindex, nofollow` dans la configuration de `serve`.
+`src/robots.txt` est copié à la racine du build et accessible à `/robots.txt`.
+Il autorise la lecture des pages pour que les robots puissent voir `noindex`.
+Un `Disallow: /` empêcherait cette lecture et pourrait laisser des URL indexées
+si elles sont liées depuis d’autres sites. Aucun sitemap n’est publié.
+
+Sur un autre hébergement, conserver la balise et appliquer le même en-tête.
+Ces directives concernent les moteurs qui les respectent ; le site reste
+accessible publiquement. Référence : [Google, blocage de l’indexation](https://developers.google.com/search/docs/crawling-indexing/block-indexing).
+
 ## Interface responsive
 
 Pendant le chargement, un squelette statique représente le titre, les deux
