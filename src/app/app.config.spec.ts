@@ -42,6 +42,19 @@ describe('Application routing', () => {
     expect(harness.routeNativeElement?.textContent).toContain('No Olympic data available.');
   });
 
+  for (const url of ['/', '/country/France']) {
+    it(`should cancel the pending HTTP request when leaving ${url}`, async () => {
+      const harness = await RouterTestingHarness.create();
+      await harness.navigateByUrl(url);
+      const request = httpTesting.expectOne('./assets/mock/olympic.json');
+      expect(request.cancelled).toBeFalse();
+
+      await harness.navigateByUrl('/not-found', NotFoundComponent);
+      expect(request.cancelled).toBeTrue();
+      httpTesting.expectNone('./assets/mock/olympic.json');
+    });
+  }
+
   it('should render the not-found page at its explicit URL', async () => {
     const harness = await RouterTestingHarness.create();
 

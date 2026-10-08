@@ -123,6 +123,15 @@ Une collection vide ou un pays sans participations reste valide. Les champs
 supplémentaires sont conservés et aucune conversion implicite n'est appliquée.
 Un contenu invalide fait échouer toute la réponse et affiche une erreur de données.
 
+Chaque page possède un signal d'état unique contenant les données ou le message
+d'erreur ; les statistiques sont dérivées avec `computed`. RxJS compose le
+chargement et, pour le pays, les paramètres de route avec la dernière réponse.
+Un changement de pays réutilise cette réponse sans nouvelle requête. Les
+abonnements utilisent `takeUntilDestroyed` : quitter la page annule une requête
+HTTP encore en cours et arrête l'écoute des paramètres. Les rendus différés
+obsolètes sont annulés avant remplacement ou destruction de la page. Le cycle
+de vie complet des instances Chart.js reste un travail distinct.
+
 ## Éditeur et architecture
 
 Ouvrir la racine du dépôt dans VS Code dans l'environnement où les dépendances

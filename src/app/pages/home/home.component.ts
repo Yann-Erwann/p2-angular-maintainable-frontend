@@ -1,9 +1,11 @@
-import {afterNextRender, Component, ErrorHandler, inject, Injector, type OnInit} from '@angular/core';
+import { afterNextRender, type AfterRenderRef, Component, computed, DestroyRef, ErrorHandler, inject, Injector, type OnInit, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import type { Olympic } from '../../models/olympic';
+import { olympicLoadState } from '../../olympics/olympic-load-state';
 import { Router, RouterLink } from '@angular/router';
 import Chart from 'chart.js/auto';
 import { HeaderComponent } from '../../olympics/header/header.component';
 import type { PageState } from '../../olympics/page-state';
-import { toDataLoadError } from '../../services/data-load-error';
 import { DataService } from '../../services/data.service';
 
 @Component({
@@ -15,45 +17,43 @@ import { DataService } from '../../services/data.service';
 })
 export class HomeComponent implements OnInit {
   public pieChart!: Chart<"pie", number[], string>;
-  public totalCountries = 0
-  public totalJOs = 0
-  public error!:string
-  public state: PageState = { status: 'loading' };
-  titlePage = "Medals per Country";
+  private readonly pageState = signal<PageState<readonly Olympic[]>>({ status: 'loading' });
+  private readonly summary = computed(() => {
+    const state = this.pageState();
+    const data = state.status === 'success' ? state.data : [];
+    return {
+      countries: data.map((country) => country.country),
+      medals: data.map((country) => country.participations.reduce((total, item) => total + item.medalsCount, 0)),
+      editions: new Set(data.flatMap((country) => country.participations.map((item) => item.year))).size,
+    };
+  });
+  public get state() { return this.pageState(); }
+  public get totalCountries() { return this.summary().countries.length; }
+  public get totalJOs() { return this.summary().editions; }
+  readonly titlePage = "Medals per Country";
 
   private readonly router = inject(Router);
   private readonly dataService = inject(DataService);
   private readonly errorHandler = inject(ErrorHandler);
   private readonly injector = inject(Injector);
+  private readonly destroyRef = inject(DestroyRef);
+  private pendingRender?: AfterRenderRef;
 
   ngOnInit() {
-    this.dataService.getOlympics().subscribe({
-      next: (data) => {
-        this.pieChart?.destroy();
-        if (data && data.length > 0) {
-          this.totalJOs = new Set(data.flatMap((i) => i.participations.map((f) => f.year)).flat()).size;
-          const countries: string[] = data.map((i) => i.country);
-          this.totalCountries = countries.length;
-          const medals = data.map((i) => i.participations.map((i) => (i.medalsCount)));
-          const sumOfAllMedalsYears = medals.map((i) => i.reduce((acc, i) => acc + i, 0));
-          this.state = { status: 'success' };
-          afterNextRender(() => {
-            if (this.state.status === 'success') {
-              this.buildPieChart(countries, sumOfAllMedalsYears);
-            }
-          }, { injector: this.injector });
-        } else {
-          this.totalCountries = 0;
-          this.totalJOs = 0;
-          this.state = { status: 'empty' };
-        }
-      },
-      error: (error: unknown) => {
-        this.pieChart?.destroy();
-        this.error = toDataLoadError(error).message;
-        this.state = { status: 'error', message: this.error };
+    this.destroyRef.onDestroy(() => this.pendingRender?.destroy());
+    olympicLoadState(this.dataService.getOlympics()).pipe(
+      takeUntilDestroyed(this.destroyRef),
+    ).subscribe((state) => {
+      this.pendingRender?.destroy();
+      this.pieChart?.destroy();
+      this.pageState.set(state);
+      if (state.status === 'success') {
+        this.pendingRender = afterNextRender(() => {
+          const summary = this.summary();
+          this.buildPieChart(summary.countries, summary.medals);
+        }, { injector: this.injector });
       }
-    })
+    });
   }
 
   buildPieChart(countries: string[], sumOfAllMedalsYears: number[]) {
@@ -77,7 +77,6 @@ export class HomeComponent implements OnInit {
               const firstPoint = points[0];
               const countryName = pieChart.data.labels ? pieChart.data.labels[firstPoint.index] : '';
               void this.router.navigate(['country', countryName]).catch((error: unknown) => {
-                this.error = error instanceof Error ? error.message : String(error);
                 this.errorHandler.handleError(error);
               });
             }

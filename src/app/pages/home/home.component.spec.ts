@@ -37,6 +37,32 @@ describe('HomeComponent', () => {
     data.complete();
   });
 
+  it('should stop consuming data when destroyed', () => {
+    expect(data.observed).toBeTrue();
+    fixture.destroy();
+    expect(data.observed).toBeFalse();
+    data.next([]);
+    expect(component.state.status).toBe('loading');
+  });
+
+  it('should cancel a pending chart render when destroyed', () => {
+    const chartSpy = spyOn(component, 'buildPieChart');
+    data.next([{ id: 1, country: 'France', participations: [] }]);
+    fixture.destroy();
+    TestBed.tick();
+    expect(chartSpy).not.toHaveBeenCalled();
+    expect(data.observed).toBeFalse();
+  });
+
+  it('should render only the latest response when several arrive before rendering', () => {
+    const chartSpy = spyOn(component, 'buildPieChart');
+    data.next([{ id: 1, country: 'France', participations: [] }]);
+    data.next([{ id: 2, country: 'Italy', participations: [] }]);
+    fixture.detectChanges();
+    expect(chartSpy).toHaveBeenCalledOnceWith(['Italy'], [0]);
+    expect(component.totalCountries).toBe(1);
+  });
+
   it('should create', () => {
     data.next([]);
     expect(dataService.getOlympics.calls.count()).toBe(1);

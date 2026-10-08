@@ -35,6 +35,37 @@ describe('CountryComponent', () => {
     data.complete();
   });
 
+  it('should stop consuming route and data changes after leaving the page', async () => {
+    const harness = await RouterTestingHarness.create();
+    component = await harness.navigateByUrl('/country/France', CountryComponent);
+    const chartSpy = spyOn(component, 'buildChart');
+    expect(data.observed).toBeTrue();
+
+    await harness.navigateByUrl('/not-found');
+    expect(data.observed).toBeFalse();
+    data.next([{ id: 1, country: 'France', participations: [] }]);
+    expect(component.state.status).toBe('loading');
+    expect(chartSpy).not.toHaveBeenCalled();
+  });
+
+  it('should derive the selected country from new route parameters after the response completes', async () => {
+    const harness = await RouterTestingHarness.create();
+    component = await harness.navigateByUrl('/country/France', CountryComponent);
+    data.next([
+      { id: 1, country: 'France', participations: [] },
+      { id: 2, country: 'Italy', participations: [] },
+    ]);
+    data.complete();
+    harness.detectChanges();
+    expect(component.titlePage).toBe('France');
+
+    const reused = await harness.navigateByUrl('/country/Italy', CountryComponent);
+    expect(reused).toBe(component);
+    expect(component.titlePage).toBe('Italy');
+    expect(dataService.getOlympics.calls.count()).toBe(1);
+    expect(harness.routeNativeElement?.querySelector('app-header')?.textContent).toContain('Italy');
+  });
+
   it('should render the requested country, its totals and numeric medal chart', async () => {
     const harness = await RouterTestingHarness.create();
 
