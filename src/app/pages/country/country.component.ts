@@ -13,7 +13,7 @@ import type { Olympic } from '../../models/olympic';
 })
 export class CountryComponent implements OnInit {
   private readonly olympicUrl = './assets/mock/olympic.json';
-  public lineChart!: Chart<"line", string[], number>;
+  public lineChart!: Chart<"line", number[], number>;
   public titlePage = '';
   public totalEntries = 0;
   public totalMedals = 0;
@@ -37,10 +37,10 @@ export class CountryComponent implements OnInit {
           const participations = selectedCountry?.participations;
           this.totalEntries = participations?.length ?? 0;
           const years = selectedCountry?.participations.map((i) => i.year) ?? [];
-          const medals = selectedCountry?.participations.map((i) => i.medalsCount.toString()) ?? [];
-          this.totalMedals = medals.reduce((accumulator, item) => accumulator + Number.parseInt(item), 0);
-          const nbAthletes = selectedCountry?.participations.map((i) => i.athleteCount.toString()) ?? []
-          this.totalAthletes = nbAthletes.reduce((accumulator, item) => accumulator + Number.parseInt(item), 0);
+          const medals = selectedCountry?.participations.map((i) => i.medalsCount) ?? [];
+          this.totalMedals = medals.reduce((accumulator, item) => accumulator + item, 0);
+          const nbAthletes = selectedCountry?.participations.map((i) => i.athleteCount) ?? []
+          this.totalAthletes = nbAthletes.reduce((accumulator, item) => accumulator + item, 0);
           this.buildChart(years, medals);
         }
       },
@@ -50,7 +50,7 @@ export class CountryComponent implements OnInit {
     });
   }
 
-  buildChart(years: number[], medals: string[]) {
+  buildChart(years: number[], medals: number[]) {
     const lineChart = new Chart("countryChart", {
       type: 'line',
       data: {

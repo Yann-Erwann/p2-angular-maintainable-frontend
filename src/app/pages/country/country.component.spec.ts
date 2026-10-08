@@ -30,7 +30,7 @@ describe('CountryComponent', () => {
     httpTesting.verify();
   });
 
-  it('should create', async () => {
+  it('should sum numeric counts and pass numeric medals to the chart', async () => {
     const harness = await RouterTestingHarness.create();
 
     const component = await harness.navigateByUrl(
@@ -71,6 +71,21 @@ describe('CountryComponent', () => {
     expect(component.totalEntries).toBe(2);
     expect(component.totalMedals).toBe(30);
     expect(component.totalAthletes).toBe(250);
-    expect(chartSpy).toHaveBeenCalledWith([2012, 2016], ['10', '20']);
+    expect(chartSpy).toHaveBeenCalledWith([2012, 2016], [10, 20]);
+  });
+
+  it('should keep totals at zero for a country without participations', async () => {
+    const harness = await RouterTestingHarness.create();
+    const component = await harness.navigateByUrl('/country/France', CountryComponent);
+    const chartSpy = spyOn(component, 'buildChart');
+
+    httpTesting.expectOne('./assets/mock/olympic.json').flush([
+      { id: 1, country: 'France', participations: [] },
+    ]);
+
+    expect(component.totalEntries).toBe(0);
+    expect(component.totalMedals).toBe(0);
+    expect(component.totalAthletes).toBe(0);
+    expect(chartSpy).toHaveBeenCalledWith([], []);
   });
 });
