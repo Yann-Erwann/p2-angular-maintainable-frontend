@@ -96,11 +96,25 @@ pnpm run build
 pnpm run preview
 ```
 
-Ouvrir l'adresse affichée par le serveur. Le script de prévisualisation utilise
-`pnpm dlx serve -s dist/olympic-games-starter/browser` : il peut télécharger
-`serve` et applique un repli SPA pour les URL comme `/country/1`.
-Cet outil sert à vérifier le build localement ; la conteneurisation et les
-réglages d'hébergement de production relèvent d'I19.
+Ouvrir l’adresse affichée par le serveur. `pnpm dlx serve -s --config serve.json`
+peut télécharger `serve` et utilise la configuration suivie dans le dépôt.
+Elle sert le build avec un repli SPA pour les URL comme `/country/1`.
+
+Les fichiers JavaScript et CSS versionnés par le hash Angular sont servis avec
+`Cache-Control: public, max-age=31536000, immutable` (un an). Chaque nouveau
+contenu produit un nouveau nom de fichier. Le HTML, le JSON et les assets sans
+hash utilisent `Cache-Control: no-cache` : le navigateur peut les conserver,
+mais doit les revalider avant réutilisation. `serve` fournit les ETag permettant
+une réponse 304 lorsque le contenu n’a pas changé.
+
+Pour contrôler une visite répétée, décocher **Disable cache** dans les outils
+réseau puis revisiter la page ; les fichiers versionnés peuvent être repris du
+cache. Le rechargement forcé peut contourner le cache. Les données en mémoire
+partagées par DataService s’appliquent uniquement pendant la session Angular.
+
+Cette configuration s’applique à `pnpm run preview`. Sur un autre hébergement,
+reprendre les mêmes règles HTTP et vérifier les en-têtes réellement retournés.
+La conteneurisation et le déploiement de production relèvent d’I19.
 
 ## États des pages
 

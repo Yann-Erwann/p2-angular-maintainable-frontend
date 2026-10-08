@@ -103,3 +103,29 @@ débordement horizontal. Les tests rendent explicitement les blocs différés
 pour vérifier les calculs, la navigation et la destruction des graphiques ;
 un test supplémentaire couvre le tableau avant le graphique et le message
 d’erreur de chargement. 159 tests, lint et TypeScript des specs passent.
+
+## Cache HTTP des visites répétées
+
+`serve.json` configure le serveur de prévisualisation :
+
+- JS/CSS Angular nommés `main`, `polyfills`, `styles` ou `chunk`, avec un hash
+  de huit caractères : `public, max-age=31536000, immutable`.
+- HTML, JSON et autres fichiers sans version dans leur nom : `no-cache`,
+  avec revalidation ETag. Les réponses peuvent être conservées mais doivent
+  être validées avant réutilisation ; le HTML ne reste pas figé pendant un an.
+
+Le script `pnpm run preview` charge explicitement cette configuration et garde
+le repli SPA. Contrôles HTTP réels sur les cinq JS/CSS produits par le build,
+`/`, `/index.html`, `/country/1`, le JSON et le favicon : en-têtes attendus sur
+les réponses 200, ETag présents et réponse 304 aux requêtes conditionnelles.
+Le repli `/country/1` retourne bien le HTML de l’application.
+
+Chromium, cache activé, deux visites complètes `/` puis `/country/1` : les
+cinq JS/CSS de la deuxième page affichent `transferSize = 0`, avec un graphique
+rendu. Le JSON est revalidé. Décocher **Disable cache** pour reproduire cette
+mesure ; elle est distincte du cache en mémoire de DataService.
+
+Ces règles sont celles de `serve`, pas une configuration du serveur Angular
+de développement ou d’un hébergement externe. Le serveur/CDN de production
+doit appliquer la même politique aux ressources effectivement servies.
+Référence : [configuration des en-têtes de serve-handler](https://github.com/vercel/serve-handler#headers-array).
