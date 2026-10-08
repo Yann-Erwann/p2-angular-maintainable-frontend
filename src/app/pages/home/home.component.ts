@@ -1,5 +1,5 @@
 import {HttpClient, type HttpErrorResponse} from '@angular/common/http';
-import {Component, inject, type OnInit} from '@angular/core';
+import {Component, ErrorHandler, inject, type OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import Chart from 'chart.js/auto';
 import type { Olympic } from '../../models/olympic';
@@ -20,6 +20,7 @@ export class HomeComponent implements OnInit {
 
   private readonly router = inject(Router);
   private readonly http = inject(HttpClient);
+  private readonly errorHandler = inject(ErrorHandler);
 
   ngOnInit() {
     this.http.get<Olympic[]>(this.olympicUrl).subscribe({
@@ -53,13 +54,16 @@ export class HomeComponent implements OnInit {
       },
       options: {
         aspectRatio: 2.5,
-        onClick: async (e) => {
+        onClick: (e) => {
           if (e.native) {
             const points = pieChart.getElementsAtEventForMode(e.native, 'point', { intersect: true }, true)
             if (points.length) {
               const firstPoint = points[0];
               const countryName = pieChart.data.labels ? pieChart.data.labels[firstPoint.index] : '';
-              await this.router.navigate(['country', countryName]);
+              void this.router.navigate(['country', countryName]).catch((error: unknown) => {
+                this.error = error instanceof Error ? error.message : String(error);
+                this.errorHandler.handleError(error);
+              });
             }
           }
         }
