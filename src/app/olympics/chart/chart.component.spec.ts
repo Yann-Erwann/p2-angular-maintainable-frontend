@@ -20,6 +20,7 @@ describe('OlympicChartComponent', () => {
     fixture.componentRef.setInput('type', 'pie');
     fixture.componentRef.setInput('labels', ['France']);
     fixture.componentRef.setInput('values', [30]);
+    fixture.componentRef.setInput('dataDescriptionId', 'data-caption');
   });
 
   it('should create after the view renders using its own canvas and typed inputs', () => {
@@ -84,6 +85,7 @@ describe('OlympicChartComponent', () => {
     other.componentRef.setInput('type', 'line');
     other.componentRef.setInput('labels', [2012]);
     other.componentRef.setInput('values', [10]);
+    other.componentRef.setInput('dataDescriptionId', 'other-caption');
     other.detectChanges();
     const firstCanvas = renderer.create.calls.argsFor(0)[0];
     const secondCanvas = renderer.create.calls.argsFor(1)[0];

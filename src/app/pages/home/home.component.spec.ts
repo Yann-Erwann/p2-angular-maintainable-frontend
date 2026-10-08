@@ -132,11 +132,19 @@ describe('HomeComponent', () => {
     expect(chartAt(fixture.nativeElement as HTMLElement).data.datasets[0].data).toEqual([30, 15]);
 
     const page = fixture.nativeElement as HTMLElement;
-    expect(page.querySelector('app-header .center > div')?.textContent?.trim()).toBe('Medals per Country');
-    expect(Array.from(page.querySelectorAll('app-header .split p'), item => item.textContent?.trim())).toEqual([
+    expect(page.querySelector('app-header .center > h2')?.textContent?.trim()).toBe('Medals per Country');
+    expect(Array.from(page.querySelectorAll('app-header .split dt, app-header .split dd'), item => item.textContent?.trim())).toEqual([
       'Number of countries', '2', 'Number of JOs', '2',
     ]);
     expect(page.querySelector('canvas')).toBe(chartAt(fixture.nativeElement as HTMLElement).canvas);
+    expect(Array.from(page.querySelectorAll('tbody tr'), row =>
+      Array.from(row.querySelectorAll('th, td'), cell => cell.textContent?.trim()),
+    )).toEqual([['France', '30'], ['Italy', '15']]);
+    expect(Array.from(page.querySelectorAll('tbody a'), link => link.getAttribute('href'))).toEqual(['/country/France', '/country/Italy']);
+    expect(page.querySelector('canvas')?.getAttribute('aria-describedby')).toBe(page.querySelector('caption')?.id);
+    expect(page.querySelector('canvas')?.getAttribute('role')).toBe('img');
+    expect(page.querySelectorAll('thead th[scope="col"]').length).toBe(2);
+    expect(page.querySelectorAll('tbody th[scope="row"]').length).toBe(2);
   });
 
   it('should display loading without statistics or a chart before the response', () => {

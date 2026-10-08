@@ -1,4 +1,5 @@
 <div>
+  <h1 class="page-title" tabindex="-1">{{ titlePage ? 'Olympic results for ' + titlePage : 'Country details' }}</h1>
   @if (state.status === 'loading') {
     <p class="page-message" role="status">Loading Olympic data...</p>
   } @else if (state.status === 'error') {
@@ -25,9 +26,26 @@
         type="line"
         [labels]="summary().years"
         [values]="summary().medals"
+        dataDescriptionId="participation-caption"
       />
       <p class="chart-caption">Olympic year</p>
     </div>
+    <table class="data-table">
+      <caption id="participation-caption">{{ titlePage }}: medals and athletes by Olympic year.</caption>
+      <thead>
+        <tr><th scope="col">Year</th><th scope="col">Host city</th><th scope="col">Medals</th><th scope="col">Athletes</th></tr>
+      </thead>
+      <tbody>
+        @for (participation of summary().participations; track participation.id) {
+          <tr>
+            <th scope="row">{{ participation.year }}</th>
+            <td>{{ participation.city }}</td>
+            <td>{{ participation.medalsCount }}</td>
+            <td>{{ participation.athleteCount }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
   }
   <div class="center">
     <a class="back-link" routerLink="/">Go back</a>

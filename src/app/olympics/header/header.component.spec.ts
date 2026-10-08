@@ -22,8 +22,8 @@ describe('HeaderComponent', () => {
     fixture.componentRef.setInput('indicators', indicators);
     fixture.detectChanges();
 
-    expect(page.querySelector('.center > div')?.textContent?.trim()).toBe('Medals per Country');
-    expect(Array.from(page.querySelectorAll('.split p'), item => item.textContent?.trim())).toEqual([
+    expect(page.querySelector('.center > h2')?.textContent?.trim()).toBe('Medals per Country');
+    expect(Array.from(page.querySelectorAll('.split dt, .split dd'), item => item.textContent?.trim())).toEqual([
       'Number of countries', '5', 'Number of JOs', '0',
     ]);
   });
@@ -37,8 +37,8 @@ describe('HeaderComponent', () => {
     fixture.componentRef.setInput('indicators', [{ label: 'Number of entries', value: 3 }]);
     fixture.detectChanges();
 
-    expect(page.querySelector('.center > div')?.textContent?.trim()).toBe('Italy');
-    expect(Array.from(page.querySelectorAll('.split p'), item => item.textContent?.trim())).toEqual([
+    expect(page.querySelector('.center > h2')?.textContent?.trim()).toBe('Italy');
+    expect(Array.from(page.querySelectorAll('.split dt, .split dd'), item => item.textContent?.trim())).toEqual([
       'Number of entries', '3',
     ]);
   });
@@ -48,7 +48,7 @@ describe('HeaderComponent', () => {
     fixture.componentRef.setInput('indicators', []);
     fixture.detectChanges();
 
-    expect(page.querySelector('.center > div')?.textContent?.trim()).toBe('Olympic games');
+    expect(page.querySelector('.center > h2')?.textContent?.trim()).toBe('Olympic games');
     expect(page.querySelectorAll('.split > div').length).toBe(0);
   });
 });

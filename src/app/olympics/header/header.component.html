@@ -1,11 +1,11 @@
 <div class="center">
-  <div>{{ title() }}</div>
+  <h2>{{ title() }}</h2>
 </div>
-<div class="split">
+<dl class="split">
   @for (indicator of indicators(); track $index) {
     <div>
-      <p>{{ indicator.label }}</p>
-      <p>{{ indicator.value }}</p>
+      <dt>{{ indicator.label }}</dt>
+      <dd>{{ indicator.value }}</dd>
     </div>
   }
-</div>
+</dl>

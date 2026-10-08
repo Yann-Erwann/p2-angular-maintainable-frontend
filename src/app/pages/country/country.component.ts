@@ -23,6 +23,7 @@ export class CountryComponent implements OnInit {
     const country = state.status === 'success' || state.status === 'empty' ? state.data : undefined;
     const participations = country?.participations ?? [];
     return {
+      participations,
       title: country?.country ?? '',
       entries: participations.length,
       medals: participations.map((item) => item.medalsCount),

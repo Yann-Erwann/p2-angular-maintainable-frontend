@@ -3,13 +3,16 @@ import { ChartRenderer, type OlympicChartData } from './chart-renderer.service';
 
 @Component({
   selector: 'app-olympic-chart',
-  template: '<canvas #canvas></canvas>',
+  template: `<canvas #canvas role="img"
+    [attr.aria-label]="type() === 'pie' ? 'Total medals by country chart' : 'Medals by Olympic year chart'"
+    [attr.aria-describedby]="dataDescriptionId()"></canvas>`,
   styleUrl: './chart.component.scss',
 })
 export class OlympicChartComponent {
   readonly type = input.required<OlympicChartData['type']>();
   readonly labels = input.required<readonly (string | number)[]>();
   readonly values = input.required<readonly number[]>();
+  readonly dataDescriptionId = input.required<string>();
   readonly countrySelected = output<string>();
   private readonly canvas = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
   private readonly renderer = inject(ChartRenderer);

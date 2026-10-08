@@ -130,8 +130,8 @@ describe('CountryComponent', () => {
     expect(chartAt(harness.routeNativeElement).data.datasets[0].data).toEqual([10, 20]);
 
     const page = harness.routeNativeElement;
-    expect(page?.querySelector('app-header .center > div')?.textContent?.trim()).toBe('France');
-    expect(Array.from(page?.querySelectorAll('app-header .split p') ?? [], item => item.textContent?.trim())).toEqual([
+    expect(page?.querySelector('app-header .center > h2')?.textContent?.trim()).toBe('France');
+    expect(Array.from(page?.querySelectorAll('app-header .split dt, app-header .split dd') ?? [], item => item.textContent?.trim())).toEqual([
       'Number of entries', '2',
       'Total Number of medals', '30',
       'Total Number of athletes', '250',
@@ -139,6 +139,14 @@ describe('CountryComponent', () => {
     expect(page?.querySelector('canvas')).toBe(chartAt(harness.routeNativeElement).canvas);
     expect(page?.querySelector('a')?.textContent?.trim()).toBe('Go back');
     expect(page?.querySelector('a')?.getAttribute('href')).toBe('/');
+    expect(Array.from(page?.querySelectorAll('tbody tr') ?? [], row =>
+      Array.from(row.querySelectorAll('th, td'), cell => cell.textContent?.trim()),
+    )).toEqual([
+      ['2012', 'London', '10', '100'],
+      ['2016', 'Rio de Janeiro', '20', '150'],
+    ]);
+    expect(page?.querySelector('canvas')?.getAttribute('aria-describedby')).toBe(page?.querySelector('caption')?.id);
+    expect(page?.querySelectorAll('thead th[scope="col"]').length).toBe(4);
   });
 
   it('should keep totals at zero for a country without participations', async () => {
@@ -156,7 +164,7 @@ describe('CountryComponent', () => {
     expect(chartSpy).not.toHaveBeenCalled();
     harness.detectChanges();
     expect(harness.routeNativeElement?.querySelector('app-header')?.textContent).toContain('France');
-    expect(Array.from(harness.routeNativeElement?.querySelectorAll('.split p') ?? [], item => item.textContent?.trim())).toEqual([
+    expect(Array.from(harness.routeNativeElement?.querySelectorAll('.split dt, .split dd') ?? [], item => item.textContent?.trim())).toEqual([
       'Number of entries', '0', 'Total Number of medals', '0', 'Total Number of athletes', '0',
     ]);
     expect(harness.routeNativeElement?.querySelector('[role="status"]')?.textContent).toContain('No Olympic data available');

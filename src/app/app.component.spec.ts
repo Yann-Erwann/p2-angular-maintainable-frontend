@@ -2,6 +2,9 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
 import { AppComponent } from './app.component';
+import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
+import { Router } from '@angular/router';
+import { appConfig } from './app.config';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -33,5 +36,49 @@ describe('AppComponent', () => {
     const compiled = fixture.nativeElement as HTMLElement;
 
     expect(compiled.querySelector('router-outlet')).not.toBeNull();
+  });
+});
+
+describe('Accessible application navigation', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [AppComponent],
+      providers: [...appConfig.providers, provideHttpClientTesting()],
+    });
+  });
+
+  it('should expose a skip link, main landmark and focus the heading after navigation', async () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const router = TestBed.inject(Router);
+    const http = TestBed.inject(HttpTestingController);
+    await router.navigateByUrl('/');
+    fixture.detectChanges();
+    http.expectOne('./assets/mock/olympic.json').flush([]);
+    fixture.detectChanges();
+
+    const page = fixture.nativeElement as HTMLElement;
+    expect(page.querySelector('.skip-link')?.getAttribute('href')).toBe('#main-content');
+    expect(page.querySelectorAll('main').length).toBe(1);
+    expect(page.querySelectorAll('h1').length).toBe(1);
+    expect(document.title).toBe('Medals by country | Olympic Games');
+
+    await router.navigateByUrl('/country/Italy');
+    fixture.detectChanges();
+    http.expectOne('./assets/mock/olympic.json').flush([
+      { id: 1, country: 'Italy', participations: [] },
+    ]);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(document.activeElement).toBe(page.querySelector('h1'));
+    expect(page.querySelector('h1')?.textContent).toContain('Italy');
+    expect(document.title).toBe('Italy | Olympic Games');
+
+    await router.navigateByUrl('/unknown');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(document.activeElement).toBe(page.querySelector('h1'));
+    expect(document.title).toBe('Page not found | Olympic Games');
+    http.verify();
   });
 });

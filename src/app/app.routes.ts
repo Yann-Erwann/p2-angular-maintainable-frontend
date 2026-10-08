@@ -9,17 +9,27 @@ export const routes: Routes = [
     path: '',
     pathMatch: 'full',
     component: HomeComponent,
+    title: 'Medals by country | Olympic Games',
   },
   {
     path: 'country/:countryName',
     component: CountryComponent,
+    title: (route) => {
+      const name = route.paramMap.get('countryName')?.trim();
+      if (!name?.length) {
+        return 'Country not found | Olympic Games';
+      }
+      return `${name} | Olympic Games`;
+    },
   },
   {
     path: 'not-found',
     component: NotFoundComponent,
+    title: 'Page not found | Olympic Games',
   },
   {
     path: '**',
     component: NotFoundComponent,
+    title: 'Page not found | Olympic Games',
   },
 ];

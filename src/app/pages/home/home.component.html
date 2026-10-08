@@ -1,4 +1,4 @@
-<h2 class="page-title">Olympic games app</h2>
+<h1 class="page-title" tabindex="-1">Olympic games app</h1>
 <hr/>
 @if (state.status === 'loading') {
   <p class="page-message" role="status">Loading Olympic data...</p>
@@ -19,6 +19,21 @@
     type="pie"
     [labels]="summary().countries"
     [values]="summary().medals"
+    dataDescriptionId="country-medals-caption"
     (countrySelected)="selectCountry($event)"
   />
+  <table class="data-table">
+    <caption id="country-medals-caption">Total medals by country. Select a country to view its Olympic results.</caption>
+    <thead>
+      <tr><th scope="col">Country</th><th scope="col">Total medals</th></tr>
+    </thead>
+    <tbody>
+      @for (country of summary().countries; track $index) {
+        <tr>
+          <th scope="row"><a [routerLink]="['/country', country]">{{ country }}</a></th>
+          <td>{{ summary().medals[$index] }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
 }
