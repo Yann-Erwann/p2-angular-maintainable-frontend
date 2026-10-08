@@ -121,3 +121,44 @@ a {
   white-space: nowrap;
   border: 0;
 }
+
+.olympic-layout {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.5rem;
+
+  > * {
+    grid-column: 1 / -1;
+    min-width: 0;
+  }
+
+  > hr {
+    width: 100%;
+    margin: 0;
+  }
+
+  > .page-title,
+  > app-olympic-chart,
+  > .chart-panel,
+  > .data-table {
+    margin: 0;
+  }
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+
+  @media (min-width: 1200px) {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    align-items: start;
+
+    > app-olympic-chart,
+    > .chart-panel {
+      grid-column: 1 / 8;
+    }
+
+    > .data-table {
+      grid-column: 8 / -1;
+    }
+  }
+}

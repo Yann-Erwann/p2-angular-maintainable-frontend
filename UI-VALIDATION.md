@@ -67,3 +67,23 @@ Les corrections et contrôles d'accessibilité ultérieurs, dont le reflow des
 tableaux et le parcours clavier, sont consignés dans
 [ACCESSIBILITY.md](ACCESSIBILITY.md). Cette revue UI conserve les mesures
 de son propre périmètre et de sa propre révision.
+
+## Grille du cahier des charges — 9 octobre 2026
+
+Contrôle complémentaire après `c46bf35`, sur `/` et `/country/1` :
+
+- Mobile : 4 colonnes jusqu’à 767 px, indicateurs, graphique et tableau empilés.
+- Tablette : 8 colonnes de 768 à 1199 px, graphique pleine largeur.
+- Desktop : 12 colonnes à partir de 1200 px, graphique sur 7 colonnes et
+  tableau sur 5 colonnes ; titre, indicateurs et retour restent pleine largeur.
+
+Chromium headless : mesures à 320, 767, 768, 1199, 1200 et 1280 px sur les
+deux pages et la page inconnue. Les nombres de colonnes et la position des
+panneaux correspondent aux dispositions attendues ; aucun débordement
+horizontal. Captures examinées à 320 px (accueil) et 1280 px (détail).
+Les liens du tableau et les descriptions textuelles des graphiques sont conservés.
+
+Validation : 151 tests réussis et lint sans erreur. Build de production réussi,
+avec un avertissement de budget initial (environ 500,2 kB pour un seuil de
+500 kB). Le seuil n’a pas été modifié. Ce contrôle porte sur Chromium ;
+les autres navigateurs et appareils physiques restent à vérifier.

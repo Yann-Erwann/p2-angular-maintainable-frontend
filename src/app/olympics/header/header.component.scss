@@ -44,3 +44,9 @@
     font-weight: 700;
   }
 }
+
+@media (max-width: 767px) {
+  .split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

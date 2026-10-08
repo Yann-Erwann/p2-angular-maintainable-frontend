@@ -151,6 +151,11 @@ reste à configurer et vérifier dans I19.
 
 ## Interface responsive
 
+Les pages utilisent une grille de 4 colonnes sur mobile (≤ 767 px), 8 sur
+tablette (768–1199 px) et 12 sur desktop (≥ 1200 px). Le graphique et
+le tableau sont côte à côte sur desktop ; ils sont empilés aux autres tailles.
+Les indicateurs sont empilés sur mobile.
+
 La mise en page et les graphiques sont vérifiés à 320, 480, 768, 1024 et
 1280 pixels. Les constats, mesures, états et limites sont consignés dans
 [UI-VALIDATION.md](UI-VALIDATION.md).
