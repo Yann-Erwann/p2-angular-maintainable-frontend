@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { type Routes } from '@angular/router';
 
 import { CountryComponent } from './pages/country/country.component';
 import { HomeComponent } from './pages/home/home.component';

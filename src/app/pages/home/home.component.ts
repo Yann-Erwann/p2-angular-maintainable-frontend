@@ -1,5 +1,5 @@
 import {HttpClient, type HttpErrorResponse} from '@angular/common/http';
-import {Component, type OnInit} from '@angular/core';
+import {Component, inject, type OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import Chart from 'chart.js/auto';
 import type { Olympic } from '../../models/olympic';
@@ -18,7 +18,8 @@ export class HomeComponent implements OnInit {
   public error!:string
   titlePage = "Medals per Country";
 
-  constructor(private readonly router: Router, private readonly http:HttpClient) { }
+  private readonly router = inject(Router);
+  private readonly http = inject(HttpClient);
 
   ngOnInit() {
     this.http.get<Olympic[]>(this.olympicUrl).subscribe({
