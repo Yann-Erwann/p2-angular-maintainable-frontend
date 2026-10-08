@@ -26,7 +26,8 @@ describe('ChartRenderer', () => {
       const chart = Chart.getChart(canvas);
       expect(chart?.data.labels).toEqual([...labels]);
       expect(chart?.data.datasets[0].data).toEqual([10, 20]);
-      expect(chart?.options.aspectRatio).toBe(2.5);
+      expect(chart?.options.responsive).toBeTrue();
+      expect(chart?.options.maintainAspectRatio).toBeFalse();
       expect(chart?.canvas).toBe(canvas);
       rendered.destroy();
       rendered = undefined;

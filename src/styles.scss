@@ -1,44 +1,61 @@
-/* You can add global styles to this file, and also import other style files */
-.heading {
-    flex-direction: column;
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #f5f8fa;
+  color: #23343b;
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+}
+
+app-root {
+  display: block;
+  width: 100%;
+  max-width: 72rem;
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: clamp(1rem, 3vw, 2rem);
+  overflow-wrap: anywhere;
 }
 
 .center {
-    display: flex;
-    justify-content: center;
-    margin: 5px;
-
-    div {
-        background: #0b868f;
-        padding: 10px;
-        border-radius: 10px;
-        color: white;
-    }
+  display: flex;
+  justify-content: center;
 }
 
-.split {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 20px;
-    margin: 5px;
-
-    div {
-        padding: 10px;
-        border: solid #0b868f 1px;
-        border-radius: 10px;
-        color: gray;
-        margin: 0px;
-
-        p {
-            text-align: center;
-            margin: 0;
-        }
-
-        p:last-child {
-            font-weight: bold;
-            color: black;
-        }
-    }
+.page-title {
+  margin: 0 0 1rem;
+  text-align: center;
+  font-size: clamp(1.4rem, 4vw, 2rem);
 }
 
+hr {
+  margin: 1.5rem 0;
+  border: 0;
+  border-top: 1px solid #dbe5e8;
+}
+
+.page-message {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border: 1px solid #dbe5e8;
+  border-radius: 0.75rem;
+  background: white;
+  text-align: center;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  margin-top: 1rem;
+  padding: 0.625rem 1rem;
+  border: 1px solid #0b868f;
+  border-radius: 0.625rem;
+  color: #0b6470;
+  background: white;
+  text-align: center;
+}

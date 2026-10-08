@@ -1,19 +1,10 @@
-
-.wrapper-container {
-    display: flex;
-    justify-content: center;
+.chart-panel {
+  width: 100%;
+  max-width: 64rem;
+  margin: 1.5rem auto 0;
 }
 
-.container {
-    width: 50%;
-    h2{
-        text-align: center;
-        color: gray;
-    }
-}
-
-@media screen and (max-width: 1000px) {
-    .container {
-        width: 100%;
-    }
+.chart-caption {
+  margin: 0.75rem 0 0;
+  text-align: center;
 }

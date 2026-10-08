@@ -4,7 +4,7 @@ import { ChartRenderer, type OlympicChartData } from './chart-renderer.service';
 @Component({
   selector: 'app-olympic-chart',
   template: '<canvas #canvas></canvas>',
-  styles: ':host { display: block; }',
+  styleUrl: './chart.component.scss',
 })
 export class OlympicChartComponent {
   readonly type = input.required<OlympicChartData['type']>();

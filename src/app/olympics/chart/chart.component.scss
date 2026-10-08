@@ -1,0 +1,15 @@
+:host {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-width: 0;
+  height: clamp(18rem, 45vw, 28rem);
+  padding: clamp(0.75rem, 2vw, 1.5rem);
+  border: 1px solid #dbe5e8;
+  border-radius: 0.75rem;
+  background: white;
+}
+
+canvas {
+  display: block;
+}

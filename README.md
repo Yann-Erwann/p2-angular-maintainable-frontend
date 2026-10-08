@@ -146,6 +146,12 @@ Les tests couvrent les accès directs et l'historique simulé du routeur.
 Le repli serveur nécessaire au rechargement des URL profondes en production
 reste à configurer et vérifier dans I19.
 
+## Interface responsive
+
+La mise en page et les graphiques sont vérifiés à 320, 480, 768, 1024 et
+1280 pixels. Les constats, mesures, états et limites sont consignés dans
+[UI-VALIDATION.md](UI-VALIDATION.md).
+
 ## Éditeur et architecture
 
 Ouvrir la racine du dépôt dans VS Code dans l'environnement où les dépendances

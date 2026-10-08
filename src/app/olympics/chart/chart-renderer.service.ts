@@ -32,7 +32,8 @@ export class ChartRenderer {
         }],
       },
       options: {
-        aspectRatio: 2.5,
+        responsive: true,
+        maintainAspectRatio: false,
         onClick: (event) => {
           if (data.type !== 'pie' || !event.native) {
             return;
