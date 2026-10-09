@@ -57,7 +57,7 @@ avec `pnpm add -D <package>`, puis versionner ensemble `package.json` et
 
 ```bash
 pnpm run lint
-pnpm exec ng test --watch=false
+pnpm test --watch=false
 pnpm run build
 ```
 
@@ -67,6 +67,20 @@ statiques dans `dist/olympic-games-starter/browser/`. Pour un build de développ
 ```bash
 pnpm run build --configuration development
 ```
+
+Le build utilise directement Angular CLI. La page d’accueil est incluse dans le
+bundle initial ; la page détail utilise `loadComponent` et son code est préchargé
+par `withPreloading(PreloadAllModules)` après la navigation initiale.
+Le préchargement des graphiques utilise les propriétés natives de `@defer`.
+Le HTML précharge `assets/mock/olympic.json` et `favicon.ico` avec des liens
+`rel="preload"`. Le JSON utilise `as="fetch"` et `crossorigin="anonymous"` pour
+que DataService réutilise la réponse ; le favicon est chargé avec une priorité
+basse. Angular gère le nom hashé du module Chart.js à chaque build.
+`AppComponent` précharge également le module du graphique après son premier
+rendu, y compris sur les routes inconnues. Ses imports chargent les chunks
+partagés ; tous les chunks du build courant sont ainsi téléchargés. Le
+préchargement ne crée aucune instance de graphique et ses erreurs sont
+signalées via `ErrorHandler`.
 
 Les tests utilisent Karma/Jasmine, des réponses HTTP simulées pour le service
 et des doubles de `DataService` pour les pages. Ils couvrent
@@ -85,8 +99,8 @@ pnpm test
 Pour vérifier séparément les configurations TypeScript :
 
 ```bash
-pnpm exec tsc --noEmit -p tsconfig.app.json
-pnpm exec tsc --noEmit -p tsconfig.spec.json
+pnpm tsc --noEmit -p tsconfig.app.json
+pnpm tsc --noEmit -p tsconfig.spec.json
 ```
 
 ## Prévisualiser le build de production
@@ -147,10 +161,16 @@ abonnements utilisent `takeUntilDestroyed` : quitter la page annule une requête
 HTTP encore en cours si aucun autre consommateur ne l’utilise et arrête
 l’écoute des paramètres.
 
-`OlympicChartComponent` est chargé dans un bloc `@defer (on viewport)` :
+`OlympicChartComponent` utilise
+`@defer (on viewport; prefetch when state.status === 'loading' || state.status === 'success')` :
 les indicateurs et le tableau restent accessibles avant le graphique. Un
 emplacement de même hauteur limite les déplacements de mise en page, et un
 message explicite signale un échec du chargement JavaScript du graphique.
+Le bloc existe pendant le chargement des données : son code est téléchargé en
+parallèle de la requête HTTP. Le graphique est créé seulement après une réponse
+valide et lorsque son emplacement devient visible. Les états d’erreur et vide
+gardent le panneau masqué. La légende et les infobulles Chart.js sont conservées.
+Voir la [documentation Angular sur le préchargement des blocs différés](https://angular.dev/guide/templates/defer#prefetching-data-with-prefetch).
 Le composant possède son canvas et reçoit uniquement le type du
 graphique, ses libellés et ses valeurs. `afterRenderEffect` crée le graphique
 une fois le canvas disponible, détruit l'instance précédente avant remplacement
@@ -159,9 +179,17 @@ enregistre uniquement les contrôleurs pie/line, leurs éléments et échelles,
 ainsi que la légende et les infobulles de Chart.js ; la sélection d'un pays remonte à la page, qui gère la
 navigation. Aucun graphique ne dépend d'un identifiant global de canvas.
 
+L’application utilise la détection des changements zoneless et des composants
+`OnPush` : les signaux et les entrées déclenchent leurs mises à jour. Zone.js
+reste disponible pour les tests, mais est absent du build de l’application.
+Les graphiques affichent directement leur résultat, sans animation initiale.
+Le HTML fournit un message de chargement avant le démarrage d’Angular et une
+indication lorsque JavaScript est désactivé.
+
 Les URL publiques utilisent `/country/:id`, avec un identifiant entier positif
 sûr (par exemple `/country/1`). Les anciennes URL par nom ne sont plus valides.
-Un ID mal formé est rejeté sans requête HTTP ; un ID absent de la collection
+Un ID mal formé est rejeté avant tout appel HTTP de DataService ; le préchargement
+HTML du JSON reste commun à toutes les routes. Un ID absent de la collection
 validée affiche `Country not found.`. `/country` et les URL hors des routes
 définies affichent la page inconnue. Tous les liens de retour ciblent `/`.
 Le titre du document reprend le nom du pays chargé. Le clic du graphique et
@@ -219,7 +247,7 @@ racine référence les configurations de l'application et des tests.
 La structure actuelle est la suivante :
 
 - `src/main.ts` démarre `AppComponent` avec `bootstrapApplication` et signale les erreurs.
-- `src/app/app.config.ts` fournit le routeur, HTTP et la détection des changements avec Zone.js.
+- `src/app/app.config.ts` fournit le routeur, HTTP et la détection des changements zoneless.
 - `src/app/app.routes.ts` définit `/`, `/country/:id`, `/not-found` et le repli vers la page inconnue.
 - `src/app/pages/` contient les pages standalone et leurs tests.
 - `src/app/olympics/header/` contient `HeaderComponent`, qui affiche le titre et les indicateurs fournis par les pages d'accueil et de pays.

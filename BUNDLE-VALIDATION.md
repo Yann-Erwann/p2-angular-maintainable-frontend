@@ -1,5 +1,48 @@
 # Réduction du bundle Chart.js
 
+## Chargement Angular natif et mesures Lighthouse
+
+Le 9 octobre 2026, la solution finale utilise Angular CLI directement, une
+page d’accueil incluse au démarrage et un détail chargé avec `loadComponent`.
+Les graphiques utilisent `@defer (on viewport; prefetch when state.status === 'loading' || state.status === 'success')`.
+Le téléchargement de Chart.js commence pendant la requête des données ; le
+graphique est créé après une réponse valide et lorsqu’il devient visible.
+Les scripts personnalisés de post-traitement du build ont été retirés ; le
+préchargement utilise Angular et les liens HTML décrits dans le README.
+La légende et les infobulles Chart.js restent enregistrées. Les composants
+utilisent `OnPush`, l’application est zoneless et les animations initiales des
+graphiques sont désactivées. Zone.js reste disponible pour les tests.
+
+Les mesures utilisent le build de production servi par `pnpm run preview`,
+Lighthouse 13.5.0 et Chromium 154, profil mobile et ralentissement simulé par
+défaut. Lighthouse réinitialise le cache avant la navigation.
+
+| Mesure | Accueil | `/country/1` |
+| --- | ---: | ---: |
+| Performance | 98/100 | 100/100 |
+| FCP | 1,4 s | 0,8 s |
+| LCP | 2,2 s | 0,9 s |
+| TBT | 100 ms | 40 ms |
+
+La chaîne critique maximale du détail est de 163 ms sur ce poste. Les scores
+varient avec la machine et le déroulement de la mesure. Les précédents scores
+à 100 obtenus avec des scripts de préchargement ne décrivent pas cette version.
+Lighthouse signale encore environ 38 Kio de JavaScript inutilisé sur l’accueil
+et 27 Kio sur le détail, dans le module Chart.js : ces diagnostics ne sont pas
+notés. La couverture d’une seule page ne justifie pas de retirer les contrôleurs
+ou plugins nécessaires aux autres usages.
+
+Validation de production : réponse JSON volontairement suspendue, module du
+graphique téléchargé avant la réponse, aucun canvas créé avant les données,
+puis graphique affiché après reprise, avec une seule requête JSON et aucune
+erreur JavaScript. Un accès à `/country/invalid` affiche l’erreur sans appel
+HTTP de DataService ; le préchargement HTML du JSON reste actif.
+Le signalement des erreurs de bootstrap reste présent dans `main.ts`.
+Lint, compilation TypeScript des specs, 159 tests et build vérifient également
+la légende, les infobulles, les données immuables et la destruction des graphiques.
+
+Les mesures historiques ci-dessous décrivent les versions antérieures.
+
 Comparaison du 9 octobre 2026 à partir de `fecc2fb`, avant et après
 remplacement de `chart.js/auto` par un enregistrement sélectif. Les versions,
 les budgets Angular et les autres paramètres du build restent identiques.
