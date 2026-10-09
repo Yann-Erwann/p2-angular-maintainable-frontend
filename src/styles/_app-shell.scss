@@ -1,0 +1,51 @@
+/** Layout partagé avec le HTML de chargement avant le démarrage Angular. */
+@mixin layout {
+  .brand-banner {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 874 / 251;
+    border-radius: 0.75rem;
+  }
+  .brand-link {
+    display: block;
+  }
+  .brand-header {
+    width: 100%;
+    max-width: 32rem;
+    margin: 0 auto 1rem;
+  }
+  & {
+    display: block;
+    width: 100%;
+    max-width: 72rem;
+    min-height: 100dvh;
+    margin: 0 auto;
+    padding: clamp(1rem, 3vw, 2rem);
+    overflow-wrap: anywhere;
+  }
+  &.home-dashboard {
+    max-width: 1500px;
+    padding: 0.5rem clamp(1rem, 2.5vw, 2.25rem) 2.5rem;
+    color: var(--dashboard-text);
+    .brand-header {
+      max-width: none;
+      margin-bottom: 1.75rem;
+    }
+    .brand-banner {
+      aspect-ratio: 1339 / 211;
+      border-radius: 1.25rem;
+    }
+    @media (max-width: 600px) {
+      .brand-banner {
+        aspect-ratio: 874 / 251;
+      }
+      .brand-header {
+        margin-bottom: 1rem;
+      }
+    }
+  }
+  &.country-dashboard .brand-header {
+    margin-bottom: 1rem;
+  }
+}

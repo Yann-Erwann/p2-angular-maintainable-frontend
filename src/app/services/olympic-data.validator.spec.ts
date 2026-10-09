@@ -2,7 +2,11 @@ import { OlympicDataValidationError, validateOlympicData } from './olympic-data.
 
 describe('validateOlympicData', () => {
   const participation = {
-    id: 1, year: 2012, city: 'London', medalsCount: 0, athleteCount: 100,
+    id: 1,
+    year: 2012,
+    city: 'London',
+    medalsCount: 0,
+    athleteCount: 100,
   };
   const country = { id: 1, country: 'France', participations: [participation] };
 
@@ -35,8 +39,14 @@ describe('validateOlympicData', () => {
     { name: 'null participations', payload: [{ ...country, participations: null }] },
     { name: 'object participations', payload: [{ ...country, participations: {} }] },
     { name: 'null participation', payload: [{ ...country, participations: [null] }] },
-    { name: 'missing participation fields', payload: [{ ...country, participations: [{ id: 1 }] }] },
-    { name: 'duplicate participation IDs', payload: [{ ...country, participations: [participation, participation] }] },
+    {
+      name: 'missing participation fields',
+      payload: [{ ...country, participations: [{ id: 1 }] }],
+    },
+    {
+      name: 'duplicate participation IDs',
+      payload: [{ ...country, participations: [participation, participation] }],
+    },
   ];
 
   for (const scenario of malformed) {
@@ -48,29 +58,47 @@ describe('validateOlympicData', () => {
   for (const field of ['id', 'year']) {
     for (const invalid of ['2012', 0, -1, 1.5, Number.MAX_SAFE_INTEGER + 1, Infinity, NaN]) {
       it(`should reject an invalid participation ${field}: ${String(invalid)}`, () => {
-        expect(() => validateOlympicData([{ ...country, participations: [{ ...participation, [field]: invalid }] }]))
-          .toThrowError(OlympicDataValidationError);
+        expect(() =>
+          validateOlympicData([
+            { ...country, participations: [{ ...participation, [field]: invalid }] },
+          ]),
+        ).toThrowError(OlympicDataValidationError);
       });
     }
   }
 
   for (const field of ['medalsCount', 'athleteCount']) {
-    for (const invalid of ['10', -1, Infinity, -Infinity, NaN, null]) {
+    for (const invalid of [
+      '10',
+      -1,
+      1.5,
+      Number.MAX_SAFE_INTEGER + 1,
+      Infinity,
+      -Infinity,
+      NaN,
+      null,
+    ]) {
       it(`should reject an invalid numeric ${field}: ${String(invalid)}`, () => {
-        expect(() => validateOlympicData([{ ...country, participations: [{ ...participation, [field]: invalid }] }]))
-          .toThrowError(OlympicDataValidationError);
+        expect(() =>
+          validateOlympicData([
+            { ...country, participations: [{ ...participation, [field]: invalid }] },
+          ]),
+        ).toThrowError(OlympicDataValidationError);
       });
     }
   }
 
   for (const city of ['', ' ', null, 12]) {
     it(`should reject an invalid city: ${String(city)}`, () => {
-      expect(() => validateOlympicData([{ ...country, participations: [{ ...participation, city }] }]))
-        .toThrowError(OlympicDataValidationError);
+      expect(() =>
+        validateOlympicData([{ ...country, participations: [{ ...participation, city }] }]),
+      ).toThrowError(OlympicDataValidationError);
     });
   }
 
   it('should reject the whole response when only a later country is invalid', () => {
-    expect(() => validateOlympicData([country, { id: 2 }])).toThrowError(OlympicDataValidationError);
+    expect(() => validateOlympicData([country, { id: 2 }])).toThrowError(
+      OlympicDataValidationError,
+    );
   });
 });

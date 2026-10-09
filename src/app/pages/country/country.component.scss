@@ -1,9 +1,188 @@
-.chart-panel {
-  width: 100%;
-  max-width: 64rem;
+:host {
+  display: block;
 }
 
-.chart-caption {
-  margin: 0.75rem 0 0;
+.country-layout {
+  gap: 1.25rem;
+  margin: 0 0.5rem;
+}
+.country-heading {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+.country-heading::before,
+.country-heading::after {
+  content: '';
+  height: 1px;
+  flex: 1;
+  background: #dceaf2;
+}
+.country-heading h1 {
+  margin: 0;
+  color: var(--dashboard-text);
+  font-size: clamp(1.8rem, 3vw, 2.7rem);
+  letter-spacing: -0.04em;
+}
+.country-picker {
+  position: relative;
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  width: 16rem;
+  max-width: 100%;
+  min-height: 3.5rem;
+  padding: 0 1.5rem;
+  gap: 0.75rem;
+  border-radius: 3rem;
+  color: white;
+  background: linear-gradient(120deg, #009bb0, #005960);
+  box-shadow: 0 6px 22px #048d9a24;
+}
+select {
+  appearance: none;
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  height: 3.5rem;
+  border: 0;
+  background: transparent;
+  color: white;
+  font:
+    650 1.3rem system-ui,
+    sans-serif;
+  padding: 0.8rem 1.5rem 0.8rem 0;
+  cursor: pointer;
+  max-width: 100%;
+}
+select.long-country {
+  font-size: 1rem;
+}
+select option {
+  color: var(--dashboard-text);
+  background: white;
+}
+select:disabled {
+  opacity: 1;
+  cursor: wait;
+}
+.picker-chevron {
+  position: absolute;
+  right: 1.8rem;
+  width: 1rem;
+  height: 1rem;
+  pointer-events: none;
+}
+.country-flag {
+  position: relative;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex: 0 0 auto;
+  overflow: hidden;
+  border: 2px solid white;
+  border-radius: 50%;
+  background: #c9eaf2;
+}
+.flag-fr {
+  background: linear-gradient(to right, #002395 33.3%, white 33.3% 66.6%, #ed2939 66.6%);
+}
+.flag-it {
+  background: linear-gradient(to right, #009246 33.3%, white 33.3% 66.6%, #ce2b37 66.6%);
+}
+.flag-de {
+  background: linear-gradient(#111 33.3%, #d00 33.3% 66.6%, #ffce00 66.6%);
+}
+.flag-es {
+  background: linear-gradient(#aa151b 25%, #f1bf00 25% 75%, #aa151b 75%);
+}
+.flag-us {
+  background: repeating-linear-gradient(#b22234 0 7.69%, white 7.69% 15.38%);
+}
+.flag-us::before {
+  content: '⋆⋆';
+  position: absolute;
+  inset: 0 45% 45% 0;
+  background: #3c3b6e;
+  color: white;
+  font-size: 0.65rem;
   text-align: center;
+}
+.country-layout > .country-chart-card {
+  max-width: none;
+  padding: 1.3rem 2rem;
+  border-radius: 1.25rem;
+  background: linear-gradient(135deg, white, #f7fbff);
+  box-shadow: 0 12px 36px #286f9614;
+}
+.country-chart-heading {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+.country-chart-icon {
+  display: grid;
+  place-items: center;
+  width: 4rem;
+  height: 4rem;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: #e0f1ff;
+}
+.country-chart-icon svg {
+  width: 2.4rem;
+  height: 2.4rem;
+}
+.country-chart-heading h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  line-height: 1.25;
+  letter-spacing: -0.03em;
+}
+.country-chart-heading p {
+  margin: 0.25rem 0 0;
+  color: var(--dashboard-muted);
+  font-size: 1.1rem;
+}
+.chart-placeholder {
+  height: 21rem;
+  border: 0;
+}
+.chart-caption {
+  margin: 0.6rem 0 0;
+  color: var(--dashboard-muted);
+  font-size: 1.1rem;
+  text-align: center;
+}
+@media (max-width: 700px) {
+  .country-layout {
+    margin: 0;
+    gap: 1rem;
+  }
+  .country-heading {
+    gap: 0.75rem;
+  }
+  .country-heading h1 {
+    font-size: 1.75rem;
+  }
+  .country-layout > .country-chart-card {
+    padding: 1rem 0.75rem;
+  }
+  .country-chart-heading {
+    gap: 0.75rem;
+  }
+  .country-chart-icon {
+    width: 3rem;
+    height: 3rem;
+  }
+  .country-chart-heading h2 {
+    font-size: 1.3rem;
+  }
+  .country-chart-heading p {
+    min-height: 2.55rem;
+    font-size: 0.85rem;
+  }
+  .chart-placeholder {
+    height: 18rem;
+  }
 }

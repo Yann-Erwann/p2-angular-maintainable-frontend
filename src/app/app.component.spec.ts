@@ -55,7 +55,9 @@ describe('Accessible application navigation', () => {
     const http = TestBed.inject(HttpTestingController);
     await router.navigateByUrl('/');
     fixture.detectChanges();
-    http.expectOne('./assets/mock/olympic.json').flush([{ id: 2, country: 'Italy', participations: [] }]);
+    http
+      .expectOne('./assets/mock/olympic.json')
+      .flush([{ id: 2, country: 'Italy', participations: [] }]);
     fixture.detectChanges();
 
     const page = fixture.nativeElement as HTMLElement;
@@ -81,7 +83,9 @@ describe('Accessible application navigation', () => {
     expect(document.title).toBe('Page not found | Olympic Games');
 
     const homeLink = page.querySelector<HTMLAnchorElement>('.brand-link');
-    expect(homeLink?.getAttribute('href')).toBe(TestBed.inject(LocationStrategy).prepareExternalUrl('/'));
+    expect(homeLink?.getAttribute('href')).toBe(
+      TestBed.inject(LocationStrategy).prepareExternalUrl('/'),
+    );
     expect(homeLink?.getAttribute('aria-label')).toBe('Home — TéléSport');
     const banner = homeLink?.querySelector('img');
     expect(banner?.getAttribute('width')).toBe('874');
@@ -92,12 +96,17 @@ describe('Accessible application navigation', () => {
     expect(router.url).toBe('/');
     fixture.detectChanges();
     expect(fixture.componentInstance.homeLayout()).toBeTrue();
-    expect(page.querySelector('.brand-banner')?.getAttribute('src')).toBe('assets/images/teleSport-home.webp');
+    expect(page.querySelector('.brand-banner')?.getAttribute('src')).toBe(
+      'assets/images/teleSport-home.webp',
+    );
     await router.navigateByUrl('/country/2');
     fixture.detectChanges();
     await fixture.whenStable();
     expect(fixture.componentInstance.homeLayout()).toBeFalse();
-    expect(page.querySelector('.brand-banner')?.getAttribute('src')).toBe('assets/images/teleSport.webp');
+    expect(fixture.componentInstance.countryLayout()).toBeTrue();
+    expect(page.querySelector('.brand-banner')?.getAttribute('src')).toBe(
+      'assets/images/teleSport-home.webp',
+    );
     http.verify();
   });
 });

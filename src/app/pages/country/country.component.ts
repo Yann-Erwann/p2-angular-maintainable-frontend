@@ -1,75 +1,104 @@
-import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject, type OnInit, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  ErrorHandler,
+  inject,
+  type OnInit,
+  signal,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { catchError, distinctUntilChanged, map, of, startWith, switchMap } from 'rxjs';
 import { Title } from '@angular/platform-browser';
-import type { Olympic } from '../../models/olympic';
-import { parseCountryId } from '../../olympics/country-id';
-import { toDataLoadError } from '../../services/data-load-error';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import {
+  catchError,
+  distinctUntilChanged,
+  map,
+  of,
+  startWith,
+  switchMap,
+  type Observable,
+} from 'rxjs';
 import { OlympicChartComponent } from '../../olympics/chart/chart.component';
+import { parseCountryId } from '../../olympics/country-id';
 import { HeaderComponent } from '../../olympics/header/header.component';
 import { PageFeedbackComponent } from '../../olympics/page-feedback/page-feedback.component';
-import type { PageState } from '../../olympics/page-state';
+import { toDataLoadError } from '../../services/data-load-error';
 import { DataService } from '../../services/data.service';
+import {
+  COUNTRY_LOADING_INDICATORS,
+  countryDocumentTitle,
+  createCountryState,
+  type CountryPageState,
+} from './country-view-model';
 
-
+/**
+ * Détail piloté par l’ID de route. Le titre et le contenu suivent le même état.
+ * Les erreurs de chargement ne terminent pas l’écoute de la route.
+ */
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-country',
   templateUrl: './country.component.html',
-  styleUrls: ['./country.component.scss'],
-  imports: [HeaderComponent, OlympicChartComponent, PageFeedbackComponent]
+  styleUrl: './country.component.scss',
+  imports: [HeaderComponent, OlympicChartComponent, PageFeedbackComponent],
 })
 export class CountryComponent implements OnInit {
-  private readonly pageState = signal<PageState<Olympic>>({ status: 'loading' });
-  readonly summary = computed(() => {
-    const state = this.pageState();
-    const country = state.status === 'success' || state.status === 'empty' ? state.data : undefined;
-    const participations = country?.participations ?? [];
-    return {
-      participations,
-      title: country?.country ?? '',
-      entries: participations.length,
-      medals: participations.map((item) => item.medalsCount),
-      years: participations.map((item) => item.year),
-      totalMedals: participations.reduce((total, item) => total + item.medalsCount, 0),
-      athletes: participations.reduce((total, item) => total + item.athleteCount, 0),
-    };
-  });
-  public get state() { return this.pageState(); }
-  public get titlePage() { return this.summary().title; }
-  public get totalEntries() { return this.summary().entries; }
-  public get totalMedals() { return this.summary().totalMedals; }
-  public get totalAthletes() { return this.summary().athletes; }
-
+  /** Paramètres de la fiche, source de l’identifiant sélectionné. */
   private readonly route = inject(ActivatedRoute);
+  /** Source de la collection validée et partagée. */
   private readonly dataService = inject(DataService);
+  /** Durée de vie des abonnements et rendus en attente. */
   private readonly destroyRef = inject(DestroyRef);
+  /** Titre du navigateur synchronisé avec l’état de la fiche. */
   private readonly documentTitle = inject(Title);
+  /** Navigation entre les pages par identifiant. */
+  private readonly router = inject(Router);
+  /** Prise en charge des échecs de navigation Angular. */
+  private readonly errorHandler = inject(ErrorHandler);
+  /** État modifiable uniquement par l’orchestration de la page. */
+  private readonly pageState = signal<CountryPageState>({ status: 'loading' });
 
-  ngOnInit() {
-    this.route.paramMap.pipe(
-      map((params) => parseCountryId(params.get('id'))),
-      distinctUntilChanged(),
-      switchMap((id) => id === null
-        ? of<PageState<Olympic>>({ status: 'not-found' })
-        : this.dataService.getCountryById(id).pipe(
-          map((country): PageState<Olympic> => country
-            ? { status: country.participations.length > 0 ? 'success' : 'empty', data: country }
-            : { status: 'not-found' }),
-          catchError((error: unknown) => of<PageState<Olympic>>({ status: 'error', message: toDataLoadError(error).message })),
-          startWith({ status: 'loading' } as const),
-        )),
-      takeUntilDestroyed(this.destroyRef),
-    ).subscribe((state) => {
-      this.pageState.set(state);
-      let title = 'Country details';
-      if (state.status === 'success' || state.status === 'empty') {
-        title = state.data?.country ?? 'Country details';
-      } else if (state.status === 'not-found') {
-        title = 'Country not found';
-      }
-      this.documentTitle.setTitle(`${title} | Olympic Games`);
-    });
+  /** Vue en lecture seule de l’état complet de la fiche. */
+  readonly state = this.pageState.asReadonly();
+  /** Libellés des cartes pendant le chargement. */
+  readonly loadingIndicators = COUNTRY_LOADING_INDICATORS;
+
+  /** Suit les changements d’ID sans conserver un chargement précédent. */
+  ngOnInit(): void {
+    this.route.paramMap
+      .pipe(
+        map((params) => parseCountryId(params.get('id'))),
+        distinctUntilChanged(),
+        switchMap((id) => this.loadCountry(id)),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe((state) => {
+        this.pageState.set(state);
+        this.documentTitle.setTitle(countryDocumentTitle(state));
+      });
+  }
+
+  /** La route reste la source de sélection ; seules les options chargées sont acceptées. */
+  changeCountry(value: string): void {
+    const id = parseCountryId(value);
+    const state = this.state();
+    if (id === null || (state.status !== 'success' && state.status !== 'empty')) return;
+    if (!state.data.options.some((country) => country.id === id)) return;
+    void this.router
+      .navigate(['/country', id])
+      .catch((error: unknown) => this.errorHandler.handleError(error));
+  }
+
+  /** Rejette l’ID invalide sans HTTP et garde les erreurs dans le chargement. */
+  private loadCountry(id: number | null): Observable<CountryPageState> {
+    if (id === null) return of({ status: 'not-found' });
+    return this.dataService.getOlympics().pipe(
+      map((countries) => createCountryState(countries, id)),
+      catchError((error: unknown) =>
+        of<CountryPageState>({ status: 'error', message: toDataLoadError(error).message }),
+      ),
+      startWith({ status: 'loading' } as const),
+    );
   }
 }

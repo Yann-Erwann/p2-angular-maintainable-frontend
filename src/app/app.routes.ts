@@ -3,6 +3,7 @@ import { type Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 
+/** Le titre d’une fiche est défini après chargement par {@link CountryComponent}. */
 export const routes: Routes = [
   {
     path: '',
@@ -12,7 +13,8 @@ export const routes: Routes = [
   },
   {
     path: 'country/:id',
-    loadComponent: () => import('./pages/country/country.component').then((module) => module.CountryComponent),
+    loadComponent: () =>
+      import('./pages/country/country.component').then((module) => module.CountryComponent),
   },
   {
     path: 'not-found',

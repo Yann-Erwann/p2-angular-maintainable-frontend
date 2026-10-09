@@ -1,0 +1,22 @@
+<p class="visually-hidden" [id]="dataDescriptionId() + '-keys'">
+  Use Tab or arrow keys to explore each chart item, Shift+Tab to move backwards, and Home or End to
+  jump to the first or last item. Tab after the last item leaves the chart.
+  {{ type() === 'pie' ? 'Press Enter or Space to open the selected country.' : '' }}
+</p>
+<div class="chart-drawing">
+  <canvas
+    #canvas
+    role="img"
+    tabindex="0"
+    [attr.aria-label]="
+      type() === 'pie' ? 'Total medals by country chart' : 'Medals by Olympic year chart'
+    "
+    [attr.aria-describedby]="dataDescriptionId() + ' ' + dataDescriptionId() + '-keys'"
+    (focus)="onCanvasFocus()"
+    (keydown)="onKeydown($event)"
+    >{{ textAlternative() }}</canvas
+  >
+</div>
+<p class="visually-hidden chart-selection" role="status" aria-live="polite" aria-atomic="true">
+  {{ selection() }}
+</p>

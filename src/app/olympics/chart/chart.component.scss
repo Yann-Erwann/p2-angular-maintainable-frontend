@@ -4,19 +4,33 @@
   flex-direction: column;
   width: 100%;
   min-width: 0;
-  height: clamp(18rem, 45vw, 28rem);
-  padding: clamp(0.75rem, 2vw, 1.5rem);
-  border: 1px solid #dbe5e8;
-  border-radius: 0.75rem;
-  background: white;
+  height: 25rem;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
 }
 
 canvas {
   display: block;
 }
 
-.chart-drawing { position: relative; flex: 1; min-height: 0; }
+.chart-drawing {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
 
-:host(.dashboard) { height: 25rem; padding: 0; border: 0; border-radius: 0; background: transparent; }
-@media (max-width: 1000px) { :host(.dashboard) { height: 25rem; } }
-@media (max-width: 600px) { :host(.dashboard) { height: 19rem; } }
+@media (max-width: 600px) {
+  :host {
+    height: 19rem;
+  }
+}
+:host(.country-chart) {
+  height: 21rem;
+}
+@media (max-width: 700px) {
+  :host(.country-chart) {
+    height: 18rem;
+  }
+}

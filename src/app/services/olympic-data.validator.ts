@@ -1,43 +1,56 @@
 import type { Olympic, Participation } from '../models/olympic';
 
+/** Signale des données invalides, distinctes d’une erreur HTTP. */
 export class OlympicDataValidationError extends Error {
+  /** Catégorie stable des violations du contrat de données. */
   override readonly name = 'OlympicDataValidationError';
 }
 
+/** Reconnaît un objet non nul, en excluant les tableaux. */
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
+/** Reconnaît une collection avant de vérifier ses éléments. */
 function isArray(value: unknown): value is unknown[] {
   return Array.isArray(value);
 }
 
+/** Accepte uniquement les entiers positifs dans la plage numérique sûre. */
 function isPositiveInteger(value: unknown): value is number {
   return typeof value === 'number' && Number.isSafeInteger(value) && value > 0;
 }
 
+/** Accepte les compteurs entiers sûrs, y compris zéro. */
 function isCount(value: unknown): value is number {
-  return typeof value === 'number' && Number.isFinite(value) && value >= 0;
+  return typeof value === 'number' && Number.isSafeInteger(value) && value >= 0;
 }
 
+/** Exige au moins un caractère non blanc, sans modifier le texte. */
 function isText(value: unknown): value is string {
   return typeof value === 'string' && value.trim().length > 0;
 }
 
+/** Vérifie les champs obligatoires d’une participation sans conversion. */
 function isParticipation(value: unknown): value is Participation {
-  return isRecord(value)
-    && isPositiveInteger(value['id'])
-    && isPositiveInteger(value['year'])
-    && isText(value['city'])
-    && isCount(value['medalsCount'])
-    && isCount(value['athleteCount']);
+  return (
+    isRecord(value) &&
+    isPositiveInteger(value['id']) &&
+    isPositiveInteger(value['year']) &&
+    isText(value['city']) &&
+    isCount(value['medalsCount']) &&
+    isCount(value['athleteCount'])
+  );
 }
 
+/** Vérifie le pays et l’unicité de ses ID de participation, sans imposer celle des années. */
 function isOlympic(value: unknown): value is Olympic {
-  if (!isRecord(value)
-    || !isPositiveInteger(value['id'])
-    || !isText(value['country'])
-    || !isArray(value['participations'])) {
+  if (
+    !isRecord(value) ||
+    !isPositiveInteger(value['id']) ||
+    !isText(value['country']) ||
+    !isArray(value['participations'])
+  ) {
     return false;
   }
 
@@ -51,6 +64,16 @@ function isOlympic(value: unknown): value is Olympic {
   return true;
 }
 
+/**
+ * Valide toute la réponse sans conversion ; un élément invalide rejette l’ensemble.
+ *
+ * Les compteurs sont des entiers sûrs non négatifs. Les ID et années sont des entiers
+ * positifs sûrs ; les ID sont uniques par collection de pays ou de participations.
+ * Les collections vides et années identiques sont autorisées.
+ *
+ * Une violation du contrat lève une {@link OlympicDataValidationError}.
+ * @returns Nouveau tableau conservant les objets validés et leurs champs supplémentaires.
+ */
 export function validateOlympicData(payload: unknown): readonly Olympic[] {
   if (!isArray(payload)) {
     throw new OlympicDataValidationError('Expected an Olympic data array.');
@@ -60,10 +83,14 @@ export function validateOlympicData(payload: unknown): readonly Olympic[] {
   const countryIds = new Set<number>();
   for (const [index, country] of payload.entries()) {
     if (!isOlympic(country)) {
-      throw new OlympicDataValidationError(`Invalid Olympic country or participation at index ${index}.`);
+      throw new OlympicDataValidationError(
+        `Invalid Olympic country or participation at index ${index}.`,
+      );
     }
     if (countryIds.has(country.id)) {
-      throw new OlympicDataValidationError(`Duplicate Olympic country identifier at index ${index}.`);
+      throw new OlympicDataValidationError(
+        `Duplicate Olympic country identifier at index ${index}.`,
+      );
     }
     countryIds.add(country.id);
     olympics.push(country);

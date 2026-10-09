@@ -1,7 +1,19 @@
 import { parseCountryId } from './country-id';
 
 describe('parseCountryId', () => {
-  for (const value of [null, '', ' ', 'France', '0', '-1', '01', '1.5', '1e2', '0x10', '9007199254740992']) {
+  for (const value of [
+    null,
+    '',
+    ' ',
+    'France',
+    '0',
+    '-1',
+    '01',
+    '1.5',
+    '1e2',
+    '0x10',
+    '9007199254740992',
+  ]) {
     it(`should reject ${JSON.stringify(value)}`, () => {
       expect(parseCountryId(value)).toBeNull();
     });

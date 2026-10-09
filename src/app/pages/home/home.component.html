@@ -1,72 +1,112 @@
+@let page = state();
 <section class="olympic-layout home-layout" aria-labelledby="home-page-title">
-<h1 id="home-page-title" class="page-title home-page-title" tabindex="0">Olympic games app</h1>
-<p class="home-intro">Explore and compare Olympic medals across countries</p>
-<app-page-feedback
-  [state]="state"
-  [showSkeleton]="false"
-  [successMessage]="'Loaded medal totals for ' + totalCountries + ' countries.'"
-/>
-@if (state.status === 'success' || state.status === 'loading') {
-  <app-header
-    variant="dashboard"
-    [loading]="state.status === 'loading'"
-    [title]="titlePage"
-    [indicators]="[
-      { label: 'Number of countries', value: totalCountries },
-      { label: 'Number of JOs', value: totalJOs }
-    ]"
+  <h1 id="home-page-title" class="page-title home-page-title" tabindex="0">Olympic games app</h1>
+  <p class="home-intro">Explore and compare Olympic medals across countries</p>
+  <app-page-feedback
+    [state]="page"
+    [showSkeleton]="false"
+    [successMessage]="
+      page.status === 'success'
+        ? 'Loaded medal totals for ' + page.data.rows.length + ' countries.'
+        : ''
+    "
   />
-}
-  <figure class="chart-panel medals-card" aria-labelledby="medals-chart-title" [hidden]="state.status !== 'success' && state.status !== 'loading'">
-    <header class="chart-card-heading">
-      <span class="chart-card-icon" aria-hidden="true"><svg viewBox="0 0 40 40"><path fill="#38a8f2" d="M18 3a17 17 0 1 0 17 17H18Z"/><path fill="#83cbff" d="M21 2v15h15A16 16 0 0 0 21 2Z"/><path fill="none" stroke="white" stroke-width="1.5" d="m18 20 12 12"/></svg></span>
-      <div><h2 id="medals-chart-title">Medals per Country</h2><p>Distribution of medals won by country</p></div>
-    </header>
-    @if (state.status === 'success') {
-    <div class="chart-card-body">
-    @defer (on viewport; prefetch on idle) {
-      <app-olympic-chart
-        type="pie"
-        [dashboard]="true"
-        [labels]="summary().countries"
-        [values]="summary().medals"
-        dataDescriptionId="country-medals-description"
-        (pointSelected)="selectCountry($event)"
-      />
-    } @placeholder {
-      <div class="chart-placeholder" aria-hidden="true"></div>
-    } @loading {
-      <div class="chart-placeholder" role="status">Loading chart...</div>
-    } @error {
-      <p class="page-message" role="alert">Unable to load the chart. Please reload the page.</p>
-    }
-    <div class="medals-breakdown">
-      <table>
-        <caption class="visually-hidden">Medal totals and share by country</caption>
-        <thead><tr><th scope="col">Country</th><th scope="col">Medals</th><th scope="col">Percentage</th></tr></thead>
-        <tbody>
-          @for (country of summary().breakdown; track country.id) {
-            <tr [style.--medal-color]="country.color">
-              <th scope="row"><a class="country-link" [routerLink]="['/country', country.id]" [attr.aria-describedby]="'country-medals-' + country.id + ' country-percentage-' + country.id"><span class="country-dot" aria-hidden="true"></span>{{ country.country }}</a></th>
-              <td [id]="'country-medals-' + country.id">{{ country.medals }}<span class="visually-hidden"> medals</span></td>
-              <td [id]="'country-percentage-' + country.id"><span class="percentage-cell"><span class="percentage-track" aria-hidden="true"><span [style.width.%]="country.percentage"></span></span><span>{{ country.percentage }}%<span class="visually-hidden"> of total</span></span></span></td>
-            </tr>
+  @if (page.status === 'success' || page.status === 'loading') {
+    <app-header
+      variant="dashboard"
+      [loading]="page.status === 'loading'"
+      title="Medals per Country"
+      [indicators]="page.status === 'success' ? page.data.indicators : loadingIndicators"
+    />
+    <figure class="chart-panel medals-card" aria-labelledby="medals-chart-title">
+      <header class="chart-card-heading">
+        <span class="chart-card-icon" aria-hidden="true"
+          ><svg viewBox="0 0 40 40">
+            <path fill="#38a8f2" d="M18 3a17 17 0 1 0 17 17H18Z" />
+            <path fill="#83cbff" d="M21 2v15h15A16 16 0 0 0 21 2Z" />
+            <path fill="none" stroke="white" stroke-width="1.5" d="m18 20 12 12" /></svg
+        ></span>
+        <div>
+          <h2 id="medals-chart-title">Medals per Country</h2>
+          <p>Distribution of medals won by country</p>
+        </div>
+      </header>
+      @if (page.status === 'success') {
+        @let vm = page.data;
+        <div class="chart-card-body">
+          @defer (on viewport; prefetch on idle) {
+            <app-olympic-chart
+              type="pie"
+              [items]="vm.chartItems"
+              dataDescriptionId="country-medals-description"
+              (pointSelected)="selectCountry($event)"
+            />
+          } @placeholder {
+            <div class="chart-placeholder" aria-hidden="true"></div>
+          } @loading {
+            <div class="chart-placeholder" role="status">Loading chart...</div>
+          } @error {
+            <p class="page-message" role="alert">
+              Unable to load the chart. Please reload the page.
+            </p>
           }
-        </tbody>
-      </table>
-    </div>
-    </div>
-    <figcaption id="country-medals-description" class="visually-hidden">
-      Total medals by country.
-      @for (country of summary().countries; track $index) {
-        {{ country }}: {{ summary().medals[$index] }} medals.
+          <div class="medals-breakdown">
+            <table>
+              <caption class="visually-hidden">
+                Medal totals and share by country
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">Country</th>
+                  <th scope="col">Medals</th>
+                  <th scope="col">Percentage</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (country of vm.rows; track country.id) {
+                  <tr [style.--medal-color]="country.color">
+                    <th scope="row">
+                      <a
+                        class="country-link"
+                        [routerLink]="['/country', country.id]"
+                        [attr.aria-describedby]="
+                          'country-medals-' + country.id + ' country-percentage-' + country.id
+                        "
+                        ><span class="country-dot" aria-hidden="true"></span>{{ country.name }}</a
+                      >
+                    </th>
+                    <td [id]="'country-medals-' + country.id">
+                      {{ country.medals }}<span class="visually-hidden"> medals</span>
+                    </td>
+                    <td [id]="'country-percentage-' + country.id">
+                      <span class="percentage-cell"
+                        ><span class="percentage-track" aria-hidden="true"
+                          ><span [style.width.%]="country.percentage"></span></span
+                        ><span
+                          >{{ country.percentage }}%<span class="visually-hidden">
+                            of total</span
+                          ></span
+                        ></span
+                      >
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <figcaption id="country-medals-description" class="visually-hidden">
+          Total medals by country.
+          @for (country of vm.rows; track country.id) {
+            {{ country.name }}: {{ country.medals }} medals.
+          }
+        </figcaption>
+      } @else {
+        <div class="chart-card-body">
+          <div class="chart-placeholder" aria-hidden="true"></div>
+          <div class="breakdown-placeholder" aria-hidden="true"></div>
+        </div>
       }
-    </figcaption>
-    } @else {
-    <div class="chart-card-body">
-      <div class="chart-placeholder" aria-hidden="true"></div>
-      <div class="breakdown-placeholder" aria-hidden="true"></div>
-    </div>
-    }
-  </figure>
+    </figure>
+  }
 </section>

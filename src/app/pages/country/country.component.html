@@ -1,44 +1,112 @@
-<section class="olympic-layout" aria-labelledby="country-page-title">
-  <h1 id="country-page-title" class="page-title" tabindex="0">Olympic results</h1>
+@let page = state();
+<section class="olympic-layout country-layout" aria-labelledby="country-page-title">
+  <div class="country-heading">
+    <h1 id="country-page-title" class="page-title" tabindex="0">Olympic results</h1>
+  </div>
   <app-page-feedback
-    [state]="state"
+    [state]="page"
+    [showSkeleton]="false"
     [indicatorCount]="3"
-    [successMessage]="'Loaded Olympic results for ' + titlePage + '.'"
+    [successMessage]="
+      page.status === 'success' || page.status === 'empty'
+        ? 'Loaded Olympic results for ' + page.data.summary.name + '.'
+        : ''
+    "
   />
-  @if (state.status === 'success' || (state.status === 'empty' && titlePage)) {
+  @if (page.status === 'loading') {
+    <div class="country-picker">
+      <span class="country-flag" aria-hidden="true"></span>
+      <label class="visually-hidden" for="country-select">Country</label>
+      <select id="country-select" disabled>
+        <option>Loading country...</option>
+      </select>
+      <svg class="picker-chevron" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" />
+      </svg>
+    </div>
     <app-header
-      [title]="titlePage"
-      [indicators]="[
-        { label: 'Number of entries', value: totalEntries },
-        { label: 'Total Number of medals', value: totalMedals },
-        { label: 'Total Number of athletes', value: totalAthletes }
-      ]"
+      variant="country"
+      title="Country statistics"
+      [loading]="true"
+      [indicators]="loadingIndicators"
     />
-  }
-    <figure class="chart-panel" [hidden]="state.status !== 'success'">
-      @if (state.status === 'success') {
-      @defer (on viewport; prefetch on idle) {
-        <app-olympic-chart
-          type="line"
-          [labels]="summary().years"
-          [values]="summary().medals"
-          dataDescriptionId="participation-description"
-        />
-      } @placeholder {
-        <div class="chart-placeholder" aria-hidden="true"></div>
-      } @loading {
-        <div class="chart-placeholder" role="status">Loading chart...</div>
-      } @error {
-        <p class="page-message" role="alert">Unable to load the chart. Please reload the page.</p>
-      }
-      <p id="participation-description" class="visually-hidden">
-        {{ titlePage }}: medals and athletes by Olympic year.
-        @for (participation of summary().participations; track participation.id) {
-          {{ participation.year }}, {{ participation.city }}:
-          {{ participation.medalsCount }} medals, {{ participation.athleteCount }} athletes.
-        }
-      </p>
-      }
+    <figure class="chart-panel country-chart-card" aria-labelledby="country-chart-title">
+      <header class="country-chart-heading">
+        <span class="country-chart-icon" aria-hidden="true"
+          ><svg viewBox="0 0 40 40">
+            <path fill="#38a8f2" d="M18 3a17 17 0 1 0 17 17H18Z" />
+            <path fill="#83cbff" d="M21 2v15h15A16 16 0 0 0 21 2Z" />
+            <path fill="none" stroke="white" stroke-width="1.5" d="m18 20 12 12" /></svg
+        ></span>
+        <div>
+          <h2 id="country-chart-title">Medals over time</h2>
+          <p>Total number of medals won</p>
+        </div>
+      </header>
+
+      <div class="chart-placeholder" aria-hidden="true"></div>
       <figcaption class="chart-caption">Olympic year</figcaption>
     </figure>
+  }
+  @if (page.status === 'success' || page.status === 'empty') {
+    @let vm = page.data;
+    <div class="country-picker">
+      <span [class]="'country-flag flag-' + vm.flagCode" aria-hidden="true"></span>
+      <label class="visually-hidden" for="country-select">Country</label>
+      <select
+        #countrySelect
+        id="country-select"
+        [class.long-country]="vm.summary.name.length > 10"
+        (change)="changeCountry(countrySelect.value)"
+      >
+        @for (country of vm.options; track country.id) {
+          <option [value]="country.id" [selected]="country.id === vm.summary.id">
+            {{ country.name }}
+          </option>
+        }
+      </select>
+      <svg class="picker-chevron" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" />
+      </svg>
+    </div>
+    <app-header variant="country" [title]="vm.summary.name" [indicators]="vm.indicators" />
+    @if (page.status === 'success') {
+      <figure class="chart-panel country-chart-card" aria-labelledby="country-chart-title">
+        <header class="country-chart-heading">
+          <span class="country-chart-icon" aria-hidden="true"
+            ><svg viewBox="0 0 40 40">
+              <path fill="#38a8f2" d="M18 3a17 17 0 1 0 17 17H18Z" />
+              <path fill="#83cbff" d="M21 2v15h15A16 16 0 0 0 21 2Z" />
+              <path fill="none" stroke="white" stroke-width="1.5" d="m18 20 12 12" /></svg
+          ></span>
+          <div>
+            <h2 id="country-chart-title">Medals over time</h2>
+            <p>Total number of medals won{{ vm.summary.name ? ' by ' + vm.summary.name : '' }}</p>
+          </div>
+        </header>
+
+        @defer (on viewport; on idle; prefetch on idle) {
+          <app-olympic-chart
+            type="line"
+            [items]="vm.chartItems"
+            dataDescriptionId="participation-description"
+          />
+        } @placeholder {
+          <div class="chart-placeholder" aria-hidden="true"></div>
+        } @loading {
+          <div class="chart-placeholder" role="status">Loading chart...</div>
+        } @error {
+          <p class="page-message" role="alert">Unable to load the chart. Please reload the page.</p>
+        }
+        <p id="participation-description" class="visually-hidden">
+          {{ vm.summary.name }}: medals and athletes by Olympic year.
+          @for (participation of vm.summary.participations; track participation.id) {
+            {{ participation.year }}, {{ participation.city }}:
+            {{ participation.medalsCount }} medals, {{ participation.athleteCount }} athletes.
+          }
+        </p>
+        <figcaption class="chart-caption">Olympic year</figcaption>
+      </figure>
+    }
+  }
 </section>

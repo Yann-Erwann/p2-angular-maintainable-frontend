@@ -1,13 +1,16 @@
-@use './styles/home-dashboard';
+@use './styles/app-shell';
 
+:root {
+  --dashboard-text: #0c204b;
+  --dashboard-muted: #506a9b;
+  --dashboard-accent: #008798;
+}
 * {
   box-sizing: border-box;
 }
-
 html {
   scrollbar-gutter: stable;
 }
-
 body {
   margin: 0;
   background: #f5f8fa;
@@ -15,34 +18,16 @@ body {
   font-family: system-ui, sans-serif;
   line-height: 1.5;
 }
-
-app-root {
-  display: block;
-  width: 100%;
-  max-width: 72rem;
-  min-height: 100dvh;
-  margin: 0 auto;
-  padding: clamp(1rem, 3vw, 2rem);
-  overflow-wrap: anywhere;
-}
-
-.center {
-  display: flex;
-  justify-content: center;
-}
-
 .page-title {
   margin: 0 0 1rem;
   text-align: center;
   font-size: clamp(1.4rem, 4vw, 2rem);
 }
-
 hr {
   margin: 1.5rem 0;
   border: 0;
   border-top: 1px solid #dbe5e8;
 }
-
 .page-message {
   margin: 1.5rem 0;
   padding: 1rem;
@@ -51,35 +36,14 @@ hr {
   background: white;
   text-align: center;
 }
-
-.brand-header {
-  width: 100%;
-  max-width: 32rem;
-  margin: 0 auto 1rem;
-}
-
-.brand-link {
-  display: block;
-}
-
-.brand-banner {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 874 / 251;
-  border-radius: 0.75rem;
-}
-
 a {
   color: #0b6470;
   text-underline-offset: 0.2em;
 }
-
 :focus-visible {
   outline: 3px solid #23343b;
   outline-offset: 3px;
 }
-
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -91,7 +55,6 @@ a {
   white-space: nowrap;
   border: 0;
 }
-
 .olympic-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -118,7 +81,6 @@ a {
     justify-self: center;
   }
 }
-
 .chart-placeholder {
   display: grid;
   place-items: center;
@@ -128,4 +90,12 @@ a {
   border-radius: 0.75rem;
   background: #eef4f6;
   text-align: center;
+}
+body:has(app-root.home-dashboard) {
+  background: radial-gradient(ellipse at top, #fff 0, #eaf6fc 55%, #f2faff 100%);
+}
+
+// Le shell statique conserve les mêmes dimensions avant le premier rendu Angular.
+app-root:not([ng-version]) {
+  @include app-shell.layout;
 }

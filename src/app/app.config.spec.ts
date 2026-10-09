@@ -1,7 +1,4 @@
-import {
-  HttpTestingController,
-  provideHttpClientTesting,
-} from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingHarness } from '@angular/router/testing';
 
@@ -14,10 +11,7 @@ describe('Application routing', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        ...appConfig.providers,
-        provideHttpClientTesting(),
-      ],
+      providers: [...appConfig.providers, provideHttpClientTesting()],
     });
 
     httpTesting = TestBed.inject(HttpTestingController);
@@ -76,13 +70,14 @@ describe('Application routing', () => {
       const harness = await RouterTestingHarness.create();
       await harness.navigateByUrl(url);
 
-      httpTesting.expectOne('./assets/mock/olympic.json').flush([
-        { id: 1, country: 'private server details', participations: 'invalid' },
-      ]);
+      httpTesting
+        .expectOne('./assets/mock/olympic.json')
+        .flush([{ id: 1, country: 'private server details', participations: 'invalid' }]);
       harness.detectChanges();
 
-      expect(harness.routeNativeElement?.querySelector('[role="alert"]')?.textContent?.trim())
-        .toBe('Olympic data is invalid. Please try again later.');
+      expect(harness.routeNativeElement?.querySelector('[role="alert"]')?.textContent?.trim()).toBe(
+        'Olympic data is invalid. Please try again later.',
+      );
       expect(harness.routeNativeElement?.textContent).not.toContain('private server details');
       expect(harness.routeNativeElement?.querySelector('app-header')).toBeNull();
       expect(harness.routeNativeElement?.querySelector('canvas')).toBeNull();

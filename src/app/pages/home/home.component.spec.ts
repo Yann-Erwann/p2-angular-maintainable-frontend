@@ -2,7 +2,12 @@ import { renderCharts } from '../../../testing/render-charts';
 import { Chart } from 'chart.js';
 import { ChartRenderer } from '../../olympics/chart/chart-renderer.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { type ComponentFixture, DeferBlockBehavior, DeferBlockState, TestBed } from '@angular/core/testing';
+import {
+  type ComponentFixture,
+  DeferBlockBehavior,
+  DeferBlockState,
+  TestBed,
+} from '@angular/core/testing';
 import { ErrorHandler, provideZoneChangeDetection } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { OlympicChartComponent } from '../../olympics/chart/chart.component';
@@ -13,6 +18,11 @@ import type { Olympic } from '../../models/olympic';
 import { DataService } from '../../services/data.service';
 import { HomeComponent } from './home.component';
 
+function homeView(component: HomeComponent) {
+  const state = component.state();
+  if (state.status !== 'success') throw new Error('Expected loaded home data.');
+  return state.data;
+}
 
 function chartAt(page: HTMLElement | null) {
   const canvas = page?.querySelector('canvas');
@@ -57,7 +67,7 @@ describe('HomeComponent', () => {
     fixture.destroy();
     expect(data.observed).toBeFalse();
     data.next([]);
-    expect(component.state.status).toBe('loading');
+    expect(component.state().status).toBe('loading');
   });
 
   it('should cancel a pending chart render when destroyed', () => {
@@ -77,7 +87,7 @@ describe('HomeComponent', () => {
     await renderCharts(fixture);
     expect(chartSpy).toHaveBeenCalledTimes(1);
     expect(chartAt(fixture.nativeElement as HTMLElement).data.labels).toEqual(['Italy']);
-    expect(component.totalCountries).toBe(1);
+    expect(homeView(component).rows.length).toBe(1);
   });
 
   it('should expose data before the chart loads, including after a chunk failure', async () => {
@@ -89,9 +99,13 @@ describe('HomeComponent', () => {
     expect(page.querySelector('#country-medals-description')?.textContent).toContain('France');
     const [block] = await fixture.getDeferBlocks();
     await block.render(DeferBlockState.Loading);
-    expect(page.querySelector('.chart-panel [role="status"]')?.textContent).toContain('Loading chart');
+    expect(page.querySelector('.chart-panel [role="status"]')?.textContent).toContain(
+      'Loading chart',
+    );
     await block.render(DeferBlockState.Error);
-    expect(page.querySelector('.chart-panel [role="alert"]')?.textContent).toContain('Unable to load the chart');
+    expect(page.querySelector('.chart-panel [role="alert"]')?.textContent).toContain(
+      'Unable to load the chart',
+    );
     expect(page.querySelector('#country-medals-description')?.textContent).toContain('France');
     expect(page.querySelector('app-header')).not.toBeNull();
   });
@@ -101,7 +115,8 @@ describe('HomeComponent', () => {
     data.next([{ id: 1, country: 'France', participations: [] }]);
     fixture.detectChanges();
     await renderCharts(fixture);
-    const chart = fixture.debugElement.query(By.directive(OlympicChartComponent)).componentInstance as OlympicChartComponent;
+    const chart = fixture.debugElement.query(By.directive(OlympicChartComponent))
+      .componentInstance as OlympicChartComponent;
     chart.pointSelected.emit(0);
     await fixture.whenStable();
     expect(navigate).toHaveBeenCalledOnceWith(['/country', 1]);
@@ -151,15 +166,33 @@ describe('HomeComponent', () => {
         id: 1,
         country: 'France',
         participations: [
-          { id: 1, year: 2012, city: 'London', medalsCount: 10, athleteCount: 100 },
-          { id: 2, year: 2016, city: 'Rio de Janeiro', medalsCount: 20, athleteCount: 150 },
+          {
+            id: 1,
+            year: 2012,
+            city: 'London',
+            medalsCount: 10,
+            athleteCount: 100,
+          },
+          {
+            id: 2,
+            year: 2016,
+            city: 'Rio de Janeiro',
+            medalsCount: 20,
+            athleteCount: 150,
+          },
         ],
       },
       {
         id: 2,
         country: 'Italy',
         participations: [
-          { id: 1, year: 2012, city: 'London', medalsCount: 15, athleteCount: 120 },
+          {
+            id: 1,
+            year: 2012,
+            city: 'London',
+            medalsCount: 15,
+            athleteCount: 120,
+          },
         ],
       },
     ]);
@@ -167,38 +200,64 @@ describe('HomeComponent', () => {
     fixture.detectChanges();
     await renderCharts(fixture);
 
-    expect(component.totalCountries).toBe(2);
-    expect(component.totalJOs).toBe(2);
+    expect(homeView(component).rows.length).toBe(2);
+    expect(homeView(component).indicators[1].value).toBe(2);
     expect(chartSpy).toHaveBeenCalledTimes(1);
     expect(chartAt(fixture.nativeElement as HTMLElement).data.labels).toEqual(['France', 'Italy']);
     expect(chartAt(fixture.nativeElement as HTMLElement).data.datasets[0].data).toEqual([30, 15]);
 
     const page = fixture.nativeElement as HTMLElement;
-    expect(page.querySelector('app-header .center > h2')?.textContent?.trim()).toBe('Medals per Country');
-    expect(Array.from(page.querySelectorAll('app-header .split dt, app-header .split dd'), item => item.textContent?.trim())).toEqual([
-      'Number of countries', '2', 'Number of JOs', '2',
-    ]);
+    expect(page.querySelector('app-header .center > h2')?.textContent?.trim()).toBe(
+      'Medals per Country',
+    );
+    expect(
+      Array.from(page.querySelectorAll('app-header .split dt, app-header .split dd'), (item) =>
+        item.textContent?.trim(),
+      ),
+    ).toEqual(['Number of countries', '2', 'Number of JOs', '2']);
     expect(page.querySelector('canvas')).toBe(chartAt(fixture.nativeElement as HTMLElement).canvas);
-    expect(Array.from(page.querySelectorAll('tbody tr'), row =>
-      Array.from(row.querySelectorAll('th, td'), cell => cell.textContent?.trim()),
-    )).toEqual([['France', '30 medals', '66.7% of total'], ['Italy', '15 medals', '33.3% of total']]);
-    const countryLinks = Array.from(page.querySelectorAll<HTMLAnchorElement>('tbody .country-link'));
-    expect(countryLinks.map(link => link.getAttribute('href'))).toEqual(['/country/1', '/country/2']);
-    expect(countryLinks.every(link => link.tabIndex === 0)).toBeTrue();
-    expect(countryLinks[0].getAttribute('aria-describedby')).toBe('country-medals-1 country-percentage-1');
+    expect(
+      Array.from(page.querySelectorAll('tbody tr'), (row) =>
+        Array.from(row.querySelectorAll('th, td'), (cell) => cell.textContent?.trim()),
+      ),
+    ).toEqual([
+      ['France', '30 medals', '66.7% of total'],
+      ['Italy', '15 medals', '33.3% of total'],
+    ]);
+    const countryLinks = Array.from(
+      page.querySelectorAll<HTMLAnchorElement>('tbody .country-link'),
+    );
+    expect(countryLinks.map((link) => link.getAttribute('href'))).toEqual([
+      '/country/1',
+      '/country/2',
+    ]);
+    expect(countryLinks.every((link) => link.tabIndex === 0)).toBeTrue();
+    expect(countryLinks[0].getAttribute('aria-describedby')).toBe(
+      'country-medals-1 country-percentage-1',
+    );
     expect(page.querySelectorAll('thead th[scope="col"]').length).toBe(3);
-    expect(page.querySelector('#country-medals-description')?.textContent).toContain('France: 30 medals.');
-    expect(page.querySelector('#country-medals-description')?.textContent).toContain('Italy: 15 medals.');
-    expect(page.querySelector('canvas')?.getAttribute('aria-describedby')).toBe('country-medals-description country-medals-description-keys');
+    expect(page.querySelector('#country-medals-description')?.textContent).toContain(
+      'France: 30 medals.',
+    );
+    expect(page.querySelector('#country-medals-description')?.textContent).toContain(
+      'Italy: 15 medals.',
+    );
+    expect(page.querySelector('canvas')?.getAttribute('aria-describedby')).toBe(
+      'country-medals-description country-medals-description-keys',
+    );
     expect(page.querySelector('canvas')?.getAttribute('role')).toBe('img');
     expect(page.querySelector('canvas')?.getAttribute('tabindex')).toBe('0');
   });
 
   it('should reserve the header and chart layout without displaying statistics before the response', () => {
     const page = fixture.nativeElement as HTMLElement;
-    expect(page.querySelector('[role="status"]')?.textContent).toContain('Loading Olympic data');
+    expect(page.querySelector('[role="status"]')?.textContent?.trim()).toContain(
+      'Loading Olympic data',
+    );
     expect(page.querySelector('app-header')).not.toBeNull();
-    expect(Array.from(page.querySelectorAll('app-header dd'), item => item.textContent?.trim())).toEqual(['—', '—']);
+    expect(
+      Array.from(page.querySelectorAll('app-header dd'), (item) => item.textContent?.trim()),
+    ).toEqual(['—', '—']);
     expect(page.querySelector('.chart-panel')?.hasAttribute('hidden')).toBeFalse();
     expect(page.querySelector('.chart-placeholder')).not.toBeNull();
     expect(page.querySelector('.loading-skeleton')).toBeNull();
@@ -212,22 +271,35 @@ describe('HomeComponent', () => {
     await renderCharts(fixture);
 
     const page = fixture.nativeElement as HTMLElement;
-    expect(page.querySelector('[role="status"]')?.textContent).toContain('No Olympic data available');
-    expect(page.querySelector('[role="alert"]')?.textContent).toBe('');
+    expect(page.querySelector('[role="status"]')?.textContent?.trim()).toContain(
+      'No Olympic data available',
+    );
+    expect(page.querySelector('[role="alert"]')?.textContent?.trim()).toBe('');
     expect(page.querySelector('app-header')).toBeNull();
     expect(page.querySelector('canvas')).toBeNull();
     expect(chartSpy).not.toHaveBeenCalled();
   });
 
   for (const scenario of [
-    { status: 0, message: 'Unable to connect. Check your connection and try again.' },
+    {
+      status: 0,
+      message: 'Unable to connect. Check your connection and try again.',
+    },
     { status: 404, message: 'Olympic data could not be found.' },
-    { status: 503, message: 'Olympic data is temporarily unavailable. Please try again later.' },
+    {
+      status: 503,
+      message: 'Olympic data is temporarily unavailable. Please try again later.',
+    },
   ]) {
     it(`should display a safe error for HTTP status ${scenario.status}`, async () => {
-      data.error(new HttpErrorResponse({ status: scenario.status, error: 'private server details' }));
+      data.error(
+        new HttpErrorResponse({
+          status: scenario.status,
+          error: 'private server details',
+        }),
+      );
       fixture.detectChanges();
-    await renderCharts(fixture);
+      await renderCharts(fixture);
 
       const page = fixture.nativeElement as HTMLElement;
       expect(page.querySelector('[role="alert"]')?.textContent?.trim()).toBe(scenario.message);
@@ -238,11 +310,22 @@ describe('HomeComponent', () => {
     });
   }
 
-
   it('should remove previous statistics and the chart when loading fails after data was shown', async () => {
-    data.next([{ id: 1, country: 'France', participations: [
-      { id: 1, year: 2012, city: 'London', medalsCount: 10, athleteCount: 100 },
-    ] }]);
+    data.next([
+      {
+        id: 1,
+        country: 'France',
+        participations: [
+          {
+            id: 1,
+            year: 2012,
+            city: 'London',
+            medalsCount: 10,
+            athleteCount: 100,
+          },
+        ],
+      },
+    ]);
     fixture.detectChanges();
     await renderCharts(fixture);
     const page = fixture.nativeElement as HTMLElement;
@@ -252,7 +335,9 @@ describe('HomeComponent', () => {
     fixture.detectChanges();
     await renderCharts(fixture);
 
-    expect(page.querySelector('[role="alert"]')?.textContent).toContain('temporarily unavailable');
+    expect(page.querySelector('[role="alert"]')?.textContent?.trim()).toContain(
+      'temporarily unavailable',
+    );
     expect(page.querySelector('app-header')).toBeNull();
     expect(page.querySelector('canvas')).toBeNull();
   });
@@ -261,10 +346,13 @@ describe('HomeComponent', () => {
     data.next([{ id: 1, country: 'France', participations: [] }]);
     fixture.detectChanges();
     await renderCharts(fixture);
-    expect(component.summary().breakdown[0].percentage).toBe(0);
-    expect((fixture.nativeElement as HTMLElement).querySelector('tbody tr')?.textContent).toContain('0%');
-    expect(chartAt(fixture.nativeElement as HTMLElement).isPluginEnabled('dashboardMedalLabels')).toBeTrue();
+    expect(homeView(component).rows[0].percentage).toBe(0);
+    expect((fixture.nativeElement as HTMLElement).querySelector('tbody tr')?.textContent).toContain(
+      '0%',
+    );
+    expect(
+      chartAt(fixture.nativeElement as HTMLElement).isPluginEnabled('dashboardMedalLabels'),
+    ).toBeTrue();
     expect(chartAt(fixture.nativeElement as HTMLElement).legend?.options.display).toBeFalse();
   });
-
 });

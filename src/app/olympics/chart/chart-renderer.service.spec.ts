@@ -21,7 +21,11 @@ describe('ChartRenderer', () => {
     it(`should render a ${type} on the supplied canvas without mutating inputs`, () => {
       const labels = Object.freeze(type === 'pie' ? ['France', 'Italy'] : [2012, 2016]);
       const values = Object.freeze([10, 20]);
-      rendered = TestBed.inject(ChartRenderer).create(canvas, { type, labels, values }, () => undefined);
+      rendered = TestBed.inject(ChartRenderer).create(
+        canvas,
+        { type, items: labels.map((label, index) => ({ label, value: values[index] })) },
+        () => undefined,
+      );
       const chart = Chart.getChart(canvas);
       expect(chart?.data.labels).toEqual([...labels]);
       expect(chart?.data.datasets[0].data).toEqual([10, 20]);
@@ -29,7 +33,7 @@ describe('ChartRenderer', () => {
       expect(chart?.options.responsive).toBeTrue();
       expect(chart?.options.maintainAspectRatio).toBeFalse();
       expect(chart?.canvas).toBe(canvas);
-      expect(chart?.legend?.legendItems?.map(item => item.text)).toEqual(type === 'pie' ? labels.map(String) : ['medals']);
+      expect(chart?.legend?.options.display).toBeFalse();
       expect(chart?.isPluginEnabled('tooltip')).toBeTrue();
       rendered.destroy();
       rendered = undefined;
@@ -39,9 +43,17 @@ describe('ChartRenderer', () => {
 
   it('should emit the selected pie index and ignore clicks outside a country', () => {
     const selected = jasmine.createSpy('selected');
-    rendered = TestBed.inject(ChartRenderer).create(canvas, {
-      type: 'pie', labels: ['France', 'Italy'], values: [10, 20],
-    }, selected);
+    rendered = TestBed.inject(ChartRenderer).create(
+      canvas,
+      {
+        type: 'pie',
+        items: [
+          { label: 'France', value: 10 },
+          { label: 'Italy', value: 20 },
+        ],
+      },
+      selected,
+    );
     const chart = Chart.getChart(canvas);
     if (!chart) {
       throw new Error('Expected a rendered pie chart.');
@@ -56,11 +68,21 @@ describe('ChartRenderer', () => {
   });
   for (const type of ['pie', 'line'] as const) {
     it(`should highlight the keyboard-selected ${type} item and its tooltip`, () => {
-      rendered = TestBed.inject(ChartRenderer).create(canvas, { type, labels: ['First', 'Second'], values: [10, 20] }, () => undefined);
+      rendered = TestBed.inject(ChartRenderer).create(
+        canvas,
+        {
+          type,
+          items: [
+            { label: 'First', value: 10 },
+            { label: 'Second', value: 20 },
+          ],
+        },
+        () => undefined,
+      );
       const chart = Chart.getChart(canvas)!;
       rendered.focusPoint(1);
-      expect(chart.getActiveElements().map(item => item.index)).toEqual([1]);
-      expect(chart.tooltip?.getActiveElements().map(item => item.index)).toEqual([1]);
+      expect(chart.getActiveElements().map((item) => item.index)).toEqual([1]);
+      expect(chart.tooltip?.getActiveElements().map((item) => item.index)).toEqual([1]);
       rendered.focusPoint(null);
       expect(chart.getActiveElements()).toEqual([]);
       expect(chart.tooltip?.getActiveElements()).toEqual([]);
@@ -69,21 +91,65 @@ describe('ChartRenderer', () => {
     });
   }
 
+  it('should render country point values with area fill and keyboard selection', () => {
+    rendered = TestBed.inject(ChartRenderer).create(
+      canvas,
+      {
+        type: 'line',
+        items: [
+          { label: 2012, value: 35 },
+          { label: 2016, value: 45 },
+          { label: 2020, value: 33 },
+        ],
+      },
+      () => undefined,
+    );
+    const chart = Chart.getChart(canvas)!;
+    chart.resize(650, 336);
+    const text = spyOn(chart.ctx, 'fillText').and.callThrough();
+    chart.update('none');
+    expect(text.calls.allArgs().some((args) => args[0] === '45')).toBeTrue();
+    const dataset = chart.data.datasets[0];
+    expect('fill' in dataset && dataset.fill).toBeTrue();
+    expect(chart.legend?.options.display).toBeFalse();
+    expect(chart.scales['y'].min).toBeLessThanOrEqual(33);
+    expect(chart.scales['y'].max).toBeGreaterThanOrEqual(45);
+    rendered.focusPoint(2);
+    expect(chart.tooltip?.getActiveElements().map((item) => item.index)).toEqual([2]);
+  });
+
   it('should draw a medal beside the complete dashboard tooltip', () => {
-    rendered = TestBed.inject(ChartRenderer).create(canvas, {
-      type: 'pie', labels: ['France', 'Italy'], values: [10, 30], dashboard: true,
-    }, () => undefined);
+    rendered = TestBed.inject(ChartRenderer).create(
+      canvas,
+      {
+        type: 'pie',
+        items: [
+          { label: 'France', value: 10 },
+          { label: 'Italy', value: 30 },
+        ],
+      },
+      () => undefined,
+    );
     const chart = Chart.getChart(canvas)!;
     chart.resize(650, 400);
     const arc = spyOn(chart.ctx, 'arc').and.callThrough();
     rendered.focusPoint(0);
     expect(chart.tooltip?.title[0].trim()).toBe('France');
-    expect(chart.tooltip?.body[0].lines.map(line => line.trim())).toEqual(['10 medals', '25% of total']);
-    expect(arc.calls.allArgs().some(args => args[0] === 11 && args[1] === 13 && args[2] === 7)).toBeTrue();
+    expect(chart.tooltip?.body[0].lines.map((line) => line.trim())).toEqual([
+      '10 medals',
+      '25% of total',
+    ]);
+    expect(
+      arc.calls.allArgs().some((args) => args[0] === 11 && args[1] === 13 && args[2] === 7),
+    ).toBeTrue();
   });
 
   it('should paint an opaque white canvas background after every redraw', () => {
-    rendered = TestBed.inject(ChartRenderer).create(canvas, { type: 'pie', labels: ['France'], values: [10] }, () => undefined);
+    rendered = TestBed.inject(ChartRenderer).create(
+      canvas,
+      { type: 'pie', items: [{ label: 'France', value: 10 }] },
+      () => undefined,
+    );
     const chart = Chart.getChart(canvas)!;
     const context = canvas.getContext('2d')!;
     const backgroundPixel = () => Array.from(context.getImageData(0, 0, 1, 1).data);
@@ -97,22 +163,29 @@ describe('ChartRenderer', () => {
   });
 
   it('should draw dashboard values and labels while preserving point selection', () => {
-    rendered = TestBed.inject(ChartRenderer).create(canvas, {
-      type: 'pie', labels: ['Italy', 'United States'], values: [96, 345], dashboard: true,
-    }, () => undefined);
+    rendered = TestBed.inject(ChartRenderer).create(
+      canvas,
+      {
+        type: 'pie',
+        items: [
+          { label: 'Italy', value: 96 },
+          { label: 'United States', value: 345 },
+        ],
+      },
+      () => undefined,
+    );
     const chart = Chart.getChart(canvas)!;
     const fillText = spyOn(chart.ctx, 'fillText').and.callThrough();
     chart.resize(650, 400);
     chart.update('none');
-    expect(fillText.calls.allArgs().some(args => args[0] === '345')).toBeTrue();
-    expect(fillText.calls.allArgs().some(args => args[0] === 'United States')).toBeTrue();
+    expect(fillText.calls.allArgs().some((args) => args[0] === '345')).toBeTrue();
+    expect(fillText.calls.allArgs().some((args) => args[0] === 'United States')).toBeTrue();
     expect(chart.legend?.options.display).toBeFalse();
     rendered.focusPoint(1);
-    expect(chart.getActiveElements().map(item => item.index)).toEqual([1]);
-    expect(chart.tooltip?.getActiveElements().map(item => item.index)).toEqual([1]);
+    expect(chart.getActiveElements().map((item) => item.index)).toEqual([1]);
+    expect(chart.tooltip?.getActiveElements().map((item) => item.index)).toEqual([1]);
     chart.resize(300, 300);
     chart.update('none');
     expect(chart.canvas.width).toBeGreaterThan(0);
   });
-
 });

@@ -10,7 +10,9 @@ describe('DataService shared loading', () => {
   let http: HttpTestingController;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ providers: [provideHttpClient(), provideHttpClientTesting()] });
+    TestBed.configureTestingModule({
+      providers: [provideHttpClient(), provideHttpClientTesting()],
+    });
     service = TestBed.inject(DataService);
     http = TestBed.inject(HttpTestingController);
   });
@@ -20,12 +22,12 @@ describe('DataService shared loading', () => {
   it('should share a pending request without cancelling it when one consumer leaves', () => {
     const next = jasmine.createSpy('next');
     const first = service.getOlympics().subscribe();
-    const second = service.getCountryById(1).subscribe(next);
+    const second = service.getOlympics().subscribe(next);
     const request = http.expectOne(url);
     first.unsubscribe();
     expect(request.cancelled).toBeFalse();
     request.flush(countries);
-    expect(next).toHaveBeenCalledOnceWith(countries[0]);
+    expect(next).toHaveBeenCalledOnceWith(countries);
     second.unsubscribe();
   });
 
@@ -49,7 +51,7 @@ describe('DataService shared loading', () => {
       http.expectOne(url).flush(payload);
       const next = jasmine.createSpy('next');
       service.getOlympics().subscribe(next);
-      service.getCountryById(1).subscribe();
+      service.getOlympics().subscribe();
       http.expectNone(url);
       expect(next).toHaveBeenCalledOnceWith(payload);
     });

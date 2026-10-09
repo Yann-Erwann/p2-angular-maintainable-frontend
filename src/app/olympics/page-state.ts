@@ -1,6 +1,7 @@
-export type PageState<T = void> =
+/** Statut d’annonce sans données métier ; le message d’erreur doit être affichable. */
+export type PageFeedbackState =
   | { readonly status: 'loading' }
-  | { readonly status: 'success'; readonly data: T }
-  | { readonly status: 'empty'; readonly data?: T }
+  | { readonly status: 'success' }
+  | { readonly status: 'empty' }
   | { readonly status: 'not-found' }
   | { readonly status: 'error'; readonly message: string };

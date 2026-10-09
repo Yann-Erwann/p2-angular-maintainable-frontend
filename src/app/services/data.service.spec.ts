@@ -24,13 +24,21 @@ describe('DataService', () => {
   });
 
   it('should request Olympic data and preserve its numeric fields', () => {
-    const data: readonly Olympic[] = [{
-      id: 1,
-      country: 'France',
-      participations: [{
-        id: 1, year: 2012, city: 'London', medalsCount: 10, athleteCount: 100,
-      }],
-    }];
+    const data: readonly Olympic[] = [
+      {
+        id: 1,
+        country: 'France',
+        participations: [
+          {
+            id: 1,
+            year: 2012,
+            city: 'London',
+            medalsCount: 10,
+            athleteCount: 100,
+          },
+        ],
+      },
+    ];
     const nextSpy = jasmine.createSpy<(data: readonly Olympic[]) => void>('next');
     service.getOlympics().subscribe(nextSpy);
 
@@ -51,15 +59,31 @@ describe('DataService', () => {
 
   for (const scenario of [
     { name: 'a non-array payload', payload: { details: 'private server details' } },
-    { name: 'a malformed participation', payload: [{
-      id: 1, country: 'France', participations: [{
-        id: 1, year: 2012, city: 'London', medalsCount: '10', athleteCount: 100,
-      }],
-    }] },
-    { name: 'duplicate country IDs', payload: [
-      { id: 1, country: 'France', participations: [] },
-      { id: 1, country: 'Italy', participations: [] },
-    ] },
+    {
+      name: 'a malformed participation',
+      payload: [
+        {
+          id: 1,
+          country: 'France',
+          participations: [
+            {
+              id: 1,
+              year: 2012,
+              city: 'London',
+              medalsCount: '10',
+              athleteCount: 100,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'duplicate country IDs',
+      payload: [
+        { id: 1, country: 'France', participations: [] },
+        { id: 1, country: 'Italy', participations: [] },
+      ],
+    },
   ]) {
     it(`should propagate ${scenario.name} as a data error without emitting success`, () => {
       const nextSpy = jasmine.createSpy<(data: readonly Olympic[]) => void>('next');
@@ -68,10 +92,12 @@ describe('DataService', () => {
       httpTesting.expectOne('./assets/mock/olympic.json').flush(scenario.payload);
 
       expect(nextSpy).not.toHaveBeenCalled();
-      expect(errorSpy).toHaveBeenCalledOnceWith(jasmine.objectContaining({
-        message: 'Olympic data is invalid. Please try again later.',
-        cause: jasmine.any(OlympicDataValidationError),
-      }));
+      expect(errorSpy).toHaveBeenCalledOnceWith(
+        jasmine.objectContaining({
+          message: 'Olympic data is invalid. Please try again later.',
+          cause: jasmine.any(OlympicDataValidationError),
+        }),
+      );
     });
   }
 
@@ -85,10 +111,12 @@ describe('DataService', () => {
     });
 
     expect(nextSpy).not.toHaveBeenCalled();
-    expect(errorSpy).toHaveBeenCalledOnceWith(jasmine.objectContaining({
-      message: 'Olympic data is temporarily unavailable. Please try again later.',
-      cause: jasmine.objectContaining({ status: 503 }),
-    }));
+    expect(errorSpy).toHaveBeenCalledOnceWith(
+      jasmine.objectContaining({
+        message: 'Olympic data is temporarily unavailable. Please try again later.',
+        cause: jasmine.objectContaining({ status: 503 }),
+      }),
+    );
   });
 
   for (const scenario of [
@@ -99,11 +127,15 @@ describe('DataService', () => {
       const errorSpy = jasmine.createSpy<(error: DataLoadError) => void>('error');
       service.getOlympics().subscribe({ next: () => fail('Expected a failure'), error: errorSpy });
       httpTesting.expectOne('./assets/mock/olympic.json').flush('private server details', {
-        status: scenario.status, statusText: 'Technical failure',
+        status: scenario.status,
+        statusText: 'Technical failure',
       });
-      expect(errorSpy).toHaveBeenCalledOnceWith(jasmine.objectContaining({
-        message: scenario.message, cause: jasmine.any(HttpErrorResponse),
-      }));
+      expect(errorSpy).toHaveBeenCalledOnceWith(
+        jasmine.objectContaining({
+          message: scenario.message,
+          cause: jasmine.any(HttpErrorResponse),
+        }),
+      );
     });
   }
 
@@ -112,52 +144,11 @@ describe('DataService', () => {
     service.getOlympics().subscribe({ next: () => fail('Expected a failure'), error: errorSpy });
     httpTesting.expectOne('./assets/mock/olympic.json').error(new ProgressEvent('error'));
 
-    expect(errorSpy).toHaveBeenCalledOnceWith(jasmine.objectContaining({
-      message: 'Unable to connect. Check your connection and try again.',
-      cause: jasmine.objectContaining({ status: 0 }),
-    }));
+    expect(errorSpy).toHaveBeenCalledOnceWith(
+      jasmine.objectContaining({
+        message: 'Unable to connect. Check your connection and try again.',
+        cause: jasmine.objectContaining({ status: 0 }),
+      }),
+    );
   });
-
-  it('should select a country by ID even when names are identical', () => {
-    const countries = [
-      { id: 1, country: 'France', participations: [] },
-      { id: 2, country: 'France', participations: [] },
-    ];
-    const next = jasmine.createSpy('next');
-    service.getCountryById(2).subscribe(next);
-    httpTesting.expectOne('./assets/mock/olympic.json').flush(countries);
-    expect(next).toHaveBeenCalledOnceWith(countries[1]);
-  });
-
-  for (const countries of [[], [{ id: 1, country: 'France', participations: [] }]]) {
-    it('should return undefined for an ID absent from the validated collection', () => {
-      const next = jasmine.createSpy('next');
-      service.getCountryById(2).subscribe(next);
-      httpTesting.expectOne('./assets/mock/olympic.json').flush(countries);
-      expect(next).toHaveBeenCalledOnceWith(undefined);
-    });
-  }
-
-  for (const id of [0, -1, 1.5, NaN, Infinity, Number.MAX_SAFE_INTEGER + 1]) {
-    it(`should reject invalid numeric ID ${id} without HTTP`, () => {
-      const next = jasmine.createSpy('next');
-      service.getCountryById(id).subscribe(next);
-      expect(next).toHaveBeenCalledOnceWith(undefined);
-      httpTesting.expectNone('./assets/mock/olympic.json');
-    });
-  }
-
-  it('should preserve country loading errors instead of reporting a missing ID', () => {
-    const next = jasmine.createSpy('next');
-    const error = jasmine.createSpy('error');
-    service.getCountryById(1).subscribe({ next, error });
-    httpTesting.expectOne('./assets/mock/olympic.json').flush('Unavailable', {
-      status: 503, statusText: 'Service Unavailable',
-    });
-    expect(next).not.toHaveBeenCalled();
-    expect(error).toHaveBeenCalledOnceWith(jasmine.objectContaining({
-      cause: jasmine.objectContaining({ status: 503 }),
-    }));
-  });
-
 });

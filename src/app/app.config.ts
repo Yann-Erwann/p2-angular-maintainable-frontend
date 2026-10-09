@@ -4,6 +4,7 @@ import { provideRouter, withHashLocation } from '@angular/router';
 
 import { routes } from './app.routes';
 
+/** Le hash permet l’accès direct aux fiches sur un hébergement statique. */
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZonelessChangeDetection(),

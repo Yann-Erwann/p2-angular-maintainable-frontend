@@ -1,25 +1,30 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <title>Olympic Games App</title>
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Explore Olympic medal totals by country, participation history and athlete statistics." />
+    <meta
+      name="description"
+      content="Explore Olympic medal totals by country, participation history and athlete statistics."
+    />
     <meta name="application-name" content="Olympic Games App" />
     <meta name="theme-color" content="#0b6470" />
     <link rel="preload" href="assets/mock/olympic.json" as="fetch" crossorigin="anonymous" />
     <script>
       // Preload the same responsive banner that the initial route will display.
       const bannerPath = location.hash.slice(1).split(/[?#]/)[0];
-      const homeBanner = !bannerPath || bannerPath === '/';
+      const homeBanner = !bannerPath || bannerPath === '/' || bannerPath.startsWith('/country/');
       const compactBanner = !homeBanner || matchMedia('(max-width: 600px)').matches;
       const bannerPreload = document.createElement('link');
       bannerPreload.rel = 'preload';
       bannerPreload.as = 'image';
       bannerPreload.type = 'image/webp';
       bannerPreload.fetchPriority = 'high';
-      bannerPreload.href = compactBanner ? 'assets/images/teleSport.webp' : 'assets/images/teleSport-home.webp';
+      bannerPreload.href = compactBanner
+        ? 'assets/images/teleSport.webp'
+        : 'assets/images/teleSport-home.webp';
       bannerPreload.imageSrcset = compactBanner
         ? 'assets/images/teleSport-small.webp 438w, assets/images/teleSport.webp 874w'
         : 'assets/images/teleSport-home-small.webp 670w, assets/images/teleSport-home.webp 1339w';
@@ -35,24 +40,44 @@
     </script>
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Olympic Games App" />
-    <meta property="og:description" content="Explore Olympic medal totals by country, participation history and athlete statistics." />
+    <meta
+      property="og:description"
+      content="Explore Olympic medal totals by country, participation history and athlete statistics."
+    />
     <meta property="og:site_name" content="Olympic Games App" />
-    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAeCAYAAAA/xX6fAAAACXBIWXMAAAsSAAALEgHS3X78AAADZklEQVRIiZVXS0wTURS98+nMlNIWdUeRlgllow5ujC4MNnFjYgSCbBQ/hbjRRGCpRiPGDUt140YNMVFjjAoYjKIhhYif+Am48UMEplCkfEI/JIKa1NyxM7wOnc7MSSZ9895978y9c++ZWyqTyYBViEGpHgCUS56OeXiOG2dZ9kFqceqs1TNMCcWgtB0AwtnLq85PRKc0G5qmMwLPjzpYtjOxEL1vm1AMSgGCxJ9vI0lIgmGYvwLPD7Msez4xL78yJBSDUglBUl3oKXft3AE/43MQGVp3Xg4cDvYXz3HPWYZtX5qXZYWwonJbOPte6gruJnDvzi2Yjc9BfWOT1S0g8Pysw8H2IaH1rAGAMl8pDEWeKeOKqmqYlKN2tgNtyxoA2lpPaeOOC2fsblcIB60aezxuONhQq93X1+6HkhJvwT0kOI5L2PKwOXwk597r9UD76ZN2jlA8HLFq3BI+um4ufOywZTKWYSaRMGHFuLGhDtzuYmUci82AnK1Df/lmy6QURSUte9jWuha6q9euQ8flTu3ealhpmn5jyUMsdJ+vVBmn08vQ/3IAunv7IJlMKXPV0lYI1ew2JaQoiCPhpJkh6V3/iwFIpdKQSCQVUhXtreZeUhT9QZE2MSgZFj9Z6Iia0D6Yjs0oWhrwl8PE91FtzUwIMqtLlFoWSWPv1godk6WszKeEGEOIhDIh4oWEAL8ooIq3GJQiALBHb4SFPvJx2PAQPfCdBqokJdx6YNGvpuMbVA/zJo6+0M1QSAhoilohPewAgIt6o9FPr7Xa+/L1m5IsKlZWVrUxyhtmKgJDHAhK6whdRUWDy0uxEGv00GShIw41teQQkh9gMnlUIei6fTe/p9nfiH6BLIWHj3pzyPTAzOx58lSbzRdWhqG7wejzRBb6f8IeQzIVpEeFhEAlzJE3MlmwFN6+e29KiCJAloheCGiKfgy6nmbErJchYdRE5QP2Nr+X54tID2F87DO2g80AIFs+yQTYwbmLXTdVMtC/w/Gxz10AgMSXCqmPGVBVsAzcLldlanH6BGlu2Ahn28YrAHA837pRSJ2C8IPnuL1qW6iHlc4bm+IuvfTpCVG6nIJwIF/zS8LyfwsxKIWyHiuJpRJiQjgF4VxyYQrXzIGEdi5snP3ilijj3PTHvdF3w9b+TAb+Afl3jDi6Q4zhAAAAAElFTkSuQmCC" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAeCAYAAAA/xX6fAAAACXBIWXMAAAsSAAALEgHS3X78AAADZklEQVRIiZVXS0wTURS98+nMlNIWdUeRlgllow5ujC4MNnFjYgSCbBQ/hbjRRGCpRiPGDUt140YNMVFjjAoYjKIhhYif+Am48UMEplCkfEI/JIKa1NyxM7wOnc7MSSZ9895978y9c++ZWyqTyYBViEGpHgCUS56OeXiOG2dZ9kFqceqs1TNMCcWgtB0AwtnLq85PRKc0G5qmMwLPjzpYtjOxEL1vm1AMSgGCxJ9vI0lIgmGYvwLPD7Msez4xL78yJBSDUglBUl3oKXft3AE/43MQGVp3Xg4cDvYXz3HPWYZtX5qXZYWwonJbOPte6gruJnDvzi2Yjc9BfWOT1S0g8Pysw8H2IaH1rAGAMl8pDEWeKeOKqmqYlKN2tgNtyxoA2lpPaeOOC2fsblcIB60aezxuONhQq93X1+6HkhJvwT0kOI5L2PKwOXwk597r9UD76ZN2jlA8HLFq3BI+um4ufOywZTKWYSaRMGHFuLGhDtzuYmUci82AnK1Df/lmy6QURSUte9jWuha6q9euQ8flTu3ealhpmn5jyUMsdJ+vVBmn08vQ/3IAunv7IJlMKXPV0lYI1ew2JaQoiCPhpJkh6V3/iwFIpdKQSCQVUhXtreZeUhT9QZE2MSgZFj9Z6Iia0D6Yjs0oWhrwl8PE91FtzUwIMqtLlFoWSWPv1godk6WszKeEGEOIhDIh4oWEAL8ooIq3GJQiALBHb4SFPvJx2PAQPfCdBqokJdx6YNGvpuMbVA/zJo6+0M1QSAhoilohPewAgIt6o9FPr7Xa+/L1m5IsKlZWVrUxyhtmKgJDHAhK6whdRUWDy0uxEGv00GShIw41teQQkh9gMnlUIei6fTe/p9nfiH6BLIWHj3pzyPTAzOx58lSbzRdWhqG7wejzRBb6f8IeQzIVpEeFhEAlzJE3MlmwFN6+e29KiCJAloheCGiKfgy6nmbErJchYdRE5QP2Nr+X54tID2F87DO2g80AIFs+yQTYwbmLXTdVMtC/w/Gxz10AgMSXCqmPGVBVsAzcLldlanH6BGlu2Ahn28YrAHA837pRSJ2C8IPnuL1qW6iHlc4bm+IuvfTpCVG6nIJwIF/zS8LyfwsxKIWyHiuJpRJiQjgF4VxyYQrXzIGEdi5snP3ilijj3PTHvdF3w9b+TAb+Afl3jDi6Q4zhAAAAAElFTkSuQmCC"
+    />
   </head>
   <body>
     <app-root class="home-dashboard">
       <header class="brand-header">
         <nav aria-label="Main navigation">
-        <a class="brand-link" href="/" aria-label="Home — TéléSport">
-          <picture>
-      <source media="(max-width: 600px)" srcset="assets/images/teleSport-small.webp 438w, assets/images/teleSport.webp 874w" sizes="calc(100vw - 32px)" />
-      <img class="brand-banner" src="assets/images/teleSport-home.webp"
-            srcset="assets/images/teleSport-home-small.webp 670w, assets/images/teleSport-home.webp 1339w"
-            sizes="(min-width: 1500px) 1428px, calc(100vw - 72px)"
-            width="1339" height="211" alt="TéléSport — Olympic games app. Explore and compare Olympic medals across countries."
-            loading="eager" fetchpriority="high" />
-    </picture>
-        </a>
+          <a class="brand-link" href="./" aria-label="Home — TéléSport">
+            <picture>
+              <source
+                media="(max-width: 600px)"
+                srcset="assets/images/teleSport-small.webp 438w, assets/images/teleSport.webp 874w"
+                sizes="calc(100vw - 32px)"
+              />
+              <img
+                class="brand-banner"
+                src="assets/images/teleSport-home.webp"
+                srcset="
+                  assets/images/teleSport-home-small.webp  670w,
+                  assets/images/teleSport-home.webp       1339w
+                "
+                sizes="(min-width: 1500px) 1428px, calc(100vw - 72px)"
+                width="1339"
+                height="211"
+                alt="TéléSport — Olympic games app. Explore and compare Olympic medals across countries."
+                loading="eager"
+                fetchpriority="high"
+              />
+            </picture>
+          </a>
         </nav>
       </header>
       <h1 class="page-title">Olympic Games App</h1>
@@ -62,13 +87,14 @@
     <script>
       // Match the hash route before Angular starts to keep the banner layout stable.
       const initialPath = location.hash.slice(1).split(/[?#]/)[0];
-      if (initialPath && initialPath !== '/') {
+      if (initialPath && initialPath !== '/' && !initialPath.startsWith('/country/')) {
         const root = document.querySelector('app-root');
         const banner = root.querySelector('.brand-banner');
         root.classList.remove('home-dashboard');
         root.querySelector('source').remove();
         banner.src = 'assets/images/teleSport.webp';
-        banner.srcset = 'assets/images/teleSport-small.webp 438w, assets/images/teleSport.webp 874w';
+        banner.srcset =
+          'assets/images/teleSport-small.webp 438w, assets/images/teleSport.webp 874w';
         banner.sizes = '(min-width: 544px) 512px, calc(100vw - 32px)';
         banner.width = 874;
         banner.height = 251;

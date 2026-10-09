@@ -10,10 +10,10 @@ describe('PageFeedbackComponent', () => {
     const page = fixture.nativeElement as HTMLElement;
     const status = page.querySelector('[role="status"]');
     expect(page.querySelector('.loading-skeleton')).toBeNull();
-    expect(status?.textContent).toContain('Loading Olympic data');
+    expect(status?.textContent?.trim()).toContain('Loading Olympic data');
     expect(status?.classList.contains('visually-hidden')).toBeTrue();
 
-    fixture.componentRef.setInput('state', { status: 'success', data: [] });
+    fixture.componentRef.setInput('state', { status: 'success' });
     fixture.detectChanges();
     expect(page.querySelector('[role="status"]')).toBe(status);
   });
@@ -25,22 +25,25 @@ describe('PageFeedbackComponent', () => {
     const page = fixture.nativeElement as HTMLElement;
     const status = page.querySelector('[role="status"]');
     const alert = page.querySelector('[role="alert"]');
-    expect(status?.textContent).toContain('Loading Olympic data');
+    expect(status?.textContent?.trim()).toContain('Loading Olympic data');
     expect(status?.getAttribute('aria-atomic')).toBe('true');
-    expect(alert?.textContent).toBe('');
+    expect(alert?.textContent?.trim()).toBe('');
 
     fixture.componentRef.setInput('successMessage', 'Loaded results for Italy.');
-    fixture.componentRef.setInput('state', { status: 'success', data: [] });
+    fixture.componentRef.setInput('state', { status: 'success' });
     fixture.detectChanges();
     expect(page.querySelector('[role="status"]')).toBe(status);
-    expect(status?.textContent).toBe('Loaded results for Italy.');
+    expect(status?.textContent?.trim()).toBe('Loaded results for Italy.');
     expect(status?.classList.contains('visually-hidden')).toBeTrue();
 
-    fixture.componentRef.setInput('state', { status: 'error', message: 'Unable to connect.' });
+    fixture.componentRef.setInput('state', {
+      status: 'error',
+      message: 'Unable to connect.',
+    });
     fixture.detectChanges();
     expect(page.querySelector('[role="alert"]')).toBe(alert);
-    expect(status?.textContent).toBe('');
-    expect(alert?.textContent).toBe('Unable to connect.');
+    expect(status?.textContent?.trim()).toBe('');
+    expect(alert?.textContent?.trim()).toBe('Unable to connect.');
     expect(alert?.getAttribute('aria-atomic')).toBe('true');
     expect(alert?.classList.contains('visually-hidden')).toBeFalse();
   });
@@ -52,7 +55,9 @@ describe('PageFeedbackComponent', () => {
     const page = fixture.nativeElement as HTMLElement;
     expect(page.querySelector('.loading-skeleton')?.getAttribute('aria-hidden')).toBe('true');
     expect(page.querySelectorAll('.skeleton-indicator').length).toBe(2);
-    expect(page.querySelector('[role="status"]')?.textContent).toContain('Loading Olympic data');
+    expect(page.querySelector('[role="status"]')?.textContent?.trim()).toContain(
+      'Loading Olympic data',
+    );
     expect(page.querySelector('canvas')).toBeNull();
 
     fixture.componentRef.setInput('indicatorCount', 3);
@@ -60,7 +65,7 @@ describe('PageFeedbackComponent', () => {
     expect(page.querySelectorAll('.skeleton-indicator').length).toBe(3);
 
     for (const state of [
-      { status: 'success', data: [] },
+      { status: 'success' },
       { status: 'empty' },
       { status: 'not-found' },
       { status: 'error', message: 'Unable to connect.' },
@@ -74,14 +79,17 @@ describe('PageFeedbackComponent', () => {
     expect(page.querySelector('.loading-skeleton')).not.toBeNull();
   });
 
-  for (const [state, message] of [['empty', 'No Olympic data available.'], ['not-found', 'Country not found.']] as const) {
+  for (const [state, message] of [
+    ['empty', 'No Olympic data available.'],
+    ['not-found', 'Country not found.'],
+  ] as const) {
     it(`should display ${state} without an error announcement`, () => {
       const fixture = TestBed.createComponent(PageFeedbackComponent);
       fixture.componentRef.setInput('state', { status: state });
       fixture.detectChanges();
       const page = fixture.nativeElement as HTMLElement;
-      expect(page.querySelector('[role="status"]')?.textContent).toBe(message);
-      expect(page.querySelector('[role="alert"]')?.textContent).toBe('');
+      expect(page.querySelector('[role="status"]')?.textContent?.trim()).toBe(message);
+      expect(page.querySelector('[role="alert"]')?.textContent?.trim()).toBe('');
     });
   }
 });

@@ -13,6 +13,12 @@ import { CountryComponent } from './pages/country/country.component';
 import { HomeComponent } from './pages/home/home.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 
+function countrySummary(component: CountryComponent) {
+  const state = component.state();
+  if (state.status !== 'success' && state.status !== 'empty')
+    throw new Error('Expected a loaded country.');
+  return state.data.summary;
+}
 
 function chartAt(page: HTMLElement | null) {
   const canvas = page?.querySelector('canvas');
@@ -26,13 +32,19 @@ function chartAt(page: HTMLElement | null) {
 describe('Country routing', () => {
   const url = './assets/mock/olympic.json';
   const countries: readonly Olympic[] = [
-    { id: 1, country: 'France', participations: [
-      { id: 1, year: 2012, city: 'London', medalsCount: 10, athleteCount: 100 },
-      { id: 2, year: 2016, city: 'Rio', medalsCount: 20, athleteCount: 150 },
-    ] },
-    { id: 2, country: 'Italy', participations: [
-      { id: 1, year: 2020, city: 'Tokyo', medalsCount: 15, athleteCount: 120 },
-    ] },
+    {
+      id: 1,
+      country: 'France',
+      participations: [
+        { id: 1, year: 2012, city: 'London', medalsCount: 10, athleteCount: 100 },
+        { id: 2, year: 2016, city: 'Rio', medalsCount: 20, athleteCount: 150 },
+      ],
+    },
+    {
+      id: 2,
+      country: 'Italy',
+      participations: [{ id: 1, year: 2020, city: 'Tokyo', medalsCount: 15, athleteCount: 120 }],
+    },
   ];
   let http: HttpTestingController;
   let country: CountryComponent | undefined;
@@ -56,8 +68,8 @@ describe('Country routing', () => {
     harness.detectChanges();
     await renderCharts(harness.fixture);
 
-    expect(country.titlePage).toBe('Italy');
-    expect(country.totalMedals).toBe(15);
+    expect(countrySummary(country).name).toBe('Italy');
+    expect(countrySummary(country).totalMedals).toBe(15);
     expect(chartAt(harness.routeNativeElement).data.labels).toEqual([2020]);
     expect(harness.routeNativeElement?.querySelector('.back-link')).toBeNull();
   });
@@ -77,14 +89,16 @@ describe('Country routing', () => {
     harness.detectChanges();
     await renderCharts(harness.fixture);
     expect(destroy).toHaveBeenCalledTimes(1);
-    expect(country.titlePage).toBe('Italy');
-    expect(country.totalEntries).toBe(1);
-    expect(country.totalMedals).toBe(15);
-    expect(country.totalAthletes).toBe(120);
+    expect(countrySummary(country).name).toBe('Italy');
+    expect(countrySummary(country).entries).toBe(1);
+    expect(countrySummary(country).totalMedals).toBe(15);
+    expect(countrySummary(country).athleteEntries).toBe(120);
     expect(chartAt(harness.routeNativeElement)).not.toBe(previousChart);
     expect(chartAt(harness.routeNativeElement).data.labels).toEqual([2020]);
     expect(chartAt(harness.routeNativeElement).data.datasets[0].data).toEqual([15]);
-    expect(harness.routeNativeElement?.querySelector('app-header')?.textContent).not.toContain('France');
+    expect(harness.routeNativeElement?.querySelector('app-header')?.textContent).not.toContain(
+      'France',
+    );
     http.expectNone(url);
   });
 
@@ -97,13 +111,13 @@ describe('Country routing', () => {
       expect(request.cancelled).toBeTrue();
       request = http.expectOne(url);
     }
-    expect(country.state.status).toBe('loading');
+    expect(country.state().status).toBe('loading');
     expect(harness.routeNativeElement?.querySelector('canvas')).toBeNull();
 
     request.flush(countries);
     harness.detectChanges();
     await renderCharts(harness.fixture);
-    expect(country.titlePage).toBe('Italy');
+    expect(countrySummary(country).name).toBe('Italy');
     expect(chartAt(harness.routeNativeElement).data.datasets[0].data).toEqual([15]);
     http.expectNone(url);
   });
@@ -114,16 +128,18 @@ describe('Country routing', () => {
     http.expectOne(url).flush('Unavailable', { status: 503, statusText: 'Unavailable' });
     harness.detectChanges();
     await renderCharts(harness.fixture);
-    expect(country.state.status).toBe('error');
-    expect(harness.routeNativeElement?.querySelector('[role="alert"]')?.textContent).toContain('temporarily unavailable');
+    expect(country.state().status).toBe('error');
+    expect(
+      harness.routeNativeElement?.querySelector('[role="alert"]')?.textContent?.trim(),
+    ).toContain('temporarily unavailable');
 
     await harness.navigateByUrl('/country/2', CountryComponent);
     http.expectOne(url).flush(countries);
     harness.detectChanges();
     await renderCharts(harness.fixture);
-    expect(country.titlePage).toBe('Italy');
+    expect(countrySummary(country).name).toBe('Italy');
     expect(document.title).toBe('Italy | Olympic Games');
-    expect(country.state.status).toBe('success');
+    expect(country.state().status).toBe('success');
   });
 
   it('should report an absent ID and avoid reloading for query-only changes', async () => {
@@ -132,12 +148,12 @@ describe('Country routing', () => {
     http.expectOne(url).flush(countries);
     harness.detectChanges();
     await renderCharts(harness.fixture);
-    expect(country.state.status).toBe('not-found');
+    expect(country.state().status).toBe('not-found');
     expect(document.title).toBe('Country not found | Olympic Games');
 
     await harness.navigateByUrl('/country/999?view=table', CountryComponent);
     http.expectNone(url);
-    expect(country.state.status).toBe('not-found');
+    expect(country.state().status).toBe('not-found');
   });
 
   it('should dispose chart instances across repeated page navigation', async () => {
@@ -150,7 +166,7 @@ describe('Country routing', () => {
         http.expectNone(url);
       }
       harness.detectChanges();
-    await renderCharts(harness.fixture);
+      await renderCharts(harness.fixture);
       const pie = chartAt(harness.routeNativeElement);
       const pieCanvas = pie.canvas;
       const destroyPie = spyOn(pie, 'destroy').and.callThrough();
@@ -160,7 +176,7 @@ describe('Country routing', () => {
       expect(Chart.getChart(pieCanvas)).toBeUndefined();
       http.expectNone(url);
       harness.detectChanges();
-    await renderCharts(harness.fixture);
+      await renderCharts(harness.fixture);
       const line = chartAt(harness.routeNativeElement);
       const lineCanvas = line.canvas;
       const destroyLine = spyOn(line, 'destroy').and.callThrough();
@@ -177,21 +193,21 @@ describe('Country routing', () => {
       country = await harness.navigateByUrl('/country/1', CountryComponent);
       http.expectOne(url).flush(countries);
       harness.detectChanges();
-    await renderCharts(harness.fixture);
+      await renderCharts(harness.fixture);
 
       await harness.navigateByUrl(`/country/${name}`, CountryComponent);
-      expect(country.state.status).toBe('not-found');
-      expect(country.titlePage).toBe('');
-      expect(country.totalMedals).toBe(0);
-      expect(harness.routeNativeElement?.querySelector('[role="status"]')?.textContent?.trim()).toBe('Country not found.');
+      expect(country.state().status).toBe('not-found');
+      expect(
+        harness.routeNativeElement?.querySelector('[role="status"]')?.textContent?.trim(),
+      ).toBe('Country not found.');
       expect(harness.routeNativeElement?.querySelector('app-header')).toBeNull();
       expect(harness.routeNativeElement?.querySelector('canvas')).toBeNull();
 
       await harness.navigateByUrl('/country/2', CountryComponent);
       http.expectNone(url);
       harness.detectChanges();
-    await renderCharts(harness.fixture);
-      expect(country.titlePage).toBe('Italy');
+      await renderCharts(harness.fixture);
+      expect(countrySummary(country).name).toBe('Italy');
       expect(chartAt(harness.routeNativeElement).data.datasets[0].data).toEqual([15]);
       http.expectNone(url);
     });
@@ -201,10 +217,10 @@ describe('Country routing', () => {
     const harness = await RouterTestingHarness.create();
     country = await harness.navigateByUrl('/country/%20', CountryComponent);
     http.expectNone(url);
-    expect(country.state.status).toBe('not-found');
+    expect(country.state().status).toBe('not-found');
     harness.detectChanges();
     await renderCharts(harness.fixture);
-    expect(country.state.status).toBe('not-found');
+    expect(country.state().status).toBe('not-found');
   });
 
   it('should display country names with spaces and accents on an ID route', async () => {
@@ -213,8 +229,8 @@ describe('Country routing', () => {
     http.expectOne(url).flush([{ ...countries[1], country: 'Côte d’Ivoire' }]);
     harness.detectChanges();
     await renderCharts(harness.fixture);
-    expect(country.titlePage).toBe('Côte d’Ivoire');
-    expect(country.totalMedals).toBe(15);
+    expect(countrySummary(country).name).toBe('Côte d’Ivoire');
+    expect(countrySummary(country).totalMedals).toBe(15);
   });
 
   it('should recompute the country on browser back and forward navigation', async () => {
@@ -231,7 +247,9 @@ describe('Country routing', () => {
     const location = TestBed.inject(Location);
     router.setUpLocationChangeListener();
 
-    let navigation = firstValueFrom(router.events.pipe(filter((event) => event instanceof NavigationEnd)));
+    let navigation = firstValueFrom(
+      router.events.pipe(filter((event) => event instanceof NavigationEnd)),
+    );
     location.back();
     await navigation;
     harness.detectChanges();
@@ -241,10 +259,12 @@ describe('Country routing', () => {
     harness.detectChanges();
     await renderCharts(harness.fixture);
     expect(router.url).toBe('/country/1');
-    expect(country.titlePage).toBe('France');
+    expect(countrySummary(country).name).toBe('France');
     expect(chartAt(harness.routeNativeElement).data.datasets[0].data).toEqual([10, 20]);
 
-    navigation = firstValueFrom(router.events.pipe(filter((event) => event instanceof NavigationEnd)));
+    navigation = firstValueFrom(
+      router.events.pipe(filter((event) => event instanceof NavigationEnd)),
+    );
     location.forward();
     await navigation;
     harness.detectChanges();
@@ -254,7 +274,7 @@ describe('Country routing', () => {
     harness.detectChanges();
     await renderCharts(harness.fixture);
     expect(router.url).toBe('/country/2');
-    expect(country.titlePage).toBe('Italy');
+    expect(countrySummary(country).name).toBe('Italy');
     expect(chartAt(harness.routeNativeElement).data.datasets[0].data).toEqual([15]);
     http.expectNone(url);
   });
@@ -265,7 +285,7 @@ describe('Country routing', () => {
     http.expectNone(url);
     harness.detectChanges();
     await renderCharts(harness.fixture);
-    expect(country.state.status).toBe('not-found');
+    expect(country.state().status).toBe('not-found');
     expect(harness.routeNativeElement?.querySelector('canvas')).toBeNull();
     expect(harness.routeNativeElement?.querySelector('.back-link')).toBeNull();
   });
@@ -278,7 +298,7 @@ describe('Country routing', () => {
       await harness.navigateByUrl('/', HomeComponent);
       http.expectOne(url).flush([]);
       harness.detectChanges();
-    await renderCharts(harness.fixture);
+      await renderCharts(harness.fixture);
       expect(harness.routeNativeElement?.textContent).toContain('No Olympic data available.');
     });
   }
