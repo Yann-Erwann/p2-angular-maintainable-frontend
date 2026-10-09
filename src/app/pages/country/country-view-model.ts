@@ -47,11 +47,9 @@ export interface CountryViewModel {
     readonly name: string;
     readonly flagCode: string;
   }[];
-  /** Cartes identifiées par leur clé métier, indépendamment de leur position. */
   readonly indicators: readonly Indicator[];
   /** Code du drapeau connu, ou chaîne vide pour l’emplacement neutre. */
   readonly flagCode: string;
-  /** Médailles par participation dans l’ordre chronologique. */
   readonly chartItems: readonly ChartItem[];
 }
 

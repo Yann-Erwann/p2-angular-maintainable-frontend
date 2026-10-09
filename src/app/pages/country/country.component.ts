@@ -55,7 +55,6 @@ export class CountryComponent implements OnInit {
   readonly state = this.pageState.asReadonly();
   readonly loadingIndicators = COUNTRY_LOADING_INDICATORS;
 
-  /** Suit les changements d’ID sans conserver un chargement précédent. */
   ngOnInit(): void {
     this.route.paramMap
       .pipe(

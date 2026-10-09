@@ -44,13 +44,10 @@ export function summarizeOlympics(countries: readonly Olympic[]): OlympicSummary
 /** Le tableau et le graphique partagent l’ordre des pays pour la sélection par index. */
 export interface HomeViewModel {
   readonly rows: readonly (CountryMedalRow & { readonly color: string })[];
-  /** Cartes identifiées par leur clé métier, indépendamment de leur position. */
   readonly indicators: readonly Indicator[];
-  /** Paires pays/médailles dans le même ordre que les lignes du tableau. */
   readonly chartItems: readonly ChartItem[];
 }
 
-/** Seule la réussite porte les données d’affichage de l’accueil. */
 export type HomePageState =
   | { readonly status: 'loading' }
   | { readonly status: 'empty' }

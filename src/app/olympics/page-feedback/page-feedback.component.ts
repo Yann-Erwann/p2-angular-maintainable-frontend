@@ -50,14 +50,12 @@ import type { PageFeedbackState } from '../page-state';
   styles: ':host { display: block; } :host(.page-feedback--quiet) { position: absolute; }',
 })
 export class PageFeedbackComponent {
-  /** Statut et message d’erreur éventuel, sans données métier. */
   readonly state = input.required<PageFeedbackState>();
   readonly indicatorCount = input<2 | 3>(2);
   /** Désactive le squelette visuel sans supprimer l’annonce du chargement. */
   readonly showSkeleton = input(true);
   readonly indicatorSlots = computed(() => Array.from({ length: this.indicatorCount() }));
   readonly successMessage = input('Olympic data loaded.');
-  /** Annonce de statut ; les erreurs utilisent une région distincte. */
   readonly statusMessage = computed(() => {
     switch (this.state().status) {
       case 'loading':
@@ -72,7 +70,6 @@ export class PageFeedbackComponent {
         return '';
     }
   });
-  /** Message affichable de l’erreur, vide dans les autres états. */
   readonly errorMessage = computed(() => {
     const state = this.state();
     return state.status === 'error' ? state.message : '';

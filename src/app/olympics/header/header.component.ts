@@ -16,9 +16,7 @@ import type { Indicator } from './indicator.model';
 })
 export class HeaderComponent {
   readonly title = input.required<string>();
-  /** Cartes identifiées par leur clé métier, indépendamment de leur position. */
   readonly indicators = input.required<readonly Indicator[]>();
-  /** Remplace les valeurs par des emplacements réservés. */
   readonly loading = input(false);
   readonly variant = input<'standard' | 'dashboard' | 'country'>('standard');
 }

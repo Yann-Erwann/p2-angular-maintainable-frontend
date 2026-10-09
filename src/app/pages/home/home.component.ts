@@ -17,7 +17,6 @@ import { DataService } from '../../services/data.service';
 import { toDataLoadError } from '../../services/data-load-error';
 import { createHomeState, HOME_LOADING_INDICATORS, type HomePageState } from './home-view-model';
 
-/** Accueil : chargement partagé, préparation de la vue et navigation par ID. */
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-home',

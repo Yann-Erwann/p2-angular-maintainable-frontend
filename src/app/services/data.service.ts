@@ -14,19 +14,16 @@ import { validateOlympicData } from './olympic-data.validator';
  */
 @Injectable({ providedIn: 'root' })
 export class DataService {
-  /** Client HTTP de la ressource olympique. */
   private readonly http = inject(HttpClient);
   /** Chemin relatif conservant le préfixe du site déployé. */
   private readonly olympicUrl = './assets/mock/olympic.json';
 
-  /** Réponse validée partagée ; les erreurs ne restent pas en cache. */
   private readonly olympics$ = this.http.get<unknown>(this.olympicUrl).pipe(
     map(validateOlympicData),
     catchError((error: unknown) => throwError(() => toDataLoadError(error))),
     shareReplay({ bufferSize: 1, refCount: true }),
   );
 
-  /** La souscription déclenche le chargement ou réutilise la réponse réussie. */
   getOlympics(): Observable<readonly Olympic[]> {
     return this.olympics$;
   }
