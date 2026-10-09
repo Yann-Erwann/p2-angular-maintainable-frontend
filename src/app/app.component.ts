@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, afterNextRender, type AfterRenderRef, Component, DestroyRef, type ElementRef, inject, Injector, type OnInit, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { filter, skip } from 'rxjs';
 
 @Component({
@@ -8,7 +8,7 @@ import { filter, skip } from 'rxjs';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  imports: [RouterOutlet]
+  imports: [RouterLink, RouterOutlet]
 })
 export class AppComponent implements OnInit {
   title = 'olympic-games-starter';

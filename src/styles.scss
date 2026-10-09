@@ -46,18 +46,22 @@ hr {
   text-align: center;
 }
 
-.back-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 2.75rem;
-  margin-top: 1rem;
-  padding: 0.625rem 1rem;
-  border: 1px solid #0b868f;
-  border-radius: 0.625rem;
-  color: #0b6470;
-  background: white;
-  text-align: center;
+.brand-header {
+  width: 100%;
+  max-width: 32rem;
+  margin: 0 auto 1rem;
+}
+
+.brand-link {
+  display: block;
+}
+
+.brand-banner {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 874 / 251;
+  border-radius: 0.75rem;
 }
 
 a {

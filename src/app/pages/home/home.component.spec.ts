@@ -219,7 +219,7 @@ describe('HomeComponent', () => {
       expect(page.textContent).not.toContain('private server details');
       expect(page.querySelector('app-header')).toBeNull();
       expect(page.querySelector('canvas')).toBeNull();
-      expect(page.querySelector('a')?.getAttribute('href')).toBe('/');
+      expect(page.querySelector('.back-link')).toBeNull();
     });
   }
 

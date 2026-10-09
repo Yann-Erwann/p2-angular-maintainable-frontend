@@ -30,6 +30,11 @@
                 "glob": "olympic.json",
                 "input": "src/assets/mock",
                 "output": "assets/mock"
+              },
+              {
+                "glob": "teleSport*.webp",
+                "input": "src/assets/images",
+                "output": "assets/images"
               }
             ],
             "styles": [

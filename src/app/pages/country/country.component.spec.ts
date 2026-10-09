@@ -141,8 +141,7 @@ describe('CountryComponent', () => {
       'Total Number of athletes', '250',
     ]);
     expect(page?.querySelector('canvas')).toBe(chartAt(harness.routeNativeElement).canvas);
-    expect(page?.querySelector('a')?.textContent?.trim()).toBe('Go back');
-    expect(page?.querySelector('a')?.getAttribute('href')).toBe('/');
+    expect(page?.querySelector('.back-link')).toBeNull();
     expect(Array.from(page?.querySelectorAll('tbody tr') ?? [], row =>
       Array.from(row.querySelectorAll('th, td'), cell => cell.textContent?.trim()),
     )).toEqual([
@@ -227,7 +226,7 @@ describe('CountryComponent', () => {
       expect(harness.routeNativeElement?.textContent).not.toContain('private server details');
       expect(harness.routeNativeElement?.querySelector('app-header')).toBeNull();
       expect(harness.routeNativeElement?.querySelector('canvas')).toBeNull();
-      expect(harness.routeNativeElement?.querySelector('a')?.getAttribute('href')).toBe('/');
+      expect(harness.routeNativeElement?.querySelector('.back-link')).toBeNull();
     });
   }
 

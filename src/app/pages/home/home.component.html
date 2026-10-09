@@ -5,9 +5,7 @@
   [state]="state"
   [successMessage]="'Loaded medal totals for ' + totalCountries + ' countries.'"
 />
-@if (state.status === 'error') {
-  <a class="back-link" routerLink="/">Go back to home</a>
-} @else if (state.status === 'success') {
+@if (state.status === 'success') {
   <app-header
     [title]="titlePage"
     [indicators]="[

@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { LocationStrategy } from '@angular/common';
 import { provideRouter } from '@angular/router';
 
 import { AppComponent } from './app.component';
@@ -77,6 +78,17 @@ describe('Accessible application navigation', () => {
     await fixture.whenStable();
     expect(document.activeElement).toBe(page.querySelector('h1'));
     expect(document.title).toBe('Page not found | Olympic Games');
+
+    const homeLink = page.querySelector<HTMLAnchorElement>('.brand-link');
+    expect(homeLink?.getAttribute('href')).toBe(TestBed.inject(LocationStrategy).prepareExternalUrl('/'));
+    expect(homeLink?.getAttribute('aria-label')).toBe('Home — TéléSport');
+    const banner = homeLink?.querySelector('img');
+    expect(banner?.getAttribute('width')).toBe('874');
+    expect(banner?.getAttribute('height')).toBe('251');
+    expect(banner?.getAttribute('srcset')).toContain('teleSport-small.webp 438w');
+    homeLink?.click();
+    await fixture.whenStable();
+    expect(router.url).toBe('/');
     http.verify();
   });
 });

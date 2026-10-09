@@ -5,7 +5,7 @@ import { Title } from '@angular/platform-browser';
 import type { Olympic } from '../../models/olympic';
 import { parseCountryId } from '../../olympics/country-id';
 import { toDataLoadError } from '../../services/data-load-error';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { OlympicChartComponent } from '../../olympics/chart/chart.component';
 import { HeaderComponent } from '../../olympics/header/header.component';
 import { PageFeedbackComponent } from '../../olympics/page-feedback/page-feedback.component';
@@ -18,7 +18,7 @@ import { DataService } from '../../services/data.service';
   selector: 'app-country',
   templateUrl: './country.component.html',
   styleUrls: ['./country.component.scss'],
-  imports: [RouterLink, HeaderComponent, OlympicChartComponent, PageFeedbackComponent]
+  imports: [HeaderComponent, OlympicChartComponent, PageFeedbackComponent]
 })
 export class CountryComponent implements OnInit {
   private readonly pageState = signal<PageState<Olympic>>({ status: 'loading' });

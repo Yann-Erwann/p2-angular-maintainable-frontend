@@ -1,4 +1,12 @@
 <a class="skip-link" href="#main-content">Skip to main content</a>
+<header class="brand-header">
+  <a class="brand-link" routerLink="/" aria-label="Home — TéléSport">
+    <img class="brand-banner" src="assets/images/teleSport.webp"
+      srcset="assets/images/teleSport-small.webp 438w, assets/images/teleSport.webp 874w"
+      sizes="(min-width: 544px) 512px, calc(100vw - 32px)"
+      width="874" height="251" alt="TéléSport — Olympic Games" fetchpriority="high" />
+  </a>
+</header>
 <main id="main-content" #mainContent tabindex="-1">
   <router-outlet></router-outlet>
 </main>

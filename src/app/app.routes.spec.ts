@@ -59,7 +59,7 @@ describe('Country routing', () => {
     expect(country.titlePage).toBe('Italy');
     expect(country.totalMedals).toBe(15);
     expect(chartAt(harness.routeNativeElement).data.labels).toEqual([2020]);
-    expect(harness.routeNativeElement?.querySelector('a')?.getAttribute('href')).toBe('/');
+    expect(harness.routeNativeElement?.querySelector('.back-link')).toBeNull();
   });
 
   it('should replace statistics and the chart when reusing the country component', async () => {
@@ -267,18 +267,14 @@ describe('Country routing', () => {
     await renderCharts(harness.fixture);
     expect(country.state.status).toBe('not-found');
     expect(harness.routeNativeElement?.querySelector('canvas')).toBeNull();
-    expect(harness.routeNativeElement?.querySelector('a')?.getAttribute('href')).toBe('/');
+    expect(harness.routeNativeElement?.querySelector('.back-link')).toBeNull();
   });
 
   for (const invalidUrl of ['/country', '/country/1/extra', '/unknown/nested']) {
-    it(`should send ${invalidUrl} to the not-found page with a working home link`, async () => {
+    it(`should send ${invalidUrl} to the not-found page without a go-back link`, async () => {
       const harness = await RouterTestingHarness.create();
       await harness.navigateByUrl(invalidUrl, NotFoundComponent);
-      const link = harness.routeNativeElement?.querySelector('a');
-      expect(link?.getAttribute('href')).toBe('/');
-      link?.click();
-      await harness.fixture.whenStable();
-      expect(TestBed.inject(Router).url).toBe('/');
+      expect(harness.routeNativeElement?.querySelector('.back-link')).toBeNull();
       await harness.navigateByUrl('/', HomeComponent);
       http.expectOne(url).flush([]);
       harness.detectChanges();
