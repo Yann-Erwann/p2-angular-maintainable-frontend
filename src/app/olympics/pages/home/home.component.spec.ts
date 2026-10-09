@@ -81,7 +81,7 @@ describe('HomeComponent', () => {
     await renderDeferredBlocks(fixture);
     expect(chartSpy).toHaveBeenCalledTimes(1);
     expect(chartAt(fixture.nativeElement as HTMLElement).data.labels).toEqual(['Italy']);
-    expect(homeView(component).rows.length).toBe(1);
+    expect(homeView(component).rows).toHaveSize(1);
   });
 
   it('should render the home chart immediately after data arrives', async () => {
@@ -165,7 +165,7 @@ describe('HomeComponent', () => {
     fixture.detectChanges();
     await renderDeferredBlocks(fixture);
 
-    expect(homeView(component).rows.length).toBe(2);
+    expect(homeView(component).rows).toHaveSize(2);
     expect(homeView(component).indicators[1].value).toBe(2);
     expect(chartSpy).toHaveBeenCalledTimes(1);
     expect(chartAt(fixture.nativeElement as HTMLElement).data.labels).toEqual(['France', 'Italy']);
@@ -203,7 +203,7 @@ describe('HomeComponent', () => {
     expect(countryLinks[0].getAttribute('aria-describedby')).toBe(
       'country-medals-1 country-percentage-1',
     );
-    expect(page.querySelectorAll('thead th[scope="col"]').length).toBe(3);
+    expect(page.querySelectorAll('thead th[scope="col"]')).toHaveSize(3);
     expect(page.querySelector('#country-medals-description')?.textContent).toContain(
       'France: 30 medals.',
     );

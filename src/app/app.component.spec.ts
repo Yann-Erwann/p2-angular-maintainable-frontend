@@ -64,8 +64,8 @@ describe('Accessible application navigation', () => {
     expect(page.querySelector('.skip-link')).toBeNull();
     expect(page.querySelector('h1')?.getAttribute('tabindex')).toBe('-1');
     expect(page.querySelector('[data-page-heading]')?.getAttribute('tabindex')).toBe('0');
-    expect(page.querySelectorAll('main').length).toBe(1);
-    expect(page.querySelectorAll('h1').length).toBe(1);
+    expect(page.querySelectorAll('main')).toHaveSize(1);
+    expect(page.querySelectorAll('h1')).toHaveSize(1);
     expect(document.title).toBe('Medals by country | Olympic Games');
 
     await router.navigateByUrl('/country/2');
