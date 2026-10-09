@@ -9,7 +9,7 @@ on:
       measure_performance:
         description: Measure Lighthouse performance on the validated build
         type: boolean
-        default: false
+        default: true
 
 permissions:
   contents: read
@@ -63,10 +63,10 @@ jobs:
             indexSha256: createHash('sha256').update(html).digest('hex'),
           }) + '\n');
           NODE
-      - name: Test production pages and optionally measure Lighthouse
+      - name: Test production pages and measure Lighthouse
         env:
           PRODUCTION_SERVER_URL: http://127.0.0.1:4187/p2-angular-maintainable-frontend/
-          MEASURE_PERFORMANCE: ${{ github.event_name == 'workflow_dispatch' && inputs.measure_performance }}
+          MEASURE_PERFORMANCE: ${{ github.event_name != 'workflow_dispatch' || inputs.measure_performance }}
         run: |
           node <<'SERVER' &
           const { createServer } = require('node:http');
@@ -108,6 +108,7 @@ jobs:
           READY
           pnpm run test:e2e
           if [ "$MEASURE_PERFORMANCE" = true ]; then
+            echo 'Starting Lighthouse: three audits per page (home and France).'
             node --input-type=module <<'LIGHTHOUSE'
           import { chromium } from '@playwright/test';
           import lighthouse from 'lighthouse';
@@ -146,6 +147,8 @@ jobs:
             await browser.close();
           }
           LIGHTHOUSE
+          else
+            echo 'Lighthouse disabled for this manual run (measure_performance=false).'
           fi
       - name: Upload validated site
         if: success() && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'

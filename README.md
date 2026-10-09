@@ -102,9 +102,11 @@ PRODUCTION_SERVER_URL=http://localhost:3000/ pnpm run test:e2e
 `PLAYWRIGHT_CHROMIUM_EXECUTABLE=/usr/bin/chromium` permet d’utiliser un navigateur
 système. Les rapports sont dans `playwright-report/` et `test-results/`.
 
-Pour mesurer les performances, lancer le workflow manuellement avec l’option
-`measure_performance`. Il réalise trois audits Lighthouse par page et conserve
-les rapports dans les artefacts de validation. Voir
+Après réussite des tests navigateur, le workflow mesure automatiquement les
+performances sur les push vers `main` et les pull requests. Lors d’un lancement
+manuel, l’option `measure_performance` est activée par défaut et peut être désactivée.
+Il réalise trois audits Lighthouse par page (accueil et France) et conserve
+les rapports JSON dans `validation-reports`, sous `validation-artifacts/performance/`. Voir
 [Validation](docs/validation/VALIDATION.md) pour le protocole et ses limites.
 
 La CI vérifie le code, génère Compodoc et teste le build de production préfixé
