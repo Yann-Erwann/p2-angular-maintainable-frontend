@@ -110,4 +110,17 @@
   &.app-shell--country .brand {
     margin-bottom: 1rem;
   }
+  &.app-shell--country {
+    .brand__home-area {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      cursor: pointer;
+      border-radius: inherit;
+    }
+    .brand__home-area:focus-visible {
+      outline: 3px solid #23343b;
+      outline-offset: -4px;
+    }
+  }
 }

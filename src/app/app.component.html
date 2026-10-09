@@ -1,6 +1,9 @@
 <header class="brand">
   <nav aria-label="Main navigation">
     <div class="brand__hero">
+      @if (countryLayout()) {
+        <a class="brand__home-area" routerLink="/" aria-label="Home — TéléSport"></a>
+      }
       <picture class="brand__picture">
         <img
           class="brand__banner"
@@ -18,9 +21,13 @@
         />
       </picture>
       <span class="brand__content">
-        <a class="brand__link brand__name" routerLink="/" aria-label="Home — TéléSport"
-          >TéléSport</a
-        >
+        @if (countryLayout()) {
+          <span class="brand__name" tabindex="0">TéléSport</span>
+        } @else {
+          <a class="brand__link brand__name" routerLink="/" aria-label="Home — TéléSport"
+            >TéléSport</a
+          >
+        }
         <svg class="brand__mark" viewBox="0 0 120 48" aria-hidden="true">
           <g fill="none" stroke-width="4">
             <circle cx="24" cy="18" r="14" stroke="#0085c7" />
