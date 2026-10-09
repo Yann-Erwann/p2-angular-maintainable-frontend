@@ -2,12 +2,7 @@ import { renderCharts } from '../../../testing/render-charts';
 import { Chart } from 'chart.js';
 import { ChartRenderer } from '../../olympics/chart/chart-renderer.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import {
-  type ComponentFixture,
-  DeferBlockBehavior,
-  DeferBlockState,
-  TestBed,
-} from '@angular/core/testing';
+import { type ComponentFixture, TestBed } from '@angular/core/testing';
 import { ErrorHandler, provideZoneChangeDetection } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { OlympicChartComponent } from '../../olympics/chart/chart.component';
@@ -44,7 +39,6 @@ describe('HomeComponent', () => {
     dataService = jasmine.createSpyObj<DataService>('DataService', ['getOlympics']);
     dataService.getOlympics.and.returnValue(data.asObservable());
     await TestBed.configureTestingModule({
-      deferBlockBehavior: DeferBlockBehavior.Manual,
       imports: [HomeComponent],
       providers: [
         provideZoneChangeDetection(),
@@ -90,22 +84,13 @@ describe('HomeComponent', () => {
     expect(homeView(component).rows.length).toBe(1);
   });
 
-  it('should expose data before the chart loads, including after a chunk failure', async () => {
+  it('should render the home chart immediately after data arrives', async () => {
     data.next([{ id: 1, country: 'France', participations: [] }]);
     fixture.detectChanges();
+    await fixture.whenStable();
     const page = fixture.nativeElement as HTMLElement;
-    expect(page.querySelector('canvas')).toBeNull();
-    expect(page.querySelector('.chart-placeholder')?.getAttribute('aria-hidden')).toBe('true');
-    expect(page.querySelector('#country-medals-description')?.textContent).toContain('France');
-    const [block] = await fixture.getDeferBlocks();
-    await block.render(DeferBlockState.Loading);
-    expect(page.querySelector('.chart-card [role="status"]')?.textContent).toContain(
-      'Loading chart',
-    );
-    await block.render(DeferBlockState.Error);
-    expect(page.querySelector('.chart-card [role="alert"]')?.textContent).toContain(
-      'Unable to load the chart',
-    );
+    expect(page.querySelector('canvas')).not.toBeNull();
+    expect(page.querySelector('.chart-placeholder')).toBeNull();
     expect(page.querySelector('#country-medals-description')?.textContent).toContain('France');
     expect(page.querySelector('app-header')).not.toBeNull();
   });

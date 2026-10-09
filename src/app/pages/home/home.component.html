@@ -36,22 +36,12 @@
       @if (page.status === 'success') {
         @let vm = page.data;
         <div class="chart-card__body">
-          @defer (on viewport; prefetch on idle) {
-            <app-olympic-chart
-              type="pie"
-              [items]="vm.chartItems"
-              dataDescriptionId="country-medals-description"
-              (pointSelected)="selectCountry($event)"
-            />
-          } @placeholder {
-            <div class="chart-placeholder" aria-hidden="true"></div>
-          } @loading {
-            <div class="chart-placeholder" role="status">Loading chart...</div>
-          } @error {
-            <p class="page-message" role="alert">
-              Unable to load the chart. Please reload the page.
-            </p>
-          }
+          <app-olympic-chart
+            type="pie"
+            [items]="vm.chartItems"
+            dataDescriptionId="country-medals-description"
+            (pointSelected)="selectCountry($event)"
+          />
           <div class="medal-table">
             <table class="medal-table__table">
               <caption class="visually-hidden">

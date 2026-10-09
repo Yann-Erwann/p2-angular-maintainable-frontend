@@ -37,7 +37,7 @@ pour séparer rendu, dessin et interactions clavier. L’instance est détruite 
 remplacement et au retrait du composant.
 
 Les styles suivent BEM. Le mixin `app-shell` partage les dimensions entre Angular
-et le HTML de chargement, les graphiques différés ont un emplacement réservé.
+et le HTML de chargement, le graphique d’accueil est initial et le rendu du détail reste différé.
 Karma vérifie les contrats, Playwright les parcours sur le build de production.
 
 Les décisions détaillées concernent les [états](../decisions/001-page-state.md),

@@ -40,10 +40,11 @@ pnpm run build
 Karma détecte les navigateurs Linux usuels, `CHROME_BIN` permet d’en choisir un autre.
 
 Le build de production est écrit dans `dist/olympic-games-starter/browser/`.
-Le build utilise Angular CLI puis ajoute au HTML le préchargement du module
-graphique à partir de `stats.json`. Minification JS/CSS, tree-shaking et AOT sont
-activés. Le JSON et le fond de bannière sont préchargés depuis le HTML initial.
-Le rendu des graphiques reste différé, avec un emplacement réservé.
+Le build local utilise directement Angular CLI : minification JS/CSS,
+tree-shaking et AOT sont activés. La configuration commune `index.preloadInitial` laisse Angular générer les liens
+de préchargement des modules initiaux. Le graphique d’accueil est chargé avec
+l’application en développement et en production.
+Le JSON et le fond de bannière sont préchargés depuis le HTML initial. Le graphique d’accueil apparaît dès que les données sont disponibles.
 
 ```bash
 pnpm run preview

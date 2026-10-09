@@ -20,7 +20,11 @@
             "outputPath": {
               "base": "dist/olympic-games-starter"
             },
-            "index": "src/index.html",
+            "index": {
+              "input": "src/index.html",
+              "output": "index.html",
+              "preloadInitial": true
+            },
             "polyfills": [],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",

@@ -373,9 +373,11 @@ Référence : [configuration des en-têtes de serve-handler](https://github.com/
 
 ## Préchargement du graphique et des données — 9 octobre 2026
 
-`pnpm run build` exécute `scripts/build.mjs` : Angular compile avec `--stats-json`,
-puis le script lit l'entry point du composant graphique pour ajouter son nom
-hashé dans un `modulepreload` du `<head>`. Aucun hash n'est fixé dans les sources.
+Le préchargement utilise désormais `index.preloadInitial` dans `angular.json`.
+Le graphique d’accueil appartient au graphe initial, Angular génère les liens
+sans rechercher ni injecter manuellement un nom hashé. Cette configuration
+s’applique aussi aux commandes locales. Les mesures historiques qui suivent
+concernaient l’ancienne injection après build.
 `olympic.json` possède un `preload` de type `fetch` avec `crossorigin="anonymous"`.
 
 Contrôle Chromium à cache froid, avec `main` volontairement retardé : le JSON
