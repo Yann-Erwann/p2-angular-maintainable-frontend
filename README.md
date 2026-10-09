@@ -43,7 +43,7 @@ Le build de production est écrit dans `dist/olympic-games-starter/browser/`.
 Le build local utilise directement Angular CLI : minification JS/CSS,
 tree-shaking et AOT sont activés. La configuration commune `index.preloadInitial` laisse Angular générer les liens
 de préchargement des modules initiaux. Le graphique d’accueil est chargé avec
-l’application en développement et en production. Avant les tests, le workflow
+l’application en développement et en production. Avant les audits, le workflow
 prépare les entrées des routes statiques et le manifeste de livraison `release.json`.
 Le JSON et le fond de bannière sont préchargés depuis le HTML initial. Le graphique d’accueil apparaît dès que les données sont disponibles.
 En production, Angular intègre le CSS critique au HTML et charge la feuille globale
@@ -91,8 +91,8 @@ d’assistance reste à vérifier humainement.
 ## Tests navigateur et performances
 
 Le workflow démarre le serveur de production sous
-`/p2-angular-maintainable-frontend/` sur le port 4187, puis lance Playwright.
-Il vérifie navigation, cache, erreurs, clavier et affichage responsive.
+`/p2-angular-maintainable-frontend/` sur le port 4187, pour les audits Lighthouse. Playwright reste disponible localement.
+Les tests Playwright vérifient navigation, cache, erreurs, clavier et affichage responsive.
 Pour tester localement un build servi à la racine :
 
 ```bash
@@ -110,14 +110,18 @@ PRODUCTION_SERVER_URL=http://localhost:3000/ pnpm run test:e2e
 `PLAYWRIGHT_CHROMIUM_EXECUTABLE=/usr/bin/chromium` permet d’utiliser un navigateur
 système. Les rapports sont dans `playwright-report/` et `test-results/`.
 
-Après réussite des tests navigateur, le workflow mesure automatiquement les
-performances sur les push vers `main` et les pull requests. Lors d’un lancement
-manuel, l’option `measure_performance` est activée par défaut et peut être désactivée.
-Il réalise trois audits Lighthouse par page (accueil et France) et conserve
-les rapports JSON dans `validation-reports`, sous `validation-artifacts/performance/`. Voir
+L’action `treosh/lighthouse-ci-action@v12` exécute Lighthouse CI, sans Playwright,
+dans deux étapes GitHub Actions (mobile et desktop). Il est obligatoire sur chaque exécution
+du workflow, y compris manuelle. Il réalise trois audits par route en mobile et
+desktop : accueil, chaque pays, identifiant invalide, pays absent et page inconnue.
+Chaque catégorie (performance, accessibilité, bonnes pratiques et SEO) doit avoir
+un score exact de 100 à chaque passage. Un score inférieur, absent ou une erreur
+d’audit fait échouer la validation et bloque le déploiement. Les rapports et assertions sont conservés dans les artefacts
+`lighthouse-mobile` et `lighthouse-desktop`. Les configurations sont dans
+`.github/lighthouse/`, avec `minScore: 1` et `aggregationMethod: pessimistic`. Voir
 [Validation](docs/validation/VALIDATION.md) pour le protocole et ses limites.
 
-La CI vérifie le code, génère Compodoc et teste le build de production préfixé
+La CI vérifie le code, génère Compodoc et audite le build de production préfixé
 avant de livrer ce même artefact sur GitHub Pages depuis `main`.
 Après publication, elle contrôle la révision et le HTML de la livraison, les
 données, les ressources et les erreurs JavaScript, puis parcourt l’accueil et
@@ -127,15 +131,16 @@ reste en ligne : corriger ou rétablir la version précédente par un nouveau co
 
 ## Repères et documentation
 
-| Emplacement          | Contenu                                         |
-| -------------------- | ----------------------------------------------- |
-| `src/app/pages/`     | Deux pages et leurs calculs/modèles d’affichage |
-| `src/app/services/`  | Chargement, validation et cache des données     |
-| `src/app/olympics/`  | Indicateurs, feedback et intégration Chart.js   |
-| `e2e/`               | Tests navigateur                                |
-| `.github/workflows/` | Validation et déploiement GitHub Actions        |
-| `docs/`              | Guides et rapports de validation                |
-| `doc/`               | Maquettes et rapports locaux                    |
+| Emplacement          | Contenu                                                            |
+| -------------------- | ------------------------------------------------------------------ |
+| `src/app/pages/`     | Deux pages et leurs calculs/modèles d’affichage                    |
+| `src/app/services/`  | Chargement, validation et cache des données                        |
+| `src/app/olympics/`  | Indicateurs, feedback et intégration Chart.js                      |
+| `e2e/`               | Tests navigateur                                                   |
+| `.github/workflows/` | Étapes de validation et de déploiement GitHub Actions              |
+| `.github/scripts/`   | Préparation de livraison, serveur local et contrôle du déploiement |
+| `docs/`              | Guides et rapports de validation                                   |
+| `doc/`               | Maquettes et rapports locaux                                       |
 
 ```bash
 pnpm run docs

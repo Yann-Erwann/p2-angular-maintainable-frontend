@@ -1,5 +1,35 @@
 # Validation de la consolidation — 9 octobre 2026
 
+## Seuil Lighthouse obligatoire — 10 octobre 2026
+
+L’action `treosh/lighthouse-ci-action@v12` exécute Lighthouse CI sans Playwright.
+Les configurations mobile et desktop sont dans `.github/lighthouse/`.
+Les assertions de catégorie utilisent le niveau `error`, `minScore: 1` et
+`aggregationMethod: pessimistic`. Les artefacts `lighthouse-mobile` et
+`lighthouse-desktop` conservent les rapports et résultats d’assertion.
+Les tests Playwright restent disponibles localement et le contrôle après
+déploiement existant reste séparé.
+
+Le workflow exige désormais un score exact de 100 dans les quatre catégories
+Lighthouse à chacun des trois passages, sur chaque route en mobile et desktop.
+Les routes couvrent l’accueil, tous les pays du JSON livré et les états de pays
+invalide, pays absent et page inconnue. Aucun lancement manuel ne peut désactiver
+ce contrôle. Une erreur ou un score absent échoue aussi ; le déploiement dépend
+de cette validation. Les rapports restent disponibles même en cas de score insuffisant.
+Cette modification définit le seuil ; elle ne prouve pas que le site l’atteint.
+Les mesures historiques ci-dessous précèdent cette règle.
+
+## Extraction des scripts de livraison — 10 octobre 2026
+
+La préparation des routes et du manifeste, le serveur local et le contrôle après
+déploiement sont dans `.github/scripts/`. Lighthouse CI gère désormais ses audits
+et le cycle de vie du serveur via l’action dédiée. Les validations historiques
+ci-dessous précèdent cette intégration.
+Contrôles locaux réussis : syntaxe Node et shell, formatage, lint, 15 parcours
+navigateur, six audits Lighthouse et vérification du manifeste et des pages
+sur le serveur local. Le workflow distant et la publication n’ont pas été exécutés.
+Les notes ci-dessous décrivent les validations et l’organisation antérieures.
+
 ## CSS critique
 
 Le build de production utilise `inlineCritical: true`. Les styles de mise en page
