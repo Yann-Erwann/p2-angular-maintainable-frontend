@@ -1,0 +1,1616 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>TéléSport — Documentation Angular</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">TéléSport — Documentation Angular</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search">
+    <input type="text" placeholder="Saisissez un texte">
+    <button type="button"
+        class="search-input-clear"
+        aria-label="Clear search"
+        data-search-input-clear>&times;</button>
+</div>
+            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Composants</li>
+  <li class="breadcrumb-item"
+  >
+  OlympicChartComponent</li>
+</ol>
+
+<div class="io-file io-file-path" data-compodoc="entity-file-path">
+    <span class="icon ion-ios-document" aria-hidden="true"></span>
+    <code>src/app/olympics/ui/chart/chart.component.ts</code>
+</div>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#api" class="nav-link"
+                role="tab" id="api-tab" data-bs-toggle="tab" data-link="api">API</a>
+        </li>
+        <li class="nav-item">
+            <a href="#readme" class="nav-link"
+                role="tab" id="readme-tab" data-bs-toggle="tab" data-link="readme">README</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Graphique accessible rendu via <a href="../injectables/ChartRenderer.html">ChartRenderer</a>.
+L’instance est détruite avant remplacement et au retrait du composant.</p>
+
+    </p>
+
+
+
+    <p class="comment">
+        <h3>Example</h3>
+    </p>
+    <div class="io-description">
+    </div>
+
+<section data-compodoc="block-metadata">
+    <h3>Métadonnées</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+            <tr>
+                <td class="col-md-3">changeDetection</td>
+                <td class="col-md-9"><code>ChangeDetectionStrategy.OnPush</code></td>
+            </tr>
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">host</td>
+                <td class="col-md-9"><code>{<br>}</code></td>
+            </tr>
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-olympic-chart</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./chart.component.scss</code></td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./chart.component.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./chart.component.scss</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+        <section data-compodoc="block-relationships">
+            <h3>Relations</h3>
+
+            <div class="row pt-3">
+                <div class="col-sm-6">
+                    <h4>Utilisé par</h4>
+                        <ul class="list-unstyled relationships-list">
+                                <li>
+                                            <code><a href="../components/CountryComponent.html" target="_self" >CountryComponent</a></code>
+                                </li>
+                                <li>
+                                            <code><a href="../components/HomeComponent.html" target="_self" >HomeComponent</a></code>
+                                </li>
+                        </ul>
+                </div>
+
+                <div class="col-sm-6">
+                    <h4>Dépend de</h4>
+                        <p class="comment"><i>Aucun résultat matchant.</i></p>
+                </div>
+            </div>
+        </section>
+</div>
+
+    <div class="tab-pane fade " id="api">    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+        <table class="table table-sm table-bordered index-table">
+            <tbody>
+                <tr>
+                    <td class="col-md-3">
+                        <h6><b>Propriétés</b></h6>
+                    </td>
+                    <td class="col-md-9">
+                        <ul class="index-list">
+                            <li>
+                                <span class="reference-badge reference-badge--property" aria-hidden="true">P</span>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#canvas" >canvas</a>
+                            </li>
+                            <li>
+                                <span class="reference-badge reference-badge--property" aria-hidden="true">P</span>
+                                    <span class="modifier">Private</span>
+                                <a href="#enteringBackwards" >enteringBackwards</a>
+                            </li>
+                            <li>
+                                <span class="reference-badge reference-badge--property" aria-hidden="true">P</span>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#host" >host</a>
+                            </li>
+                            <li>
+                                <span class="reference-badge reference-badge--property" aria-hidden="true">P</span>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Optionnel</span>
+                                <a href="#rendered" >rendered</a>
+                            </li>
+                            <li>
+                                <span class="reference-badge reference-badge--property" aria-hidden="true">P</span>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#renderer" >renderer</a>
+                            </li>
+                            <li>
+                                <span class="reference-badge reference-badge--property" aria-hidden="true">P</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#selectedIndex" >selectedIndex</a>
+                            </li>
+                            <li>
+                                <span class="reference-badge reference-badge--property" aria-hidden="true">P</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#selection" >selection</a>
+                            </li>
+                            <li>
+                                <span class="reference-badge reference-badge--property" aria-hidden="true">P</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#textAlternative" >textAlternative</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="table table-sm table-bordered index-table">
+            <tbody>
+                <tr>
+                    <td class="col-md-3">
+                        <h6><b>Méthodes</b></h6>
+                    </td>
+                    <td class="col-md-9">
+                        <ul class="index-list">
+                            <li>
+                                <span class="reference-badge reference-badge--method" aria-hidden="true">M</span>
+                                <a href="#highlight" >highlight</a>
+                            </li>
+                            <li>
+                                <span class="reference-badge reference-badge--method" aria-hidden="true">M</span>
+                                <a href="#move" >move</a>
+                            </li>
+                            <li>
+                                <span class="reference-badge reference-badge--method" aria-hidden="true">M</span>
+                                <a href="#onCanvasFocus" >onCanvasFocus</a>
+                            </li>
+                            <li>
+                                <span class="reference-badge reference-badge--method" aria-hidden="true">M</span>
+                                <a href="#onFocusout" >onFocusout</a>
+                            </li>
+                            <li>
+                                <span class="reference-badge reference-badge--method" aria-hidden="true">M</span>
+                                <a href="#onKeydown" >onKeydown</a>
+                            </li>
+                            <li>
+                                <span class="reference-badge reference-badge--method" aria-hidden="true">M</span>
+                                <a href="#openCountry" >openCountry</a>
+                            </li>
+                            <li>
+                                <span class="reference-badge reference-badge--method" aria-hidden="true">M</span>
+                                <a href="#rememberTabDirection" >rememberTabDirection</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="table table-sm table-bordered index-table">
+            <tbody>
+                <tr>
+                    <td class="col-md-3">
+                        <h6><b>Entrées</b></h6>
+                    </td>
+                    <td class="col-md-9">
+                        <ul class="index-list">
+                            <li>
+                                <span class="reference-badge reference-badge--property" aria-hidden="true">I</span><a href="#dataDescriptionId" >dataDescriptionId</a>
+                            </li>
+                            <li>
+                                <span class="reference-badge reference-badge--property" aria-hidden="true">I</span><a href="#items" >items</a>
+                            </li>
+                            <li>
+                                <span class="reference-badge reference-badge--property" aria-hidden="true">I</span><a href="#type" >type</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="table table-sm table-bordered index-table">
+            <tbody>
+                <tr>
+                    <td class="col-md-3">
+                        <h6><b>Sorties</b></h6>
+                    </td>
+                    <td class="col-md-9">
+                        <ul class="index-list">
+                            <li>
+                                <span class="reference-badge reference-badge--property" aria-hidden="true">O</span><a href="#pointSelected" >pointSelected</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+
+
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructeur</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor()</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Défini dans <a href="" data-line="56" class="link-to-prism">src/app/olympics/ui/chart/chart.component.ts:56</a></div>
+                            </td>
+                        </tr>
+
+            </tbody>
+        </table>
+</section>
+
+    <section data-compodoc="block-inputs">
+    <h3 id="inputs">Entrées</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="dataDescriptionId"></a>
+                        <b>dataDescriptionId</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Requis : </i>&nbsp;<b>true</b>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Défini dans <a href="" data-line="37" class="link-to-prism">src/app/olympics/ui/chart/chart.component.ts:37</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>ID d’une description existante dans la page, reliée au canvas par <code>aria-describedby</code>.</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="items"></a>
+                        <b>items</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/ChartItem.html" target="_self" >readonly ChartItem[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Requis : </i>&nbsp;<b>true</b>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Défini dans <a href="" data-line="35" class="link-to-prism">src/app/olympics/ui/chart/chart.component.ts:35</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="type"></a>
+                        <b>type</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>OlympicChartData[&#x27;type&#x27;]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Requis : </i>&nbsp;<b>true</b>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Défini dans <a href="" data-line="34" class="link-to-prism">src/app/olympics/ui/chart/chart.component.ts:34</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+
+    <section data-compodoc="block-outputs">
+    <h3 id="outputs">Sorties</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="pointSelected"></a>
+                        <b>pointSelected</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Défini dans <a href="" data-line="39" class="link-to-prism">src/app/olympics/ui/chart/chart.component.ts:39</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Index dans <code>items</code> du secteur choisi ; la page porte la navigation.</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Méthodes
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="highlight"></a>
+                    <span class="name">
+                        <span ><b>highlight</b></span>
+                        <a href="#highlight"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>highlight()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Défini dans <a href="" data-line="91"
+                                    class="link-to-prism">src/app/olympics/ui/chart/chart.component.ts:91</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Renvoie : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="move"></a>
+                    <span class="name">
+                        <span ><b>move</b></span>
+                        <a href="#move"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>move(direction: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Défini dans <a href="" data-line="95"
+                                    class="link-to-prism">src/app/olympics/ui/chart/chart.component.ts:95</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Paramètres :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Nom</td>
+                                                <td>Type</td>
+                                            <td>Optionnel</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>direction</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Non
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Renvoie : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onCanvasFocus"></a>
+                    <span class="name">
+                        <span ><b>onCanvasFocus</b></span>
+                        <a href="#onCanvasFocus"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onCanvasFocus()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Défini dans <a href="" data-line="86"
+                                    class="link-to-prism">src/app/olympics/ui/chart/chart.component.ts:86</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Renvoie : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onFocusout"></a>
+                    <span class="name">
+                        <span ><b>onFocusout</b></span>
+                        <a href="#onFocusout"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onFocusout(event: FocusEvent)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Défini dans <a href="" data-line="107"
+                                    class="link-to-prism">src/app/olympics/ui/chart/chart.component.ts:107</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Paramètres :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Nom</td>
+                                                <td>Type</td>
+                                            <td>Optionnel</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                        <code>FocusEvent</code>
+                                            </td>
+
+                                            <td>
+                                                    Non
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Renvoie : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onKeydown"></a>
+                    <span class="name">
+                        <span ><b>onKeydown</b></span>
+                        <a href="#onKeydown"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onKeydown(event: KeyboardEvent)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Défini dans <a href="" data-line="118"
+                                    class="link-to-prism">src/app/olympics/ui/chart/chart.component.ts:118</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Tab laisse sortir le focus aux extrémités ; les flèches permettent une exploration circulaire.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Paramètres :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Nom</td>
+                                                <td>Type</td>
+                                            <td>Optionnel</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                        <code>KeyboardEvent</code>
+                                            </td>
+
+                                            <td>
+                                                    Non
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Renvoie : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openCountry"></a>
+                    <span class="name">
+                        <span ><b>openCountry</b></span>
+                        <a href="#openCountry"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>openCountry()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Défini dans <a href="" data-line="103"
+                                    class="link-to-prism">src/app/olympics/ui/chart/chart.component.ts:103</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Émet le secteur courant du camembert ; la courbe reste en lecture.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Renvoie : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="rememberTabDirection"></a>
+                    <span class="name">
+                        <span ><b>rememberTabDirection</b></span>
+                        <a href="#rememberTabDirection"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>rememberTabDirection(event: KeyboardEvent)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Défini dans <a href="" data-line="82"
+                                    class="link-to-prism">src/app/olympics/ui/chart/chart.component.ts:82</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Paramètres :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Nom</td>
+                                                <td>Type</td>
+                                            <td>Optionnel</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                        <code>KeyboardEvent</code>
+                                            </td>
+
+                                            <td>
+                                                    Non
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Renvoie : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Propriétés
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="canvas"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>canvas</b></span>
+                        <a href="#canvas"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Valeur par défaut : </i><code>viewChild.required&lt;ElementRef&lt;HTMLCanvasElement&gt;&gt;(&#x27;canvas&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Défini dans <a href="" data-line="40" class="link-to-prism">src/app/olympics/ui/chart/chart.component.ts:40</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="enteringBackwards"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>enteringBackwards</b></span>
+                        <a href="#enteringBackwards"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Valeur par défaut : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Défini dans <a href="" data-line="54" class="link-to-prism">src/app/olympics/ui/chart/chart.component.ts:54</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="host"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>host</b></span>
+                        <a href="#host"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Valeur par défaut : </i><code>inject&lt;ElementRef&lt;HTMLElement&gt;&gt;(ElementRef)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Défini dans <a href="" data-line="55" class="link-to-prism">src/app/olympics/ui/chart/chart.component.ts:55</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="rendered"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Optionnel</span>
+                        <span ><b>rendered</b></span>
+                        <a href="#rendered"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/RenderedChart.html" target="_self" >RenderedChart</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Défini dans <a href="" data-line="53" class="link-to-prism">src/app/olympics/ui/chart/chart.component.ts:53</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="renderer"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>renderer</b></span>
+                        <a href="#renderer"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Valeur par défaut : </i><code>inject(ChartRenderer)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Défini dans <a href="" data-line="56" class="link-to-prism">src/app/olympics/ui/chart/chart.component.ts:56</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectedIndex"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>selectedIndex</b></span>
+                        <a href="#selectedIndex"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Valeur par défaut : </i><code>signal(0)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Défini dans <a href="" data-line="41" class="link-to-prism">src/app/olympics/ui/chart/chart.component.ts:41</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selection"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>selection</b></span>
+                        <a href="#selection"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Valeur par défaut : </i><code>computed(() &#x3D;&gt; {
+    const item &#x3D; this.items()[this.selectedIndex()];
+    return item ? &#x60;${item.label}: ${item.value} medals&#x60; : &#x27;No chart data&#x27;;
+  })</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Défini dans <a href="" data-line="49" class="link-to-prism">src/app/olympics/ui/chart/chart.component.ts:49</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="textAlternative"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>textAlternative</b></span>
+                        <a href="#textAlternative"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Valeur par défaut : </i><code>computed(() &#x3D;&gt;
+    this.items().length
+      ? this.items()
+          .map((item) &#x3D;&gt; &#x60;${item.label}: ${item.value} medals.&#x60;)
+          .join(&#x27; &#x27;)
+      : &#x27;No chart data&#x27;,
+  )</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Défini dans <a href="" data-line="42" class="link-to-prism">src/app/olympics/ui/chart/chart.component.ts:42</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+    <div class="tab-pane fade " id="readme">
+        <p><h1>Contrat du graphique</h1>
+<p>Le composant reçoit une collection de paires <code>{ label, value }</code>. Leur ordre définit
+les index de sélection, la page retrouve le pays dans ses lignes du même ordre.
+Le composant émet cet index et la page décide de la navigation.</p>
+<h2>Utilisation</h2>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html">&lt;app-olympic-chart
+  type=&quot;line&quot;
+  [items]=&quot;vm.chartItems&quot;
+  dataDescriptionId=&quot;participation-description&quot;
+/&gt;</code></pre></div><p>L&#39;élément portant l&#39;ID <code>participation-description</code> doit exister dans la page et
+décrire les données. Les valeurs textuelles et les annonces complètent le canvas.</p>
+<h2>Cycle de vie</h2>
+<p><code>afterRenderEffect</code> crée le graphique lorsque le canvas est disponible. Son
+nettoyage détruit l&#39;instance précédente avant remplacement des entrées et libère
+la dernière instance au retrait du composant. <code>ChartRenderer</code> masque l&#39;API Chart.js.</p>
+<h2>Clavier</h2>
+<table class="table table-bordered compodoc-table">
+<thead>
+<tr><th>Touche</th><th>Comportement</th></tr>
+</thead>
+<tbody>
+<tr><td>Tab / Maj+Tab</td><td>Parcourt les éléments, puis laisse sortir le focus aux extrémités</td></tr>
+<tr><td>Flèches</td><td>Parcourt les éléments avec retour à l&#39;autre extrémité</td></tr>
+<tr><td>Home / End</td><td>Sélectionne le premier ou le dernier élément</td></tr>
+<tr><td>Entrée / Espace</td><td>Active le secteur choisi du camembert</td></tr>
+<tr><td>Échap</td><td>Retire la mise en évidence et l&#39;infobulle</td></tr>
+</tbody>
+</table>
+<p>L&#39;entrée par Maj+Tab commence au dernier élément. La courbe ne déclenche aucune
+navigation. Les raccourcis avec Alt, Ctrl ou Meta restent disponibles au navigateur.</p>
+</p>
+    </div>
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
+  ChangeDetectionStrategy,
+  afterRenderEffect,
+  Component,
+  computed,
+  signal,
+  untracked,
+  ElementRef,
+  inject,
+  input,
+  output,
+  viewChild,
+} from &#x27;@angular/core&#x27;;
+import { ChartRenderer, type RenderedChart } from &#x27;./chart-renderer.service&#x27;;
+import type { ChartItem, OlympicChartData } from &#x27;./chart.model&#x27;;
+
+/**
+ * Graphique accessible rendu via {@link ChartRenderer}.
+ * L’instance est détruite avant remplacement et au retrait du composant.
+ */
+@Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: &#x27;app-olympic-chart&#x27;,
+  templateUrl: &#x27;./chart.component.html&#x27;,
+  host: {
+    class: &#x27;olympic-chart&#x27;,
+    &#x27;[class.olympic-chart--history]&#x27;: &quot;type() &#x3D;&#x3D;&#x3D; &#x27;line&#x27;&quot;,
+    &#x27;(focusout)&#x27;: &#x27;onFocusout($event)&#x27;,
+    &#x27;(document:keydown)&#x27;: &#x27;rememberTabDirection($event)&#x27;,
+  },
+  styleUrl: &#x27;./chart.component.scss&#x27;,
+})
+export class OlympicChartComponent {
+  readonly type &#x3D; input.required&lt;OlympicChartData[&#x27;type&#x27;]&gt;();
+  readonly items &#x3D; input.required&lt;readonly ChartItem[]&gt;();
+  /** ID d’une description existante dans la page, reliée au canvas par &#x60;aria-describedby&#x60;. */
+  readonly dataDescriptionId &#x3D; input.required&lt;string&gt;();
+  /** Index dans &#x60;items&#x60; du secteur choisi ; la page porte la navigation. */
+  readonly pointSelected &#x3D; output&lt;number&gt;();
+  private readonly canvas &#x3D; viewChild.required&lt;ElementRef&lt;HTMLCanvasElement&gt;&gt;(&#x27;canvas&#x27;);
+  readonly selectedIndex &#x3D; signal(0);
+  readonly textAlternative &#x3D; computed(() &#x3D;&gt;
+    this.items().length
+      ? this.items()
+          .map((item) &#x3D;&gt; &#x60;${item.label}: ${item.value} medals.&#x60;)
+          .join(&#x27; &#x27;)
+      : &#x27;No chart data&#x27;,
+  );
+  readonly selection &#x3D; computed(() &#x3D;&gt; {
+    const item &#x3D; this.items()[this.selectedIndex()];
+    return item ? &#x60;${item.label}: ${item.value} medals&#x60; : &#x27;No chart data&#x27;;
+  });
+  private rendered?: RenderedChart;
+  private enteringBackwards &#x3D; false;
+  private readonly host &#x3D; inject&lt;ElementRef&lt;HTMLElement&gt;&gt;(ElementRef);
+  private readonly renderer &#x3D; inject(ChartRenderer);
+
+  constructor() {
+    afterRenderEffect((onCleanup) &#x3D;&gt; {
+      const chart &#x3D; this.renderer.create(
+        this.canvas().nativeElement,
+        {
+          type: this.type(),
+          items: this.items(),
+        },
+        (index) &#x3D;&gt; this.pointSelected.emit(index),
+      );
+      this.rendered &#x3D; chart;
+      untracked(() &#x3D;&gt; {
+        this.selectedIndex.set(
+          Math.min(this.selectedIndex(), Math.max(0, this.items().length - 1)),
+        );
+        if (this.host.nativeElement.contains(document.activeElement)) this.highlight();
+      });
+      onCleanup(() &#x3D;&gt; {
+        chart.destroy();
+        if (this.rendered &#x3D;&#x3D;&#x3D; chart) this.rendered &#x3D; undefined;
+      });
+    });
+  }
+
+  rememberTabDirection(event: KeyboardEvent): void {
+    if (event.key &#x3D;&#x3D;&#x3D; &#x27;Tab&#x27;) this.enteringBackwards &#x3D; event.shiftKey;
+  }
+
+  onCanvasFocus(): void {
+    this.selectedIndex.set(this.enteringBackwards ? Math.max(0, this.items().length - 1) : 0);
+    this.highlight();
+  }
+
+  highlight(): void {
+    this.rendered?.focusPoint(this.items().length ? this.selectedIndex() : null);
+  }
+
+  move(direction: number): void {
+    const count &#x3D; this.items().length;
+    if (!count) return;
+    this.selectedIndex.set((this.selectedIndex() + direction + count) % count);
+    this.highlight();
+  }
+
+  /** Émet le secteur courant du camembert ; la courbe reste en lecture. */
+  openCountry(): void {
+    if (this.type() &#x3D;&#x3D;&#x3D; &#x27;pie&#x27; &amp;&amp; this.items().length) this.pointSelected.emit(this.selectedIndex());
+  }
+
+  onFocusout(event: FocusEvent): void {
+    if (
+      !(event.relatedTarget instanceof Node) ||
+      !this.host.nativeElement.contains(event.relatedTarget)
+    )
+      this.rendered?.focusPoint(null);
+  }
+
+  /**
+   * Tab laisse sortir le focus aux extrémités ; les flèches permettent une exploration circulaire.
+   */
+  onKeydown(event: KeyboardEvent): void {
+    if (event.altKey || event.ctrlKey || event.metaKey) return;
+    switch (event.key) {
+      case &#x27;Tab&#x27;: {
+        const next &#x3D; this.selectedIndex() + (event.shiftKey ? -1 : 1);
+        if (next &lt; 0 || next &gt;&#x3D; this.items().length) return;
+        this.selectedIndex.set(next);
+        this.highlight();
+        break;
+      }
+      case &#x27;ArrowLeft&#x27;:
+      case &#x27;ArrowUp&#x27;:
+        this.move(-1);
+        break;
+      case &#x27;ArrowRight&#x27;:
+      case &#x27;ArrowDown&#x27;:
+        this.move(1);
+        break;
+      case &#x27;Home&#x27;:
+        this.selectedIndex.set(0);
+        this.highlight();
+        break;
+      case &#x27;End&#x27;:
+        this.selectedIndex.set(Math.max(0, this.items().length - 1));
+        this.highlight();
+        break;
+      case &#x27;Enter&#x27;:
+      case &#x27; &#x27;:
+        if (this.type() !&#x3D;&#x3D; &#x27;pie&#x27;) return;
+        this.openCountry();
+        break;
+      case &#x27;Escape&#x27;:
+        this.rendered?.focusPoint(null);
+        break;
+      default:
+        return;
+    }
+    event.preventDefault();
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;p class&#x3D;&quot;visually-hidden&quot; [id]&#x3D;&quot;dataDescriptionId() + &#x27;-keys&#x27;&quot;&gt;
+  Use Tab or arrow keys to explore each chart item, Shift+Tab to move backwards, and Home or End to
+  jump to the first or last item. Tab after the last item leaves the chart.
+  {{ type() &#x3D;&#x3D;&#x3D; &#x27;pie&#x27; ? &#x27;Press Enter or Space to open the selected country.&#x27; : &#x27;&#x27; }}
+&lt;/p&gt;
+&lt;div class&#x3D;&quot;olympic-chart__drawing&quot;&gt;
+  &lt;canvas
+    class&#x3D;&quot;olympic-chart__canvas&quot;
+    #canvas
+    role&#x3D;&quot;img&quot;
+    tabindex&#x3D;&quot;0&quot;
+    [attr.aria-label]&#x3D;&quot;
+      type() &#x3D;&#x3D;&#x3D; &#x27;pie&#x27; ? &#x27;Total medals by country chart&#x27; : &#x27;Medals by Olympic year chart&#x27;
+    &quot;
+    [attr.aria-describedby]&#x3D;&quot;dataDescriptionId() + &#x27; &#x27; + dataDescriptionId() + &#x27;-keys&#x27;&quot;
+    (focus)&#x3D;&quot;onCanvasFocus()&quot;
+    (keydown)&#x3D;&quot;onKeydown($event)&quot;
+    &gt;{{ textAlternative() }}&lt;/canvas
+  &gt;
+&lt;/div&gt;
+&lt;p
+  class&#x3D;&quot;visually-hidden olympic-chart__selection&quot;
+  role&#x3D;&quot;status&quot;
+  aria-live&#x3D;&quot;polite&quot;
+  aria-atomic&#x3D;&quot;true&quot;
+&gt;
+  {{ selection() }}
+&lt;/p&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>./chart.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">:host {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  height: 25rem;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.olympic-chart__canvas {
+  display: block;
+}
+
+.olympic-chart__drawing {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
+@media (max-width: 600px) {
+  :host {
+    height: 19rem;
+  }
+}
+:host(.olympic-chart--history) {
+  height: 21rem;
+}
+@media (max-width: 700px) {
+  :host(.olympic-chart--history) {
+    height: 18rem;
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Légende</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Elément Html</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Composant</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Elément Html avec une directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><p class="visually-hidden" [id]="dataDescriptionId() + \'-keys\'">  Use Tab or arrow keys to explore each chart item, Shift+Tab to move backwards, and Home or End to  jump to the first or last item. Tab after the last item leaves the chart.  {{ type() === \'pie\' ? \'Press Enter or Space to open the selected country.\' : \'\' }}</p><div class="olympic-chart__drawing">  <canvas    class="olympic-chart__canvas"    #canvas    role="img"    tabindex="0"    [attr.aria-label]="      type() === \'pie\' ? \'Total medals by country chart\' : \'Medals by Olympic year chart\'    "    [attr.aria-describedby]="dataDescriptionId() + \' \' + dataDescriptionId() + \'-keys\'"    (focus)="onCanvasFocus()"    (keydown)="onKeydown($event)"    >{{ textAlternative() }}</canvas  ></div><p  class="visually-hidden olympic-chart__selection"  role="status"  aria-live="polite"  aria-atomic="true">  {{ selection() }}</p></div>'
+    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'CountryComponent', 'selector': 'app-country'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'NotFoundComponent', 'selector': 'app-not-found'},{'name': 'OlympicChartComponent', 'selector': 'app-olympic-chart'},{'name': 'PageFeedbackComponent', 'selector': 'app-page-feedback'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'OlympicChartComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> résultats matchant "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">Aucun résultat matchant "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'OlympicChartComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var updateDarkModeSwitchOffset = function () {
+                    var content = document.querySelector('.content');
+                    var scrollbarWidth = 0;
+
+                    if (content) {
+                         scrollbarWidth = Math.max(0, content.offsetWidth - content.clientWidth);
+                    }
+
+                    document.documentElement.style.setProperty(
+                         '--content-scrollbar-width',
+                         scrollbarWidth + 'px'
+                    );
+               };
+
+               updateDarkModeSwitchOffset();
+               requestAnimationFrame(updateDarkModeSwitchOffset);
+               window.addEventListener('resize', updateDarkModeSwitchOffset);
+
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

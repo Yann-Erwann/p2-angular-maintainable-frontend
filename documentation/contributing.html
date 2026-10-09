@@ -1,0 +1,318 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>TéléSport — Documentation Angular</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
+	   <link rel="stylesheet" href="./styles/style.css">
+        <link rel="stylesheet" href="./styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="./" class="navbar-brand">TéléSport — Documentation Angular</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search">
+    <input type="text" placeholder="Saisissez un texte">
+    <button type="button"
+        class="search-input-clear"
+        aria-label="Clear search"
+        data-search-input-clear>&times;</button>
+</div>
+            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content contributing">
+                   <div class="content-data">
+
+
+
+
+<h1>Conventions de contribution</h1>
+<p>Ces conventions s&#39;appliquent aux prochaines contributions. Elles ne demandent
+aucune réécriture de l&#39;historique existant et n&#39;imposent aucun hook Git.</p>
+<h2>Nommage des classes CSS</h2>
+<p>Utiliser BEM : <code>bloc</code>, <code>bloc__element</code> et <code>bloc--variante</code> ou
+<code>bloc__element--variante</code>. Écrire les noms composés en kebab-case et conserver
+la classe de base lorsqu&#39;un modificateur est ajouté.</p>
+<p>Exemples : <code>brand__banner</code>, <code>chart-card__title</code>, <code>chart-card--history</code>,
+<code>country-picker__select--long</code>. Chaque composant Angular porte sa classe de
+bloc sur son hôte quand ses éléments ou variantes en dépendent. Les classes
+utilitaires transversales, comme <code>visually-hidden</code>, restent indépendantes.</p>
+<p>Renommer ensemble les templates, les styles, les bindings Angular, le shell
+HTML initial et les sélecteurs des tests. Cibler les éléments par leur classe
+BEM plutôt que par leur balise ou leur position lorsque leur rôle est connu.</p>
+<h2>Messages de commit</h2>
+<p>Écrire le titre et le corps en anglais avec un titre de la forme :</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-text">type(scope): describe the resulting change</code></pre></div><p>Choisir le type selon la modification :</p>
+<table class="table table-bordered compodoc-table">
+<thead>
+<tr><th>Type</th><th>Usage</th></tr>
+</thead>
+<tbody>
+<tr><td><code>feat</code></td><td>Nouvelle fonctionnalité.</td></tr>
+<tr><td><code>fix</code></td><td>Correction d&#39;un défaut.</td></tr>
+<tr><td><code>refactor</code></td><td>Restructuration sans changement du comportement attendu.</td></tr>
+<tr><td><code>perf</code></td><td>Optimisation dont le bénéfice est mesuré.</td></tr>
+<tr><td><code>test</code></td><td>Rétablissement du socle de tests ou couverture transversale.</td></tr>
+<tr><td><code>docs</code></td><td>Documentation.</td></tr>
+<tr><td><code>build</code></td><td>Dépendances, migrations et configuration de build ou d&#39;outillage.</td></tr>
+<tr><td><code>style</code></td><td>Modification de présentation du code sans effet fonctionnel.</td></tr>
+<tr><td><code>chore</code></td><td>Maintenance qui ne relève pas des types précédents.</td></tr>
+</tbody>
+</table>
+<p>Le scope désigne une responsabilité, pas le type de changement. Utiliser les
+scopes prévus pour le projet : <code>project</code>, <code>git</code>, <code>testing</code>, <code>migration/angular</code>,
+<code>olympics</code>, <code>http</code>, <code>security</code>, <code>state</code>, <code>routing</code>, <code>charts</code>, <code>ui</code>, <code>a11y</code>,
+<code>performance</code>, <code>assets</code>, <code>docker</code>. Conserver notamment <code>migration/angular</code> pour
+les migrations Angular. Un scope supplémentaire doit correspondre à une
+responsabilité identifiable et être expliqué dans la PR.</p>
+<p>Exemples adaptés au projet :</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-text">refactor(olympics): remove debug logs and redundant operations
+test(olympics): cover statistics and existing page rendering
+docs(git): document scopes and atomic commit conventions</code></pre></div><p>Le corps explique le problème, le résultat, les éventuels changements de contrat,
+les prérequis techniques, les validations réellement exécutées et les limites
+pertinentes. Quelques lignes suffisent pour une modification simple.</p>
+<p>Lorsqu&#39;un transfert vers une autre branche est envisagé, préciser au besoin :</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-text">Requires: Describe actual technical prerequisites and verified prerequisite commits.
+Cherry-pick checks: Describe target contracts, conflicts and required validation.
+Validation: Record commands actually run, their results and relevant limitations.</code></pre></div><p><code>Requires:</code> et <code>Cherry-pick checks:</code> sont du texte explicatif, pas des trailers
+Git standardisés. Ne pas annoncer de validation réussie sans l&#39;avoir exécutée.</p>
+<h2>Commits atomiques</h2>
+<p>Un commit couvre une responsabilité cohérente et laisse le projet compilable.
+Inclure ensemble l&#39;implémentation, les tests pertinents et les adaptations de
+configuration ou de documentation nécessaires à ce changement.</p>
+<p>Séparer les responsabilités indépendantes : nettoyage, typage, migration de
+dépendances et correction de navigation ne forment pas un commit unique.
+Conserver ensemble un modèle et ses consommateurs, ou un changement de contrat
+et les tests qui le vérifient. Réserver les commits de tests séparés au socle
+de tests ou à un parcours transversal.</p>
+<p>Éviter les reformattages globaux et les suppressions sans justification.
+Examiner le diff réel avant de suivre un découpage prévu dans une issue.
+Sélectionner les fichiers ou les hunks concernés et contrôler le diff de l&#39;index.</p>
+<h2>Traçabilité issue, branche et PR</h2>
+<p>Les identifiants <code>I01</code>, <code>I02</code>, etc. du plan local ne sont pas des numéros d&#39;issues
+GitHub. Ne pas utiliser leur partie numérique comme numéro d&#39;issue GitHub.</p>
+<p>Lorsqu&#39;une issue GitHub existe, utiliser son vrai numéro dans le nom de branche
+et la PR. Convention de branche : <code>&lt;type&gt;/&lt;issue-number&gt;-&lt;short-description&gt;</code>,
+sans issue distante, utiliser <code>&lt;type&gt;/&lt;short-description&gt;</code>.</p>
+<p>La PR décrit le problème, le comportement obtenu, le périmètre, les validations
+et les critères encore ouverts. Lier l&#39;issue réelle, utiliser <code>Refs #&lt;issue-number&gt;</code>
+pour une contribution partielle. Préférer <code>Closes #&lt;issue-number&gt;</code> dans la PR
+qui satisfait tous ses critères. Remplacer ces placeholders avant publication,
+n&#39;ajouter aucune référence fictive ni promesse de clôture pour un travail partiel.</p>
+<p>Indiquer les dépendances entre les contributions. Un ordre de travail ne prouve
+pas une dépendance technique, et un hash de prérequis doit correspondre à un
+commit réellement vérifié.</p>
+<h2>Validation avant commit et publication</h2>
+<p>Contrôler <code>git status</code>, le diff de travail, puis les fichiers sélectionnés avec
+<code>git diff --cached</code> et <code>git diff --cached --check</code>. Vérifier que le commit ne
+contient pas de changement étranger à son périmètre.</p>
+<p>Pour une modification applicative, exécuter les contrôles adaptés :</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">pnpm run lint
+pnpm exec ng test --watch=false
+pnpm run build</code></pre></div><p>Utiliser des tests ciblés lorsque cela suffit à vérifier le changement, le
+navigateur Chrome ou Chromium est nécessaire aux tests Karma. Pour une
+modification documentaire seule, relire les exemples, vérifier les liens locaux
+et contrôler le diff, il n&#39;est pas nécessaire de relancer les tests applicatifs.
+Consigner les échecs ou les contrôles indisponibles avec leur cause.</p>
+<h2>Historique et cherry-pick</h2>
+<p>Aucun amend, rebase, force-push ou autre réécriture automatique de l&#39;historique
+n&#39;est prévu. Corriger une contribution déjà commitée par un nouveau commit,
+ces conventions ne justifient pas une réorganisation des anciens commits.</p>
+<p>Le cherry-pick n&#39;est pas automatique. Avant un transfert demandé, examiner le
+commit complet, ses prérequis et leurs éventuels équivalents sur la branche cible.
+Vérifier les chevauchements avec les refactorings, les contrats, les providers,
+les configurations et les lockfiles. Des commits atomiques peuvent dépendre
+les uns des autres et ne sont pas nécessairement transférables isolément.</p>
+<p>Après résolution des conflits, inspecter le résultat et exécuter les validations
+adaptées sur la cible. Une mesure de performance documentée pour une révision
+ne constitue pas une référence pour une autre révision.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> résultats matchant "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">Aucun résultat matchant "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 0;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'contributing';
+            var COMPODOC_CURRENT_PAGE_URL = 'contributing.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var updateDarkModeSwitchOffset = function () {
+                    var content = document.querySelector('.content');
+                    var scrollbarWidth = 0;
+
+                    if (content) {
+                         scrollbarWidth = Math.max(0, content.offsetWidth - content.clientWidth);
+                    }
+
+                    document.documentElement.style.setProperty(
+                         '--content-scrollbar-width',
+                         scrollbarWidth + 'px'
+                    );
+               };
+
+               updateDarkModeSwitchOffset();
+               requestAnimationFrame(updateDarkModeSwitchOffset);
+               window.addEventListener('resize', updateDarkModeSwitchOffset);
+
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="./js/libs/custom-elements.min.js"></script>
+       <script src="./js/libs/lit-html.js"></script>
+
+       <script src="./js/menu-wc.js" defer></script>
+
+       <script src="./js/libs/bootstrap-native.js"></script>
+
+       <script src="./js/libs/es6-shim.min.js"></script>
+       <script src="./js/libs/EventDispatcher.js"></script>
+       <script src="./js/libs/promise.min.js"></script>
+
+       <script src="./js/compodoc.js"></script>
+
+       <script src="./js/tabs.js"></script>
+       <script src="./js/menu.js"></script>
+       <script src="./js/libs/clipboard.min.js"></script>
+       <script src="./js/libs/prism.js"></script>
+       <script src="./js/sourceCode.js"></script>
+          <script src="./js/search/search.js"></script>
+          <script src="./js/search/lunr.min.js"></script>
+          <script src="./js/search/search-lunr.js"></script>
+          <script src="./js/search/search_index.js"></script>
+       <script src="./js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

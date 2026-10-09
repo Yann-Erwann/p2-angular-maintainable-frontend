@@ -1,0 +1,760 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>TéléSport — Documentation Angular</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">TéléSport — Documentation Angular</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search">
+    <input type="text" placeholder="Saisissez un texte">
+    <button type="button"
+        class="search-input-clear"
+        aria-label="Clear search"
+        data-search-input-clear>&times;</button>
+</div>
+            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content miscellaneous-variables">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Divers</li>
+  <li class="breadcrumb-item">Variables</li>
+</ol>
+
+<section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <ul class="index-list">
+                        <li>
+                            <a href="#accessibleBackground" title="src/app/olympics/ui/chart/chart-plugins.ts" class="reference-link "><span class="reference-badge reference-badge--variable" aria-hidden="true">V</span><span class="reference-link-label"><b>accessibleBackground</b>&nbsp;&nbsp;&nbsp;(src/.../chart-plugins.ts)</span></a>
+                        </li>
+                        <li>
+                            <a href="#appConfig" title="src/app/app.config.ts" class="reference-link "><span class="reference-badge reference-badge--variable" aria-hidden="true">V</span><span class="reference-link-label"><b>appConfig</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</span></a>
+                        </li>
+                        <li>
+                            <a href="#COUNTRY_CODES" title="src/app/olympics/pages/country/country-view-model.ts" class="reference-link "><span class="reference-badge reference-badge--variable" aria-hidden="true">V</span><span class="reference-link-label"><b>COUNTRY_CODES</b>&nbsp;&nbsp;&nbsp;(src/.../country-view-model.ts)</span></a>
+                        </li>
+                        <li>
+                            <a href="#COUNTRY_LOADING_INDICATORS" title="src/app/olympics/pages/country/country-view-model.ts" class="reference-link "><span class="reference-badge reference-badge--variable" aria-hidden="true">V</span><span class="reference-link-label"><b>COUNTRY_LOADING_INDICATORS</b>&nbsp;&nbsp;&nbsp;(src/.../country-view-model.ts)</span></a>
+                        </li>
+                        <li>
+                            <a href="#countryPointLabels" title="src/app/olympics/ui/chart/chart-plugins.ts" class="reference-link "><span class="reference-badge reference-badge--variable" aria-hidden="true">V</span><span class="reference-link-label"><b>countryPointLabels</b>&nbsp;&nbsp;&nbsp;(src/.../chart-plugins.ts)</span></a>
+                        </li>
+                        <li>
+                            <a href="#dashboardLabels" title="src/app/olympics/ui/chart/chart-plugins.ts" class="reference-link "><span class="reference-badge reference-badge--variable" aria-hidden="true">V</span><span class="reference-link-label"><b>dashboardLabels</b>&nbsp;&nbsp;&nbsp;(src/.../chart-plugins.ts)</span></a>
+                        </li>
+                        <li>
+                            <a href="#dashboardTooltipMedal" title="src/app/olympics/ui/chart/chart-plugins.ts" class="reference-link "><span class="reference-badge reference-badge--variable" aria-hidden="true">V</span><span class="reference-link-label"><b>dashboardTooltipMedal</b>&nbsp;&nbsp;&nbsp;(src/.../chart-plugins.ts)</span></a>
+                        </li>
+                        <li>
+                            <a href="#HOME_LOADING_INDICATORS" title="src/app/olympics/pages/home/home-view-model.ts" class="reference-link "><span class="reference-badge reference-badge--variable" aria-hidden="true">V</span><span class="reference-link-label"><b>HOME_LOADING_INDICATORS</b>&nbsp;&nbsp;&nbsp;(src/.../home-view-model.ts)</span></a>
+                        </li>
+                        <li>
+                            <a href="#MEDAL_COLORS" title="src/app/olympics/ui/chart/chart-colors.ts" class="reference-link "><span class="reference-badge reference-badge--variable" aria-hidden="true">V</span><span class="reference-link-label"><b>MEDAL_COLORS</b>&nbsp;&nbsp;&nbsp;(src/.../chart-colors.ts)</span></a>
+                        </li>
+                        <li>
+                            <a href="#OLYMPICS_ROUTES" title="src/app/olympics/olympics.routes.ts" class="reference-link "><span class="reference-badge reference-badge--variable" aria-hidden="true">V</span><span class="reference-link-label"><b>OLYMPICS_ROUTES</b>&nbsp;&nbsp;&nbsp;(src/.../olympics.routes.ts)</span></a>
+                        </li>
+                        <li>
+                            <a href="#routes" title="src/app/app.routes.ts" class="reference-link "><span class="reference-badge reference-badge--variable" aria-hidden="true">V</span><span class="reference-link-label"><b>routes</b>&nbsp;&nbsp;&nbsp;(src/.../app.routes.ts)</span></a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    <h3>src/app/olympics/ui/chart/chart-plugins.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="accessibleBackground"></a>
+                    <span class="name">
+                        <span ><b>accessibleBackground</b></span>
+                        <a href="#accessibleBackground"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Plugin</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Valeur par défaut : </i><code>{
+  id: &#x27;accessibleCanvasBackground&#x27;,
+  beforeDraw: ({ ctx, width, height }) &#x3D;&gt; {
+    ctx.save();
+    ctx.globalCompositeOperation &#x3D; &#x27;destination-over&#x27;;
+    ctx.fillStyle &#x3D; &#x27;#ffffff&#x27;;
+    ctx.fillRect(0, 0, width, height);
+    ctx.restore();
+  },
+}</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Le fond blanc est peint dans le canvas pour être conservé dans les captures et exports.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="countryPointLabels"></a>
+                    <span class="name">
+                        <span ><b>countryPointLabels</b></span>
+                        <a href="#countryPointLabels"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Valeur par défaut : </i><code>(items: readonly ChartItem[]): Plugin &#x3D;&gt; ({
+  id: &#x27;countryPointLabels&#x27;,
+  afterDatasetsDraw: (chart) &#x3D;&gt; {
+    const { ctx } &#x3D; chart;
+    ctx.save();
+    ctx.font &#x3D; &#x27;700 18px system-ui, sans-serif&#x27;;
+    ctx.fillStyle &#x3D; &#x27;#008798&#x27;;
+    ctx.textAlign &#x3D; &#x27;center&#x27;;
+    ctx.textBaseline &#x3D; &#x27;bottom&#x27;;
+    chart.getDatasetMeta(0).data.forEach((element, index) &#x3D;&gt; {
+      if (element instanceof PointElement)
+        ctx.fillText(String(items[index].value), element.x, element.y - 16);
+    });
+    ctx.restore();
+  },
+})</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Compteurs placés au-dessus des points de l’historique.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="dashboardLabels"></a>
+                    <span class="name">
+                        <span ><b>dashboardLabels</b></span>
+                        <a href="#dashboardLabels"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Valeur par défaut : </i><code>(items: readonly ChartItem[]): Plugin &#x3D;&gt; ({
+  id: &#x27;dashboardMedalLabels&#x27;,
+  afterDatasetsDraw: (chart) &#x3D;&gt; {
+    const { ctx, width } &#x3D; chart;
+    ctx.save();
+    chart.getDatasetMeta(0).data.forEach((element, index) &#x3D;&gt; {
+      if (!(element instanceof ArcElement) || items[index].value &lt;&#x3D; 0) return;
+      const angle &#x3D; (element.startAngle + element.endAngle) / 2;
+      const cos &#x3D; Math.cos(angle);
+      const sin &#x3D; Math.sin(angle);
+      const radius &#x3D; element.outerRadius;
+      ctx.font &#x3D; &#x60;600 ${width &lt; 500 ? 17 : 23}px system-ui, sans-serif&#x60;;
+      ctx.fillStyle &#x3D; &#x27;#ffffff&#x27;;
+      ctx.textAlign &#x3D; &#x27;center&#x27;;
+      ctx.textBaseline &#x3D; &#x27;middle&#x27;;
+      ctx.fillText(
+        String(items[index].value),
+        element.x + cos * radius * 0.65,
+        element.y + sin * radius * 0.65,
+      );
+      if (width &lt; 520) return;
+      const right &#x3D; cos &gt;&#x3D; 0;
+      const label &#x3D; String(items[index].label);
+      ctx.font &#x3D; &#x27;600 15px system-ui, sans-serif&#x27;;
+      const textWidth &#x3D; ctx.measureText(label).width;
+      const startX &#x3D; element.x + cos * radius;
+      const startY &#x3D; element.y + sin * radius;
+      const elbowX &#x3D; element.x + cos * (radius + 30);
+      const elbowY &#x3D; Math.max(14, Math.min(chart.height - 14, element.y + sin * (radius + 30)));
+      const endX &#x3D; right
+        ? Math.min(width - textWidth - 22, elbowX + 70)
+        : Math.max(textWidth + 22, elbowX - 30);
+      ctx.strokeStyle &#x3D; MEDAL_COLORS[index % MEDAL_COLORS.length];
+      ctx.lineWidth &#x3D; 2;
+      ctx.beginPath();
+      ctx.moveTo(startX, startY);
+      ctx.lineTo(elbowX, elbowY);
+      ctx.lineTo(endX, elbowY);
+      ctx.stroke();
+      ctx.fillStyle &#x3D; &#x27;#0c204b&#x27;;
+      ctx.textAlign &#x3D; right ? &#x27;left&#x27; : &#x27;right&#x27;;
+      ctx.fillText(label, endX + (right ? 12 : -12), elbowY);
+    });
+    ctx.restore();
+  },
+})</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Compteurs des secteurs et noms des pays sur les grands canvas.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="dashboardTooltipMedal"></a>
+                    <span class="name">
+                        <span ><b>dashboardTooltipMedal</b></span>
+                        <a href="#dashboardTooltipMedal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Plugin</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Valeur par défaut : </i><code>{
+  id: &#x27;dashboardTooltipMedal&#x27;,
+  afterTooltipDraw: ({ ctx }, { tooltip }) &#x3D;&gt; {
+    if (!tooltip.opacity || !tooltip.title.length) return;
+    ctx.save();
+    const medalSize &#x3D; Math.min(48, tooltip.height - 32);
+    ctx.translate(tooltip.x + 16, tooltip.y + (tooltip.height - medalSize) / 2);
+    ctx.scale(medalSize / 22, medalSize / 22);
+    ctx.fillStyle &#x3D; &#x27;#4677cf&#x27;;
+    ctx.beginPath();
+    ctx.moveTo(1, 0);
+    ctx.lineTo(7, 0);
+    ctx.lineTo(13, 10);
+    ctx.lineTo(7, 10);
+    ctx.closePath();
+    ctx.fill();
+    ctx.fillStyle &#x3D; &#x27;#8a2d54&#x27;;
+    ctx.beginPath();
+    ctx.moveTo(15, 0);
+    ctx.lineTo(21, 0);
+    ctx.lineTo(15, 10);
+    ctx.lineTo(9, 10);
+    ctx.closePath();
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(11, 13, 7, 0, Math.PI * 2);
+    ctx.fillStyle &#x3D; &#x27;#efb936&#x27;;
+    ctx.fill();
+    ctx.strokeStyle &#x3D; &#x27;#b77900&#x27;;
+    ctx.lineWidth &#x3D; 1.5;
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(11, 13, 4, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.restore();
+  },
+}</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Décoration de médaille dans l’espace réservé de l’infobulle.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/app/app.config.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="appConfig"></a>
+                    <span class="name">
+                        <span ><b>appConfig</b></span>
+                        <a href="#appConfig"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.dev/api/core/ApplicationConfig" target="_blank" >ApplicationConfig</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Valeur par défaut : </i><code>{
+  providers: [provideZonelessChangeDetection(), provideRouter(routes), provideHttpClient()],
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/app/olympics/pages/country/country-view-model.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="COUNTRY_CODES"></a>
+                    <span class="name">
+                        <span ><b>COUNTRY_CODES</b></span>
+                        <a href="#COUNTRY_CODES"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Readonly&lt;Record&lt;string, string&gt;&gt;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Valeur par défaut : </i><code>{
+  France: &#x27;fr&#x27;,
+  Italy: &#x27;it&#x27;,
+  Spain: &#x27;es&#x27;,
+  Germany: &#x27;de&#x27;,
+  &#x27;United States&#x27;: &#x27;us&#x27;,
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="COUNTRY_LOADING_INDICATORS"></a>
+                    <span class="name">
+                        <span ><b>COUNTRY_LOADING_INDICATORS</b></span>
+                        <a href="#COUNTRY_LOADING_INDICATORS"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Valeur par défaut : </i><code>countryIndicators(0, 0, 0)</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/app/olympics/pages/home/home-view-model.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="HOME_LOADING_INDICATORS"></a>
+                    <span class="name">
+                        <span ><b>HOME_LOADING_INDICATORS</b></span>
+                        <a href="#HOME_LOADING_INDICATORS"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Valeur par défaut : </i><code>homeIndicators(0, 0)</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/app/olympics/ui/chart/chart-colors.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="MEDAL_COLORS"></a>
+                    <span class="name">
+                        <span ><b>MEDAL_COLORS</b></span>
+                        <a href="#MEDAL_COLORS"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>readonly string[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Valeur par défaut : </i><code>[
+  &#x27;#008b97&#x27;,
+  &#x27;#4677cf&#x27;,
+  &#x27;#8a2d54&#x27;,
+  &#x27;#af7478&#x27;,
+  &#x27;#cf8000&#x27;,
+  &#x27;#35665c&#x27;,
+]</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Palette partagée par le tableau et le camembert, dans l’ordre des pays.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/app/olympics/olympics.routes.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="OLYMPICS_ROUTES"></a>
+                    <span class="name">
+                        <span ><b>OLYMPICS_ROUTES</b></span>
+                        <a href="#OLYMPICS_ROUTES"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.dev/api/router/Routes" target="_blank" >Routes</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Valeur par défaut : </i><code>[
+  {
+    path: &#x27;&#x27;,
+    pathMatch: &#x27;full&#x27;,
+    component: HomeComponent,
+    title: &#x27;Medals by country | Olympic Games&#x27;,
+  },
+  {
+    path: &#x27;country/:id&#x27;,
+    loadComponent: () &#x3D;&gt;
+      &quot;import(&#x27;./pages/country/country.component&#x27;).then((module) &#x3D;&gt; module.CountryComponent)&quot;,
+  },
+]</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/app/app.routes.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="routes"></a>
+                    <span class="name">
+                        <span ><b>routes</b></span>
+                        <a href="#routes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.dev/api/router/Routes" target="_blank" >Routes</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Valeur par défaut : </i><code>[
+  {
+    path: &#x27;not-found&#x27;,
+    component: NotFoundComponent,
+    title: &#x27;Page not found | Olympic Games&#x27;,
+  },
+  {
+    path: &#x27;&#x27;,
+    loadChildren: () &#x3D;&gt;
+      &quot;import(&#x27;./olympics/olympics.routes&#x27;).then((module) &#x3D;&gt; module.OLYMPICS_ROUTES)&quot;,
+  },
+  {
+    path: &#x27;**&#x27;,
+    component: NotFoundComponent,
+    title: &#x27;Page not found | Olympic Games&#x27;,
+  },
+]</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Le titre d’une fiche est défini après chargement par <a href="../components/CountryComponent.html">CountryComponent</a>.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> résultats matchant "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">Aucun résultat matchant "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'miscellaneous-variables';
+            var COMPODOC_CURRENT_PAGE_URL = 'variables.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var updateDarkModeSwitchOffset = function () {
+                    var content = document.querySelector('.content');
+                    var scrollbarWidth = 0;
+
+                    if (content) {
+                         scrollbarWidth = Math.max(0, content.offsetWidth - content.clientWidth);
+                    }
+
+                    document.documentElement.style.setProperty(
+                         '--content-scrollbar-width',
+                         scrollbarWidth + 'px'
+                    );
+               };
+
+               updateDarkModeSwitchOffset();
+               requestAnimationFrame(updateDarkModeSwitchOffset);
+               window.addEventListener('resize', updateDarkModeSwitchOffset);
+
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

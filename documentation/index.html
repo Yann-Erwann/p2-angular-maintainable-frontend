@@ -1,0 +1,337 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>TéléSport — Documentation Angular</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
+	   <link rel="stylesheet" href="./styles/style.css">
+        <link rel="stylesheet" href="./styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="./" class="navbar-brand">TéléSport — Documentation Angular</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search">
+    <input type="text" placeholder="Saisissez un texte">
+    <button type="button"
+        class="search-input-clear"
+        aria-label="Clear search"
+        data-search-input-clear>&times;</button>
+</div>
+            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content readme">
+                   <div class="content-data">
+
+
+<h1>TéléSport — Olympic Games</h1>
+<p>Application Angular 21 standalone permettant de comparer les médailles olympiques
+et de consulter les résultats d’un pays. Les données locales sont dans
+<code>src/assets/mock/olympic.json</code>, les graphiques utilisent Chart.js.</p>
+<h2>Démarrer</h2>
+<p>Prérequis : Node.js 24, pnpm 12.10.1 et Chrome ou Chromium pour les tests.
+Les versions sont fixées dans <code>mise.toml</code> et <code>package.json</code>.
+Cloner le dépôt puis entrer dans son dossier :</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">git clone https://github.com/Yann-Erwann/p2-angular-maintainable-frontend.git
+cd p2-angular-maintainable-frontend</code></pre></div><p>Avec mise, exécuter <code>mise install</code> puis activer mise dans le shell ou préfixer
+les commandes par <code>mise exec --</code>.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">pnpm install --frozen-lockfile
+pnpm start</code></pre></div><p>Ouvrir <a href="http://localhost:4200">http://localhost:4200</a>. Pour un environnement distant :
+<code>pnpm start --host 0.0.0.0 --port 4200</code>.</p>
+<h2>Vérifier et compiler</h2>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">pnpm run format:check
+pnpm run lint
+pnpm run typecheck
+pnpm test --watch=false
+pnpm run build</code></pre></div><p><code>pnpm run format</code> applique le formatage. <code>pnpm test</code> surveille les changements.
+Karma détecte les navigateurs Linux usuels, <code>CHROME_BIN</code> permet d’en choisir un autre.</p>
+<p>Le build de production est écrit dans <code>dist/olympic-games-starter/browser/</code>.
+Le build local utilise directement Angular CLI : minification JS/CSS,
+tree-shaking et AOT sont activés. La configuration commune <code>index.preloadInitial</code> laisse Angular générer les liens
+de préchargement des modules initiaux. Le graphique d’accueil est chargé avec
+l’application en développement et en production. Avant les audits, le workflow
+prépare les entrées des routes statiques et le manifeste de livraison <code>release.json</code>.
+Le JSON et le fond de bannière sont préchargés depuis le HTML initial. Le graphique d’accueil apparaît dès que les données sont disponibles.
+En production, Angular intègre le CSS critique au HTML et charge la feuille globale
+sans bloquer le rendu. Les styles de mise en page sont chargés avec chaque page
+pour éviter les déplacements lors de l’arrivée de cette feuille.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">pnpm run preview
+pnpm run build:analyze</code></pre></div><p><code>preview</code> sert le dernier build avec <code>serve.json</code> et peut télécharger <code>serve</code>.
+Les fichiers JS/CSS hashés sont mis en cache un an, les ressources sans hash sont
+revalidées. Ces règles concernent uniquement ce serveur local. GitHub Pages
+renvoie actuellement <code>max-age=600</code> (dix minutes), indépendamment de <code>serve.json</code>.
+<code>build:analyze</code> ajoute les source maps et <code>stats.json</code> pour examiner les bundles.
+Relancer <code>pnpm run build</code> pour retrouver un build sans source maps.</p>
+<p>Le routage utilise des URL sans <code>#</code>.
+Les anciennes adresses <code>/#/country/:id</code> sont converties vers <code>/country/:id</code>
+avant le démarrage ou lors de leur ouverture dans l’application déjà chargée.
+Pour GitHub Pages, le workflow génère une entrée HTML par pays et un repli
+<code>404.html</code>, avec le même chemin de base que
+l’application. Un autre serveur doit renvoyer <code>index.html</code> pour les routes Angular.</p>
+<h2>Pages et clavier</h2>
+<ul>
+<li><strong>Accueil</strong> (<code>/</code>) : nombre de pays et d’éditions, camembert et tableau
+Country / Medals / Percentage. Les liens du tableau ouvrent les pays.</li>
+<li><strong>Pays</strong> (<code>/country/:id</code>) : participations, médailles, effectifs cumulés et
+courbe chronologique. Le filtre est un popover HTML contenant des boutons,
+sans <code>&lt;select&gt;</code>. Il exclut le pays courant et n’a pas de défilement interne.</li>
+<li>Un identifiant de pays invalide ou absent redirige vers <code>/not-found</code>.
+Les chargements, données vides et erreurs ont des états distincts.
+Un pays sans participation conserve son identité et ses compteurs à zéro.</li>
+</ul>
+<p>La bannière conserve son fond décoratif WebP préchargé et ses textes HTML.
+Sur la page pays, toute la bannière renvoie à l’accueil.
+Tab et Maj+Tab parcourent ses textes, les indicateurs et les points du canvas,
+puis sortent du graphique aux extrémités. Entrée ou Espace ouvre le pays sélectionné.
+Les flèches, Home et End restent disponibles. Les valeurs sont aussi fournies
+comme alternative textuelle accessible.</p>
+<p>Dans le filtre, Entrée ou Espace ouvre ou sélectionne, Tab parcourt les options,
+Échap ou un clic extérieur ferme le popover. Le bouton est désactivé au chargement.
+Ces parcours sont testés automatiquement, la lecture avec des technologies
+d’assistance reste à vérifier humainement.</p>
+<h2>Tests navigateur et performances</h2>
+<p>Le workflow démarre le serveur de production sous
+<code>/p2-angular-maintainable-frontend/</code> sur le port 4187 avec Playwright pour les tests navigateur et les audits Lighthouse.
+Les tests Playwright vérifient navigation, cache, erreurs, clavier et affichage responsive.
+Pour tester localement un build servi à la racine :</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">pnpm exec playwright install chromium
+pnpm run build
+pnpm run preview</code></pre></div><p>Dans un autre terminal, avec l’adresse affichée par <code>preview</code> :</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">PRODUCTION_SERVER_URL=http://localhost:3000/ pnpm run test:e2e</code></pre></div><p><code>PLAYWRIGHT_CHROMIUM_EXECUTABLE=/usr/bin/chromium</code> permet d’utiliser un navigateur
+système. Les rapports sont dans <code>playwright-report/</code> et <code>test-results/</code>.</p>
+<p>Les tests <code>e2e/lighthouse.spec.ts</code> lancent Chromium avec Playwright et exécutent
+Lighthouse sur l’accueil et chaque pays du JSON livré, en mobile et desktop,
+avec trois passages. Chaque catégorie (performance, accessibilité, bonnes
+pratiques et SEO) doit atteindre exactement 100 à chaque passage. Les audits
+n’ont aucun retry : un score inférieur, absent ou une erreur fait échouer les
+tests et bloque le déploiement. Les rapports JSON et HTML sont joints au rapport
+Playwright et conservés dans <code>validation-reports</code>, même en cas d’échec.
+Les routes d’erreur HTTP 404 restent couvertes par les tests fonctionnels.</p>
+<p>Pour exécuter uniquement Lighthouse sur le build préfixé :</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">pnpm run build:e2e
+RELEASE_REVISION=local node .github/scripts/prepare-release.mjs
+pnpm run test:e2e --project=lighthouse</code></pre></div><p>Playwright démarre automatiquement le serveur local si <code>PRODUCTION_SERVER_URL</code>
+n’est pas renseigné. Voir <a href="docs/validation/VALIDATION.md">Validation</a>.</p>
+<p>La CI vérifie le code, génère Compodoc et audite le build de production préfixé
+avant de livrer ce même artefact sur GitHub Pages depuis <code>main</code>.
+Après publication, elle contrôle la révision et le HTML de la livraison, les
+données, les ressources et les erreurs JavaScript, puis parcourt l’accueil et
+la France avec rechargement direct et retour à l’accueil. Les diagnostics sont
+conservés 14 jours. Un contrôle échoué fait échouer le job, le site déjà publié
+reste en ligne : corriger ou rétablir la version précédente par un nouveau commit.</p>
+<h2>Repères et documentation</h2>
+<table class="table table-bordered compodoc-table">
+<thead>
+<tr><th>Emplacement</th><th>Contenu</th></tr>
+</thead>
+<tbody>
+<tr><td><code>src/app/pages/</code></td><td>Deux pages et leurs calculs/modèles d’affichage</td></tr>
+<tr><td><code>src/app/services/</code></td><td>Chargement, validation et cache des données</td></tr>
+<tr><td><code>src/app/olympics/</code></td><td>Indicateurs, feedback et intégration Chart.js</td></tr>
+<tr><td><code>e2e/</code></td><td>Tests navigateur</td></tr>
+<tr><td><code>.github/workflows/</code></td><td>Étapes de validation et de déploiement GitHub Actions</td></tr>
+<tr><td><code>.github/scripts/</code></td><td>Préparation de livraison, serveur local et contrôle du déploiement</td></tr>
+<tr><td><code>docs/</code></td><td>Guides et rapports de validation</td></tr>
+<tr><td><code>doc/</code></td><td>Maquettes et rapports locaux</td></tr>
+</tbody>
+</table>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">pnpm run docs
+pnpm run docs:serve</code></pre></div><p>Compodoc génère <code>documentation/</code>, ignoré par Git. <code>docs:serve</code> régénère le site
+et le sert sur <a href="http://127.0.0.1:8080">http://127.0.0.1:8080</a>. Les commentaires expliquent les contrats
+et décisions utiles, sans objectif de couverture par symbole.</p>
+<p>Voir l’<a href="docs/architecture/architecture.md">architecture</a>,
+les <a href="docs/compodoc-conventions.md">conventions de commentaires</a>,
+l’<a href="docs/README.md">index documentaire</a> et les règles de
+<a href="CONTRIBUTING.md">contribution et de commits</a>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> résultats matchant "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">Aucun résultat matchant "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 0;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'readme';
+            var COMPODOC_CURRENT_PAGE_URL = 'index.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var updateDarkModeSwitchOffset = function () {
+                    var content = document.querySelector('.content');
+                    var scrollbarWidth = 0;
+
+                    if (content) {
+                         scrollbarWidth = Math.max(0, content.offsetWidth - content.clientWidth);
+                    }
+
+                    document.documentElement.style.setProperty(
+                         '--content-scrollbar-width',
+                         scrollbarWidth + 'px'
+                    );
+               };
+
+               updateDarkModeSwitchOffset();
+               requestAnimationFrame(updateDarkModeSwitchOffset);
+               window.addEventListener('resize', updateDarkModeSwitchOffset);
+
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="./js/libs/custom-elements.min.js"></script>
+       <script src="./js/libs/lit-html.js"></script>
+
+       <script src="./js/menu-wc.js" defer></script>
+
+       <script src="./js/libs/bootstrap-native.js"></script>
+
+       <script src="./js/libs/es6-shim.min.js"></script>
+       <script src="./js/libs/EventDispatcher.js"></script>
+       <script src="./js/libs/promise.min.js"></script>
+
+       <script src="./js/compodoc.js"></script>
+
+       <script src="./js/tabs.js"></script>
+       <script src="./js/menu.js"></script>
+       <script src="./js/libs/clipboard.min.js"></script>
+       <script src="./js/libs/prism.js"></script>
+       <script src="./js/sourceCode.js"></script>
+          <script src="./js/search/search.js"></script>
+          <script src="./js/search/lunr.min.js"></script>
+          <script src="./js/search/search-lunr.js"></script>
+          <script src="./js/search/search_index.js"></script>
+       <script src="./js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

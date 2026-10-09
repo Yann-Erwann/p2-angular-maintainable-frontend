@@ -1,0 +1,1109 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>TéléSport — Documentation Angular</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
+	   <link rel="stylesheet" href="./styles/style.css">
+        <link rel="stylesheet" href="./styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="./" class="navbar-brand">TéléSport — Documentation Angular</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search">
+    <input type="text" placeholder="Saisissez un texte">
+    <button type="button"
+        class="search-input-clear"
+        aria-label="Clear search"
+        data-search-input-clear>&times;</button>
+</div>
+            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content coverage">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">Couverture de documentation</li>
+</ol>
+
+<div>
+    <img src="./images/coverage-badge-documentation.svg">
+</div>
+
+<div class="coverage-summary" data-coverage-summary></div>
+
+<div class="coverage-filter">
+    <input type="text"
+        class="coverage-filter-input"
+        placeholder="Filter entities..."
+        aria-label="Filter coverage results"
+        data-coverage-filter>
+    <button type="button"
+        class="coverage-filter-clear"
+        aria-label="Clear filter"
+        data-coverage-filter-clear>&times;</button>
+</div>
+
+<table class="table table-bordered coverage" id="coverage-table">
+    <thead class="coverage-header">
+        <tr>
+            <th>Fichier</th>
+            <th>Type</th>
+            <th>Identifiant</th>
+            <th style="text-align:right" class="statements" data-sort-default>Déclarations</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./components/AppComponent.html">src/app/app.component.ts</a>
+            </td>
+            <td>component</td>
+            <td>AppComponent</td>
+            <td align="right" data-sort="8">
+                <span class="coverage-percent">8 %</span>
+                <span class="coverage-count">(1/12)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./miscellaneous/variables.html#appConfig">src/app/app.config.ts</a>
+            </td>
+            <td>variable</td>
+            <td>appConfig</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="very-good">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./miscellaneous/variables.html#routes">src/app/app.routes.ts</a>
+            </td>
+            <td>variable</td>
+            <td>routes</td>
+            <td align="right" data-sort="100">
+                <span class="coverage-percent">100 %</span>
+                <span class="coverage-count">(1/1)</span>
+            </td>
+        </tr>
+        <tr class="medium">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./classes/DataLoadError.html">src/app/olympics/data-access/data-load-error.ts</a>
+            </td>
+            <td>class</td>
+            <td>DataLoadError</td>
+            <td align="right" data-sort="50">
+                <span class="coverage-percent">50 %</span>
+                <span class="coverage-count">(1/2)</span>
+            </td>
+        </tr>
+        <tr class="very-good">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./miscellaneous/functions.html#toDataLoadError">src/app/olympics/data-access/data-load-error.ts</a>
+            </td>
+            <td>function</td>
+            <td>toDataLoadError</td>
+            <td align="right" data-sort="100">
+                <span class="coverage-percent">100 %</span>
+                <span class="coverage-count">(1/1)</span>
+            </td>
+        </tr>
+        <tr class="medium">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./injectables/OlympicDataService.html">src/app/olympics/data-access/olympic-data.service.ts</a>
+            </td>
+            <td>injectable</td>
+            <td>OlympicDataService</td>
+            <td align="right" data-sort="40">
+                <span class="coverage-percent">40 %</span>
+                <span class="coverage-count">(2/5)</span>
+            </td>
+        </tr>
+        <tr class="medium">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./classes/OlympicDataValidationError.html">src/app/olympics/data-access/olympic-data.validator.ts</a>
+            </td>
+            <td>class</td>
+            <td>OlympicDataValidationError</td>
+            <td align="right" data-sort="50">
+                <span class="coverage-percent">50 %</span>
+                <span class="coverage-count">(1/2)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./miscellaneous/functions.html#isArray">src/app/olympics/data-access/olympic-data.validator.ts</a>
+            </td>
+            <td>function</td>
+            <td>isArray</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./miscellaneous/functions.html#isCount">src/app/olympics/data-access/olympic-data.validator.ts</a>
+            </td>
+            <td>function</td>
+            <td>isCount</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="very-good">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./miscellaneous/functions.html#isOlympic">src/app/olympics/data-access/olympic-data.validator.ts</a>
+            </td>
+            <td>function</td>
+            <td>isOlympic</td>
+            <td align="right" data-sort="100">
+                <span class="coverage-percent">100 %</span>
+                <span class="coverage-count">(1/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./miscellaneous/functions.html#isParticipation">src/app/olympics/data-access/olympic-data.validator.ts</a>
+            </td>
+            <td>function</td>
+            <td>isParticipation</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./miscellaneous/functions.html#isPositiveInteger">src/app/olympics/data-access/olympic-data.validator.ts</a>
+            </td>
+            <td>function</td>
+            <td>isPositiveInteger</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./miscellaneous/functions.html#isRecord">src/app/olympics/data-access/olympic-data.validator.ts</a>
+            </td>
+            <td>function</td>
+            <td>isRecord</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./miscellaneous/functions.html#isText">src/app/olympics/data-access/olympic-data.validator.ts</a>
+            </td>
+            <td>function</td>
+            <td>isText</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="very-good">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./miscellaneous/functions.html#validateOlympicData">src/app/olympics/data-access/olympic-data.validator.ts</a>
+            </td>
+            <td>function</td>
+            <td>validateOlympicData</td>
+            <td align="right" data-sort="100">
+                <span class="coverage-percent">100 %</span>
+                <span class="coverage-count">(1/1)</span>
+            </td>
+        </tr>
+        <tr class="very-good">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./miscellaneous/functions.html#parseCountryId">src/app/olympics/domain/country-id.ts</a>
+            </td>
+            <td>function</td>
+            <td>parseCountryId</td>
+            <td align="right" data-sort="100">
+                <span class="coverage-percent">100 %</span>
+                <span class="coverage-count">(1/1)</span>
+            </td>
+        </tr>
+        <tr class="medium">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./interfaces/Olympic.html">src/app/olympics/domain/olympic.model.ts</a>
+            </td>
+            <td>interface</td>
+            <td>Olympic</td>
+            <td align="right" data-sort="50">
+                <span class="coverage-percent">50 %</span>
+                <span class="coverage-count">(2/4)</span>
+            </td>
+        </tr>
+        <tr class="medium">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./interfaces/Participation.html">src/app/olympics/domain/olympic.model.ts</a>
+            </td>
+            <td>interface</td>
+            <td>Participation</td>
+            <td align="right" data-sort="33">
+                <span class="coverage-percent">33 %</span>
+                <span class="coverage-count">(2/6)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./miscellaneous/variables.html#OLYMPICS_ROUTES">src/app/olympics/olympics.routes.ts</a>
+            </td>
+            <td>variable</td>
+            <td>OLYMPICS_ROUTES</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="medium">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./interfaces/CountrySummary.html">src/app/olympics/pages/country/country-view-model.ts</a>
+            </td>
+            <td>interface</td>
+            <td>CountrySummary</td>
+            <td align="right" data-sort="42">
+                <span class="coverage-percent">42 %</span>
+                <span class="coverage-count">(3/7)</span>
+            </td>
+        </tr>
+        <tr class="medium">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./interfaces/CountryViewModel.html">src/app/olympics/pages/country/country-view-model.ts</a>
+            </td>
+            <td>interface</td>
+            <td>CountryViewModel</td>
+            <td align="right" data-sort="50">
+                <span class="coverage-percent">50 %</span>
+                <span class="coverage-count">(3/6)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./miscellaneous/functions.html#countryDocumentTitle">src/app/olympics/pages/country/country-view-model.ts</a>
+            </td>
+            <td>function</td>
+            <td>countryDocumentTitle</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./miscellaneous/functions.html#countryIndicators">src/app/olympics/pages/country/country-view-model.ts</a>
+            </td>
+            <td>function</td>
+            <td>countryIndicators</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="very-good">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./miscellaneous/functions.html#createCountryState">src/app/olympics/pages/country/country-view-model.ts</a>
+            </td>
+            <td>function</td>
+            <td>createCountryState</td>
+            <td align="right" data-sort="100">
+                <span class="coverage-percent">100 %</span>
+                <span class="coverage-count">(1/1)</span>
+            </td>
+        </tr>
+        <tr class="very-good">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./miscellaneous/functions.html#summarizeCountry">src/app/olympics/pages/country/country-view-model.ts</a>
+            </td>
+            <td>function</td>
+            <td>summarizeCountry</td>
+            <td align="right" data-sort="100">
+                <span class="coverage-percent">100 %</span>
+                <span class="coverage-count">(1/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./miscellaneous/variables.html#COUNTRY_CODES">src/app/olympics/pages/country/country-view-model.ts</a>
+            </td>
+            <td>variable</td>
+            <td>COUNTRY_CODES</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./miscellaneous/variables.html#COUNTRY_LOADING_INDICATORS">src/app/olympics/pages/country/country-view-model.ts</a>
+            </td>
+            <td>variable</td>
+            <td>COUNTRY_LOADING_INDICATORS</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="very-good">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./miscellaneous/typealiases.html#CountryPageState">src/app/olympics/pages/country/country-view-model.ts</a>
+            </td>
+            <td>type alias</td>
+            <td>CountryPageState</td>
+            <td align="right" data-sort="100">
+                <span class="coverage-percent">100 %</span>
+                <span class="coverage-count">(1/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./components/CountryComponent.html">src/app/olympics/pages/country/country.component.ts</a>
+            </td>
+            <td>component</td>
+            <td>CountryComponent</td>
+            <td align="right" data-sort="23">
+                <span class="coverage-percent">23 %</span>
+                <span class="coverage-count">(3/13)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./interfaces/CountryMedalRow.html">src/app/olympics/pages/home/home-view-model.ts</a>
+            </td>
+            <td>interface</td>
+            <td>CountryMedalRow</td>
+            <td align="right" data-sort="20">
+                <span class="coverage-percent">20 %</span>
+                <span class="coverage-count">(1/5)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./interfaces/HomeViewModel.html">src/app/olympics/pages/home/home-view-model.ts</a>
+            </td>
+            <td>interface</td>
+            <td>HomeViewModel</td>
+            <td align="right" data-sort="25">
+                <span class="coverage-percent">25 %</span>
+                <span class="coverage-count">(1/4)</span>
+            </td>
+        </tr>
+        <tr class="very-good">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./interfaces/OlympicSummary.html">src/app/olympics/pages/home/home-view-model.ts</a>
+            </td>
+            <td>interface</td>
+            <td>OlympicSummary</td>
+            <td align="right" data-sort="100">
+                <span class="coverage-percent">100 %</span>
+                <span class="coverage-count">(3/3)</span>
+            </td>
+        </tr>
+        <tr class="very-good">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./miscellaneous/functions.html#createHomeState">src/app/olympics/pages/home/home-view-model.ts</a>
+            </td>
+            <td>function</td>
+            <td>createHomeState</td>
+            <td align="right" data-sort="100">
+                <span class="coverage-percent">100 %</span>
+                <span class="coverage-count">(1/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./miscellaneous/functions.html#homeIndicators">src/app/olympics/pages/home/home-view-model.ts</a>
+            </td>
+            <td>function</td>
+            <td>homeIndicators</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="very-good">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./miscellaneous/functions.html#summarizeOlympics">src/app/olympics/pages/home/home-view-model.ts</a>
+            </td>
+            <td>function</td>
+            <td>summarizeOlympics</td>
+            <td align="right" data-sort="100">
+                <span class="coverage-percent">100 %</span>
+                <span class="coverage-count">(1/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./miscellaneous/variables.html#HOME_LOADING_INDICATORS">src/app/olympics/pages/home/home-view-model.ts</a>
+            </td>
+            <td>variable</td>
+            <td>HOME_LOADING_INDICATORS</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./miscellaneous/typealiases.html#HomePageState">src/app/olympics/pages/home/home-view-model.ts</a>
+            </td>
+            <td>type alias</td>
+            <td>HomePageState</td>
+            <td align="right" data-sort="0">
+                <span class="coverage-percent">0 %</span>
+                <span class="coverage-count">(0/1)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./components/HomeComponent.html">src/app/olympics/pages/home/home.component.ts</a>
+            </td>
+            <td>component</td>
+            <td>HomeComponent</td>
+            <td align="right" data-sort="10">
+                <span class="coverage-percent">10 %</span>
+                <span class="coverage-count">(1/10)</span>
+            </td>
+        </tr>
+        <tr class="very-good">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./miscellaneous/variables.html#MEDAL_COLORS">src/app/olympics/ui/chart/chart-colors.ts</a>
+            </td>
+            <td>variable</td>
+            <td>MEDAL_COLORS</td>
+            <td align="right" data-sort="100">
+                <span class="coverage-percent">100 %</span>
+                <span class="coverage-count">(1/1)</span>
+            </td>
+        </tr>
+        <tr class="very-good">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./miscellaneous/functions.html#createMedalDistributionConfig">src/app/olympics/ui/chart/chart-config.ts</a>
+            </td>
+            <td>function</td>
+            <td>createMedalDistributionConfig</td>
+            <td align="right" data-sort="100">
+                <span class="coverage-percent">100 %</span>
+                <span class="coverage-count">(1/1)</span>
+            </td>
+        </tr>
+        <tr class="very-good">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./miscellaneous/functions.html#createMedalHistoryConfig">src/app/olympics/ui/chart/chart-config.ts</a>
+            </td>
+            <td>function</td>
+            <td>createMedalHistoryConfig</td>
+            <td align="right" data-sort="100">
+                <span class="coverage-percent">100 %</span>
+                <span class="coverage-count">(1/1)</span>
+            </td>
+        </tr>
+        <tr class="very-good">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./miscellaneous/typealiases.html#MedalConfig">src/app/olympics/ui/chart/chart-config.ts</a>
+            </td>
+            <td>type alias</td>
+            <td>MedalConfig</td>
+            <td align="right" data-sort="100">
+                <span class="coverage-percent">100 %</span>
+                <span class="coverage-count">(1/1)</span>
+            </td>
+        </tr>
+        <tr class="very-good">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./miscellaneous/variables.html#accessibleBackground">src/app/olympics/ui/chart/chart-plugins.ts</a>
+            </td>
+            <td>variable</td>
+            <td>accessibleBackground</td>
+            <td align="right" data-sort="100">
+                <span class="coverage-percent">100 %</span>
+                <span class="coverage-count">(1/1)</span>
+            </td>
+        </tr>
+        <tr class="very-good">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./miscellaneous/variables.html#countryPointLabels">src/app/olympics/ui/chart/chart-plugins.ts</a>
+            </td>
+            <td>variable</td>
+            <td>countryPointLabels</td>
+            <td align="right" data-sort="100">
+                <span class="coverage-percent">100 %</span>
+                <span class="coverage-count">(1/1)</span>
+            </td>
+        </tr>
+        <tr class="very-good">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./miscellaneous/variables.html#dashboardLabels">src/app/olympics/ui/chart/chart-plugins.ts</a>
+            </td>
+            <td>variable</td>
+            <td>dashboardLabels</td>
+            <td align="right" data-sort="100">
+                <span class="coverage-percent">100 %</span>
+                <span class="coverage-count">(1/1)</span>
+            </td>
+        </tr>
+        <tr class="very-good">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./miscellaneous/variables.html#dashboardTooltipMedal">src/app/olympics/ui/chart/chart-plugins.ts</a>
+            </td>
+            <td>variable</td>
+            <td>dashboardTooltipMedal</td>
+            <td align="right" data-sort="100">
+                <span class="coverage-percent">100 %</span>
+                <span class="coverage-count">(1/1)</span>
+            </td>
+        </tr>
+        <tr class="very-good">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./injectables/ChartRenderer.html">src/app/olympics/ui/chart/chart-renderer.service.ts</a>
+            </td>
+            <td>injectable</td>
+            <td>ChartRenderer</td>
+            <td align="right" data-sort="100">
+                <span class="coverage-percent">100 %</span>
+                <span class="coverage-count">(2/2)</span>
+            </td>
+        </tr>
+        <tr class="good">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./interfaces/RenderedChart.html">src/app/olympics/ui/chart/chart-renderer.service.ts</a>
+            </td>
+            <td>interface</td>
+            <td>RenderedChart</td>
+            <td align="right" data-sort="66">
+                <span class="coverage-percent">66 %</span>
+                <span class="coverage-count">(2/3)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./components/OlympicChartComponent.html">src/app/olympics/ui/chart/chart.component.ts</a>
+            </td>
+            <td>component</td>
+            <td>OlympicChartComponent</td>
+            <td align="right" data-sort="23">
+                <span class="coverage-percent">23 %</span>
+                <span class="coverage-count">(5/21)</span>
+            </td>
+        </tr>
+        <tr class="medium">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./interfaces/ChartItem.html">src/app/olympics/ui/chart/chart.model.ts</a>
+            </td>
+            <td>interface</td>
+            <td>ChartItem</td>
+            <td align="right" data-sort="33">
+                <span class="coverage-percent">33 %</span>
+                <span class="coverage-count">(1/3)</span>
+            </td>
+        </tr>
+        <tr class="medium">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./interfaces/OlympicChartData.html">src/app/olympics/ui/chart/chart.model.ts</a>
+            </td>
+            <td>interface</td>
+            <td>OlympicChartData</td>
+            <td align="right" data-sort="33">
+                <span class="coverage-percent">33 %</span>
+                <span class="coverage-count">(1/3)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./components/HeaderComponent.html">src/app/olympics/ui/header/header.component.ts</a>
+            </td>
+            <td>component</td>
+            <td>HeaderComponent</td>
+            <td align="right" data-sort="20">
+                <span class="coverage-percent">20 %</span>
+                <span class="coverage-count">(1/5)</span>
+            </td>
+        </tr>
+        <tr class="medium">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./interfaces/Indicator.html">src/app/olympics/ui/header/indicator.model.ts</a>
+            </td>
+            <td>interface</td>
+            <td>Indicator</td>
+            <td align="right" data-sort="50">
+                <span class="coverage-percent">50 %</span>
+                <span class="coverage-count">(2/4)</span>
+            </td>
+        </tr>
+        <tr class="low">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./components/PageFeedbackComponent.html">src/app/olympics/ui/page-feedback/page-feedback.component.ts</a>
+            </td>
+            <td>component</td>
+            <td>PageFeedbackComponent</td>
+            <td align="right" data-sort="25">
+                <span class="coverage-percent">25 %</span>
+                <span class="coverage-count">(2/8)</span>
+            </td>
+        </tr>
+        <tr class="very-good">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./miscellaneous/typealiases.html#PageFeedbackState">src/app/olympics/ui/page-state.ts</a>
+            </td>
+            <td>type alias</td>
+            <td>PageFeedbackState</td>
+            <td align="right" data-sort="100">
+                <span class="coverage-percent">100 %</span>
+                <span class="coverage-count">(1/1)</span>
+            </td>
+        </tr>
+        <tr class="very-good">
+            <td>
+                <!-- miscellaneous -->
+                        <a href="./components/NotFoundComponent.html">src/app/pages/not-found/not-found.component.ts</a>
+            </td>
+            <td>component</td>
+            <td>NotFoundComponent</td>
+            <td align="right" data-sort="100">
+                <span class="coverage-percent">100 %</span>
+                <span class="coverage-count">(1/1)</span>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<script src="js/libs/tablesort.min.js"></script>
+<script src="js/libs/tablesort.number.min.js"></script>
+<script>
+    new Tablesort(document.getElementById('coverage-table'));
+
+    (function () {
+        var table = document.getElementById('coverage-table');
+        if (!table) {
+            return;
+        }
+
+        var tableBody = table.querySelector('tbody');
+        if (!tableBody) {
+            return;
+        }
+
+        var rows = Array.prototype.slice.call(tableBody.querySelectorAll('tr'));
+        var summaryContainer = document.querySelector('[data-coverage-summary]');
+        var filterInput = document.querySelector('[data-coverage-filter]');
+        var filterClearButton = document.querySelector('[data-coverage-filter-clear]');
+
+        function toPercent(value, total) {
+            if (!total) {
+                return 0;
+            }
+            return Math.round((value / total) * 100);
+        }
+
+        function getRowCoverageBucket(row) {
+            var className = (row.className || '').toLowerCase();
+            if (className.indexOf('low') !== -1) {
+                return 'undocumented';
+            }
+            if (className.indexOf('medium') !== -1) {
+                return 'partial';
+            }
+            if (className.indexOf('very-good') !== -1 || className.indexOf('good') !== -1) {
+                return 'documented';
+            }
+            return 'partial';
+        }
+
+        function getCoverageStats() {
+            var documented = 0;
+            var partial = 0;
+            var undocumented = 0;
+
+            rows.forEach(function (row) {
+                var bucket = getRowCoverageBucket(row);
+                if (bucket === 'documented') {
+                    documented += 1;
+                } else if (bucket === 'partial') {
+                    partial += 1;
+                } else {
+                    undocumented += 1;
+                }
+            });
+
+            var total = rows.length;
+            var totalCoveragePercent = rows.reduce(function (sum, row) {
+                var scoreCell = row.querySelector('td[data-sort]');
+                var rowScore = scoreCell ? parseFloat(scoreCell.getAttribute('data-sort') || '0') : 0;
+                return sum + (isNaN(rowScore) ? 0 : rowScore);
+            }, 0);
+            var score = total ? Math.floor(totalCoveragePercent / total) : 0;
+
+            return {
+                total: total,
+                documented: documented,
+                partial: partial,
+                undocumented: undocumented,
+                score: score
+            };
+        }
+
+        function buildDonutSegment(title, color, count, total, offset, circumference) {
+            var percent = toPercent(count, total);
+            if (!count) {
+                return '';
+            }
+
+            var arcLength = (count / total) * circumference;
+            var remaining = circumference - arcLength;
+
+            return '<circle cx="60" cy="60" r="50" fill="none" stroke="' + color + '" stroke-width="10" ' +
+                'style="stroke-dasharray: ' + arcLength + ', ' + remaining + '; stroke-dashoffset: ' + (-offset) + ';" ' +
+                'transform="rotate(-90 60 60)" class="coverage-donut-segment">' +
+                '<title>' + title + ': ' + count + ' (' + percent + '%)</title>' +
+                '</circle>';
+        }
+
+        function renderSummary(stats) {
+            if (!summaryContainer) {
+                return;
+            }
+
+            var total = stats.total;
+            var documentedPercent = toPercent(stats.documented, total);
+            var partialPercent = toPercent(stats.partial, total);
+            var undocumentedPercent = toPercent(stats.undocumented, total);
+            var circumference = 2 * Math.PI * 50;
+            var offset = 0;
+
+            var documentedSegment = buildDonutSegment('Documented', '#4dc71f', stats.documented, total, offset, circumference);
+            offset += total ? (stats.documented / total) * circumference : 0;
+
+            var partialSegment = buildDonutSegment('Partial', '#dab226', stats.partial, total, offset, circumference);
+            offset += total ? (stats.partial / total) * circumference : 0;
+
+            var undocumentedSegment = buildDonutSegment('Undocumented', '#d8624c', stats.undocumented, total, offset, circumference);
+
+            summaryContainer.innerHTML =
+                '<svg viewBox="0 0 120 120" class="coverage-donut" role="img" aria-label="Documentation coverage: ' + stats.score + '%">' +
+                    '<title>Documentation coverage: ' + stats.score + '%</title>' +
+                    '<desc>' + stats.documented + ' documented, ' + stats.partial + ' partial, ' + stats.undocumented + ' undocumented of ' + stats.total + ' entities</desc>' +
+                    '<circle cx="60" cy="60" r="50" fill="none" stroke="var(--bs-border-color, #dee2e6)" stroke-width="10" class="coverage-donut-ring"></circle>' +
+                    documentedSegment +
+                    partialSegment +
+                    undocumentedSegment +
+                    '<text x="60" y="60" text-anchor="middle" dominant-baseline="central" class="coverage-donut-pct">' + stats.score + '%</text>' +
+                '</svg>' +
+                '<div class="coverage-stats">' +
+                    '<div>' +
+                        '<div class="coverage-stat-value">' + stats.total + '</div>' +
+                        '<div class="coverage-stat-label">Total</div>' +
+                        '<div class="coverage-stat-sub">' + stats.total + ' entities</div>' +
+                    '</div>' +
+                    '<div>' +
+                        '<div class="coverage-stat-value coverage-stat-value--documented">' + stats.documented + '</div>' +
+                        '<div class="coverage-stat-label">Documented</div>' +
+                        '<div class="coverage-stat-sub">' + documentedPercent + '%</div>' +
+                    '</div>' +
+                    '<div>' +
+                        '<div class="coverage-stat-value coverage-stat-value--partial">' + stats.partial + '</div>' +
+                        '<div class="coverage-stat-label">Partial</div>' +
+                        '<div class="coverage-stat-sub">' + partialPercent + '%</div>' +
+                    '</div>' +
+                    '<div>' +
+                        '<div class="coverage-stat-value coverage-stat-value--undocumented">' + stats.undocumented + '</div>' +
+                        '<div class="coverage-stat-label">Undocumented</div>' +
+                        '<div class="coverage-stat-sub">' + undocumentedPercent + '%</div>' +
+                    '</div>' +
+                '</div>';
+        }
+
+        function applyFilter() {
+            if (!filterInput) {
+                return;
+            }
+
+            var query = filterInput.value.toLowerCase().trim();
+            rows.forEach(function (row) {
+                var text = (row.textContent || '').toLowerCase();
+                row.style.display = query.length === 0 || text.indexOf(query) !== -1 ? '' : 'none';
+            });
+
+            if (filterClearButton) {
+                filterClearButton.classList.toggle('is-visible', query.length > 0);
+            }
+        }
+
+        if (filterInput) {
+            filterInput.addEventListener('input', applyFilter);
+            filterInput.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape') {
+                    filterInput.value = '';
+                    applyFilter();
+                }
+            });
+        }
+
+        if (filterClearButton) {
+            filterClearButton.addEventListener('click', function () {
+                if (filterInput) {
+                    filterInput.value = '';
+                    applyFilter();
+                    filterInput.focus();
+                }
+            });
+        }
+
+        renderSummary(getCoverageStats());
+        applyFilter();
+    })();
+</script>
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> résultats matchant "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">Aucun résultat matchant "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 0;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'coverage';
+            var COMPODOC_CURRENT_PAGE_URL = 'coverage.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var updateDarkModeSwitchOffset = function () {
+                    var content = document.querySelector('.content');
+                    var scrollbarWidth = 0;
+
+                    if (content) {
+                         scrollbarWidth = Math.max(0, content.offsetWidth - content.clientWidth);
+                    }
+
+                    document.documentElement.style.setProperty(
+                         '--content-scrollbar-width',
+                         scrollbarWidth + 'px'
+                    );
+               };
+
+               updateDarkModeSwitchOffset();
+               requestAnimationFrame(updateDarkModeSwitchOffset);
+               window.addEventListener('resize', updateDarkModeSwitchOffset);
+
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="./js/libs/custom-elements.min.js"></script>
+       <script src="./js/libs/lit-html.js"></script>
+
+       <script src="./js/menu-wc.js" defer></script>
+
+       <script src="./js/libs/bootstrap-native.js"></script>
+
+       <script src="./js/libs/es6-shim.min.js"></script>
+       <script src="./js/libs/EventDispatcher.js"></script>
+       <script src="./js/libs/promise.min.js"></script>
+
+       <script src="./js/compodoc.js"></script>
+
+       <script src="./js/tabs.js"></script>
+       <script src="./js/menu.js"></script>
+       <script src="./js/libs/clipboard.min.js"></script>
+       <script src="./js/libs/prism.js"></script>
+       <script src="./js/sourceCode.js"></script>
+          <script src="./js/search/search.js"></script>
+          <script src="./js/search/lunr.min.js"></script>
+          <script src="./js/search/search-lunr.js"></script>
+          <script src="./js/search/search_index.js"></script>
+       <script src="./js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

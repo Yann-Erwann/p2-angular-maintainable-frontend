@@ -45,7 +45,6 @@ Thumbs.db
 
 # Documentation
 /doc
-/documentation
 
 # Browser verification artifacts
 /playwright-report
