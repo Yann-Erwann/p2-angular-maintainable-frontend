@@ -42,6 +42,13 @@ testem.log
 .DS_Store
 Thumbs.db
 .workspace/authorized_keys
+/scripts
 
 # Documentation
 /doc
+/documentation
+
+# Browser verification artifacts
+/playwright-report
+/test-results
+/validation-artifacts

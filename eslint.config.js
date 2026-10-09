@@ -1,22 +1,26 @@
 // @ts-check
 
-const eslint = require("@eslint/js");
-const { defineConfig } = require("eslint/config");
-const tseslint = require("typescript-eslint");
-const angular = require("angular-eslint");
+const eslint = require('@eslint/js');
+const { defineConfig } = require('eslint/config');
+const tseslint = require('typescript-eslint');
+const angular = require('angular-eslint');
 
 module.exports = defineConfig([
   {
     ignores: [
-      "dist/**",
-      "coverage/**",
-      ".angular/**",
-      "node_modules/**"
+      'dist/**',
+      'documentation/**',
+      'playwright-report/**',
+      'test-results/**',
+      'validation-artifacts/**',
+      'coverage/**',
+      '.angular/**',
+      'node_modules/**',
     ],
   },
 
   {
-    files: ["**/*.ts"],
+    files: ['**/*.ts'],
 
     extends: [
       eslint.configs.recommended,
@@ -41,70 +45,67 @@ module.exports = defineConfig([
        * Angular
        */
 
-      "@angular-eslint/directive-selector": [
-        "error",
+      '@angular-eslint/directive-selector': [
+        'error',
         {
-          type: "attribute",
-          prefix: "app",
-          style: "camelCase",
+          type: 'attribute',
+          prefix: 'app',
+          style: 'camelCase',
         },
       ],
 
-      "@angular-eslint/component-selector": [
-        "error",
+      '@angular-eslint/component-selector': [
+        'error',
         {
-          type: "element",
-          prefix: "app",
-          style: "kebab-case",
+          type: 'element',
+          prefix: 'app',
+          style: 'kebab-case',
         },
       ],
 
-      "@angular-eslint/prefer-standalone": "error",
+      '@angular-eslint/prefer-standalone': 'error',
 
       /*
        * TypeScript
        */
 
-      "@typescript-eslint/no-explicit-any": "error",
+      '@typescript-eslint/no-explicit-any': 'error',
 
-      "@typescript-eslint/consistent-type-imports": [
-        "error",
+      '@typescript-eslint/consistent-type-imports': [
+        'error',
         {
-          prefer: "type-imports",
-          fixStyle: "inline-type-imports",
+          prefer: 'type-imports',
+          fixStyle: 'inline-type-imports',
         },
       ],
 
-      "@typescript-eslint/no-unused-vars": [
-        "error",
+      '@typescript-eslint/no-unused-vars': [
+        'error',
         {
-          argsIgnorePattern: "^_",
-          varsIgnorePattern: "^_",
-          caughtErrorsIgnorePattern: "^_",
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
         },
       ],
 
-      "@typescript-eslint/switch-exhaustiveness-check": "error",
+      '@typescript-eslint/switch-exhaustiveness-check': 'error',
 
       /*
        * JavaScript / general
        */
 
-      "eqeqeq": ["error", "always"],
-      "prefer-const": "error",
+      eqeqeq: ['error', 'always'],
+      'prefer-const': 'error',
     },
   },
 
   {
-    files: ["**/*.html"],
+    files: ['**/*.html'],
 
-    extends: [
-      angular.configs.templateRecommended,
-      angular.configs.templateAccessibility,
-    ],
+    extends: [angular.configs.templateRecommended, angular.configs.templateAccessibility],
 
     rules: {
-      "@angular-eslint/template/eqeqeq": "error",
+      '@angular-eslint/template/eqeqeq': 'error',
     },
   },
 ]);

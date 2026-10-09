@@ -1,0 +1,11 @@
+node_modules/
+dist/
+documentation/
+coverage/
+.angular/
+doc/
+playwright-report/
+test-results/
+pnpm-lock.yaml
+*.drawio
+src/assets/

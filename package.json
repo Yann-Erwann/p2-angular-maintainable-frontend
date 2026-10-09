@@ -9,11 +9,13 @@
     "preview": "pnpm dlx serve -s --config serve.json",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc --noEmit -p tsconfig.app.json && tsc --noEmit -p tsconfig.spec.json"
   },
   "private": true,
   "dependencies": {
-    "@angular-eslint/schematics": "^2.1.1",
     "@angular/common": "^21.2.25",
     "@angular/compiler": "^21.2.25",
     "@angular/core": "^21.2.25",
@@ -27,12 +29,15 @@
   },
   "devDependencies": {
     "@angular-eslint/builder": "21.4.0",
+    "@angular-eslint/schematics": "21.4.0",
     "@angular/build": "^21.2.24",
     "@angular/cli": "^21.2.24",
     "@angular/compiler-cli": "^21.2.25",
+    "@compodoc/compodoc": "^2.0.0",
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.64.0",
     "@types/jasmine": "~5.1.0",
-    "@types/node": "^18.18.0",
+    "@types/node": "^24.19.1",
     "angular-eslint": "21.4.0",
     "eslint": "^10.3.0",
     "jasmine-core": "~5.1.0",
@@ -41,6 +46,8 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "lighthouse": "^13.5.0",
+    "prettier": "^3.9.9",
     "typescript": "~5.9.3",
     "typescript-eslint": "8.59.2"
   },
