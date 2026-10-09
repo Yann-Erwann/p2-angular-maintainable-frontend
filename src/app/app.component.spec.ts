@@ -71,7 +71,7 @@ describe('Accessible application navigation', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     expect(document.activeElement).toBe(page.querySelector('h1'));
-    expect(page.querySelector('h1')?.textContent).toContain('Italy');
+    expect(page.querySelector('h1')?.textContent?.trim()).toBe('Olympic results');
     expect(document.title).toBe('Italy | Olympic Games');
 
     await router.navigateByUrl('/unknown');
