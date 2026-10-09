@@ -12,13 +12,9 @@ module.exports = {
       startServerCommand: 'node .github/scripts/serve-production.mjs',
       startServerReadyPattern: 'Lighthouse server ready',
       numberOfRuns: 3,
-      url: [
-        './',
-        ...countries.map(({ id }) => `country/${id}`),
-        'country/invalid',
-        'country/999',
-        'unknown/nested',
-      ].map((route) => new URL(route, base).href),
+      url: ['./', ...countries.map(({ id }) => `country/${id}`)].map(
+        (route) => new URL(route, base).href,
+      ),
       settings: {
         onlyCategories: categories,
         chromeFlags: '--no-sandbox --disable-dev-shm-usage',

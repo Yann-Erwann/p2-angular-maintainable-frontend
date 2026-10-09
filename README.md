@@ -113,7 +113,9 @@ système. Les rapports sont dans `playwright-report/` et `test-results/`.
 L’action `treosh/lighthouse-ci-action@v12` exécute Lighthouse CI, sans Playwright,
 dans deux étapes GitHub Actions (mobile et desktop). Il est obligatoire sur chaque exécution
 du workflow, y compris manuelle. Il réalise trois audits par route en mobile et
-desktop : accueil, chaque pays, identifiant invalide, pays absent et page inconnue.
+desktop : accueil et chaque pays du JSON livré. Les routes d’erreur renvoient
+un HTTP 404 et restent couvertes par les tests navigateur ; elles ne font pas
+partie des audits Lighthouse.
 Chaque catégorie (performance, accessibilité, bonnes pratiques et SEO) doit avoir
 un score exact de 100 à chaque passage. Un score inférieur, absent ou une erreur
 d’audit fait échouer la validation et bloque le déploiement. Les rapports et assertions sont conservés dans les artefacts

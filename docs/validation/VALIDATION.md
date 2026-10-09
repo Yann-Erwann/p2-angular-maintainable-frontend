@@ -12,8 +12,10 @@ déploiement existant reste séparé.
 
 Le workflow exige désormais un score exact de 100 dans les quatre catégories
 Lighthouse à chacun des trois passages, sur chaque route en mobile et desktop.
-Les routes couvrent l’accueil, tous les pays du JSON livré et les états de pays
-invalide, pays absent et page inconnue. Aucun lancement manuel ne peut désactiver
+Les routes couvrent l’accueil et tous les pays du JSON livré. Les URL de pays
+invalide, pays absent et page inconnue renvoient volontairement un HTTP 404 :
+elles sont exclues de la collecte Lighthouse et restent couvertes par les tests
+navigateur. Aucun lancement manuel ne peut désactiver
 ce contrôle. Une erreur ou un score absent échoue aussi ; le déploiement dépend
 de cette validation. Les rapports restent disponibles même en cas de score insuffisant.
 Cette modification définit le seuil ; elle ne prouve pas que le site l’atteint.
