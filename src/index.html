@@ -52,10 +52,10 @@
     />
   </head>
   <body>
-    <app-root class="home-dashboard">
-      <header class="brand-header">
+    <app-root class="app-shell app-shell--dashboard">
+      <header class="brand">
         <nav aria-label="Main navigation">
-          <a class="brand-link" href="./" aria-label="Home — TéléSport">
+          <a class="brand__link" href="./" aria-label="Home — TéléSport">
             <picture>
               <source
                 media="(max-width: 600px)"
@@ -63,7 +63,7 @@
                 sizes="calc(100vw - 32px)"
               />
               <img
-                class="brand-banner"
+                class="brand__banner"
                 src="assets/images/teleSport-home.webp"
                 srcset="
                   assets/images/teleSport-home-small.webp  670w,
@@ -89,8 +89,8 @@
       const initialPath = location.hash.slice(1).split(/[?#]/)[0];
       if (initialPath && initialPath !== '/' && !initialPath.startsWith('/country/')) {
         const root = document.querySelector('app-root');
-        const banner = root.querySelector('.brand-banner');
-        root.classList.remove('home-dashboard');
+        const banner = root.querySelector('.brand__banner');
+        root.classList.remove('app-shell--dashboard');
         root.querySelector('source').remove();
         banner.src = 'assets/images/teleSport.webp';
         banner.srcset =

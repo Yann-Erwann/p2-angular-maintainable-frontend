@@ -3,8 +3,9 @@
   jump to the first or last item. Tab after the last item leaves the chart.
   {{ type() === 'pie' ? 'Press Enter or Space to open the selected country.' : '' }}
 </p>
-<div class="chart-drawing">
+<div class="olympic-chart__drawing">
   <canvas
+    class="olympic-chart__canvas"
     #canvas
     role="img"
     tabindex="0"
@@ -17,6 +18,11 @@
     >{{ textAlternative() }}</canvas
   >
 </div>
-<p class="visually-hidden chart-selection" role="status" aria-live="polite" aria-atomic="true">
+<p
+  class="visually-hidden olympic-chart__selection"
+  role="status"
+  aria-live="polite"
+  aria-atomic="true"
+>
   {{ selection() }}
 </p>

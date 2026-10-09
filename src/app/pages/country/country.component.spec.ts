@@ -67,7 +67,9 @@ describe('CountryComponent', () => {
     expect(select.value).toBe('5');
     expect(select.disabled).toBeFalse();
     expect(
-      harness.routeNativeElement?.querySelector('.country-flag')?.classList.contains('flag-fr'),
+      harness.routeNativeElement
+        ?.querySelector('.country-picker__flag')
+        ?.classList.contains('country-picker__flag--fr'),
     ).toBeTrue();
     select.value = '2';
     select.dispatchEvent(new Event('change', { bubbles: true }));
@@ -76,7 +78,9 @@ describe('CountryComponent', () => {
     expect(countrySummary(component).name).toBe('Italy');
     expect(select.value).toBe('2');
     expect(
-      harness.routeNativeElement?.querySelector('.country-flag')?.classList.contains('flag-it'),
+      harness.routeNativeElement
+        ?.querySelector('.country-picker__flag')
+        ?.classList.contains('country-picker__flag--it'),
     ).toBeTrue();
     expect(dataService.getOlympics.calls.count()).toBe(2);
   });
@@ -170,10 +174,14 @@ describe('CountryComponent', () => {
     expect(chartAt(harness.routeNativeElement).data.datasets[0].data).toEqual([10, 20]);
 
     const page = harness.routeNativeElement;
-    expect(page?.querySelector('app-header .center > h2')?.textContent?.trim()).toBe('France');
+    expect(
+      page?.querySelector('app-header .results-header__heading > h2')?.textContent?.trim(),
+    ).toBe('France');
     expect(
       Array.from(
-        page?.querySelectorAll('app-header .split dt, app-header .split dd') ?? [],
+        page?.querySelectorAll(
+          'app-header .results-header__indicators dt, app-header .results-header__indicators dd',
+        ) ?? [],
         (item) => item.textContent?.trim(),
       ),
     ).toEqual([
@@ -216,7 +224,9 @@ describe('CountryComponent', () => {
     );
     expect(
       Array.from(
-        harness.routeNativeElement?.querySelectorAll('.split dt, .split dd') ?? [],
+        harness.routeNativeElement?.querySelectorAll(
+          '.results-header__indicators dt, .results-header__indicators dd',
+        ) ?? [],
         (item) => item.textContent?.trim(),
       ),
     ).toEqual([

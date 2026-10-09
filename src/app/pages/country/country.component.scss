@@ -2,23 +2,23 @@
   display: block;
 }
 
-.country-layout {
+.olympic-page--country {
   gap: 1.25rem;
   margin: 0 0.5rem;
 }
-.country-heading {
+.olympic-page__heading {
   display: flex;
   align-items: center;
   gap: 2rem;
 }
-.country-heading::before,
-.country-heading::after {
+.olympic-page__heading::before,
+.olympic-page__heading::after {
   content: '';
   height: 1px;
   flex: 1;
   background: #dceaf2;
 }
-.country-heading h1 {
+.olympic-page__title {
   margin: 0;
   color: var(--dashboard-text);
   font-size: clamp(1.8rem, 3vw, 2.7rem);
@@ -39,7 +39,7 @@
   background: linear-gradient(120deg, #009bb0, #005960);
   box-shadow: 0 6px 22px #048d9a24;
 }
-select {
+.country-picker__select {
   appearance: none;
   flex: 1;
   width: 100%;
@@ -55,25 +55,25 @@ select {
   cursor: pointer;
   max-width: 100%;
 }
-select.long-country {
+.country-picker__select--long {
   font-size: 1rem;
 }
-select option {
+.country-picker__option {
   color: var(--dashboard-text);
   background: white;
 }
-select:disabled {
+.country-picker__select:disabled {
   opacity: 1;
   cursor: wait;
 }
-.picker-chevron {
+.country-picker__chevron {
   position: absolute;
   right: 1.8rem;
   width: 1rem;
   height: 1rem;
   pointer-events: none;
 }
-.country-flag {
+.country-picker__flag {
   position: relative;
   width: 2.25rem;
   height: 2.25rem;
@@ -83,22 +83,22 @@ select:disabled {
   border-radius: 50%;
   background: #c9eaf2;
 }
-.flag-fr {
+.country-picker__flag--fr {
   background: linear-gradient(to right, #002395 33.3%, white 33.3% 66.6%, #ed2939 66.6%);
 }
-.flag-it {
+.country-picker__flag--it {
   background: linear-gradient(to right, #009246 33.3%, white 33.3% 66.6%, #ce2b37 66.6%);
 }
-.flag-de {
+.country-picker__flag--de {
   background: linear-gradient(#111 33.3%, #d00 33.3% 66.6%, #ffce00 66.6%);
 }
-.flag-es {
+.country-picker__flag--es {
   background: linear-gradient(#aa151b 25%, #f1bf00 25% 75%, #aa151b 75%);
 }
-.flag-us {
+.country-picker__flag--us {
   background: repeating-linear-gradient(#b22234 0 7.69%, white 7.69% 15.38%);
 }
-.flag-us::before {
+.country-picker__flag--us::before {
   content: '⋆⋆';
   position: absolute;
   inset: 0 45% 45% 0;
@@ -107,20 +107,20 @@ select:disabled {
   font-size: 0.65rem;
   text-align: center;
 }
-.country-layout > .country-chart-card {
+.olympic-page--country > .chart-card--history {
   max-width: none;
   padding: 1.3rem 2rem;
   border-radius: 1.25rem;
   background: linear-gradient(135deg, white, #f7fbff);
   box-shadow: 0 12px 36px #286f9614;
 }
-.country-chart-heading {
+.chart-card__heading {
   display: flex;
   align-items: center;
   gap: 1.5rem;
   margin-bottom: 0.75rem;
 }
-.country-chart-icon {
+.chart-card__icon {
   display: grid;
   place-items: center;
   width: 4rem;
@@ -129,17 +129,17 @@ select:disabled {
   border-radius: 50%;
   background: #e0f1ff;
 }
-.country-chart-icon svg {
+.chart-card__icon-image {
   width: 2.4rem;
   height: 2.4rem;
 }
-.country-chart-heading h2 {
+.chart-card__title {
   margin: 0;
   font-size: 1.8rem;
   line-height: 1.25;
   letter-spacing: -0.03em;
 }
-.country-chart-heading p {
+.chart-card__description {
   margin: 0.25rem 0 0;
   color: var(--dashboard-muted);
   font-size: 1.1rem;
@@ -148,37 +148,37 @@ select:disabled {
   height: 21rem;
   border: 0;
 }
-.chart-caption {
+.chart-card__caption {
   margin: 0.6rem 0 0;
   color: var(--dashboard-muted);
   font-size: 1.1rem;
   text-align: center;
 }
 @media (max-width: 700px) {
-  .country-layout {
+  .olympic-page--country {
     margin: 0;
     gap: 1rem;
   }
-  .country-heading {
+  .olympic-page__heading {
     gap: 0.75rem;
   }
-  .country-heading h1 {
+  .olympic-page__title {
     font-size: 1.75rem;
   }
-  .country-layout > .country-chart-card {
+  .olympic-page--country > .chart-card--history {
     padding: 1rem 0.75rem;
   }
-  .country-chart-heading {
+  .chart-card__heading {
     gap: 0.75rem;
   }
-  .country-chart-icon {
+  .chart-card__icon {
     width: 3rem;
     height: 3rem;
   }
-  .country-chart-heading h2 {
+  .chart-card__title {
     font-size: 1.3rem;
   }
-  .country-chart-heading p {
+  .chart-card__description {
     min-height: 2.55rem;
     font-size: 0.85rem;
   }

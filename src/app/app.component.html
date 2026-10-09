@@ -1,6 +1,6 @@
-<header class="brand-header">
+<header class="brand">
   <nav aria-label="Main navigation">
-    <a class="brand-link" routerLink="/" aria-label="Home — TéléSport">
+    <a class="brand__link" routerLink="/" aria-label="Home — TéléSport">
       @if (dashboardLayout()) {
         <picture>
           <source
@@ -9,7 +9,7 @@
             sizes="calc(100vw - 32px)"
           />
           <img
-            class="brand-banner"
+            class="brand__banner"
             src="assets/images/teleSport-home.webp"
             srcset="
               assets/images/teleSport-home-small.webp  670w,
@@ -25,7 +25,7 @@
         </picture>
       } @else {
         <img
-          class="brand-banner"
+          class="brand__banner"
           src="assets/images/teleSport.webp"
           srcset="assets/images/teleSport-small.webp 438w, assets/images/teleSport.webp 874w"
           sizes="(min-width: 544px) 512px, calc(100vw - 32px)"

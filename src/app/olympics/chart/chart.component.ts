@@ -23,7 +23,8 @@ import type { ChartItem, OlympicChartData } from './chart.model';
   selector: 'app-olympic-chart',
   templateUrl: './chart.component.html',
   host: {
-    '[class.country-chart]': "type() === 'line'",
+    class: 'olympic-chart',
+    '[class.olympic-chart--history]': "type() === 'line'",
     '(focusout)': 'onFocusout($event)',
     '(document:keydown)': 'rememberTabDirection($event)',
   },

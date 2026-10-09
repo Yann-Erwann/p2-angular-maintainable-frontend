@@ -36,10 +36,7 @@ describe('PageFeedbackComponent', () => {
     expect(status?.textContent?.trim()).toBe('Loaded results for Italy.');
     expect(status?.classList.contains('visually-hidden')).toBeTrue();
 
-    fixture.componentRef.setInput('state', {
-      status: 'error',
-      message: 'Unable to connect.',
-    });
+    fixture.componentRef.setInput('state', { status: 'error', message: 'Unable to connect.' });
     fixture.detectChanges();
     expect(page.querySelector('[role="alert"]')).toBe(alert);
     expect(status?.textContent?.trim()).toBe('');
@@ -54,7 +51,7 @@ describe('PageFeedbackComponent', () => {
     fixture.detectChanges();
     const page = fixture.nativeElement as HTMLElement;
     expect(page.querySelector('.loading-skeleton')?.getAttribute('aria-hidden')).toBe('true');
-    expect(page.querySelectorAll('.skeleton-indicator').length).toBe(2);
+    expect(page.querySelectorAll('.loading-skeleton__indicator').length).toBe(2);
     expect(page.querySelector('[role="status"]')?.textContent?.trim()).toContain(
       'Loading Olympic data',
     );
@@ -62,7 +59,7 @@ describe('PageFeedbackComponent', () => {
 
     fixture.componentRef.setInput('indicatorCount', 3);
     fixture.detectChanges();
-    expect(page.querySelectorAll('.skeleton-indicator').length).toBe(3);
+    expect(page.querySelectorAll('.loading-skeleton__indicator').length).toBe(3);
 
     for (const state of [
       { status: 'success' },

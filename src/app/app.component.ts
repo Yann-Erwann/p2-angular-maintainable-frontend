@@ -26,8 +26,9 @@ import { filter, map, skip } from 'rxjs';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   host: {
-    '[class.home-dashboard]': 'dashboardLayout()',
-    '[class.country-dashboard]': 'countryLayout()',
+    class: 'app-shell',
+    '[class.app-shell--dashboard]': 'dashboardLayout()',
+    '[class.app-shell--country]': 'countryLayout()',
   },
   imports: [RouterLink, RouterOutlet],
 })

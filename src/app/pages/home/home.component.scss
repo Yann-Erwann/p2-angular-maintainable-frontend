@@ -2,20 +2,20 @@
   display: block;
 }
 
-.home-layout {
+.olympic-page--home {
   position: relative;
   gap: 1.5rem;
   margin: 0 1rem;
 }
-.home-page-title,
-.home-intro {
+.olympic-page__title,
+.olympic-page__intro {
   position: absolute;
   width: 1px;
   height: 1px;
   overflow: hidden;
   clip-path: inset(50%);
 }
-.home-page-title:focus-visible {
+.olympic-page__title:focus-visible {
   z-index: 2;
   top: 0;
   left: 50%;
@@ -28,20 +28,20 @@
   border-radius: 0.5rem;
   background: white;
 }
-.home-layout > .medals-card {
+.olympic-page--home > .chart-card--medals {
   max-width: none;
   padding: 1.5rem 1.75rem;
   border-radius: 1.25rem;
   background: white;
   box-shadow: 0 12px 36px #286f9620;
 }
-.chart-card-heading {
+.chart-card__heading {
   display: flex;
   align-items: center;
   gap: 1.5rem;
   margin-bottom: 0.75rem;
 }
-.chart-card-icon {
+.chart-card__icon {
   display: grid;
   place-items: center;
   width: 4.5rem;
@@ -50,22 +50,22 @@
   border-radius: 50%;
   background: #e0f1ff;
 }
-.chart-card-icon svg {
+.chart-card__icon-image {
   width: 2.5rem;
   height: 2.5rem;
 }
-.chart-card-heading h2 {
+.chart-card__title {
   margin: 0;
   font-size: clamp(1.35rem, 2.1vw, 1.9rem);
   line-height: 1.25;
   letter-spacing: -0.045em;
 }
-.chart-card-heading p {
+.chart-card__description {
   margin: 0.25rem 0 0;
   color: var(--dashboard-muted);
   font-size: 1.05rem;
 }
-.chart-card-body {
+.chart-card__body {
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
   gap: 1.5rem;
@@ -79,64 +79,63 @@ app-olympic-chart,
   border: 0;
   background: #eef7fb;
 }
-.medals-breakdown {
+.medal-table {
   transform: translateY(-1.5rem);
   overflow: hidden;
   border: 1px solid #dce7ef;
   border-radius: 1rem;
   background: #ffffffb3;
 }
-table {
+.medal-table__table {
   width: 100%;
   table-layout: fixed;
   border-collapse: collapse;
   font-size: 1.1rem;
 }
-th,
-td {
+.medal-table__cell {
   padding: 0.8rem 1.1rem;
   text-align: left;
   font-weight: 400;
   white-space: nowrap;
 }
-th:first-child {
+.medal-table__cell--country {
   width: 32%;
 }
-th:nth-child(2) {
+.medal-table__cell--medals {
   width: 20%;
 }
-th:nth-child(3) {
+.medal-table__cell--percentage {
   width: 48%;
 }
-thead {
+.medal-table__head {
   background: #edf3f8b3;
   color: var(--dashboard-muted);
 }
-thead th {
+.medal-table__cell--header {
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
-tbody tr + tr {
+.medal-table__body .medal-table__row + .medal-table__row {
   border-top: 1px solid #e8eff5;
 }
-.country-link {
+.medal-table__country-link {
   display: inline-block;
   color: inherit;
   text-decoration: none;
   border-radius: 0.2rem;
 }
-.country-link:hover {
+.medal-table__country-link:hover {
   text-decoration: underline;
 }
-.country-link:focus-visible {
+.medal-table__country-link:focus-visible {
   outline: 3px solid #008b97;
   outline-offset: 3px;
   text-decoration: underline;
 }
-tbody tr:focus-within {
+.medal-table__row:focus-within {
   background: #edf7fc;
 }
-.country-dot {
+.medal-table__dot {
   display: inline-block;
   width: 1.2rem;
   height: 1.2rem;
@@ -146,18 +145,18 @@ tbody tr:focus-within {
   background: var(--medal-color);
   box-shadow: inset 0 2px 3px #ffffff40;
 }
-.percentage-cell {
+.medal-table__percentage {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   color: var(--dashboard-muted);
 }
-.percentage-cell > span:last-child {
+.medal-table__share {
   min-width: 3.25rem;
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
-.percentage-track {
+.medal-table__track {
   display: block;
   min-width: 4rem;
   height: 1.25rem;
@@ -166,25 +165,25 @@ tbody tr:focus-within {
   background: #e9eff4;
   overflow: hidden;
 }
-.percentage-track > span {
+.medal-table__fill {
   display: block;
   height: 100%;
   border-radius: inherit;
   background: var(--medal-color);
   box-shadow: inset 0 2px 3px #ffffff40;
 }
-.breakdown-placeholder {
+.table-placeholder {
   height: 19rem;
   border-radius: 1rem;
   background: #eef7fb;
 }
 
 @media (max-width: 1000px) {
-  .chart-card-body {
+  .chart-card__body {
     grid-template-columns: minmax(0, 1fr);
     gap: 0.75rem;
   }
-  .medals-breakdown {
+  .medal-table {
     transform: none;
     width: 100%;
     max-width: 42rem;
@@ -196,91 +195,90 @@ tbody tr:focus-within {
   }
 }
 @media (max-width: 600px) {
-  .home-layout {
+  .olympic-page--home {
     gap: 1.25rem;
     margin: 0;
   }
-  .home-page-title,
-  .home-intro {
+  .olympic-page__title,
+  .olympic-page__intro {
     position: static;
     width: auto;
     height: auto;
     clip-path: none;
     overflow: visible;
   }
-  .home-page-title {
+  .olympic-page__title {
     font-size: 1.5rem;
   }
-  .home-intro {
+  .olympic-page__intro {
     margin: -0.75rem 0 0;
     color: var(--dashboard-muted);
     text-align: center;
     font-size: 0.9rem;
   }
-  .home-page-title:focus-visible {
+  .olympic-page__title:focus-visible {
     transform: none;
     padding: 0;
     background: none;
   }
-  .home-layout > .medals-card {
+  .olympic-page--home > .chart-card--medals {
     padding: 1rem 0.75rem;
   }
-  .chart-card-heading {
+  .chart-card__heading {
     gap: 0.75rem;
   }
-  .chart-card-icon {
+  .chart-card__icon {
     width: 3rem;
     height: 3rem;
   }
-  .chart-card-icon svg {
+  .chart-card__icon-image {
     width: 1.75rem;
     height: 1.75rem;
   }
-  .chart-card-heading h2 {
+  .chart-card__title {
     font-size: 1.25rem;
   }
-  .chart-card-heading p {
+  .chart-card__description {
     font-size: 0.85rem;
   }
   app-olympic-chart,
   .chart-placeholder {
     height: 19rem;
   }
-  table {
+  .medal-table__table {
     font-size: 0.8rem;
     table-layout: fixed;
   }
-  th:first-child {
+  .medal-table__cell--country {
     width: 40%;
     white-space: normal;
   }
-  th:nth-child(2) {
+  .medal-table__cell--medals {
     width: 20%;
   }
-  th:nth-child(3) {
+  .medal-table__cell--percentage {
     width: 40%;
   }
-  th,
-  td {
+  .medal-table__cell {
     padding: 0.65rem 0.5rem;
   }
-  thead th {
+  .medal-table__cell--header {
     font-size: 0.7rem;
   }
-  .country-dot {
+  .medal-table__dot {
     width: 0.8rem;
     height: 0.8rem;
     margin-right: 0.4rem;
     vertical-align: -0.1rem;
   }
-  .percentage-cell {
+  .medal-table__percentage {
     gap: 0.3rem;
   }
-  .percentage-track {
+  .medal-table__track {
     min-width: 2rem;
     height: 0.85rem;
   }
-  .percentage-cell > span:last-child {
+  .medal-table__share {
     min-width: 2.75rem;
   }
 }

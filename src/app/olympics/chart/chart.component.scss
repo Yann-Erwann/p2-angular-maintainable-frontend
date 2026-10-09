@@ -11,11 +11,11 @@
   background: transparent;
 }
 
-canvas {
+.olympic-chart__canvas {
   display: block;
 }
 
-.chart-drawing {
+.olympic-chart__drawing {
   position: relative;
   flex: 1;
   min-height: 0;
@@ -26,11 +26,11 @@ canvas {
     height: 19rem;
   }
 }
-:host(.country-chart) {
+:host(.olympic-chart--history) {
   height: 21rem;
 }
 @media (max-width: 700px) {
-  :host(.country-chart) {
+  :host(.olympic-chart--history) {
     height: 18rem;
   }
 }

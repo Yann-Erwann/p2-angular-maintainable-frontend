@@ -1,7 +1,9 @@
 @let page = state();
-<section class="olympic-layout home-layout" aria-labelledby="home-page-title">
-  <h1 id="home-page-title" class="page-title home-page-title" tabindex="0">Olympic games app</h1>
-  <p class="home-intro">Explore and compare Olympic medals across countries</p>
+<section class="olympic-page olympic-page--home" aria-labelledby="home-page-title">
+  <h1 id="home-page-title" class="page-title olympic-page__title" tabindex="0">
+    Olympic games app
+  </h1>
+  <p class="olympic-page__intro">Explore and compare Olympic medals across countries</p>
   <app-page-feedback
     [state]="page"
     [showSkeleton]="false"
@@ -18,22 +20,22 @@
       title="Medals per Country"
       [indicators]="page.status === 'success' ? page.data.indicators : loadingIndicators"
     />
-    <figure class="chart-panel medals-card" aria-labelledby="medals-chart-title">
-      <header class="chart-card-heading">
-        <span class="chart-card-icon" aria-hidden="true"
-          ><svg viewBox="0 0 40 40">
+    <figure class="chart-card chart-card--medals" aria-labelledby="medals-chart-title">
+      <header class="chart-card__heading">
+        <span class="chart-card__icon" aria-hidden="true"
+          ><svg class="chart-card__icon-image" viewBox="0 0 40 40">
             <path fill="#38a8f2" d="M18 3a17 17 0 1 0 17 17H18Z" />
             <path fill="#83cbff" d="M21 2v15h15A16 16 0 0 0 21 2Z" />
             <path fill="none" stroke="white" stroke-width="1.5" d="m18 20 12 12" /></svg
         ></span>
         <div>
-          <h2 id="medals-chart-title">Medals per Country</h2>
-          <p>Distribution of medals won by country</p>
+          <h2 id="medals-chart-title" class="chart-card__title">Medals per Country</h2>
+          <p class="chart-card__description">Distribution of medals won by country</p>
         </div>
       </header>
       @if (page.status === 'success') {
         @let vm = page.data;
-        <div class="chart-card-body">
+        <div class="chart-card__body">
           @defer (on viewport; prefetch on idle) {
             <app-olympic-chart
               type="pie"
@@ -50,39 +52,64 @@
               Unable to load the chart. Please reload the page.
             </p>
           }
-          <div class="medals-breakdown">
-            <table>
+          <div class="medal-table">
+            <table class="medal-table__table">
               <caption class="visually-hidden">
                 Medal totals and share by country
               </caption>
-              <thead>
-                <tr>
-                  <th scope="col">Country</th>
-                  <th scope="col">Medals</th>
-                  <th scope="col">Percentage</th>
+              <thead class="medal-table__head">
+                <tr class="medal-table__row">
+                  <th
+                    class="medal-table__cell medal-table__cell--header medal-table__cell--country"
+                    scope="col"
+                  >
+                    Country
+                  </th>
+                  <th
+                    class="medal-table__cell medal-table__cell--header medal-table__cell--medals"
+                    scope="col"
+                  >
+                    Medals
+                  </th>
+                  <th
+                    class="medal-table__cell medal-table__cell--header medal-table__cell--percentage"
+                    scope="col"
+                  >
+                    Percentage
+                  </th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody class="medal-table__body">
                 @for (country of vm.rows; track country.id) {
-                  <tr [style.--medal-color]="country.color">
-                    <th scope="row">
+                  <tr class="medal-table__row" [style.--medal-color]="country.color">
+                    <th class="medal-table__cell medal-table__cell--country" scope="row">
                       <a
-                        class="country-link"
+                        class="medal-table__country-link"
                         [routerLink]="['/country', country.id]"
                         [attr.aria-describedby]="
                           'country-medals-' + country.id + ' country-percentage-' + country.id
                         "
-                        ><span class="country-dot" aria-hidden="true"></span>{{ country.name }}</a
+                        ><span class="medal-table__dot" aria-hidden="true"></span
+                        >{{ country.name }}</a
                       >
                     </th>
-                    <td [id]="'country-medals-' + country.id">
+                    <td
+                      class="medal-table__cell medal-table__cell--medals"
+                      [id]="'country-medals-' + country.id"
+                    >
                       {{ country.medals }}<span class="visually-hidden"> medals</span>
                     </td>
-                    <td [id]="'country-percentage-' + country.id">
-                      <span class="percentage-cell"
-                        ><span class="percentage-track" aria-hidden="true"
-                          ><span [style.width.%]="country.percentage"></span></span
-                        ><span
+                    <td
+                      class="medal-table__cell medal-table__cell--percentage"
+                      [id]="'country-percentage-' + country.id"
+                    >
+                      <span class="medal-table__percentage"
+                        ><span class="medal-table__track" aria-hidden="true"
+                          ><span
+                            class="medal-table__fill"
+                            [style.width.%]="country.percentage"
+                          ></span></span
+                        ><span class="medal-table__share"
                           >{{ country.percentage }}%<span class="visually-hidden">
                             of total</span
                           ></span
@@ -102,9 +129,9 @@
           }
         </figcaption>
       } @else {
-        <div class="chart-card-body">
+        <div class="chart-card__body">
           <div class="chart-placeholder" aria-hidden="true"></div>
-          <div class="breakdown-placeholder" aria-hidden="true"></div>
+          <div class="table-placeholder" aria-hidden="true"></div>
         </div>
       }
     </figure>

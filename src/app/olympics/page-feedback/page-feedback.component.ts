@@ -31,22 +31,23 @@ import type { PageFeedbackState } from '../page-state';
     </p>
     @if (state().status === 'loading' && showSkeleton()) {
       <div class="loading-skeleton" aria-hidden="true">
-        <div class="skeleton-title"></div>
-        <div class="skeleton-indicators">
+        <div class="loading-skeleton__title"></div>
+        <div class="loading-skeleton__indicators">
           @for (indicator of indicatorSlots(); track $index) {
-            <div class="skeleton-indicator"></div>
+            <div class="loading-skeleton__indicator"></div>
           }
         </div>
-        <div class="skeleton-chart"></div>
+        <div class="loading-skeleton__chart"></div>
       </div>
     }
   `,
   styleUrl: './page-feedback.component.scss',
   host: {
-    '[class.feedback-success]':
+    class: 'page-feedback',
+    '[class.page-feedback--quiet]':
       "state().status === 'success' || (state().status === 'loading' && !showSkeleton())",
   },
-  styles: ':host { display: block; } :host(.feedback-success) { position: absolute; }',
+  styles: ':host { display: block; } :host(.page-feedback--quiet) { position: absolute; }',
 })
 export class PageFeedbackComponent {
   /** Statut et message d’erreur éventuel, sans données métier. */

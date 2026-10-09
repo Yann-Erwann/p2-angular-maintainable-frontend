@@ -8,9 +8,7 @@ describe('HeaderComponent', () => {
   let page: HTMLElement;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [HeaderComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule({ imports: [HeaderComponent] }).compileComponents();
     fixture = TestBed.createComponent(HeaderComponent);
     page = fixture.nativeElement as HTMLElement;
   });
@@ -24,9 +22,14 @@ describe('HeaderComponent', () => {
     fixture.componentRef.setInput('indicators', indicators);
     fixture.detectChanges();
 
-    expect(page.querySelector('.center > h2')?.textContent?.trim()).toBe('Medals per Country');
+    expect(page.querySelector('.results-header__heading > h2')?.textContent?.trim()).toBe(
+      'Medals per Country',
+    );
     expect(
-      Array.from(page.querySelectorAll('.split dt, .split dd'), (item) => item.textContent?.trim()),
+      Array.from(
+        page.querySelectorAll('.results-header__indicators dt, .results-header__indicators dd'),
+        (item) => item.textContent?.trim(),
+      ),
     ).toEqual(['Number of countries', '5', 'Number of JOs', '0']);
   });
 
@@ -43,9 +46,12 @@ describe('HeaderComponent', () => {
     ]);
     fixture.detectChanges();
 
-    expect(page.querySelector('.center > h2')?.textContent?.trim()).toBe('Italy');
+    expect(page.querySelector('.results-header__heading > h2')?.textContent?.trim()).toBe('Italy');
     expect(
-      Array.from(page.querySelectorAll('.split dt, .split dd'), (item) => item.textContent?.trim()),
+      Array.from(
+        page.querySelectorAll('.results-header__indicators dt, .results-header__indicators dd'),
+        (item) => item.textContent?.trim(),
+      ),
     ).toEqual(['Number of entries', '3']);
   });
 
@@ -54,8 +60,10 @@ describe('HeaderComponent', () => {
     fixture.componentRef.setInput('indicators', []);
     fixture.detectChanges();
 
-    expect(page.querySelector('.center > h2')?.textContent?.trim()).toBe('Olympic games');
-    expect(page.querySelectorAll('.split > dl').length).toBe(0);
+    expect(page.querySelector('.results-header__heading > h2')?.textContent?.trim()).toBe(
+      'Olympic games',
+    );
+    expect(page.querySelectorAll('.results-header__indicators > dl').length).toBe(0);
   });
   it('should keep semantic icons and styles when indicators are reordered', () => {
     const indicators: readonly Indicator[] = [
@@ -68,12 +76,12 @@ describe('HeaderComponent', () => {
     fixture.componentRef.setInput('indicators', indicators);
     fixture.detectChanges();
     const medalCard = page.querySelector('[data-kind="medals"]')!;
-    const medalIcon = medalCard.querySelector('.indicator-icon')!;
+    const medalIcon = medalCard.querySelector('.results-header__icon')!;
     const medalColor = getComputedStyle(medalIcon).color;
     fixture.componentRef.setInput('indicators', [...indicators].reverse());
     fixture.detectChanges();
     expect(page.querySelector('[data-kind="medals"]')).toBe(medalCard);
-    expect(page.querySelector('[data-kind="medals"] .indicator-icon')).toBe(medalIcon);
+    expect(page.querySelector('[data-kind="medals"] .results-header__icon')).toBe(medalIcon);
     expect(getComputedStyle(medalIcon).color).toBe(medalColor);
     expect(
       Array.from(page.querySelectorAll('dl'), (item) => item.getAttribute('data-kind')),

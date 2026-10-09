@@ -3,6 +3,21 @@
 Ces conventions s'appliquent aux prochaines contributions. Elles ne demandent
 aucune réécriture de l'historique existant et n'imposent aucun hook Git.
 
+## Nommage des classes CSS
+
+Utiliser BEM : `bloc`, `bloc__element` et `bloc--variante` ou
+`bloc__element--variante`. Écrire les noms composés en kebab-case et conserver
+la classe de base lorsqu'un modificateur est ajouté.
+
+Exemples : `brand__banner`, `chart-card__title`, `chart-card--history`,
+`country-picker__select--long`. Chaque composant Angular porte sa classe de
+bloc sur son hôte quand ses éléments ou variantes en dépendent. Les classes
+utilitaires transversales, comme `visually-hidden`, restent indépendantes.
+
+Renommer ensemble les templates, les styles, les bindings Angular, le shell
+HTML initial et les sélecteurs des tests. Cibler les éléments par leur classe
+BEM plutôt que par leur balise ou leur position lorsque leur rôle est connu.
+
 ## Messages de commit
 
 Écrire le titre et le corps en anglais avec un titre de la forme :
@@ -13,17 +28,17 @@ type(scope): describe the resulting change
 
 Choisir le type selon la modification :
 
-| Type | Usage |
-| --- | --- |
-| `feat` | Nouvelle fonctionnalité. |
-| `fix` | Correction d'un défaut. |
-| `refactor` | Restructuration sans changement du comportement attendu. |
-| `perf` | Optimisation dont le bénéfice est mesuré. |
-| `test` | Rétablissement du socle de tests ou couverture transversale. |
-| `docs` | Documentation. |
-| `build` | Dépendances, migrations et configuration de build ou d'outillage. |
-| `style` | Modification de présentation du code sans effet fonctionnel. |
-| `chore` | Maintenance qui ne relève pas des types précédents. |
+| Type       | Usage                                                             |
+| ---------- | ----------------------------------------------------------------- |
+| `feat`     | Nouvelle fonctionnalité.                                          |
+| `fix`      | Correction d'un défaut.                                           |
+| `refactor` | Restructuration sans changement du comportement attendu.          |
+| `perf`     | Optimisation dont le bénéfice est mesuré.                         |
+| `test`     | Rétablissement du socle de tests ou couverture transversale.      |
+| `docs`     | Documentation.                                                    |
+| `build`    | Dépendances, migrations et configuration de build ou d'outillage. |
+| `style`    | Modification de présentation du code sans effet fonctionnel.      |
+| `chore`    | Maintenance qui ne relève pas des types précédents.               |
 
 Le scope désigne une responsabilité, pas le type de changement. Utiliser les
 scopes prévus pour le projet : `project`, `git`, `testing`, `migration/angular`,

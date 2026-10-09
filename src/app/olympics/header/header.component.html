@@ -1,28 +1,29 @@
-<header class="center">
-  <h2 [attr.tabindex]="variant() === 'country' ? null : 0">
+<header class="results-header__heading">
+  <h2 class="results-header__title" [attr.tabindex]="variant() === 'country' ? null : 0">
     @if (variant() === 'dashboard') {
-      <svg class="heading-icon" viewBox="0 0 24 24" aria-hidden="true">
+      <svg class="results-header__heading-icon" viewBox="0 0 24 24" aria-hidden="true">
         <path fill="currentColor" d="M3 13h4v8H3zm7-10h4v18h-4zm7 7h4v11h-4z" />
       </svg>
     }
     {{ title() }}
   </h2>
 </header>
-<div class="split">
+<div class="results-header__indicators">
   @for (indicator of indicators(); track indicator.kind) {
     <dl
+      class="results-header__indicator"
       [attr.data-kind]="indicator.kind"
       tabindex="0"
       [attr.aria-label]="indicator.label + ': ' + (loading() ? 'Loading' : indicator.value)"
     >
       @if (variant() !== 'standard') {
         <span
-          class="indicator-icon"
-          [class.editions-icon]="indicator.kind === 'editions'"
+          class="results-header__icon"
+          [class.results-header__icon--editions]="indicator.kind === 'editions'"
           aria-hidden="true"
         >
           @if (variant() === 'country') {
-            <svg viewBox="0 0 48 48" fill="currentColor">
+            <svg class="results-header__icon-image" viewBox="0 0 48 48" fill="currentColor">
               @switch (indicator.kind) {
                 @case ('entries') {
                   <circle cx="24" cy="14" r="7" />
@@ -49,20 +50,32 @@
               }
             </svg>
           } @else if (indicator.kind === 'countries') {
-            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3">
+            <svg
+              class="results-header__icon-image"
+              viewBox="0 0 48 48"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="3"
+            >
               <circle cx="24" cy="24" r="19" />
               <ellipse cx="24" cy="24" rx="9" ry="19" />
               <path d="M5 24h38M24 5v38" />
             </svg>
           } @else {
-            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3">
+            <svg
+              class="results-header__icon-image"
+              viewBox="0 0 48 48"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="3"
+            >
               <path fill="currentColor" stroke="none" d="M26 2c7 14-12 14-4 24-17-8-2-16 4-24Z" />
               <path d="M16 29c5 4 12 4 17 0M19 34l5 12 5-12M12 25c5 4 20 8 23 0" />
             </svg>
           }
         </span>
         <svg
-          class="indicator-decoration"
+          class="results-header__decoration"
           viewBox="0 0 160 80"
           aria-hidden="true"
           fill="none"
@@ -109,8 +122,10 @@
           }
         </svg>
       }
-      <dt>{{ indicator.label }}</dt>
-      <dd>{{ loading() ? '—' : indicator.value }}</dd>
+      <dt class="results-header__label">{{ indicator.label }}</dt>
+      <dd class="results-header__value">
+        {{ loading() ? '—' : indicator.value }}
+      </dd>
     </dl>
   }
 </div>

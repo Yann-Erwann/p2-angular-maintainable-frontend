@@ -9,8 +9,9 @@ import type { Indicator } from './indicator.model';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
   host: {
-    '[class.dashboard]': "variant() !== 'standard'",
-    '[class.country-indicators]': "variant() === 'country'",
+    class: 'results-header',
+    '[class.results-header--dashboard]': "variant() !== 'standard'",
+    '[class.results-header--country]': "variant() === 'country'",
   },
 })
 export class HeaderComponent {

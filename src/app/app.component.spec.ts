@@ -82,7 +82,7 @@ describe('Accessible application navigation', () => {
     expect(document.activeElement).toBe(page.querySelector('h1'));
     expect(document.title).toBe('Page not found | Olympic Games');
 
-    const homeLink = page.querySelector<HTMLAnchorElement>('.brand-link');
+    const homeLink = page.querySelector<HTMLAnchorElement>('.brand__link');
     expect(homeLink?.getAttribute('href')).toBe(
       TestBed.inject(LocationStrategy).prepareExternalUrl('/'),
     );
@@ -96,7 +96,7 @@ describe('Accessible application navigation', () => {
     expect(router.url).toBe('/');
     fixture.detectChanges();
     expect(fixture.componentInstance.homeLayout()).toBeTrue();
-    expect(page.querySelector('.brand-banner')?.getAttribute('src')).toBe(
+    expect(page.querySelector('.brand__banner')?.getAttribute('src')).toBe(
       'assets/images/teleSport-home.webp',
     );
     await router.navigateByUrl('/country/2');
@@ -104,7 +104,7 @@ describe('Accessible application navigation', () => {
     await fixture.whenStable();
     expect(fixture.componentInstance.homeLayout()).toBeFalse();
     expect(fixture.componentInstance.countryLayout()).toBeTrue();
-    expect(page.querySelector('.brand-banner')?.getAttribute('src')).toBe(
+    expect(page.querySelector('.brand__banner')?.getAttribute('src')).toBe(
       'assets/images/teleSport-home.webp',
     );
     http.verify();

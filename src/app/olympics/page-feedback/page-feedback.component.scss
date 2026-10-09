@@ -3,35 +3,35 @@
   gap: 1rem;
 }
 
-.skeleton-title,
-.skeleton-indicator,
-.skeleton-chart {
+.loading-skeleton__title,
+.loading-skeleton__indicator,
+.loading-skeleton__chart {
   background: #dbe5e8;
   border-radius: 0.75rem;
 }
 
-.skeleton-title {
+.loading-skeleton__title {
   width: min(100%, 16rem);
   height: 3rem;
   justify-self: center;
 }
 
-.skeleton-indicators {
+.loading-skeleton__indicators {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
   gap: 1rem;
 }
 
-.skeleton-indicator {
+.loading-skeleton__indicator {
   height: 6rem;
 }
 
-.skeleton-chart {
+.loading-skeleton__chart {
   height: clamp(18rem, 45vw, 28rem);
 }
 
 @media (max-width: 767px) {
-  .skeleton-indicators {
+  .loading-skeleton__indicators {
     grid-template-columns: minmax(0, 1fr);
   }
 }
