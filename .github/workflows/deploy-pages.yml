@@ -48,7 +48,7 @@ jobs:
         env:
           RELEASE_REVISION: ${{ github.sha }}
         run: node .github/scripts/prepare-release.mjs
-      - name: Playwright browser tests and Lighthouse 100
+      - name: Playwright browser tests and Lighthouse 80
         run: pnpm run test:e2e
       - name: Upload validated site
         if: success() && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'

@@ -15,7 +15,7 @@ const categories = ['performance', 'accessibility', 'best-practices', 'seo'] as 
 for (const route of routes) {
   for (const profile of ['mobile', 'desktop'] as const) {
     for (let run = 1; run <= 3; run++) {
-      test(`${route.name} ${profile} run ${run}: Lighthouse 100`, async ({
+      test(`${route.name} ${profile} run ${run}: Lighthouse 80`, async ({
         baseURL,
         request,
       }, testInfo) => {
