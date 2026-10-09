@@ -59,11 +59,7 @@ export function createMedalDistributionConfig(
           displayColors: false,
           titleColor: '#0c204b',
           bodyColor: '#64759b',
-          titleFont: {
-            family: 'system-ui, sans-serif',
-            size: 16,
-            weight: 'bold',
-          },
+          titleFont: { family: 'system-ui, sans-serif', size: 16, weight: 'bold' },
           bodyFont: { family: 'system-ui, sans-serif', size: 16 },
           titleMarginBottom: 6,
           callbacks: {
@@ -106,7 +102,7 @@ export function createMedalHistoryConfig(items: readonly ChartItem[]): MedalConf
   const maximum = values.length ? Math.ceil(Math.max(...values) / 5) * 5 + 5 : 5;
   return {
     type: 'line',
-    plugins: [accessibleBackground, countryPointLabels(items)],
+    plugins: [accessibleBackground, countryPointLabels(items), dashboardTooltipMedal],
     data: {
       labels: items.map((item) => item.label),
       datasets: [
@@ -140,7 +136,26 @@ export function createMedalHistoryConfig(items: readonly ChartItem[]): MedalConf
       maintainAspectRatio: false,
       plugins: {
         legend: { display: false },
-        tooltip: { displayColors: false },
+        tooltip: {
+          backgroundColor: '#ffffff',
+          borderColor: '#dceaf2',
+          borderWidth: 1,
+          cornerRadius: 12,
+          padding: 16,
+          caretSize: 8,
+          caretPadding: 6,
+          displayColors: false,
+          titleColor: '#0c204b',
+          bodyColor: '#008798',
+          titleFont: { family: 'system-ui, sans-serif', size: 16, weight: 'bold' },
+          bodyFont: { family: 'system-ui, sans-serif', size: 16, weight: 'bold' },
+          titleMarginBottom: 8,
+          callbacks: {
+            title: (points) =>
+              points.length ? `\u2003\u2003\u2003\u2003Year ${points[0].label}` : '',
+            label: (context) => `\u2003\u2003\u2003\u2003${items[context.dataIndex].value} medals`,
+          },
+        },
       },
       layout: {
         padding: (context) => ({
