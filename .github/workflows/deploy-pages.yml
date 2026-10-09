@@ -1,51 +1,98 @@
-name: Deploy Angular to GitHub Pages
+name: Validate and deploy Angular
 
 on:
+  pull_request:
   push:
     branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: github-pages
+  group: angular-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  validate:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 24
-
       - name: Install pnpm
         run: npm install --global pnpm@12.10.1
-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
-
-      - name: Build Angular
-        run: pnpm build --configuration production --base-href /p2-angular-maintainable-frontend/
-
-      - name: Upload site
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Check formatting
+        run: pnpm run format:check
+      - name: Lint
+        run: pnpm run lint
+      - name: Typecheck
+        run: pnpm run typecheck
+      - name: Unit tests
+        run: pnpm test --watch=false
+        env:
+          CHROME_BIN: /usr/bin/google-chrome
+      - name: Generate documentation
+        run: pnpm run docs
+      - name: Check documentation coverage
+        run: pnpm run docs:check
+      - name: Build production artifact
+        run: pnpm run build:e2e
+      - name: Browser tests
+        run: pnpm run test:e2e
+      - name: Upload validated site
+        if: success() && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v4
         with:
           path: dist/olympic-games-starter/browser
+      - name: Upload validation reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: validation-reports
+          path: |
+            playwright-report/
+            test-results/
+            documentation/
+          retention-days: 14
 
-      - name: Deploy
+  deploy:
+    needs: validate
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+      contents: read
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Deploy validated artifact
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Checkout smoke check
+        uses: actions/checkout@v6
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Install pnpm for browser smoke check
+        run: npm install --global pnpm@12.10.1
+      - name: Install verification dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Install verification browser
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Verify deployed pages and data
+        run: node scripts/smoke-deployment.mjs "$DEPLOYMENT_URL"
+        env:
+          DEPLOYMENT_URL: ${{ steps.deployment.outputs.page_url }}
