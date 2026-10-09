@@ -1,5 +1,165 @@
 # Réduction du bundle Chart.js
 
+## Parcours Chart.js avec Tab — version actuelle
+
+Tab / Maj+Tab sélectionnent successivement les pays ou années dans le canvas.
+Le surlignage, l'infobulle et l'annonce changent sans recréer le graphique.
+Aux limites, le navigateur reprend son parcours normal. Aucun bouton ajouté ;
+le chargement différé et la hauteur réservée sont conservés.
+Build, lint et 167 tests passent. Le navigateur vérifie le parcours complet
+des cinq pays dans les deux sens, les sorties, Entrée vers le pays et ses années.
+Les scores Lighthouse suivants concernent les validations précédentes.
+
+## Navigation directe au clavier — validation précédente
+
+Le canvas permet de parcourir les pays ou les années. La sélection active Chart.js et son infobulle changent sans
+recréer le graphique. Le chargement différé est conservé ; la navigation
+clavier fait partie du module graphique. En cas d'échec de ce module, les indicateurs,
+la description complète et le message d'erreur restent disponibles.
+Le lien d'évitement est supprimé et le parcours Tab inclut les titres et
+indicateurs. La hauteur réservée du graphique est conservée.
+
+Build, lint et 164 tests passent. Le navigateur confirme le parcours Tab /
+Maj+Tab, les flèches, l'ouverture du pays avec Entrée et la sortie du graphique.
+
+Lighthouse sur l’accueil et les pays 1 et 3, mobile et desktop :
+accessibilité, bonnes pratiques et SEO à 100. Performance : 98–99 sur
+mobile et 100 sur desktop. Rapports locaux :
+[doc/lighthouse-keyboard-2026-10-09/README.md](doc/lighthouse-keyboard-2026-10-09/README.md).
+
+## Graphiques sans tableaux — validation précédente
+
+Les tableaux de l'accueil et du détail pays sont retirés, ainsi que leurs
+styles et imports inutilisés. Les graphiques occupent désormais la largeur
+disponible, centrés jusqu'à 64 rem. Les données restent décrites pour les
+lecteurs d'écran via `aria-describedby` ; la sélection des pays au clavier
+apparaît au focus dans le graphique et reste disponible avant son chargement
+ou en cas d'échec du module. Les messages d'erreur ne mentionnent plus de tableau.
+
+Build, lint et 160 tests passent. Parcours des 11 écrans : aucun tableau,
+aucune erreur JavaScript ni débordement horizontal, graphiques fonctionnels
+sur les six pages valides. Navigation par les commandes clavier vérifiée.
+Six audits Lighthouse ciblés sur l'accueil, `/country/1` et `/country/3`,
+avec les URL à fragment : desktop 100 dans les quatre catégories ; mobile
+performance 98–99, autres catégories à 100. Aucun avertissement Lighthouse.
+Rapports, captures et mesures réseau : `doc/lighthouse-no-tables-2026-10-09/`.
+Les validations suivantes décrivent les versions précédentes.
+
+## Bannière TéléSport optimisée — version actuelle
+
+La bannière est placée dans l'en-tête commun et renvoie à l'accueil ; les
+liens « Go back » sont supprimés sur toutes les pages. Le PNG de 171 780 octets
+reste dans les sources. Seuls les WebP optimisés de 10 484 octets (874 × 251)
+et 4 968 octets (438 × 126) sont copiés dans le build. `srcset` et `sizes`
+adaptent l'image au viewport et à sa densité. Les dimensions réservées,
+`aspect-ratio: 874 / 251` et le même en-tête dans le HTML initial évitent
+un déplacement lors du démarrage d'Angular.
+
+À 412 × 823 px, le graphique de l'accueil reste entièrement visible : son
+bas se trouve à 797,734 px. Contrôle à froid des 11 écrans avec les URL à
+fragment de la configuration actuelle (`/#/country/1`, etc.) : bannière
+chargée partout, navigation vers l'accueil par son lien confirmée, aucun
+Go back, aucune erreur JavaScript ni débordement horizontal. Le chargement
+à la demande du JSON, des routes et de Chart.js est conservé.
+
+Build, lint et 160 tests passent. Les 22 audits Lighthouse donnent 100 dans
+les quatre catégories sur desktop ; sur mobile, performance de 98 à 100 et
+autres catégories à 100 partout. CLS maximal : 0,00566 sur mobile et 0,00402
+sur desktop. Aucun avertissement d'exécution. Les rapports HTML/JSON, mesures
+réseau et captures sont dans `doc/lighthouse-telesport-2026-10-09/`.
+Les sections suivantes documentent les validations précédentes.
+
+## Optimisation finale du chargement — 9 octobre 2026
+
+Le build utilise Angular CLI directement. Minification JS/CSS, tree-shaking
+et AOT sont explicitement activés en production. Le script injectant un lien
+`modulepreload` pour chaque chunk a été retiré, ainsi que `PreloadAllModules`
+et le préchargement HTML du JSON. Angular conserve ses liens pour les imports
+initiaux ; la page pays se charge à la navigation.
+
+Les blocs graphiques sont créés uniquement après une réponse valide et
+utilisent `@defer (on viewport; prefetch on idle)`. Les pages d'erreur ne
+demandent plus Chart.js. Les URL inconnues et les identifiants invalides ne
+demandent plus le JSON. Les placeholders préservent la hauteur du graphique.
+Le build copie seulement `robots.txt` et `olympic.json` : l'image de
+démonstration et la copie externe du favicon intégré ne sont plus publiées,
+soit 172 728 octets d'assets en moins. Les fichiers source sont conservés.
+
+Validation : build, lint et 160 tests réussis ; parcours Chromium des 11 URL
+sans erreur JavaScript ni débordement horizontal. Les six pages valides
+affichent leur graphique et leur tableau. Avec la réponse JSON suspendue sur
+l'accueil et `/country/1`, aucun module graphique n'est demandé avant reprise.
+Le serveur local livre les JS/CSS en Brotli (`Content-Encoding: br`) avec le
+cache immutable prévu pour les fichiers hashés.
+
+Les 22 audits Lighthouse donnent 100 dans les quatre catégories sur desktop.
+Sur mobile : performance de 99 à 100, autres catégories à 100 partout.
+CLS maximal : 0,01415 sur mobile et 0,00393 sur desktop. Sur `/unknown` mobile,
+le transfert JS mesuré passe de 154 619 à 88 757 octets (−42,6 %) ; sur les
+identifiants invalides/inconnus, de 154 619 à 91 259 octets (−41,0 %).
+Sur l'accueil, il passe de 154 619 à 151 767 octets : le chunk pays n'est plus
+demandé, mais Chart.js reste nécessaire au graphique visible. Les mesures
+incluent les en-têtes HTTP et varient avec les conditions d'exécution.
+
+Rapports et vérification réseau : `doc/lighthouse-optimized-2026-10-09/`.
+Les sections suivantes documentent les validations antérieures.
+
+## Stabilisation des pages pays — 9 octobre 2026
+
+Le document réserve la largeur de la barre de défilement avec
+`scrollbar-gutter: stable`. Son apparition pendant le chargement puis sa
+disparition ne décalent plus horizontalement l'application centrée. Le lien
+« Go back » des pages pays est placé sous le titre, avant le contenu
+asynchrone, pour éviter son déplacement lorsque le pays est introuvable.
+L'espacement de 8 px sous la ligne de l'accueil est conservé.
+
+Validation : build de production, lint et 160 tests réussis. Les 22 audits
+Lighthouse 13.5.0 couvrent l'accueil, les cinq pays, `/country/invalid`,
+`/country/999`, `/country`, `/not-found` et `/unknown`, sur mobile et desktop,
+cache réinitialisé et audits successifs. Desktop : 100 dans les quatre
+catégories sur les 11 URL. Mobile : performance de 98 à 100, accessibilité,
+bonnes pratiques et SEO à 100 partout. CLS maximal : 0,01415 sur mobile et
+0,00393 sur desktop. Sur `/country/999` desktop, performance 81 → 100 et
+CLS 0,40170 → 0,00024 ; sur `/country/3`, CLS 0,10350 → 0,00392.
+Les scores décrivent ces mesures locales et peuvent varier.
+
+Les rapports HTML/JSON sont conservés dans
+`doc/lighthouse-all-pages-corrected-2026-10-09/` (dossier `doc` ignoré par Git).
+
+## Préchargement exhaustif des chunks (historique, avant optimisation)
+
+Cette stratégie a été remplacée par le chargement Angular natif : les
+paragraphes suivants conservent la validation de la version précédente.
+
+`pnpm run build` exécute Angular CLI puis insère dans le `<head>` un lien
+`modulepreload` pour chacun des fichiers JavaScript émis dans `browser/`.
+Les noms sont lus après le build : les chunks du routeur, du graphique et les
+chunks partagés sont tous couverts, sans liste de hashes maintenue à la main.
+Les liens partiels générés par Angular sont remplacés pour éviter les doublons.
+Le téléchargement ne dépend plus du premier rendu d’`AppComponent` et
+n’exécute pas les modules différés. Le build échoue si son HTML ou ses modules
+ne sont pas disponibles. Un appel direct à `ng build` contourne cette étape.
+
+Validation du 9 octobre 2026 : le build de production émet cinq modules
+JavaScript, tous déclarés une seule fois dans le `<head>`. Chromium 154,
+cache vidé avant chaque navigation, télécharge les cinq modules sur `/`,
+`/country/1`, `/country/invalid`, `/unknown`, `/not-found` et `/country`.
+La réponse JSON est suspendue pendant le contrôle : tous les modules répondent
+avec le statut 200 avant les données, sans canvas prématuré. Après reprise,
+les deux pages valides affichent leur graphique ; les pages d’erreur n’en
+créent aucun. Aucune erreur JavaScript ni requête de module en double.
+Lint, compilation TypeScript des specs et 159 tests passent.
+
+Le favicon de 948 octets est désormais intégré en base64 dans `rel="icon"`
+dans `src/index.html` ; le lien de préchargement externe est supprimé.
+Validation dans Chromium 154 sur `/`, `/country/1` et `/unknown`, cache vidé :
+icône décodable (28 × 30 pixels), aucune requête HTTP pour le favicon et aucun
+avertissement de préchargement inutilisé. Le contenu décodé dans le HTML source
+et le HTML de production est identique à `src/favicon.ico`. Build et lint passent.
+
+Les mesures Lighthouse ci-dessous précèdent ce préchargement exhaustif et
+ne constituent pas une mesure de cette nouvelle version.
+
 ## Chargement Angular natif et mesures Lighthouse
 
 Le 9 octobre 2026, la solution finale utilise Angular CLI directement, une

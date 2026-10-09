@@ -1,5 +1,76 @@
 # Contrôles d'accessibilité et limites
 
+## Structure sémantique — version actuelle
+
+La bannière contient la navigation principale nommée. Un unique `main`
+contient la page active. Les pages accueil, pays et introuvable utilisent
+une `section` nommée par leur `h1`. Les titres de section sont dans un `header`
+local, les statistiques restent des listes de définitions `dl` / `dt` / `dd`,
+et les graphiques utilisent `figure` et `figcaption`.
+Le titre pays est « Olympic results » ; le nom du pays reste le `h2`.
+Ces changements conservent le parcours Tab dans les graphiques.
+Build, lint et 167 tests passent. Deux audits Lighthouse (accueil et pays 1,
+mobile) donnent 100 en accessibilité, bonnes pratiques et SEO.
+[Rapports locaux](doc/lighthouse-semantics-2026-10-09/README.md).
+
+## Parcours des points avec Tab — version actuelle
+
+Tab et Maj+Tab parcourent les points directement dans Chart.js, sans bouton
+supplémentaire. Le canvas garde le focus pendant ce parcours ; chaque étape
+change le point actif, son infobulle et la région de statut. Tab au dernier
+point sort du graphique et Maj+Tab au premier revient à l'indicateur précédent.
+En revenant dans le graphique avec Maj+Tab, le dernier point est sélectionné.
+Entrée ou Espace ouvre le pays sélectionné. Les flèches restent facultatives.
+
+Build, lint et 167 tests passent. Le navigateur vérifie les cinq pays dans
+les deux sens avec Tab / Maj+Tab, la sortie aux extrémités, le retour,
+l'ouverture du pays avec Entrée et ses trois années avec Tab.
+Cette vérification ne remplace pas l'écoute avec un lecteur d'écran ;
+les scores Lighthouse ci-dessous proviennent de la version précédente.
+
+## Alternatives du canvas — 9 octobre 2026
+
+Le canvas garde `role="img"`, son nom accessible et la description complète
+reliée par `aria-describedby`. Un texte de remplacement interne contient
+chaque pays ou année avec le nombre de médailles. Les instructions mentionnent
+Entrée et Espace ; les flèches et la région de statut restent disponibles.
+Aucun bouton ni tableau n’est ajouté.
+
+Un plugin local peint un fond blanc opaque à chaque dessin du canvas,
+y compris après surlignage ou redimensionnement. Le texte utilise #23343b.
+Cette correction suit la [documentation Chart.js sur le fond du canvas](https://www.chartjs.org/docs/latest/configuration/canvas-background.html).
+Build, lint et 166 tests passent. Un test lit réellement le pixel de fond
+après dessin, changement de sélection et redimensionnement. Le parcours
+clavier réel reste vérifié. Les deux audits Lighthouse (accueil et pays 1,
+mobile) donnent 100 en accessibilité, bonnes pratiques et SEO ; performance
+99 et 98. [Rapports locaux](doc/lighthouse-canvas-2026-10-09/README.md).
+Windows High Contrast et l'écoute avec un lecteur
+d'écran restent à contrôler dans ces environnements.
+
+## Navigation clavier — 9 octobre 2026
+
+Le lien « Skip to main content » est retiré à la demande du projet.
+Tab / Maj+Tab parcourent la bannière, le h1, le h2, chaque indicateur et
+le canvas. Dans le canvas, les flèches parcourent
+les pays ou années ; Home / End sélectionnent le premier ou dernier élément.
+La sélection active et son infobulle sont rendues par Chart.js ; son libellé
+et son nombre de médailles sont annoncés dans une région de statut.
+Entrée / Espace ouvrent le pays sélectionné sur l'accueil.
+Aucun bouton supplémentaire n’est ajouté.
+Tab sort normalement du graphique. Après changement de page, le h1 reçoit
+le focus. Les descriptions complètes restent reliées au canvas.
+
+Build, lint et 164 tests passent, dont le surlignage réel Chart.js et son
+infobulle sur les deux types de graphiques. Le parcours navigateur vérifie
+l'ordre de Tab, Maj+Tab, les flèches, Entrée vers un pays et la sortie du
+graphique de détail. L'écoute avec un lecteur d'écran reste à réaliser.
+Lighthouse sur l’accueil et les pays 1 et 3, mobile et desktop :
+accessibilité, bonnes pratiques et SEO à 100. Performance : 98–99 sur
+mobile et 100 sur desktop. Rapports locaux :
+[doc/lighthouse-keyboard-2026-10-09/README.md](doc/lighthouse-keyboard-2026-10-09/README.md).
+
+Les constats ci-dessous décrivent l'ancienne révision du 8 octobre.
+
 Audit partiel du 8 octobre 2026 sur la révision applicative `2b7b3d3`, après
 la structure accessible `ca8e704`. Référentiel :
 [RGAA 4.1.2, critères et tests officiels](https://accessibilite.numerique.gouv.fr/methode/criteres-et-tests/),
