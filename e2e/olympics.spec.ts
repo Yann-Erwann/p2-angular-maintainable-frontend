@@ -1,5 +1,27 @@
 import { expect, test } from '@playwright/test';
 
+test('legacy hash URLs become clean paths without losing the selected country', async ({
+  page,
+}) => {
+  for (const [route, title] of [
+    ['#/', 'Medals by country | Olympic Games'],
+    ['#/country/5?view=table', 'France | Olympic Games'],
+    ['#', 'Medals by country | Olympic Games'],
+  ]) {
+    await page.goto(route);
+    await expect(page).toHaveTitle(title);
+    await expect(page.locator('canvas')).toBeVisible();
+    expect(new URL(page.url()).hash).toBe('');
+    expect(page.url()).not.toContain('#');
+    if (route.includes('country/5')) {
+      await expect(page).toHaveURL(/\/country\/5\?view=table$/);
+    }
+    await page.reload();
+    await expect(page).toHaveTitle(title);
+    await expect(page.locator('canvas')).toBeVisible();
+  }
+});
+
 test('home → France → Italy → history → home reuses the JSON response', async ({ page }) => {
   let requests = 0;
   page.on('request', (request) => {

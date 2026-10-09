@@ -62,8 +62,11 @@ renvoie actuellement `max-age=600` (dix minutes), indépendamment de `serve.json
 `build:analyze` ajoute les source maps et `stats.json` pour examiner les bundles.
 Relancer `pnpm run build` pour retrouver un build sans source maps.
 
-Le routage utilise des URL sans `#`. Pour GitHub Pages, le workflow génère une
-entrée HTML par pays et un repli `404.html`, avec le même chemin de base que
+Le routage utilise des URL sans `#`.
+Les anciennes adresses `/#/country/:id` sont converties vers `/country/:id`
+avant le démarrage ou lors de leur ouverture dans l’application déjà chargée.
+Pour GitHub Pages, le workflow génère une entrée HTML par pays et un repli
+`404.html`, avec le même chemin de base que
 l’application. Un autre serveur doit renvoyer `index.html` pour les routes Angular.
 
 ## Pages et clavier
