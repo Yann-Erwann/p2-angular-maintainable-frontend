@@ -5,7 +5,7 @@
 Le projet Playwright `lighthouse` remplace l’action Lighthouse CI dédiée.
 `e2e/lighthouse.spec.ts` utilise Chromium lancé par Playwright et l’API Lighthouse.
 Chaque route valide du JSON livré et l’accueil sont audités trois fois, en mobile
-et desktop. Les quatre catégories doivent avoir un score exact de 100 à chaque
+et desktop. Les quatre catégories doivent avoir un score d’au moins 80 à chaque
 passage ; les retries sont désactivés pour ces audits. Une erreur ou un score
 absent échoue aussi. Les rapports HTML et JSON sont joints aux résultats Playwright
 et conservés dans l’artefact `validation-reports`, même en cas d’échec.

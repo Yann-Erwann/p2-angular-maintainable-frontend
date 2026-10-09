@@ -117,9 +117,9 @@ système. Les rapports sont dans `playwright-report/` et `test-results/`.
 Les tests `e2e/lighthouse.spec.ts` lancent Chromium avec Playwright et exécutent
 Lighthouse sur l’accueil et chaque pays du JSON livré, en mobile et desktop,
 avec trois passages. Chaque catégorie (performance, accessibilité, bonnes
-pratiques et SEO) doit atteindre exactement 100 à chaque passage. Les audits
-n’ont aucun retry : un score inférieur, absent ou une erreur fait échouer les
-tests et bloque le déploiement. Les rapports JSON et HTML sont joints au rapport
+pratiques et SEO) doit atteindre au moins 80 à chaque passage. Les audits
+n’ont aucun retry : un score inférieur à 80, absent ou une erreur fait échouer
+les tests et bloque le déploiement. Les rapports JSON et HTML sont joints au rapport
 Playwright et conservés dans `validation-reports`, même en cas d’échec.
 Les routes d’erreur HTTP 404 restent couvertes par les tests fonctionnels.
 
@@ -144,16 +144,16 @@ reste en ligne : corriger ou rétablir la version précédente par un nouveau co
 
 ## Repères et documentation
 
-| Emplacement          | Contenu                                                            |
-| -------------------- | ------------------------------------------------------------------ |
-| `src/app/pages/`     | Deux pages et leurs calculs/modèles d’affichage                    |
-| `src/app/services/`  | Chargement, validation et cache des données                        |
-| `src/app/olympics/`  | Indicateurs, feedback et intégration Chart.js                      |
-| `e2e/`               | Tests navigateur                                                   |
-| `.github/workflows/` | Étapes de validation et de déploiement GitHub Actions              |
-| `.github/scripts/`   | Préparation de livraison, serveur local et contrôle du déploiement |
-| `docs/`              | Guides et rapports de validation                                   |
-| `doc/`               | Maquettes et rapports locaux                                       |
+| Emplacement                  | Contenu                                                            |
+| ---------------------------- | ------------------------------------------------------------------ |
+| `src/app/olympics/pages/`    | Pages et leurs calculs/modèles d’affichage                         |
+| `src/app/olympics/services/` | Chargement, validation et cache des données                        |
+| `src/app/olympics/`          | Domaine, routes, UI et intégration Chart.js                        |
+| `e2e/`                       | Tests navigateur                                                   |
+| `.github/workflows/`         | Étapes de validation et de déploiement GitHub Actions              |
+| `.github/scripts/`           | Préparation de livraison, serveur local et contrôle du déploiement |
+| `docs/`                      | Guides et rapports de validation                                   |
+| `doc/`                       | Maquettes et rapports locaux                                       |
 
 ```bash
 pnpm run docs

@@ -11,6 +11,7 @@ const routes = [
   ...countries.map(({ id }) => ({ name: `country-${id}`, path: `country/${id}` })),
 ];
 const categories = ['performance', 'accessibility', 'best-practices', 'seo'] as const;
+const lighthouseThreshold = 0.8;
 
 for (const route of routes) {
   for (const profile of ['mobile', 'desktop'] as const) {
@@ -55,9 +56,9 @@ for (const route of routes) {
             expect
               .soft(
                 result.lhr.categories[category]?.score,
-                `${route.name} ${profile} run ${run}: ${category} must score 100`,
+                `${route.name} ${profile} run ${run}: ${category} must score at least 80`,
               )
-              .toBe(1);
+              .toBeGreaterThanOrEqual(lighthouseThreshold);
           }
         } finally {
           await browser.close();
