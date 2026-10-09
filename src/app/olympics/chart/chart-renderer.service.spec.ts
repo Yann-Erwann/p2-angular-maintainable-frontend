@@ -69,6 +69,19 @@ describe('ChartRenderer', () => {
     });
   }
 
+  it('should draw a medal beside the complete dashboard tooltip', () => {
+    rendered = TestBed.inject(ChartRenderer).create(canvas, {
+      type: 'pie', labels: ['France', 'Italy'], values: [10, 30], dashboard: true,
+    }, () => undefined);
+    const chart = Chart.getChart(canvas)!;
+    chart.resize(650, 400);
+    const arc = spyOn(chart.ctx, 'arc').and.callThrough();
+    rendered.focusPoint(0);
+    expect(chart.tooltip?.title[0].trim()).toBe('France');
+    expect(chart.tooltip?.body[0].lines.map(line => line.trim())).toEqual(['10 medals', '25% of total']);
+    expect(arc.calls.allArgs().some(args => args[0] === 11 && args[1] === 13 && args[2] === 7)).toBeTrue();
+  });
+
   it('should paint an opaque white canvas background after every redraw', () => {
     rendered = TestBed.inject(ChartRenderer).create(canvas, { type: 'pie', labels: ['France'], values: [10] }, () => undefined);
     const chart = Chart.getChart(canvas)!;

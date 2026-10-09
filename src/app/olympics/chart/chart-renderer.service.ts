@@ -13,6 +13,30 @@ const accessibleBackground: Plugin = {
   },
 };
 
+const dashboardTooltipMedal: Plugin = {
+  id: 'dashboardTooltipMedal',
+  afterTooltipDraw: ({ ctx }, { tooltip }) => {
+    if (!tooltip.opacity || !tooltip.title.length) return;
+    ctx.save();
+    const medalSize = Math.min(48, tooltip.height - 32);
+    ctx.translate(tooltip.x + 16, tooltip.y + (tooltip.height - medalSize) / 2);
+    ctx.scale(medalSize / 22, medalSize / 22);
+    ctx.fillStyle = '#4677cf';
+    ctx.beginPath();
+    ctx.moveTo(1, 0); ctx.lineTo(7, 0); ctx.lineTo(13, 10); ctx.lineTo(7, 10);
+    ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#8a2d54';
+    ctx.beginPath();
+    ctx.moveTo(15, 0); ctx.lineTo(21, 0); ctx.lineTo(15, 10); ctx.lineTo(9, 10);
+    ctx.closePath(); ctx.fill();
+    ctx.beginPath(); ctx.arc(11, 13, 7, 0, Math.PI * 2);
+    ctx.fillStyle = '#efb936'; ctx.fill();
+    ctx.strokeStyle = '#b77900'; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.beginPath(); ctx.arc(11, 13, 4, 0, Math.PI * 2); ctx.stroke();
+    ctx.restore();
+  },
+};
+
 const dashboardLabels = (data: OlympicChartData): Plugin => ({
   id: 'dashboardMedalLabels',
   afterDatasetsDraw: (chart) => {
@@ -73,7 +97,7 @@ export class ChartRenderer {
     const dashboard = data.type === 'pie' && data.dashboard;
     const chart = new Chart(canvas, {
       type: data.type,
-      plugins: dashboard ? [accessibleBackground, dashboardLabels(data)] : [accessibleBackground],
+      plugins: dashboard ? [accessibleBackground, dashboardLabels(data), dashboardTooltipMedal] : [accessibleBackground],
       data: {
         labels: [...data.labels],
         datasets: [{
@@ -101,6 +125,30 @@ export class ChartRenderer {
         ...(dashboard ? {
           plugins: {
             legend: { display: false },
+            tooltip: {
+              backgroundColor: '#ffffff',
+              borderColor: '#e4e8ef',
+              borderWidth: 1,
+              cornerRadius: 12,
+              padding: 16,
+              caretSize: 8,
+              caretPadding: 6,
+              displayColors: false,
+              titleColor: '#0c204b',
+              bodyColor: '#64759b',
+              titleFont: { family: 'system-ui, sans-serif', size: 16, weight: 'bold' },
+              bodyFont: { family: 'system-ui, sans-serif', size: 16 },
+              titleMarginBottom: 6,
+              callbacks: {
+                title: (items) => items.length ? `\u2003\u2003\u2003\u2003${items[0].label}` : '',
+                label: (context) => {
+                  const medals = data.values[context.dataIndex];
+                  const total = data.values.reduce((sum, value) => sum + value, 0);
+                  const percentage = total ? Math.round(medals / total * 1000) / 10 : 0;
+                  return [`\u2003\u2003\u2003\u2003${medals} medals`, `\u2003\u2003\u2003\u2003${percentage}% of total`];
+                },
+              },
+            },
           },
           layout: { padding: (context) => context.chart.width >= 520
             ? { left: 145, right: 90, top: 15, bottom: 15 }
