@@ -108,4 +108,8 @@ module.exports = defineConfig([
       '@angular-eslint/template/eqeqeq': 'error',
     },
   },
+  {
+    files: ['playwright.config.ts', 'e2e/**/*.ts'],
+    languageOptions: { parserOptions: { projectService: false, project: './tsconfig.e2e.json' } },
+  },
 ]);
