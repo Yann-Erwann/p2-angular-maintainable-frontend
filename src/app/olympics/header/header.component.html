@@ -1,11 +1,11 @@
-<div class="center">
-  <h2>{{ title() }}</h2>
-</div>
-<dl class="split">
+<header class="center">
+  <h2 tabindex="0">{{ title() }}</h2>
+</header>
+<div class="split">
   @for (indicator of indicators(); track $index) {
-    <div>
+    <dl tabindex="0" [attr.aria-label]="indicator.label + ': ' + (loading() ? 'Loading' : indicator.value)">
       <dt>{{ indicator.label }}</dt>
       <dd>{{ loading() ? '—' : indicator.value }}</dd>
-    </div>
+    </dl>
   }
-</dl>
+</div>

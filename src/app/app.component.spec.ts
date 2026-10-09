@@ -48,7 +48,7 @@ describe('Accessible application navigation', () => {
     });
   });
 
-  it('should expose a skip link, main landmark and focus the heading after navigation', async () => {
+  it('should expose a keyboard-accessible main landmark and focus the heading after navigation', async () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const router = TestBed.inject(Router);
@@ -59,7 +59,8 @@ describe('Accessible application navigation', () => {
     fixture.detectChanges();
 
     const page = fixture.nativeElement as HTMLElement;
-    expect(page.querySelector('.skip-link')?.getAttribute('href')).toBe('#main-content');
+    expect(page.querySelector('.skip-link')).toBeNull();
+    expect(page.querySelector('h1')?.getAttribute('tabindex')).toBe('0');
     expect(page.querySelectorAll('main').length).toBe(1);
     expect(page.querySelectorAll('h1').length).toBe(1);
     expect(document.title).toBe('Medals by country | Olympic Games');

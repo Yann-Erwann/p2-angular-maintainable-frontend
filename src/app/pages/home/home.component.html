@@ -1,5 +1,5 @@
-<div class="olympic-layout">
-<h1 class="page-title" tabindex="-1">Olympic games app</h1>
+<section class="olympic-layout" aria-labelledby="home-page-title">
+<h1 id="home-page-title" class="page-title" tabindex="0">Olympic games app</h1>
 <hr/>
 <app-page-feedback
   [state]="state"
@@ -16,7 +16,7 @@
     ]"
   />
 }
-  <div class="chart-panel" [hidden]="state.status !== 'success' && state.status !== 'loading'">
+  <figure class="chart-panel" [hidden]="state.status !== 'success' && state.status !== 'loading'">
     @if (state.status === 'success') {
     @defer (on viewport; prefetch on idle) {
       <app-olympic-chart
@@ -33,14 +33,14 @@
     } @error {
       <p class="page-message" role="alert">Unable to load the chart. Please reload the page.</p>
     }
-    <p id="country-medals-description" class="visually-hidden">
+    <figcaption id="country-medals-description" class="visually-hidden">
       Total medals by country.
       @for (country of summary().countries; track $index) {
         {{ country }}: {{ summary().medals[$index] }} medals.
       }
-    </p>
+    </figcaption>
     } @else {
       <div class="chart-placeholder" aria-hidden="true"></div>
     }
-  </div>
-</div>
+  </figure>
+</section>

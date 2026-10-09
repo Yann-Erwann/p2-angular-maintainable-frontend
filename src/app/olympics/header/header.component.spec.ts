@@ -49,6 +49,6 @@ describe('HeaderComponent', () => {
     fixture.detectChanges();
 
     expect(page.querySelector('.center > h2')?.textContent?.trim()).toBe('Olympic games');
-    expect(page.querySelectorAll('.split > div').length).toBe(0);
+    expect(page.querySelectorAll('.split > dl').length).toBe(0);
   });
 });
