@@ -16,6 +16,12 @@ Aucun nouveau score Lighthouse ni gain de 300 ms n’a été mesuré.
 
 Ces modifications CSS n’ont pas encore été déployées.
 
+## Cache GitHub Pages
+
+La réponse HTTP du module publié sur GitHub Pages contient `Cache-Control:
+max-age=600`. Les règles de `serve.json` concernent le serveur local et ne
+modifient pas cet en-tête.
+
 ## Contrôle de livraison après simplification
 
 Les builds de développement et de production préfixée passent. Le HTML de chacun

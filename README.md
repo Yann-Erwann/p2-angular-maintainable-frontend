@@ -57,7 +57,8 @@ pnpm run build:analyze
 
 `preview` sert le dernier build avec `serve.json` et peut télécharger `serve`.
 Les fichiers JS/CSS hashés sont mis en cache un an, les ressources sans hash sont
-revalidées. Ces règles doivent être adaptées à l’hébergement utilisé.
+revalidées. Ces règles concernent uniquement ce serveur local. GitHub Pages
+renvoie actuellement `max-age=600` (dix minutes), indépendamment de `serve.json`.
 `build:analyze` ajoute les source maps et `stats.json` pour examiner les bundles.
 Relancer `pnpm run build` pour retrouver un build sans source maps.
 
