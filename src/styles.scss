@@ -2,6 +2,10 @@
   box-sizing: border-box;
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 body {
   margin: 0;
   background: #f5f8fa;
@@ -89,31 +93,6 @@ a {
   }
 }
 
-.data-table {
-  width: 100%;
-  max-width: 64rem;
-  margin: 1.5rem auto 0;
-  border-collapse: collapse;
-  background: white;
-
-  caption {
-    padding: 0.75rem;
-    font-weight: 700;
-    text-align: left;
-  }
-
-  th, td {
-    padding: clamp(0.5rem, 2vw, 1rem);
-    border: 1px solid #dbe5e8;
-    text-align: left;
-    overflow-wrap: anywhere;
-  }
-
-  thead {
-    background: #eef4f6;
-  }
-}
-
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -128,11 +107,10 @@ a {
 
 .olympic-layout {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: 1.5rem;
 
   > * {
-    grid-column: 1 / -1;
     min-width: 0;
   }
 
@@ -142,28 +120,15 @@ a {
   }
 
   > .page-title,
-  > app-olympic-chart,
-  > .chart-panel,
-  > .data-table {
+  > .chart-panel {
     margin: 0;
   }
 
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(8, minmax(0, 1fr));
-  }
-
-  @media (min-width: 1200px) {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    align-items: start;
-
-    > app-olympic-chart,
-    > .chart-panel {
-      grid-column: 1 / 8;
-    }
-
-    > .data-table {
-      grid-column: 8 / -1;
-    }
+  > .chart-panel {
+    position: relative;
+    width: 100%;
+    max-width: 64rem;
+    justify-self: center;
   }
 }
 

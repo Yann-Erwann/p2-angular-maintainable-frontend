@@ -5,7 +5,7 @@
   @for (indicator of indicators(); track $index) {
     <div>
       <dt>{{ indicator.label }}</dt>
-      <dd>{{ indicator.value }}</dd>
+      <dd>{{ loading() ? '—' : indicator.value }}</dd>
     </div>
   }
 </dl>

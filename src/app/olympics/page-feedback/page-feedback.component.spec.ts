@@ -2,6 +2,22 @@ import { TestBed } from '@angular/core/testing';
 import { PageFeedbackComponent } from './page-feedback.component';
 
 describe('PageFeedbackComponent', () => {
+  it('should keep loading announcements without a skeleton when the page reserves its own layout', () => {
+    const fixture = TestBed.createComponent(PageFeedbackComponent);
+    fixture.componentRef.setInput('state', { status: 'loading' });
+    fixture.componentRef.setInput('showSkeleton', false);
+    fixture.detectChanges();
+    const page = fixture.nativeElement as HTMLElement;
+    const status = page.querySelector('[role="status"]');
+    expect(page.querySelector('.loading-skeleton')).toBeNull();
+    expect(status?.textContent).toContain('Loading Olympic data');
+    expect(status?.classList.contains('visually-hidden')).toBeTrue();
+
+    fixture.componentRef.setInput('state', { status: 'success', data: [] });
+    fixture.detectChanges();
+    expect(page.querySelector('[role="status"]')).toBe(status);
+  });
+
   it('should keep live regions mounted across loading, success and error transitions', () => {
     const fixture = TestBed.createComponent(PageFeedbackComponent);
     fixture.componentRef.setInput('state', { status: 'loading' });

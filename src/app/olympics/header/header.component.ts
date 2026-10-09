@@ -11,4 +11,5 @@ import type { Indicator } from './indicator.model';
 export class HeaderComponent {
   readonly title = input.required<string>();
   readonly indicators = input.required<readonly Indicator[]>();
+  readonly loading = input(false);
 }

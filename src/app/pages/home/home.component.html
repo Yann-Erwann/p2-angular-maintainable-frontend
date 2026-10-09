@@ -3,10 +3,12 @@
 <hr/>
 <app-page-feedback
   [state]="state"
+  [showSkeleton]="false"
   [successMessage]="'Loaded medal totals for ' + totalCountries + ' countries.'"
 />
-@if (state.status === 'success') {
+@if (state.status === 'success' || state.status === 'loading') {
   <app-header
+    [loading]="state.status === 'loading'"
     [title]="titlePage"
     [indicators]="[
       { label: 'Number of countries', value: totalCountries },
@@ -14,39 +16,31 @@
     ]"
   />
 }
-  <div class="chart-panel" [hidden]="state.status !== 'success'">
-    @defer (on viewport; prefetch when state.status === 'loading' || state.status === 'success') {
-      @if (state.status === 'success') {
+  <div class="chart-panel" [hidden]="state.status !== 'success' && state.status !== 'loading'">
+    @if (state.status === 'success') {
+    @defer (on viewport; prefetch on idle) {
       <app-olympic-chart
         type="pie"
         [labels]="summary().countries"
         [values]="summary().medals"
-        dataDescriptionId="country-medals-caption"
+        dataDescriptionId="country-medals-description"
         (pointSelected)="selectCountry($event)"
       />
-      }
     } @placeholder {
       <div class="chart-placeholder" aria-hidden="true"></div>
     } @loading {
       <div class="chart-placeholder" role="status">Loading chart...</div>
     } @error {
-      <p class="page-message" role="alert">Unable to load the chart. Medal totals are available in the table.</p>
+      <p class="page-message" role="alert">Unable to load the chart. Please reload the page.</p>
+    }
+    <p id="country-medals-description" class="visually-hidden">
+      Total medals by country.
+      @for (country of summary().countries; track $index) {
+        {{ country }}: {{ summary().medals[$index] }} medals.
+      }
+    </p>
+    } @else {
+      <div class="chart-placeholder" aria-hidden="true"></div>
     }
   </div>
-@if (state.status === 'success') {
-  <table class="data-table">
-    <caption id="country-medals-caption">Total medals by country. Select a country to view its Olympic results.</caption>
-    <thead>
-      <tr><th scope="col">Country</th><th scope="col">Total medals</th></tr>
-    </thead>
-    <tbody>
-      @for (country of summary().countries; track $index) {
-        <tr>
-          <th scope="row"><a [routerLink]="['/country', summary().ids[$index]]">{{ country }}</a></th>
-          <td>{{ summary().medals[$index] }}</td>
-        </tr>
-      }
-    </tbody>
-  </table>
-}
 </div>

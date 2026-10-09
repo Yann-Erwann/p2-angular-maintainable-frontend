@@ -80,19 +80,19 @@ describe('HomeComponent', () => {
     expect(component.totalCountries).toBe(1);
   });
 
-  it('should expose data and keyboard links before the chart loads, including after a chunk failure', async () => {
+  it('should expose data before the chart loads, including after a chunk failure', async () => {
     data.next([{ id: 1, country: 'France', participations: [] }]);
     fixture.detectChanges();
     const page = fixture.nativeElement as HTMLElement;
     expect(page.querySelector('canvas')).toBeNull();
     expect(page.querySelector('.chart-placeholder')?.getAttribute('aria-hidden')).toBe('true');
-    expect(page.querySelector('tbody a')?.getAttribute('href')).toBe('/country/1');
+    expect(page.querySelector('#country-medals-description')?.textContent).toContain('France');
     const [block] = await fixture.getDeferBlocks();
     await block.render(DeferBlockState.Loading);
     expect(page.querySelector('.chart-panel [role="status"]')?.textContent).toContain('Loading chart');
     await block.render(DeferBlockState.Error);
     expect(page.querySelector('.chart-panel [role="alert"]')?.textContent).toContain('Unable to load the chart');
-    expect(page.querySelector('tbody a')?.getAttribute('href')).toBe('/country/1');
+    expect(page.querySelector('#country-medals-description')?.textContent).toContain('France');
     expect(page.querySelector('app-header')).not.toBeNull();
   });
 
@@ -105,6 +105,7 @@ describe('HomeComponent', () => {
     chart.pointSelected.emit(0);
     await fixture.whenStable();
     expect(navigate).toHaveBeenCalledOnceWith(['/country', 1]);
+
     const canvas = (fixture.nativeElement as HTMLElement).querySelector('canvas');
     canvas?.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
     await fixture.whenStable();
@@ -178,20 +179,22 @@ describe('HomeComponent', () => {
       'Number of countries', '2', 'Number of JOs', '2',
     ]);
     expect(page.querySelector('canvas')).toBe(chartAt(fixture.nativeElement as HTMLElement).canvas);
-    expect(Array.from(page.querySelectorAll('tbody tr'), row =>
-      Array.from(row.querySelectorAll('th, td'), cell => cell.textContent?.trim()),
-    )).toEqual([['France', '30'], ['Italy', '15']]);
-    expect(Array.from(page.querySelectorAll('tbody a'), link => link.getAttribute('href'))).toEqual(['/country/1', '/country/2']);
-    expect(page.querySelector('canvas')?.getAttribute('aria-describedby')).toBe(page.querySelector('caption')?.id + ' ' + page.querySelector('caption')?.id + '-keys');
+    expect(page.querySelector('table')).toBeNull();
+    expect(page.querySelector('#country-medals-description')?.textContent).toContain('France: 30 medals.');
+    expect(page.querySelector('#country-medals-description')?.textContent).toContain('Italy: 15 medals.');
+    expect(page.querySelector('canvas')?.getAttribute('aria-describedby')).toBe('country-medals-description country-medals-description-keys');
     expect(page.querySelector('canvas')?.getAttribute('role')).toBe('img');
-    expect(page.querySelectorAll('thead th[scope="col"]').length).toBe(2);
-    expect(page.querySelectorAll('tbody th[scope="row"]').length).toBe(2);
+    expect(page.querySelector('canvas')?.getAttribute('tabindex')).toBe('0');
   });
 
-  it('should display loading without statistics or a chart before the response', () => {
+  it('should reserve the header and chart layout without displaying statistics before the response', () => {
     const page = fixture.nativeElement as HTMLElement;
     expect(page.querySelector('[role="status"]')?.textContent).toContain('Loading Olympic data');
-    expect(page.querySelector('app-header')).toBeNull();
+    expect(page.querySelector('app-header')).not.toBeNull();
+    expect(Array.from(page.querySelectorAll('app-header dd'), item => item.textContent?.trim())).toEqual(['—', '—']);
+    expect(page.querySelector('.chart-panel')?.hasAttribute('hidden')).toBeFalse();
+    expect(page.querySelector('.chart-placeholder')).not.toBeNull();
+    expect(page.querySelector('.loading-skeleton')).toBeNull();
     expect(page.querySelector('canvas')).toBeNull();
   });
 

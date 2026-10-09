@@ -142,14 +142,11 @@ describe('CountryComponent', () => {
     ]);
     expect(page?.querySelector('canvas')).toBe(chartAt(harness.routeNativeElement).canvas);
     expect(page?.querySelector('.back-link')).toBeNull();
-    expect(Array.from(page?.querySelectorAll('tbody tr') ?? [], row =>
-      Array.from(row.querySelectorAll('th, td'), cell => cell.textContent?.trim()),
-    )).toEqual([
-      ['2012', 'London', '10', '100'],
-      ['2016', 'Rio de Janeiro', '20', '150'],
-    ]);
-    expect(page?.querySelector('canvas')?.getAttribute('aria-describedby')).toBe(page?.querySelector('caption')?.id + ' ' + page?.querySelector('caption')?.id + '-keys');
-    expect(page?.querySelectorAll('thead th[scope="col"]').length).toBe(4);
+    expect(page?.querySelector('table')).toBeNull();
+    const description = page?.querySelector('#participation-description')?.textContent?.replace(/\s+/g, ' ').trim();
+    expect(description).toContain('2012, London: 10 medals, 100 athletes.');
+    expect(description).toContain('2016, Rio de Janeiro: 20 medals, 150 athletes.');
+    expect(page?.querySelector('canvas')?.getAttribute('aria-describedby')).toBe('participation-description participation-description-keys');
   });
 
   it('should keep totals at zero for a country without participations', async () => {
