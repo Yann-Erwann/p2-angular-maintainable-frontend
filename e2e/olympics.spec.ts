@@ -52,15 +52,19 @@ test('a direct country URL survives reload under the production prefix', async (
   await expect(page.locator('app-header dd')).toHaveText(['3', '113', '1238']);
 });
 
-test('unknown routes and invalid country identifiers have distinct feedback', async ({ page }) => {
-  await page.goto('unknown/nested');
-  await expect(page).toHaveTitle('Page not found | Olympic Games');
-  await expect(page.locator('canvas')).toHaveCount(0);
-  await page.goto('country/invalid');
-  await expect(page.getByRole('status')).toHaveText('Country not found.');
-  await expect(page.locator('app-header')).toHaveCount(0);
-  await page.goto('country/999');
-  await expect(page.getByRole('status')).toHaveText('Country not found.');
+test('unknown routes and absent or invalid countries use the same not-found page', async ({
+  page,
+}) => {
+  for (const route of ['unknown/nested', 'country/invalid', 'country/999', 'country/5999']) {
+    await page.goto(route);
+    await expect(page).toHaveTitle('Page not found | Olympic Games');
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Cette page n’existe pas');
+    await expect(page.locator('canvas')).toHaveCount(0);
+    await expect(page.locator('app-header')).toHaveCount(0);
+    if (route.startsWith('country/')) await expect(page).toHaveURL(/\/not-found$/);
+    await expect(page.getByRole('link', { name: 'Retour à l’accueil' })).toBeVisible();
+    await expect(page.getByText('Country not found', { exact: false })).toHaveCount(0);
+  }
 });
 
 test('a failed HTTP load displays a safe error and recovers on another country', async ({
@@ -275,3 +279,26 @@ for (const route of ['./', 'country/5']) {
     expect(cls, 'Late CSS must not move the page').toBeLessThan(0.01);
   });
 }
+
+test('not-found shares the banner and offers a responsive return home', async ({
+  page,
+}, testInfo) => {
+  for (const width of [320, 768, 1280]) {
+    await page.setViewportSize({ width, height: 1000 });
+    await page.goto('unknown/nested');
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Cette page n’existe pas');
+    await expect(page.locator('app-root')).toHaveClass(/app-shell--dashboard/);
+    await expect(page.locator('.not-found__illustration')).toBeVisible();
+    await expect(page.getByText('Ou découvre')).toHaveCount(0);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+      true,
+    );
+    if (width === 1280) {
+      await page.screenshot({ path: testInfo.outputPath('not-found-desktop.png'), fullPage: true });
+    }
+    await page.getByRole('link', { name: 'Retour à l’accueil' }).focus();
+    await page.keyboard.press('Enter');
+    await expect(page).toHaveTitle('Medals by country | Olympic Games');
+    await expect(page.locator('canvas')).toBeVisible();
+  }
+});

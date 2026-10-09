@@ -50,7 +50,9 @@ export class CountryComponent implements OnInit {
   private readonly documentTitle = inject(Title);
   private readonly router = inject(Router);
   private readonly errorHandler = inject(ErrorHandler);
-  private readonly pageState = signal<CountryPageState>({ status: 'loading' });
+  private readonly pageState = signal<Exclude<CountryPageState, { status: 'not-found' }>>({
+    status: 'loading',
+  });
 
   readonly state = this.pageState.asReadonly();
   readonly loadingIndicators = COUNTRY_LOADING_INDICATORS;
@@ -64,6 +66,12 @@ export class CountryComponent implements OnInit {
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe((state) => {
+        if (state.status === 'not-found') {
+          void this.router
+            .navigate(['/not-found'], { replaceUrl: true })
+            .catch((error: unknown) => this.errorHandler.handleError(error));
+          return;
+        }
         this.pageState.set(state);
         this.documentTitle.setTitle(countryDocumentTitle(state));
       });

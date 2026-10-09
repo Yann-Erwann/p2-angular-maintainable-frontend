@@ -54,7 +54,7 @@ describe('Application routing', () => {
 
     await harness.navigateByUrl('/not-found', NotFoundComponent);
 
-    expect(harness.routeNativeElement?.textContent).toContain('No corresponding page found');
+    expect(harness.routeNativeElement?.textContent).toContain('Cette page n’existe pas');
   });
 
   it('should render the not-found page for an unknown URL', async () => {
@@ -62,7 +62,7 @@ describe('Application routing', () => {
 
     await harness.navigateByUrl('/unknown-page', NotFoundComponent);
 
-    expect(harness.routeNativeElement?.textContent).toContain('No corresponding page found');
+    expect(harness.routeNativeElement?.textContent).toContain('Cette page n’existe pas');
   });
 
   for (const url of ['/', '/country/1']) {

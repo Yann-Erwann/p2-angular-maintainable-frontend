@@ -54,7 +54,7 @@ export interface CountryViewModel {
 }
 
 /**
- * `empty` désigne un pays existant sans participation ; `not-found`, un pays absent.
+ * `empty` désigne un pays existant sans participation ; `not-found` déclenche la redirection 404.
  * Seuls `success` et `empty` portent les données d’affichage.
  */
 export type CountryPageState =
@@ -109,5 +109,5 @@ export function countryDocumentTitle(state: CountryPageState): string {
   if (state.status === 'success' || state.status === 'empty') {
     return `${state.data.summary.name} | Olympic Games`;
   }
-  return `${state.status === 'not-found' ? 'Country not found' : 'Country details'} | Olympic Games`;
+  return 'Country details | Olympic Games';
 }

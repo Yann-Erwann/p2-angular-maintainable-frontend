@@ -62,8 +62,6 @@ export class PageFeedbackComponent {
         return 'Loading Olympic data...';
       case 'empty':
         return 'No Olympic data available.';
-      case 'not-found':
-        return 'Country not found.';
       case 'success':
         return this.successMessage();
       case 'error':

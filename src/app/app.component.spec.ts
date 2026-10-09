@@ -80,7 +80,8 @@ describe('Accessible application navigation', () => {
     await router.navigateByUrl('/unknown');
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(document.activeElement).toBe(page.querySelector('h1'));
+    expect(document.activeElement).not.toBe(page.querySelector('h1'));
+    expect(page.querySelector('h1')?.getAttribute('tabindex')).toBe('0');
     expect(document.title).toBe('Page not found | Olympic Games');
 
     const homeLink = page.querySelector<HTMLAnchorElement>('.brand__link');

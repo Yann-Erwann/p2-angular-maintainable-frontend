@@ -10,6 +10,8 @@ for (const country of countries) {
   await mkdir(directory, { recursive: true });
   await writeFile(`${directory}/index.html`, html);
 }
+await mkdir(`${output}/browser/not-found`, { recursive: true });
+await writeFile(`${output}/browser/not-found/index.html`, html);
 await writeFile(`${output}/browser/404.html`, html);
 await writeFile(
   `${output}/browser/release.json`,

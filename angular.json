@@ -36,6 +36,11 @@
                 "output": "assets/mock"
               },
               {
+                "glob": "not-found-signpost.svg",
+                "input": "src/assets/images",
+                "output": "assets/images"
+              },
+              {
                 "glob": "{teleSport,telesport-header}*.webp",
                 "input": "src/assets/images",
                 "output": "assets/images"

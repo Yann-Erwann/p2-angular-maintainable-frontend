@@ -26,8 +26,7 @@ import { filter, map, skip } from 'rxjs';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   host: {
-    class: 'app-shell',
-    '[class.app-shell--dashboard]': 'dashboardLayout()',
+    class: 'app-shell app-shell--dashboard',
     '[class.app-shell--country]': 'countryLayout()',
   },
   imports: [RouterLink, RouterOutlet],
@@ -51,7 +50,6 @@ export class AppComponent implements OnInit {
       this.router.parseUrl(this.routeUrl()).root.children['primary']?.segments[0]?.path ===
       'country',
   );
-  readonly dashboardLayout = computed(() => this.homeLayout() || this.countryLayout());
   private readonly destroyRef = inject(DestroyRef);
   private readonly injector = inject(Injector);
   private readonly main = viewChild.required<ElementRef<HTMLElement>>('mainContent');
@@ -76,7 +74,7 @@ export class AppComponent implements OnInit {
             const heading =
               main.querySelector<HTMLElement>('[data-page-heading]') ??
               main.querySelector<HTMLElement>('h1');
-            heading?.focus();
+            if (!heading?.hasAttribute('data-manual-focus')) heading?.focus();
           },
           { injector: this.injector },
         );

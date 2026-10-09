@@ -73,7 +73,8 @@ l’application. Un autre serveur doit renvoyer `index.html` pour les routes Ang
 - **Pays** (`/country/:id`) : participations, médailles, effectifs cumulés et
   courbe chronologique. Le filtre est un popover HTML contenant des boutons,
   sans `<select>`. Il exclut le pays courant et n’a pas de défilement interne.
-- Les chargements, données vides, pays absents et erreurs ont des états distincts.
+- Un identifiant de pays invalide ou absent redirige vers `/not-found`.
+  Les chargements, données vides et erreurs ont des états distincts.
   Un pays sans participation conserve son identité et ses compteurs à zéro.
 
 La bannière conserve son fond décoratif WebP préchargé et ses textes HTML.

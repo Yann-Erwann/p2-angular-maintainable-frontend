@@ -64,7 +64,6 @@ describe('PageFeedbackComponent', () => {
     for (const state of [
       { status: 'success' },
       { status: 'empty' },
-      { status: 'not-found' },
       { status: 'error', message: 'Unable to connect.' },
     ]) {
       fixture.componentRef.setInput('state', state);
@@ -76,10 +75,7 @@ describe('PageFeedbackComponent', () => {
     expect(page.querySelector('.loading-skeleton')).not.toBeNull();
   });
 
-  for (const [state, message] of [
-    ['empty', 'No Olympic data available.'],
-    ['not-found', 'Country not found.'],
-  ] as const) {
+  for (const [state, message] of [['empty', 'No Olympic data available.']] as const) {
     it(`should display ${state} without an error announcement`, () => {
       const fixture = TestBed.createComponent(PageFeedbackComponent);
       fixture.componentRef.setInput('state', { status: state });

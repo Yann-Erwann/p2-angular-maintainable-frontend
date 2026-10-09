@@ -1,11 +1,153 @@
-.not-found {
-  min-height: 12rem;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  text-align: center;
+:host {
+  display: block;
+}
 
-  .not-found__title {
-    margin: 0;
+.not-found {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  align-items: center;
+  gap: clamp(1rem, 3vw, 3rem);
+  min-height: calc(100dvh - 18rem);
+  padding: 1rem 1rem 7rem;
+  overflow: hidden;
+}
+
+.not-found__illustration {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 35rem;
+  object-fit: contain;
+}
+
+.not-found__content {
+  padding-bottom: 2rem;
+}
+
+.not-found__badge {
+  display: inline-block;
+  margin: 0 0 1rem;
+  padding: 0.2rem 1.6rem;
+  border-radius: 3rem;
+  background: #dceff3;
+  color: #007f8e;
+  font-size: clamp(1.8rem, 3vw, 2.2rem);
+  font-weight: 800;
+}
+
+.not-found__title {
+  margin: 0 0 1rem;
+  color: var(--dashboard-text);
+  font-size: clamp(1.8rem, 3.3vw, 3rem);
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.not-found__description {
+  margin: 0 0 2rem;
+  color: #60728c;
+  font-size: clamp(1rem, 1.5vw, 1.35rem);
+}
+
+.not-found__home-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  max-width: 100%;
+  padding: 0.9rem 2rem;
+  border-radius: 3rem;
+  background: #008798;
+  color: white;
+  font-size: clamp(1rem, 1.5vw, 1.3rem);
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.not-found__home-link:hover {
+  background: #006d7b;
+}
+
+.not-found__home-icon,
+.not-found__arrow {
+  flex: 0 0 1.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.not-found__arrow {
+  margin-left: 1rem;
+}
+
+.not-found__rings {
+  position: absolute;
+  z-index: -1;
+  inset: auto -12% -18rem;
+  display: flex;
+  align-items: flex-start;
+  height: 24rem;
+  pointer-events: none;
+}
+
+.not-found__ring {
+  flex: 0 0 30%;
+  aspect-ratio: 1;
+  margin-left: -8%;
+  border: clamp(1.5rem, 3.5vw, 3rem) solid;
+  border-radius: 50%;
+  opacity: 0.1;
+}
+
+.not-found__ring--blue {
+  color: #0085c7;
+}
+.not-found__ring--yellow {
+  color: #f4c300;
+  margin-top: 5rem;
+}
+.not-found__ring--dark {
+  color: #60728c;
+  margin-top: 2rem;
+}
+.not-found__ring--green {
+  color: #009f3d;
+  margin-top: 5rem;
+}
+.not-found__ring--red {
+  color: #df0024;
+  margin-top: 1rem;
+}
+
+@media (max-width: 760px) {
+  .not-found {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    padding: 0 0.5rem 5rem;
+    text-align: center;
+  }
+  .not-found__illustration {
+    width: min(100%, 24rem);
+    max-height: 20rem;
+    margin: 0 auto;
+  }
+  .not-found__description br {
+    display: none;
+  }
+  .not-found__home-link {
+    gap: 0.75rem;
+    padding-inline: 1.25rem;
+  }
+  .not-found__arrow {
+    margin-left: 0;
+  }
+  .not-found__rings {
+    bottom: -20rem;
   }
 }

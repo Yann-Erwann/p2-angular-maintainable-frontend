@@ -142,18 +142,19 @@ describe('Country routing', () => {
     expect(country.state().status).toBe('success');
   });
 
-  it('should report an absent ID and avoid reloading for query-only changes', async () => {
+  it('should redirect an absent ID to the not-found page and reuse cached data', async () => {
     const harness = await RouterTestingHarness.create();
-    country = await harness.navigateByUrl('/country/999', CountryComponent);
+    await harness.navigateByUrl('/country/5999', CountryComponent);
     http.expectOne(url).flush(countries);
+    await harness.fixture.whenStable();
     harness.detectChanges();
-    await renderCharts(harness.fixture);
-    expect(country.state().status).toBe('not-found');
-    expect(document.title).toBe('Country not found | Olympic Games');
-
-    await harness.navigateByUrl('/country/999?view=table', CountryComponent);
+    expect(TestBed.inject(Router).url).toBe('/not-found');
+    expect(document.title).toBe('Page not found | Olympic Games');
+    expect(harness.routeNativeElement?.querySelector('h1')?.textContent).toContain(
+      'Cette page n’existe pas',
+    );
+    await harness.navigateByUrl('/country/2', CountryComponent);
     http.expectNone(url);
-    expect(country.state().status).toBe('not-found');
   });
 
   it('should dispose chart instances across repeated page navigation', async () => {
@@ -195,15 +196,15 @@ describe('Country routing', () => {
       harness.detectChanges();
       await renderCharts(harness.fixture);
 
-      await harness.navigateByUrl(`/country/${name}`, CountryComponent);
-      expect(country.state().status).toBe('not-found');
-      expect(
-        harness.routeNativeElement?.querySelector('[role="status"]')?.textContent?.trim(),
-      ).toBe('Country not found.');
+      await harness.navigateByUrl(`/country/${name}`, NotFoundComponent);
+      expect(TestBed.inject(Router).url).toBe('/not-found');
+      expect(harness.routeNativeElement?.querySelector('h1')?.textContent).toContain(
+        'Cette page n’existe pas',
+      );
       expect(harness.routeNativeElement?.querySelector('app-header')).toBeNull();
       expect(harness.routeNativeElement?.querySelector('canvas')).toBeNull();
 
-      await harness.navigateByUrl('/country/2', CountryComponent);
+      country = await harness.navigateByUrl('/country/2', CountryComponent);
       http.expectNone(url);
       harness.detectChanges();
       await renderCharts(harness.fixture);
@@ -215,12 +216,14 @@ describe('Country routing', () => {
 
   it('should reject an unusable ID without requesting data', async () => {
     const harness = await RouterTestingHarness.create();
-    country = await harness.navigateByUrl('/country/%20', CountryComponent);
+    await harness.navigateByUrl('/country/%20');
+    await harness.fixture.whenStable();
+    harness.detectChanges();
     http.expectNone(url);
-    expect(country.state().status).toBe('not-found');
+    expect(TestBed.inject(Router).url).toBe('/not-found');
     harness.detectChanges();
     await renderCharts(harness.fixture);
-    expect(country.state().status).toBe('not-found');
+    expect(TestBed.inject(Router).url).toBe('/not-found');
   });
 
   it('should display country names with spaces and accents on an ID route', async () => {
@@ -281,11 +284,13 @@ describe('Country routing', () => {
 
   it('should display an empty trailing country ID as not-found', async () => {
     const harness = await RouterTestingHarness.create();
-    country = await harness.navigateByUrl('/country/', CountryComponent);
+    await harness.navigateByUrl('/country/');
+    await harness.fixture.whenStable();
+    harness.detectChanges();
     http.expectNone(url);
     harness.detectChanges();
     await renderCharts(harness.fixture);
-    expect(country.state().status).toBe('not-found');
+    expect(TestBed.inject(Router).url).toBe('/not-found');
     expect(harness.routeNativeElement?.querySelector('canvas')).toBeNull();
     expect(harness.routeNativeElement?.querySelector('.back-link')).toBeNull();
   });

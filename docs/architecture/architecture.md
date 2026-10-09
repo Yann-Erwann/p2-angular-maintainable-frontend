@@ -10,7 +10,8 @@ Une réussite reste en mémoire pendant la session Angular, une erreur permet
 une nouvelle tentative. Quitter une requête en cours l’annule si aucun autre
 consommateur ne l’utilise. Le cache ne définit pas la fraîcheur d’une API évolutive.
 
-La validation impose des identifiants uniques, des entiers sûrs positifs pour
+La validation impose des identifiants uniques entre pays et, pour les participations,
+au sein de chaque pays. Elle exige des entiers sûrs positifs pour
 les ID/années et non négatifs pour les compteurs. Plusieurs participations de la
 même année sont autorisées, sans conversion implicite des données.
 
@@ -24,21 +25,32 @@ stable des participations et cumule les effectifs sans dédupliquer les personne
 ## Navigation et présentation
 
 Les URL utilisent le routage par chemin : `/` et `/country/:id`.
-Le workflow génère les entrées des pays et `404.html` pour GitHub Pages. La route est la source du
-pays sélectionné. Un ID invalide est rejeté avant HTTP, un pays absent diffère
-d’un pays sans participation. `switchMap` conserve la dernière sélection et
+Les scripts de livraison génèrent une entrée HTML par pays du JSON et `404.html`
+pour GitHub Pages, en conservant le chemin de base du build. Les fiches existantes
+sont ainsi accessibles directement et après rechargement. La page de repli affiche
+l’application pour les chemins absents avec un statut HTTP 404.
+La route est la source du pays sélectionné. Un ID invalide est rejeté avant HTTP.
+Un ID invalide ou un pays absent redirige vers `/not-found` en remplaçant l’entrée
+d’historique. Un pays existant sans participation conserve sa fiche et ses compteurs
+à zéro. `switchMap` conserve la dernière sélection et
 les erreurs restent dans son flux interne pour permettre une nouvelle sélection.
-Le titre du document suit l’état, le composant racine gère le focus après navigation.
+Le titre du document suit l’état. Après les navigations suivantes, le composant
+racine place le focus sur le titre de page une fois le rendu terminé, sans déplacer
+le focus au premier affichage ni lors d’une navigation vers un fragment. Le titre
+de la page 404 reste accessible avec Tab, sans recevoir le focus automatiquement.
 
 Les pages orchestrent le chargement et la navigation. Les indicateurs utilisent
 `kind` pour leur pictogramme et leur couleur. Le graphique reçoit seulement des
-paires `{ label, value }` et émet un index que la page traduit en ID.
+paires `{ label, value }` et, pour le camembert, émet un index que la page traduit en ID.
 `ChartRenderer` isole Chart.js, les configurations et plugins gardent leurs fichiers
 pour séparer rendu, dessin et interactions clavier. L’instance est détruite avant
 remplacement et au retrait du composant.
 
-Les styles suivent BEM. Le mixin `app-shell` partage les dimensions entre Angular
-et le HTML de chargement, le graphique d’accueil est initial et le rendu du détail reste différé.
+Les styles suivent BEM. Le mixin `layout` de `_app-shell.scss` partage les dimensions
+entre Angular et le HTML de chargement. Angular intègre le CSS critique au HTML,
+les styles communs des pages sont inclus avec leurs composants pour éviter les
+déplacements à l’arrivée de la feuille globale. L’accueil et son graphique sont
+initiaux, la route pays est chargée à la demande et le rendu de son graphique reste différé.
 Karma vérifie les contrats, Playwright les parcours sur le build de production.
 
 Les décisions détaillées concernent les [états](../decisions/001-page-state.md),

@@ -1,5 +1,35 @@
-<section class="not-found" aria-labelledby="not-found-page-title">
-  <h1 id="not-found-page-title" class="page-title not-found__title" tabindex="0">
-    No corresponding page found
-  </h1>
+<section class="not-found" aria-labelledby="not-found-page-title" lang="fr">
+  <img
+    class="not-found__illustration"
+    src="assets/images/not-found-signpost.svg"
+    width="640"
+    height="560"
+    alt=""
+  />
+  <div class="not-found__content">
+    <p class="not-found__badge">404</p>
+    <h1 id="not-found-page-title" class="not-found__title" tabindex="0" data-manual-focus>
+      Cette page n’existe pas
+    </h1>
+    <p class="not-found__description">
+      Désolé, nous n’avons pas trouvé la page que tu cherches.<br />
+      Elle a peut-être été déplacée, supprimée ou l’adresse est incorrecte.
+    </p>
+    <a class="not-found__home-link" routerLink="/">
+      <svg class="not-found__home-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="m3 11 9-8 9 8M5 9v12h5v-7h4v7h5V9" />
+      </svg>
+      <span>Retour à l’accueil</span>
+      <svg class="not-found__arrow" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 12h16m-7-7 7 7-7 7" />
+      </svg>
+    </a>
+  </div>
+  <div class="not-found__rings" aria-hidden="true">
+    <span class="not-found__ring not-found__ring--blue"></span>
+    <span class="not-found__ring not-found__ring--yellow"></span>
+    <span class="not-found__ring not-found__ring--dark"></span>
+    <span class="not-found__ring not-found__ring--green"></span>
+    <span class="not-found__ring not-found__ring--red"></span>
+  </div>
 </section>

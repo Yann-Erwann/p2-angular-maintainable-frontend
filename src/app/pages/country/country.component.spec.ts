@@ -4,7 +4,7 @@ import { ChartRenderer } from '../../olympics/chart/chart-renderer.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { Router, provideRouter } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { of, ReplaySubject } from 'rxjs';
 
@@ -264,19 +264,18 @@ describe('CountryComponent', () => {
     expect(harness.routeNativeElement?.querySelector('canvas')).toBeNull();
   });
 
-  it('should report a missing country for an empty collection', async () => {
+  it('should redirect an empty collection to the not-found page', async () => {
     const harness = await RouterTestingHarness.create();
     component = await harness.navigateByUrl('/country/1', CountryComponent);
     data.next([]);
     harness.detectChanges();
-    await renderCharts(harness.fixture);
-
-    expect(
-      harness.routeNativeElement?.querySelector('[role="status"]')?.textContent?.trim(),
-    ).toContain('Country not found.');
-    expect(harness.routeNativeElement?.querySelector('[role="alert"]')?.textContent?.trim()).toBe(
-      '',
+    await harness.fixture.whenStable();
+    harness.detectChanges();
+    expect(TestBed.inject(Router).url).toBe('/not-found');
+    expect(harness.routeNativeElement?.querySelector('h1')?.textContent).toContain(
+      'Cette page n’existe pas',
     );
+    expect(harness.routeNativeElement?.querySelector('[role="alert"]')).toBeNull();
     expect(harness.routeNativeElement?.querySelector('app-header')).toBeNull();
     expect(harness.routeNativeElement?.querySelector('canvas')).toBeNull();
   });
@@ -286,14 +285,13 @@ describe('CountryComponent', () => {
     component = await harness.navigateByUrl('/country/999', CountryComponent);
     data.next([{ id: 1, country: 'France', participations: [] }]);
     harness.detectChanges();
-    await renderCharts(harness.fixture);
-
-    expect(harness.routeNativeElement?.querySelector('[role="status"]')?.textContent?.trim()).toBe(
-      'Country not found.',
+    await harness.fixture.whenStable();
+    harness.detectChanges();
+    expect(TestBed.inject(Router).url).toBe('/not-found');
+    expect(harness.routeNativeElement?.querySelector('h1')?.textContent).toContain(
+      'Cette page n’existe pas',
     );
-    expect(harness.routeNativeElement?.querySelector('[role="alert"]')?.textContent?.trim()).toBe(
-      '',
-    );
+    expect(harness.routeNativeElement?.querySelector('[role="alert"]')).toBeNull();
     expect(harness.routeNativeElement?.querySelector('app-header')).toBeNull();
     expect(harness.routeNativeElement?.querySelector('canvas')).toBeNull();
   });
