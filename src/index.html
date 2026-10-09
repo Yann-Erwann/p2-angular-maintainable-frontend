@@ -8,6 +8,30 @@
     <meta name="description" content="Explore Olympic medal totals by country, participation history and athlete statistics." />
     <meta name="application-name" content="Olympic Games App" />
     <meta name="theme-color" content="#0b6470" />
+    <script>
+      // Preload the same responsive banner that the initial route will display.
+      const bannerPath = location.hash.slice(1).split(/[?#]/)[0];
+      const homeBanner = !bannerPath || bannerPath === '/';
+      const compactBanner = !homeBanner || matchMedia('(max-width: 600px)').matches;
+      const bannerPreload = document.createElement('link');
+      bannerPreload.rel = 'preload';
+      bannerPreload.as = 'image';
+      bannerPreload.type = 'image/webp';
+      bannerPreload.fetchPriority = 'high';
+      bannerPreload.href = compactBanner ? 'assets/images/teleSport.webp' : 'assets/images/teleSport-home.webp';
+      bannerPreload.imageSrcset = compactBanner
+        ? 'assets/images/teleSport-small.webp 438w, assets/images/teleSport.webp 874w'
+        : 'assets/images/teleSport-home-small.webp 670w, assets/images/teleSport-home.webp 1339w';
+      let bannerSizes = '(min-width: 1500px) 1428px, calc(100vw - 72px)';
+      if (compactBanner) {
+        bannerSizes = 'calc(100vw - 32px)';
+        if (!homeBanner) {
+          bannerSizes = '(min-width: 544px) 512px, calc(100vw - 32px)';
+        }
+      }
+      bannerPreload.imageSizes = bannerSizes;
+      document.head.appendChild(bannerPreload);
+    </script>
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Olympic Games App" />
     <meta property="og:description" content="Explore Olympic medal totals by country, participation history and athlete statistics." />
