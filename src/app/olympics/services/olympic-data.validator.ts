@@ -1,4 +1,4 @@
-import type { Olympic, Participation } from '../models/olympic';
+import type { Olympic, Participation } from '../models/olympic.model';
 
 /** Signale des données invalides, distinctes d’une erreur HTTP. */
 export class OlympicDataValidationError extends Error {

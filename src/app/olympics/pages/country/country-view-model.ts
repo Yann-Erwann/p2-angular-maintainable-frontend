@@ -1,6 +1,6 @@
-import type { Olympic, Participation } from '../../models/olympic';
-import type { ChartItem } from '../../olympics/chart/chart.model';
-import type { Indicator } from '../../olympics/header/indicator.model';
+import type { Olympic, Participation } from '../../models/olympic.model';
+import type { ChartItem } from '../../ui/chart/chart.model';
+import type { Indicator } from '../../ui/header/indicator.model';
 
 export interface CountrySummary {
   readonly id: number;

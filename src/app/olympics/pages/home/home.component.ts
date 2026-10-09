@@ -10,11 +10,11 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
 import { catchError, map, of } from 'rxjs';
-import { OlympicChartComponent } from '../../olympics/chart/chart.component';
-import { HeaderComponent } from '../../olympics/header/header.component';
-import { PageFeedbackComponent } from '../../olympics/page-feedback/page-feedback.component';
-import { DataService } from '../../services/data.service';
-import { toDataLoadError } from '../../services/data-load-error';
+import { toOlympicDataLoadError } from '../../services/olympic-data-load-error';
+import { OlympicDataService } from '../../services/olympic-data.service';
+import { OlympicChartComponent } from '../../ui/chart/chart.component';
+import { HeaderComponent } from '../../ui/header/header.component';
+import { PageFeedbackComponent } from '../../ui/page-feedback/page-feedback.component';
 import { createHomeState, HOME_LOADING_INDICATORS, type HomePageState } from './home-view-model';
 
 @Component({
@@ -25,7 +25,7 @@ import { createHomeState, HOME_LOADING_INDICATORS, type HomePageState } from './
   imports: [HeaderComponent, OlympicChartComponent, PageFeedbackComponent, RouterLink],
 })
 export class HomeComponent implements OnInit {
-  private readonly dataService = inject(DataService);
+  private readonly dataService = inject(OlympicDataService);
   private readonly router = inject(Router);
   private readonly errorHandler = inject(ErrorHandler);
   private readonly destroyRef = inject(DestroyRef);
@@ -39,7 +39,7 @@ export class HomeComponent implements OnInit {
       .pipe(
         map(createHomeState),
         catchError((error: unknown) =>
-          of<HomePageState>({ status: 'error', message: toDataLoadError(error).message }),
+          of<HomePageState>({ status: 'error', message: toOlympicDataLoadError(error).message }),
         ),
         takeUntilDestroyed(this.destroyRef),
       )

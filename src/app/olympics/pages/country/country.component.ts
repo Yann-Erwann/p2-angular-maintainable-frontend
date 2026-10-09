@@ -19,12 +19,12 @@ import {
   switchMap,
   type Observable,
 } from 'rxjs';
-import { OlympicChartComponent } from '../../olympics/chart/chart.component';
-import { parseCountryId } from '../../olympics/country-id';
-import { HeaderComponent } from '../../olympics/header/header.component';
-import { PageFeedbackComponent } from '../../olympics/page-feedback/page-feedback.component';
-import { toDataLoadError } from '../../services/data-load-error';
-import { DataService } from '../../services/data.service';
+import { toOlympicDataLoadError } from '../../services/olympic-data-load-error';
+import { OlympicDataService } from '../../services/olympic-data.service';
+import { parseCountryId } from '../../routing/country-id.parser';
+import { OlympicChartComponent } from '../../ui/chart/chart.component';
+import { HeaderComponent } from '../../ui/header/header.component';
+import { PageFeedbackComponent } from '../../ui/page-feedback/page-feedback.component';
 import {
   COUNTRY_LOADING_INDICATORS,
   countryDocumentTitle,
@@ -45,7 +45,7 @@ import {
 })
 export class CountryComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
-  private readonly dataService = inject(DataService);
+  private readonly dataService = inject(OlympicDataService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly documentTitle = inject(Title);
   private readonly router = inject(Router);
@@ -94,7 +94,10 @@ export class CountryComponent implements OnInit {
     return this.dataService.getOlympics().pipe(
       map((countries) => createCountryState(countries, id)),
       catchError((error: unknown) =>
-        of<CountryPageState>({ status: 'error', message: toDataLoadError(error).message }),
+        of<CountryPageState>({
+          status: 'error',
+          message: toOlympicDataLoadError(error).message,
+        }),
       ),
       startWith({ status: 'loading' } as const),
     );

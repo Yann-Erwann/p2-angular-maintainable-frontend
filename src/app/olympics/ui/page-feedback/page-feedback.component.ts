@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
-import type { PageFeedbackState } from '../page-state';
+import type { PageFeedbackState } from './page-feedback-state';
 
 /**
  * Annonces de statut et d’erreur sans données métier ; les régions restent présentes

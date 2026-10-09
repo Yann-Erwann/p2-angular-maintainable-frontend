@@ -1,4 +1,4 @@
-import { parseCountryId } from './country-id';
+import { parseCountryId } from './country-id.parser';
 
 describe('parseCountryId', () => {
   for (const value of [

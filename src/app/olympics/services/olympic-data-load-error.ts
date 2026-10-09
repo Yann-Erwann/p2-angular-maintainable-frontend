@@ -2,16 +2,16 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { OlympicDataValidationError } from './olympic-data.validator';
 
 /** Erreur affichable dont la cause technique reste disponible via `Error.cause`. */
-export class DataLoadError extends Error {
-  override readonly name = 'DataLoadError';
+export class OlympicDataLoadError extends Error {
+  override readonly name = 'OlympicDataLoadError';
 }
 
 /**
  * Traduit la cause en message affichable, sans détail serveur.
- * Une {@link DataLoadError} existante est conservée avec sa cause.
+ * Une {@link OlympicDataLoadError} existante est conservée avec sa cause.
  */
-export function toDataLoadError(cause: unknown): DataLoadError {
-  if (cause instanceof DataLoadError) {
+export function toOlympicDataLoadError(cause: unknown): OlympicDataLoadError {
+  if (cause instanceof OlympicDataLoadError) {
     return cause;
   }
 
@@ -28,5 +28,5 @@ export function toDataLoadError(cause: unknown): DataLoadError {
     }
   }
 
-  return new DataLoadError(message, { cause });
+  return new OlympicDataLoadError(message, { cause });
 }

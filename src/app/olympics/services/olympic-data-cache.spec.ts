@@ -1,19 +1,19 @@
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { DataService } from './data.service';
+import { OlympicDataService } from './olympic-data.service';
 
-describe('DataService shared loading', () => {
+describe('OlympicDataService shared loading', () => {
   const url = './assets/mock/olympic.json';
   const countries = [{ id: 1, country: 'France', participations: [] }];
-  let service: DataService;
+  let service: OlympicDataService;
   let http: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [provideHttpClient(), provideHttpClientTesting()],
     });
-    service = TestBed.inject(DataService);
+    service = TestBed.inject(OlympicDataService);
     http = TestBed.inject(HttpTestingController);
   });
 

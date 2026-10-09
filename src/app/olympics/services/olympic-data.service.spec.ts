@@ -2,20 +2,20 @@ import { HttpErrorResponse, provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
-import type { Olympic } from '../models/olympic';
-import type { DataLoadError } from './data-load-error';
-import { DataService } from './data.service';
+import type { Olympic } from '../models/olympic.model';
+import type { OlympicDataLoadError } from './olympic-data-load-error';
+import { OlympicDataService } from './olympic-data.service';
 import { OlympicDataValidationError } from './olympic-data.validator';
 
-describe('DataService', () => {
-  let service: DataService;
+describe('OlympicDataService', () => {
+  let service: OlympicDataService;
   let httpTesting: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [provideHttpClient(), provideHttpClientTesting()],
     });
-    service = TestBed.inject(DataService);
+    service = TestBed.inject(OlympicDataService);
     httpTesting = TestBed.inject(HttpTestingController);
   });
 
@@ -87,7 +87,7 @@ describe('DataService', () => {
   ]) {
     it(`should propagate ${scenario.name} as a data error without emitting success`, () => {
       const nextSpy = jasmine.createSpy<(data: readonly Olympic[]) => void>('next');
-      const errorSpy = jasmine.createSpy<(error: DataLoadError) => void>('error');
+      const errorSpy = jasmine.createSpy<(error: OlympicDataLoadError) => void>('error');
       service.getOlympics().subscribe({ next: nextSpy, error: errorSpy });
       httpTesting.expectOne('./assets/mock/olympic.json').flush(scenario.payload);
 
@@ -103,7 +103,7 @@ describe('DataService', () => {
 
   it('should propagate HTTP errors instead of returning an empty collection', () => {
     const nextSpy = jasmine.createSpy<(data: readonly Olympic[]) => void>('next');
-    const errorSpy = jasmine.createSpy<(error: DataLoadError) => void>('error');
+    const errorSpy = jasmine.createSpy<(error: OlympicDataLoadError) => void>('error');
     service.getOlympics().subscribe({ next: nextSpy, error: errorSpy });
     httpTesting.expectOne('./assets/mock/olympic.json').flush('Unavailable', {
       status: 503,
@@ -124,7 +124,7 @@ describe('DataService', () => {
     { status: 400, message: 'Unable to load Olympic data. Please try again.' },
   ]) {
     it(`should translate HTTP status ${scenario.status} and retain its cause`, () => {
-      const errorSpy = jasmine.createSpy<(error: DataLoadError) => void>('error');
+      const errorSpy = jasmine.createSpy<(error: OlympicDataLoadError) => void>('error');
       service.getOlympics().subscribe({ next: () => fail('Expected a failure'), error: errorSpy });
       httpTesting.expectOne('./assets/mock/olympic.json').flush('private server details', {
         status: scenario.status,
@@ -140,7 +140,7 @@ describe('DataService', () => {
   }
 
   it('should translate network failures without returning a successful empty response', () => {
-    const errorSpy = jasmine.createSpy<(error: DataLoadError) => void>('error');
+    const errorSpy = jasmine.createSpy<(error: OlympicDataLoadError) => void>('error');
     service.getOlympics().subscribe({ next: () => fail('Expected a failure'), error: errorSpy });
     httpTesting.expectOne('./assets/mock/olympic.json').error(new ProgressEvent('error'));
 

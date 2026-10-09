@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { RouterTestingHarness } from '@angular/router/testing';
 
 import { appConfig } from './app.config';
-import { HomeComponent } from './pages/home/home.component';
+import { HomeComponent } from './olympics/pages/home/home.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 describe('Application routing', () => {

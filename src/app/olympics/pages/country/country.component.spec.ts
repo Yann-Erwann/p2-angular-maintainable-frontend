@@ -1,6 +1,6 @@
-import { renderCharts } from '../../../testing/render-charts';
+import { renderDeferredBlocks } from '../../../../testing/render-deferred-blocks';
 import { Chart } from 'chart.js';
-import { ChartRenderer } from '../../olympics/chart/chart-renderer.service';
+import { ChartRenderer } from '../../ui/chart/chart-renderer.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { provideZoneChangeDetection } from '@angular/core';
@@ -8,10 +8,10 @@ import { Router, provideRouter } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { of, ReplaySubject } from 'rxjs';
 
-import { routes } from '../../app.routes';
+import { routes } from '../../../app.routes';
 
-import type { Olympic } from '../../models/olympic';
-import { DataService } from '../../services/data.service';
+import type { Olympic } from '../../models/olympic.model';
+import { OlympicDataService } from '../../services/olympic-data.service';
 import { CountryComponent } from './country.component';
 
 function countrySummary(component: CountryComponent) {
@@ -32,19 +32,19 @@ function chartAt(page: HTMLElement | null) {
 
 describe('CountryComponent', () => {
   let data: ReplaySubject<readonly Olympic[]>;
-  let dataService: jasmine.SpyObj<DataService>;
+  let dataService: jasmine.SpyObj<OlympicDataService>;
   let component: CountryComponent;
 
   beforeEach(() => {
     data = new ReplaySubject<readonly Olympic[]>(1);
-    dataService = jasmine.createSpyObj<DataService>('DataService', ['getOlympics']);
+    dataService = jasmine.createSpyObj<OlympicDataService>('OlympicDataService', ['getOlympics']);
     dataService.getOlympics.and.returnValue(data.asObservable());
     TestBed.configureTestingModule({
       imports: [CountryComponent],
       providers: [
         provideZoneChangeDetection(),
         provideRouter(routes),
-        { provide: DataService, useValue: dataService },
+        { provide: OlympicDataService, useValue: dataService },
       ],
     });
   });
@@ -116,7 +116,7 @@ describe('CountryComponent', () => {
     ]);
     data.complete();
     harness.detectChanges();
-    await renderCharts(harness.fixture);
+    await renderDeferredBlocks(harness.fixture);
     expect(countrySummary(component).name).toBe('France');
 
     const reused = await harness.navigateByUrl('/country/2', CountryComponent);
@@ -163,7 +163,7 @@ describe('CountryComponent', () => {
     ]);
 
     harness.detectChanges();
-    await renderCharts(harness.fixture);
+    await renderDeferredBlocks(harness.fixture);
 
     expect(component).toBeTruthy();
     expect(countrySummary(component).name).toBe('France');
@@ -219,7 +219,7 @@ describe('CountryComponent', () => {
     expect(countrySummary(component).athleteEntries).toBe(0);
     expect(chartSpy).not.toHaveBeenCalled();
     harness.detectChanges();
-    await renderCharts(harness.fixture);
+    await renderDeferredBlocks(harness.fixture);
     expect(harness.routeNativeElement?.querySelector('app-header')?.textContent).toContain(
       'France',
     );
@@ -308,7 +308,7 @@ describe('CountryComponent', () => {
         new HttpErrorResponse({ status: scenario.status, error: 'private server details' }),
       );
       harness.detectChanges();
-      await renderCharts(harness.fixture);
+      await renderDeferredBlocks(harness.fixture);
 
       expect(harness.routeNativeElement?.querySelector('[role="alert"]')?.textContent?.trim()).toBe(
         scenario.message,
@@ -331,12 +331,12 @@ describe('CountryComponent', () => {
       },
     ]);
     harness.detectChanges();
-    await renderCharts(harness.fixture);
+    await renderDeferredBlocks(harness.fixture);
     expect(harness.routeNativeElement?.querySelector('canvas')).not.toBeNull();
 
     data.error(new HttpErrorResponse({ status: 503 }));
     harness.detectChanges();
-    await renderCharts(harness.fixture);
+    await renderDeferredBlocks(harness.fixture);
 
     expect(
       harness.routeNativeElement?.querySelector('[role="alert"]')?.textContent?.trim(),

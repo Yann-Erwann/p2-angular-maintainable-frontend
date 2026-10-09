@@ -1,4 +1,4 @@
-import type { Olympic, Participation } from '../../models/olympic';
+import type { Olympic, Participation } from '../../models/olympic.model';
 import { createCountryState, summarizeCountry } from './country-view-model';
 
 const participation = (id: number, year: number, medalsCount: number): Participation =>

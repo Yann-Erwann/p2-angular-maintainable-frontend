@@ -1,4 +1,4 @@
-import { renderCharts } from '../testing/render-charts';
+import { renderDeferredBlocks } from '../testing/render-deferred-blocks';
 import { Chart } from 'chart.js';
 import { Location } from '@angular/common';
 import { provideLocationMocks } from '@angular/common/testing';
@@ -8,9 +8,9 @@ import { NavigationEnd, Router } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { filter, firstValueFrom } from 'rxjs';
 import { appConfig } from './app.config';
-import type { Olympic } from './models/olympic';
-import { CountryComponent } from './pages/country/country.component';
-import { HomeComponent } from './pages/home/home.component';
+import type { Olympic } from './olympics/models/olympic.model';
+import { CountryComponent } from './olympics/pages/country/country.component';
+import { HomeComponent } from './olympics/pages/home/home.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 function countrySummary(component: CountryComponent) {
@@ -66,7 +66,7 @@ describe('Country routing', () => {
     country = await harness.navigateByUrl('/country/2', CountryComponent);
     http.expectOne(url).flush(countries);
     harness.detectChanges();
-    await renderCharts(harness.fixture);
+    await renderDeferredBlocks(harness.fixture);
 
     expect(countrySummary(country).name).toBe('Italy');
     expect(countrySummary(country).totalMedals).toBe(15);
@@ -79,7 +79,7 @@ describe('Country routing', () => {
     country = await harness.navigateByUrl('/country/1', CountryComponent);
     http.expectOne(url).flush(countries);
     harness.detectChanges();
-    await renderCharts(harness.fixture);
+    await renderDeferredBlocks(harness.fixture);
     const previousChart = chartAt(harness.routeNativeElement);
     const destroy = spyOn(previousChart, 'destroy').and.callThrough();
 
@@ -87,7 +87,7 @@ describe('Country routing', () => {
     expect(reused).toBe(country);
     http.expectNone(url);
     harness.detectChanges();
-    await renderCharts(harness.fixture);
+    await renderDeferredBlocks(harness.fixture);
     expect(destroy).toHaveBeenCalledTimes(1);
     expect(countrySummary(country).name).toBe('Italy');
     expect(countrySummary(country).entries).toBe(1);
@@ -116,7 +116,7 @@ describe('Country routing', () => {
 
     request.flush(countries);
     harness.detectChanges();
-    await renderCharts(harness.fixture);
+    await renderDeferredBlocks(harness.fixture);
     expect(countrySummary(country).name).toBe('Italy');
     expect(chartAt(harness.routeNativeElement).data.datasets[0].data).toEqual([15]);
     http.expectNone(url);
@@ -127,7 +127,7 @@ describe('Country routing', () => {
     country = await harness.navigateByUrl('/country/1', CountryComponent);
     http.expectOne(url).flush('Unavailable', { status: 503, statusText: 'Unavailable' });
     harness.detectChanges();
-    await renderCharts(harness.fixture);
+    await renderDeferredBlocks(harness.fixture);
     expect(country.state().status).toBe('error');
     expect(
       harness.routeNativeElement?.querySelector('[role="alert"]')?.textContent?.trim(),
@@ -136,7 +136,7 @@ describe('Country routing', () => {
     await harness.navigateByUrl('/country/2', CountryComponent);
     http.expectOne(url).flush(countries);
     harness.detectChanges();
-    await renderCharts(harness.fixture);
+    await renderDeferredBlocks(harness.fixture);
     expect(countrySummary(country).name).toBe('Italy');
     expect(document.title).toBe('Italy | Olympic Games');
     expect(country.state().status).toBe('success');
@@ -167,7 +167,7 @@ describe('Country routing', () => {
         http.expectNone(url);
       }
       harness.detectChanges();
-      await renderCharts(harness.fixture);
+      await renderDeferredBlocks(harness.fixture);
       const pie = chartAt(harness.routeNativeElement);
       const pieCanvas = pie.canvas;
       const destroyPie = spyOn(pie, 'destroy').and.callThrough();
@@ -177,7 +177,7 @@ describe('Country routing', () => {
       expect(Chart.getChart(pieCanvas)).toBeUndefined();
       http.expectNone(url);
       harness.detectChanges();
-      await renderCharts(harness.fixture);
+      await renderDeferredBlocks(harness.fixture);
       const line = chartAt(harness.routeNativeElement);
       const lineCanvas = line.canvas;
       const destroyLine = spyOn(line, 'destroy').and.callThrough();
@@ -194,7 +194,7 @@ describe('Country routing', () => {
       country = await harness.navigateByUrl('/country/1', CountryComponent);
       http.expectOne(url).flush(countries);
       harness.detectChanges();
-      await renderCharts(harness.fixture);
+      await renderDeferredBlocks(harness.fixture);
 
       await harness.navigateByUrl(`/country/${name}`, NotFoundComponent);
       expect(TestBed.inject(Router).url).toBe('/not-found');
@@ -207,7 +207,7 @@ describe('Country routing', () => {
       country = await harness.navigateByUrl('/country/2', CountryComponent);
       http.expectNone(url);
       harness.detectChanges();
-      await renderCharts(harness.fixture);
+      await renderDeferredBlocks(harness.fixture);
       expect(countrySummary(country).name).toBe('Italy');
       expect(chartAt(harness.routeNativeElement).data.datasets[0].data).toEqual([15]);
       http.expectNone(url);
@@ -222,7 +222,7 @@ describe('Country routing', () => {
     http.expectNone(url);
     expect(TestBed.inject(Router).url).toBe('/not-found');
     harness.detectChanges();
-    await renderCharts(harness.fixture);
+    await renderDeferredBlocks(harness.fixture);
     expect(TestBed.inject(Router).url).toBe('/not-found');
   });
 
@@ -231,7 +231,7 @@ describe('Country routing', () => {
     country = await harness.navigateByUrl('/country/2', CountryComponent);
     http.expectOne(url).flush([{ ...countries[1], country: 'Côte d’Ivoire' }]);
     harness.detectChanges();
-    await renderCharts(harness.fixture);
+    await renderDeferredBlocks(harness.fixture);
     expect(countrySummary(country).name).toBe('Côte d’Ivoire');
     expect(countrySummary(country).totalMedals).toBe(15);
   });
@@ -241,11 +241,11 @@ describe('Country routing', () => {
     country = await harness.navigateByUrl('/country/1', CountryComponent);
     http.expectOne(url).flush(countries);
     harness.detectChanges();
-    await renderCharts(harness.fixture);
+    await renderDeferredBlocks(harness.fixture);
     await harness.navigateByUrl('/country/2', CountryComponent);
     http.expectNone(url);
     harness.detectChanges();
-    await renderCharts(harness.fixture);
+    await renderDeferredBlocks(harness.fixture);
     const router = TestBed.inject(Router);
     const location = TestBed.inject(Location);
     router.setUpLocationChangeListener();
@@ -256,11 +256,11 @@ describe('Country routing', () => {
     location.back();
     await navigation;
     harness.detectChanges();
-    await renderCharts(harness.fixture);
+    await renderDeferredBlocks(harness.fixture);
     http.expectNone(url);
     await harness.fixture.whenStable();
     harness.detectChanges();
-    await renderCharts(harness.fixture);
+    await renderDeferredBlocks(harness.fixture);
     expect(router.url).toBe('/country/1');
     expect(countrySummary(country).name).toBe('France');
     expect(chartAt(harness.routeNativeElement).data.datasets[0].data).toEqual([10, 20]);
@@ -271,11 +271,11 @@ describe('Country routing', () => {
     location.forward();
     await navigation;
     harness.detectChanges();
-    await renderCharts(harness.fixture);
+    await renderDeferredBlocks(harness.fixture);
     http.expectNone(url);
     await harness.fixture.whenStable();
     harness.detectChanges();
-    await renderCharts(harness.fixture);
+    await renderDeferredBlocks(harness.fixture);
     expect(router.url).toBe('/country/2');
     expect(countrySummary(country).name).toBe('Italy');
     expect(chartAt(harness.routeNativeElement).data.datasets[0].data).toEqual([15]);
@@ -289,7 +289,7 @@ describe('Country routing', () => {
     harness.detectChanges();
     http.expectNone(url);
     harness.detectChanges();
-    await renderCharts(harness.fixture);
+    await renderDeferredBlocks(harness.fixture);
     expect(TestBed.inject(Router).url).toBe('/not-found');
     expect(harness.routeNativeElement?.querySelector('canvas')).toBeNull();
     expect(harness.routeNativeElement?.querySelector('.back-link')).toBeNull();
@@ -303,7 +303,7 @@ describe('Country routing', () => {
       await harness.navigateByUrl('/', HomeComponent);
       http.expectOne(url).flush([]);
       harness.detectChanges();
-      await renderCharts(harness.fixture);
+      await renderDeferredBlocks(harness.fixture);
       expect(harness.routeNativeElement?.textContent).toContain('No Olympic data available.');
     });
   }

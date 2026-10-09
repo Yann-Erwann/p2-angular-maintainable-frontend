@@ -1,16 +1,16 @@
-import { renderCharts } from '../../../testing/render-charts';
+import { renderDeferredBlocks } from '../../../../testing/render-deferred-blocks';
 import { Chart } from 'chart.js';
-import { ChartRenderer } from '../../olympics/chart/chart-renderer.service';
+import { ChartRenderer } from '../../ui/chart/chart-renderer.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { type ComponentFixture, TestBed } from '@angular/core/testing';
 import { ErrorHandler, provideZoneChangeDetection } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { OlympicChartComponent } from '../../olympics/chart/chart.component';
+import { OlympicChartComponent } from '../../ui/chart/chart.component';
 import { provideRouter, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 
-import type { Olympic } from '../../models/olympic';
-import { DataService } from '../../services/data.service';
+import type { Olympic } from '../../models/olympic.model';
+import { OlympicDataService } from '../../services/olympic-data.service';
 import { HomeComponent } from './home.component';
 
 function homeView(component: HomeComponent) {
@@ -32,18 +32,18 @@ describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
   let data: Subject<readonly Olympic[]>;
-  let dataService: jasmine.SpyObj<DataService>;
+  let dataService: jasmine.SpyObj<OlympicDataService>;
 
   beforeEach(async () => {
     data = new Subject<readonly Olympic[]>();
-    dataService = jasmine.createSpyObj<DataService>('DataService', ['getOlympics']);
+    dataService = jasmine.createSpyObj<OlympicDataService>('OlympicDataService', ['getOlympics']);
     dataService.getOlympics.and.returnValue(data.asObservable());
     await TestBed.configureTestingModule({
       imports: [HomeComponent],
       providers: [
         provideZoneChangeDetection(),
         provideRouter([]),
-        { provide: DataService, useValue: dataService },
+        { provide: OlympicDataService, useValue: dataService },
       ],
     }).compileComponents();
 
@@ -78,7 +78,7 @@ describe('HomeComponent', () => {
     data.next([{ id: 1, country: 'France', participations: [] }]);
     data.next([{ id: 2, country: 'Italy', participations: [] }]);
     fixture.detectChanges();
-    await renderCharts(fixture);
+    await renderDeferredBlocks(fixture);
     expect(chartSpy).toHaveBeenCalledTimes(1);
     expect(chartAt(fixture.nativeElement as HTMLElement).data.labels).toEqual(['Italy']);
     expect(homeView(component).rows.length).toBe(1);
@@ -99,7 +99,7 @@ describe('HomeComponent', () => {
     const navigate = spyOn(TestBed.inject(Router), 'navigate').and.resolveTo(true);
     data.next([{ id: 1, country: 'France', participations: [] }]);
     fixture.detectChanges();
-    await renderCharts(fixture);
+    await renderDeferredBlocks(fixture);
     const chart = fixture.debugElement.query(By.directive(OlympicChartComponent))
       .componentInstance as OlympicChartComponent;
     chart.pointSelected.emit(0);
@@ -163,7 +163,7 @@ describe('HomeComponent', () => {
     ]);
 
     fixture.detectChanges();
-    await renderCharts(fixture);
+    await renderDeferredBlocks(fixture);
 
     expect(homeView(component).rows.length).toBe(2);
     expect(homeView(component).indicators[1].value).toBe(2);
@@ -236,7 +236,7 @@ describe('HomeComponent', () => {
     const chartSpy = spyOn(TestBed.inject(ChartRenderer), 'create').and.callThrough();
     data.next([]);
     fixture.detectChanges();
-    await renderCharts(fixture);
+    await renderDeferredBlocks(fixture);
 
     const page = fixture.nativeElement as HTMLElement;
     expect(page.querySelector('[role="status"]')?.textContent?.trim()).toContain(
@@ -258,7 +258,7 @@ describe('HomeComponent', () => {
         new HttpErrorResponse({ status: scenario.status, error: 'private server details' }),
       );
       fixture.detectChanges();
-      await renderCharts(fixture);
+      await renderDeferredBlocks(fixture);
 
       const page = fixture.nativeElement as HTMLElement;
       expect(page.querySelector('[role="alert"]')?.textContent?.trim()).toBe(scenario.message);
@@ -278,13 +278,13 @@ describe('HomeComponent', () => {
       },
     ]);
     fixture.detectChanges();
-    await renderCharts(fixture);
+    await renderDeferredBlocks(fixture);
     const page = fixture.nativeElement as HTMLElement;
     expect(page.querySelector('canvas')).not.toBeNull();
 
     data.error(new HttpErrorResponse({ status: 503 }));
     fixture.detectChanges();
-    await renderCharts(fixture);
+    await renderDeferredBlocks(fixture);
 
     expect(page.querySelector('[role="alert"]')?.textContent?.trim()).toContain(
       'temporarily unavailable',
@@ -296,7 +296,7 @@ describe('HomeComponent', () => {
   it('should avoid invalid percentage values when no medals have been won', async () => {
     data.next([{ id: 1, country: 'France', participations: [] }]);
     fixture.detectChanges();
-    await renderCharts(fixture);
+    await renderDeferredBlocks(fixture);
     expect(homeView(component).rows[0].percentage).toBe(0);
     expect((fixture.nativeElement as HTMLElement).querySelector('tbody tr')?.textContent).toContain(
       '0%',

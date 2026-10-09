@@ -1,4 +1,4 @@
-import type { Olympic } from '../../models/olympic';
+import type { Olympic } from '../../models/olympic.model';
 import { summarizeOlympics } from './home-view-model';
 
 const country = (id: number, medalsCount: number, year = 2012): Olympic =>

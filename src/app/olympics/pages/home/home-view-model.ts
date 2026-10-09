@@ -1,7 +1,7 @@
-import type { Olympic } from '../../models/olympic';
-import { MEDAL_COLORS } from '../../olympics/chart/chart-colors';
-import type { ChartItem } from '../../olympics/chart/chart.model';
-import type { Indicator } from '../../olympics/header/indicator.model';
+import type { Olympic } from '../../models/olympic.model';
+import { MEDAL_COLORS } from '../../ui/chart/chart-colors';
+import type { ChartItem } from '../../ui/chart/chart.model';
+import type { Indicator } from '../../ui/header/indicator.model';
 
 export interface CountryMedalRow {
   readonly id: number;

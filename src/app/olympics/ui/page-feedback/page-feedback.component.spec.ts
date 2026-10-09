@@ -51,7 +51,7 @@ describe('PageFeedbackComponent', () => {
     fixture.detectChanges();
     const page = fixture.nativeElement as HTMLElement;
     expect(page.querySelector('.loading-skeleton')?.getAttribute('aria-hidden')).toBe('true');
-    expect(page.querySelectorAll('.loading-skeleton__indicator').length).toBe(2);
+    expect(page.querySelectorAll('.loading-skeleton__indicator')).toHaveSize(2);
     expect(page.querySelector('[role="status"]')?.textContent?.trim()).toContain(
       'Loading Olympic data',
     );
@@ -59,7 +59,7 @@ describe('PageFeedbackComponent', () => {
 
     fixture.componentRef.setInput('indicatorCount', 3);
     fixture.detectChanges();
-    expect(page.querySelectorAll('.loading-skeleton__indicator').length).toBe(3);
+    expect(page.querySelectorAll('.loading-skeleton__indicator')).toHaveSize(3);
 
     for (const state of [
       { status: 'success' },
