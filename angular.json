@@ -25,9 +25,12 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "src/favicon.ico",
               "src/robots.txt",
-              "src/assets"
+              {
+                "glob": "olympic.json",
+                "input": "src/assets/mock",
+                "output": "assets/mock"
+              }
             ],
             "styles": [
               "src/styles.scss"
@@ -37,6 +40,8 @@
           },
           "configurations": {
             "production": {
+              "optimization": true,
+              "aot": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -55,7 +60,18 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "sourceMap": false
+            },
+            "analysis": {
+              "sourceMap": {
+                "scripts": true,
+                "styles": false,
+                "vendor": true,
+                "hidden": false,
+                "sourcesContent": true
+              },
+              "statsJson": true
             },
             "development": {
               "optimization": false,

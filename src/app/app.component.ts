@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, afterNextRender, type AfterRenderRef, Component, DestroyRef, type ElementRef, ErrorHandler, inject, Injector, type OnInit, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, afterNextRender, type AfterRenderRef, Component, DestroyRef, type ElementRef, inject, Injector, type OnInit, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter, skip } from 'rxjs';
@@ -15,16 +15,8 @@ export class AppComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
   private readonly injector = inject(Injector);
-  private readonly errorHandler = inject(ErrorHandler);
   private readonly main = viewChild.required<ElementRef<HTMLElement>>('mainContent');
   private pendingFocus?: AfterRenderRef;
-
-  constructor() {
-    afterNextRender(() => {
-      void import('./olympics/chart/chart.component')
-        .catch((error: unknown) => this.errorHandler.handleError(error));
-    });
-  }
 
   ngOnInit() {
     this.destroyRef.onDestroy(() => this.pendingFocus?.destroy());
