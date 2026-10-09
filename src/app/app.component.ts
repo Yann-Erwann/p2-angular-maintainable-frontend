@@ -1,18 +1,25 @@
 import { ChangeDetectionStrategy, afterNextRender, type AfterRenderRef, Component, DestroyRef, type ElementRef, inject, Injector, type OnInit, viewChild } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Location } from '@angular/common';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
-import { filter, skip } from 'rxjs';
+import { filter, map, skip } from 'rxjs';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  host: { '[class.home-dashboard]': 'homeLayout()' },
   imports: [RouterLink, RouterOutlet]
 })
 export class AppComponent implements OnInit {
   title = 'olympic-games-starter';
   private readonly router = inject(Router);
+  private readonly location = inject(Location);
+  readonly homeLayout = toSignal(this.router.events.pipe(
+    filter((event) => event instanceof NavigationEnd),
+    map((event) => !this.router.parseUrl(event.urlAfterRedirects).root.children['primary']?.segments.length),
+  ), { initialValue: ['', '/'].includes(this.location.path().split(/[?#]/)[0]) });
   private readonly destroyRef = inject(DestroyRef);
   private readonly injector = inject(Injector);
   private readonly main = viewChild.required<ElementRef<HTMLElement>>('mainContent');

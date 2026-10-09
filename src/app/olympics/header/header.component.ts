@@ -7,9 +7,11 @@ import type { Indicator } from './indicator.model';
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
+  host: { '[class.dashboard]': "variant() === 'dashboard'" },
 })
 export class HeaderComponent {
   readonly title = input.required<string>();
   readonly indicators = input.required<readonly Indicator[]>();
   readonly loading = input(false);
+  readonly variant = input<'standard' | 'dashboard'>('standard');
 }

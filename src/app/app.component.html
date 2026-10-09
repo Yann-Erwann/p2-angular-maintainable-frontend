@@ -1,10 +1,21 @@
 <header class="brand-header">
   <nav aria-label="Main navigation">
   <a class="brand-link" routerLink="/" aria-label="Home — TéléSport">
+    @if (homeLayout()) {
+    <picture>
+      <source media="(max-width: 600px)" srcset="assets/images/teleSport-small.webp 438w, assets/images/teleSport.webp 874w" sizes="calc(100vw - 32px)" />
+      <img class="brand-banner" src="assets/images/teleSport-home.webp"
+      srcset="assets/images/teleSport-home-small.webp 670w, assets/images/teleSport-home.webp 1339w"
+      sizes="(min-width: 1500px) 1428px, calc(100vw - 72px)"
+      width="1339" height="211" alt="TéléSport — Olympic games app. Explore and compare Olympic medals across countries."
+      loading="eager" fetchpriority="high" />
+    </picture>
+    } @else {
     <img class="brand-banner" src="assets/images/teleSport.webp"
       srcset="assets/images/teleSport-small.webp 438w, assets/images/teleSport.webp 874w"
       sizes="(min-width: 544px) 512px, calc(100vw - 32px)"
-      width="874" height="251" alt="TéléSport — Olympic Games" fetchpriority="high" />
+      width="874" height="251" alt="TéléSport — Olympic Games" loading="eager" fetchpriority="high" />
+    }
   </a>
   </nav>
 </header>

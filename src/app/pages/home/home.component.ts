@@ -7,6 +7,7 @@ import { OlympicChartComponent } from '../../olympics/chart/chart.component';
 import { HeaderComponent } from '../../olympics/header/header.component';
 import { PageFeedbackComponent } from '../../olympics/page-feedback/page-feedback.component';
 import type { PageState } from '../../olympics/page-state';
+import { MEDAL_COLORS } from '../../olympics/chart/chart-colors';
 import { DataService } from '../../services/data.service';
 
 @Component({
@@ -22,10 +23,17 @@ export class HomeComponent implements OnInit {
   readonly summary = computed(() => {
     const state = this.pageState();
     const data = state.status === 'success' ? state.data : [];
+    const medals = data.map((country) => country.participations.reduce((total, item) => total + item.medalsCount, 0));
+    const totalMedals = medals.reduce((total, count) => total + count, 0);
     return {
+      breakdown: data.map((country, index) => ({
+        id: country.id, country: country.country, medals: medals[index],
+        percentage: totalMedals ? Math.round(medals[index] / totalMedals * 1000) / 10 : 0,
+        color: MEDAL_COLORS[index % MEDAL_COLORS.length],
+      })),
       ids: data.map((country) => country.id),
       countries: data.map((country) => country.country),
-      medals: data.map((country) => country.participations.reduce((total, item) => total + item.medalsCount, 0)),
+      medals,
       editions: new Set(data.flatMap((country) => country.participations.map((item) => item.year))).size,
     };
   });

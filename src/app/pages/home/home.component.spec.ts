@@ -179,7 +179,10 @@ describe('HomeComponent', () => {
       'Number of countries', '2', 'Number of JOs', '2',
     ]);
     expect(page.querySelector('canvas')).toBe(chartAt(fixture.nativeElement as HTMLElement).canvas);
-    expect(page.querySelector('table')).toBeNull();
+    expect(Array.from(page.querySelectorAll('tbody tr'), row =>
+      Array.from(row.querySelectorAll('th, td'), cell => cell.textContent?.trim()),
+    )).toEqual([['France', '30', '66.7%'], ['Italy', '15', '33.3%']]);
+    expect(page.querySelectorAll('thead th[scope="col"]').length).toBe(3);
     expect(page.querySelector('#country-medals-description')?.textContent).toContain('France: 30 medals.');
     expect(page.querySelector('#country-medals-description')?.textContent).toContain('Italy: 15 medals.');
     expect(page.querySelector('canvas')?.getAttribute('aria-describedby')).toBe('country-medals-description country-medals-description-keys');
@@ -248,6 +251,16 @@ describe('HomeComponent', () => {
     expect(page.querySelector('[role="alert"]')?.textContent).toContain('temporarily unavailable');
     expect(page.querySelector('app-header')).toBeNull();
     expect(page.querySelector('canvas')).toBeNull();
+  });
+
+  it('should avoid invalid percentage values when no medals have been won', async () => {
+    data.next([{ id: 1, country: 'France', participations: [] }]);
+    fixture.detectChanges();
+    await renderCharts(fixture);
+    expect(component.summary().breakdown[0].percentage).toBe(0);
+    expect((fixture.nativeElement as HTMLElement).querySelector('tbody tr')?.textContent).toContain('0%');
+    expect(chartAt(fixture.nativeElement as HTMLElement).isPluginEnabled('dashboardMedalLabels')).toBeTrue();
+    expect(chartAt(fixture.nativeElement as HTMLElement).legend?.options.display).toBeFalse();
   });
 
 });

@@ -90,6 +90,14 @@ describe('Accessible application navigation', () => {
     homeLink?.click();
     await fixture.whenStable();
     expect(router.url).toBe('/');
+    fixture.detectChanges();
+    expect(fixture.componentInstance.homeLayout()).toBeTrue();
+    expect(page.querySelector('.brand-banner')?.getAttribute('src')).toBe('assets/images/teleSport-home.webp');
+    await router.navigateByUrl('/country/2');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(fixture.componentInstance.homeLayout()).toBeFalse();
+    expect(page.querySelector('.brand-banner')?.getAttribute('src')).toBe('assets/images/teleSport.webp');
     http.verify();
   });
 });
