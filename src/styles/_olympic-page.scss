@@ -1,0 +1,36 @@
+.olympic-page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.5rem;
+
+  > * {
+    min-width: 0;
+  }
+
+  > hr {
+    width: 100%;
+    margin: 0;
+  }
+
+  > .page-title,
+  > .chart-card {
+    margin: 0;
+  }
+
+  > .chart-card {
+    position: relative;
+    width: 100%;
+    max-width: 64rem;
+    justify-self: center;
+  }
+}
+.chart-placeholder {
+  display: grid;
+  place-items: center;
+  height: clamp(18rem, 45vw, 28rem);
+  padding: 1rem;
+  border: 1px solid #dbe5e8;
+  border-radius: 0.75rem;
+  background: #eef4f6;
+  text-align: center;
+}

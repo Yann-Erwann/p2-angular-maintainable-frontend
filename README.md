@@ -46,6 +46,9 @@ de préchargement des modules initiaux. Le graphique d’accueil est chargé ave
 l’application en développement et en production. Le workflow ajoute seulement
 le manifeste de livraison `release.json` avant les tests.
 Le JSON et le fond de bannière sont préchargés depuis le HTML initial. Le graphique d’accueil apparaît dès que les données sont disponibles.
+En production, Angular intègre le CSS critique au HTML et charge la feuille globale
+sans bloquer le rendu. Les styles de mise en page sont chargés avec chaque page
+pour éviter les déplacements lors de l’arrivée de cette feuille.
 
 ```bash
 pnpm run preview

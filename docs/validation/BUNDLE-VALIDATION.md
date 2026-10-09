@@ -393,3 +393,13 @@ Le CLS mobile reproduit à 0,456 avec la feuille globale retardée de deux secon
 passe à zéro après désactivation de `inlineCritical` : la feuille complète
 minifiée est chargée avant le premier rendu. Les scores Lighthouse précédents
 ne constituent pas une nouvelle mesure complète de cette révision.
+
+## Réactivation du CSS critique — 9 octobre 2026
+
+La correction actuelle remplace la désactivation décrite ci-dessus :
+`inlineCritical` est activé, les styles communs de mise en page sont inclus avec
+les composants des pages et le titre de repli reprend la classe masquée de
+l’accueil. Activer uniquement `inlineCritical` reproduisait un CLS de 0,23.
+Après correction, une feuille globale retardée de deux secondes produit un CLS
+de zéro sur l’accueil et la France, à 320, 768 et 1280 px. Le détail des contrôles
+actuels figure dans [VALIDATION.md](VALIDATION.md).

@@ -1,5 +1,21 @@
 # Validation de la consolidation — 9 octobre 2026
 
+## CSS critique
+
+Le build de production utilise `inlineCritical: true`. Les styles de mise en page
+communs sont inclus dans les composants des pages, et le titre de repli utilise
+la même classe masquée que le titre de l’accueil. La feuille globale peut ainsi
+arriver après le premier rendu sans déplacer le graphique.
+
+Avec cette feuille retardée de deux secondes, Chromium mesure un CLS de zéro
+sur l’accueil et la France à 320, 768 et 1280 px. Deux tests de régression mobile
+complètent les parcours existants : 175 tests unitaires et 15 tests navigateur
+passent, ainsi que lint, vérification des types et build de production.
+Le bundle initial mesure 492,90 kB bruts (140,38 kB estimés au transfert).
+Aucun nouveau score Lighthouse ni gain de 300 ms n’a été mesuré.
+
+Ces modifications CSS n’ont pas encore été déployées.
+
 ## Contrôle de livraison après simplification
 
 Les builds de développement et de production préfixée passent. Le HTML de chacun

@@ -238,3 +238,37 @@ test('the entire country banner links back to home', async ({ page }, testInfo) 
     await expect(page.locator('[data-page-heading]')).toBeFocused();
   }
 });
+
+for (const route of ['#/', '#/country/5']) {
+  test(`critical styles keep ${route} stable while the stylesheet is delayed`, async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 1000 });
+    await page.addInitScript(() => {
+      let cls = 0;
+      new PerformanceObserver((list) => {
+        for (const entry of list.getEntries()) {
+          const shift = entry as PerformanceEntry & { value: number; hadRecentInput: boolean };
+          if (!shift.hadRecentInput) cls += shift.value;
+        }
+      }).observe({ type: 'layout-shift', buffered: true });
+      Object.defineProperty(window, '__cls', { get: () => cls });
+    });
+    await page.route('**/styles-*.css', async (request) => {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await request.continue();
+    });
+    const stylesheet = page.waitForResponse((response) =>
+      /\/styles-[^/]+\.css$/.test(response.url()),
+    );
+    await page.goto(route, { waitUntil: 'domcontentloaded' });
+    await expect(page.locator('canvas')).toBeVisible();
+    await (await stylesheet).finished();
+    await page.evaluate(
+      () =>
+        new Promise<void>((resolve) => {
+          requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+        }),
+    );
+    const cls = await page.evaluate(() => Reflect.get(window, '__cls') as number);
+    expect(cls, 'Late CSS must not move the page').toBeLessThan(0.01);
+  });
+}
