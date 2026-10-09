@@ -68,19 +68,24 @@ statiques dans `dist/olympic-games-starter/browser/`. Pour un build de développ
 pnpm run build --configuration development
 ```
 
-Le build utilise directement Angular CLI. La page d’accueil est incluse dans le
-bundle initial ; la page détail utilise `loadComponent` et son code est préchargé
-par `withPreloading(PreloadAllModules)` après la navigation initiale.
-Le préchargement des graphiques utilise les propriétés natives de `@defer`.
-Le HTML précharge `assets/mock/olympic.json` et `favicon.ico` avec des liens
-`rel="preload"`. Le JSON utilise `as="fetch"` et `crossorigin="anonymous"` pour
-que DataService réutilise la réponse ; le favicon est chargé avec une priorité
-basse. Angular gère le nom hashé du module Chart.js à chaque build.
-`AppComponent` précharge également le module du graphique après son premier
-rendu, y compris sur les routes inconnues. Ses imports chargent les chunks
-partagés ; tous les chunks du build courant sont ainsi téléchargés. Le
-préchargement ne crée aucune instance de graphique et ses erreurs sont
-signalées via `ErrorHandler`.
+`pnpm run build` utilise Angular CLI directement, avec `optimization` et `aot`
+activés en production : minification JS/CSS, tree-shaking et CSS critique inline.
+Angular génère les liens `modulepreload` de son graphe initial. La page d’accueil
+est incluse dans le bundle initial ; la page pays utilise `loadComponent` et se
+télécharge lorsqu’elle est visitée. Les graphiques utilisent `@defer` après une
+réponse valide : affichage à l’entrée dans le viewport et préchargement sur idle.
+Les pages d’erreur ne téléchargent aucun module graphique. DataService charge
+le JSON seulement sur les pages qui en ont besoin et partage la réponse.
+Le build copie uniquement `robots.txt`, les données JSON et les deux versions
+WebP de la bannière TéléSport. Le PNG original reste dans les sources.
+La bannière commune renvoie à l’accueil et remplace les liens « Go back ».
+Elle utilise `srcset`, des dimensions réservées et un ratio fixe pour limiter
+le transfert et éviter les déplacements de mise en page : 10,5 kB à 874 px et
+5 kB à 438 px, contre 172 kB pour le PNG.
+Le favicon est intégré en base64 dans le lien `rel="icon"` : aucune
+requête réseau n’est nécessaire pour l’icône de l’onglet. Si `src/favicon.ico`
+change, mettre également à jour sa copie base64 dans `src/index.html`.
+Angular gère le nom hashé des modules à chaque build.
 
 Les tests utilisent Karma/Jasmine, des réponses HTTP simulées pour le service
 et des doubles de `DataService` pour les pages. Ils couvrent
@@ -102,6 +107,27 @@ Pour vérifier séparément les configurations TypeScript :
 pnpm tsc --noEmit -p tsconfig.app.json
 pnpm tsc --noEmit -p tsconfig.spec.json
 ```
+
+## Analyser le JavaScript de production
+
+```bash
+pnpm run build:analyze
+pnpm run preview
+```
+
+La commande combine les configurations `production,analysis` : elle conserve
+les optimisations de production et génère les source maps JavaScript, avec
+le contenu des sources et les maps disponibles des dépendances, ainsi que
+`dist/olympic-games-starter/stats.json`. Les fichiers `.js.map` et leurs liens
+`sourceMappingURL` permettent à Chrome DevTools de retrouver les fichiers
+originaux. Utiliser l’onglet Coverage pendant la navigation et les interactions
+pour identifier le code non exécuté. Importer `stats.json` dans
+[l’analyseur officiel esbuild](https://esbuild.github.io/analyze/) pour examiner
+la composition des bundles. Les source maps facilitent l’analyse ; elles ne
+réduisent pas elles-mêmes le JavaScript.
+
+`pnpm run build` régénère le build de production habituel sans source maps.
+Voir la [configuration des source maps Angular](https://angular.dev/reference/configs/workspace-config#source-map-configuration).
 
 ## Prévisualiser le build de production
 
@@ -162,13 +188,14 @@ HTTP encore en cours si aucun autre consommateur ne l’utilise et arrête
 l’écoute des paramètres.
 
 `OlympicChartComponent` utilise
-`@defer (on viewport; prefetch when state.status === 'loading' || state.status === 'success')` :
-les indicateurs et le tableau restent accessibles avant le graphique. Un
+`@defer (on viewport; prefetch on idle)` à l’intérieur de l’état de succès :
+les indicateurs et la description accessible
+restent disponibles avant le graphique. Un
 emplacement de même hauteur limite les déplacements de mise en page, et un
 message explicite signale un échec du chargement JavaScript du graphique.
-Le bloc existe pendant le chargement des données : son code est téléchargé en
-parallèle de la requête HTTP. Le graphique est créé seulement après une réponse
-valide et lorsque son emplacement devient visible. Les états d’erreur et vide
+Le bloc est créé après une réponse valide ; les états d’erreur et vide ne
+demandent pas Chart.js. Le graphique est créé lorsque son emplacement devient
+visible. Les états d’erreur et vide
 gardent le panneau masqué. La légende et les infobulles Chart.js sont conservées.
 Voir la [documentation Angular sur le préchargement des blocs différés](https://angular.dev/guide/templates/defer#prefetching-data-with-prefetch).
 Le composant possède son canvas et reçoit uniquement le type du
@@ -188,12 +215,13 @@ indication lorsque JavaScript est désactivé.
 
 Les URL publiques utilisent `/country/:id`, avec un identifiant entier positif
 sûr (par exemple `/country/1`). Les anciennes URL par nom ne sont plus valides.
-Un ID mal formé est rejeté avant tout appel HTTP de DataService ; le préchargement
-HTML du JSON reste commun à toutes les routes. Un ID absent de la collection
+La configuration actuelle utilise `withHashLocation` : dans le navigateur,
+les liens sont de la forme `/#/country/1`.
+Un ID mal formé est rejeté sans requête JSON. Un ID absent de la collection
 validée affiche `Country not found.`. `/country` et les URL hors des routes
-définies affichent la page inconnue. Tous les liens de retour ciblent `/`.
+définies affichent la page inconnue. La bannière TéléSport renvoie à `/`.
 Le titre du document reprend le nom du pays chargé. Le clic du graphique et
-les liens du tableau utilisent les mêmes ID, indépendamment des libellés.
+la sélection directe dans Chart.js utilise les mêmes ID, indépendamment des libellés.
 Les tests couvrent les accès directs, l’historique simulé et l’annulation des
 requêtes lors de changements rapides de pays.
 Le repli serveur nécessaire au rechargement des URL profondes en production
@@ -220,18 +248,30 @@ indicateurs de l’accueil ou les trois du détail, puis le graphique. Les blocs
 sont masqués aux lecteurs d’écran ; la région de statut annonce le chargement.
 Le squelette est retiré dès la réception des données ou d’une erreur.
 
-Les pages utilisent une grille de 4 colonnes sur mobile (≤ 767 px), 8 sur
-tablette (768–1199 px) et 12 sur desktop (≥ 1200 px). Le graphique et
-le tableau sont côte à côte sur desktop ; ils sont empilés aux autres tailles.
+Les tableaux sous les graphiques ont été retirés. Le graphique occupe une
+colonne centrée sur toutes les tailles, avec une largeur maximale de 64 rem.
 Les indicateurs sont empilés sur mobile.
 
 La mise en page et les graphiques sont vérifiés à 320, 480, 768, 1024 et
 1280 pixels. Les constats, mesures, états et limites sont consignés dans
 [UI-VALIDATION.md](UI-VALIDATION.md).
 
-Chaque pays dispose d'un lien natif utilisable au clavier et les données
-des graphiques sont aussi présentées dans des tableaux. Un lien d'évitement,
-des titres de page et un focus visible accompagnent la navigation. Les
+La structure utilise `header`, `nav` et un unique `main`. Chaque page forme
+une `section` reliée à son titre ; les graphiques sont des `figure` avec
+`figcaption`, et les statistiques utilisent `dl`, `dt` et `dd`.
+
+Les données des graphiques sont décrites dans un texte destiné aux lecteurs
+d'écran, relié au canvas par `aria-describedby`. La sélection des pays au
+clavier se fait directement dans le canvas : Tab passe au pays ou à l’année
+suivante et Maj+Tab revient à la précédente. Aux extrémités, le focus sort
+normalement du graphique. Les flèches, Home et End restent disponibles.
+Entrée ou Espace ouvre le pays sélectionné. La sélection est surlignée et annoncée.
+Le canvas contient aussi les valeurs comme texte de remplacement et son
+fond blanc est peint directement à chaque dessin.
+Tab et Maj+Tab parcourent la bannière, les titres, chaque indicateur,
+le graphique sans piège de focus. Le lien « Skip to main
+content » est supprimé à la demande du projet. Après une navigation,
+le titre de la nouvelle page reçoit le focus. Les
 contrastes et les régions d'annonce ont été vérifiés sur le périmètre décrit
 dans [ACCESSIBILITY.md](ACCESSIBILITY.md). L'écoute avec un lecteur d'écran
 et l'audit RGAA complet restent à réaliser.
