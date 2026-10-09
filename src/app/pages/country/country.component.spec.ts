@@ -148,7 +148,7 @@ describe('CountryComponent', () => {
       ['2012', 'London', '10', '100'],
       ['2016', 'Rio de Janeiro', '20', '150'],
     ]);
-    expect(page?.querySelector('canvas')?.getAttribute('aria-describedby')).toBe(page?.querySelector('caption')?.id);
+    expect(page?.querySelector('canvas')?.getAttribute('aria-describedby')).toBe(page?.querySelector('caption')?.id + ' ' + page?.querySelector('caption')?.id + '-keys');
     expect(page?.querySelectorAll('thead th[scope="col"]').length).toBe(4);
   });
 

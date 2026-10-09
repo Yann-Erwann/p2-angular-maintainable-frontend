@@ -105,6 +105,11 @@ describe('HomeComponent', () => {
     chart.pointSelected.emit(0);
     await fixture.whenStable();
     expect(navigate).toHaveBeenCalledOnceWith(['/country', 1]);
+    const canvas = (fixture.nativeElement as HTMLElement).querySelector('canvas');
+    canvas?.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    await fixture.whenStable();
+    expect(navigate).toHaveBeenCalledTimes(2);
+    expect(navigate.calls.mostRecent().args).toEqual([['/country', 1]]);
   });
 
   it('should navigate by ID for duplicate names and ignore invalid chart indices', async () => {
@@ -177,7 +182,7 @@ describe('HomeComponent', () => {
       Array.from(row.querySelectorAll('th, td'), cell => cell.textContent?.trim()),
     )).toEqual([['France', '30'], ['Italy', '15']]);
     expect(Array.from(page.querySelectorAll('tbody a'), link => link.getAttribute('href'))).toEqual(['/country/1', '/country/2']);
-    expect(page.querySelector('canvas')?.getAttribute('aria-describedby')).toBe(page.querySelector('caption')?.id);
+    expect(page.querySelector('canvas')?.getAttribute('aria-describedby')).toBe(page.querySelector('caption')?.id + ' ' + page.querySelector('caption')?.id + '-keys');
     expect(page.querySelector('canvas')?.getAttribute('role')).toBe('img');
     expect(page.querySelectorAll('thead th[scope="col"]').length).toBe(2);
     expect(page.querySelectorAll('tbody th[scope="row"]').length).toBe(2);

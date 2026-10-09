@@ -10,7 +10,7 @@ describe('OlympicChartComponent', () => {
 
   beforeEach(() => {
     renderer = jasmine.createSpyObj<ChartRenderer>('ChartRenderer', ['create']);
-    chart = jasmine.createSpyObj<RenderedChart>('RenderedChart', ['destroy']);
+    chart = jasmine.createSpyObj<RenderedChart>('RenderedChart', ['destroy', 'focusPoint']);
     renderer.create.and.returnValue(chart);
     TestBed.configureTestingModule({
       imports: [OlympicChartComponent],
@@ -34,7 +34,7 @@ describe('OlympicChartComponent', () => {
 
   it('should release the previous instance before replacing changed data', () => {
     fixture.detectChanges();
-    const replacement = jasmine.createSpyObj<RenderedChart>('replacement', ['destroy']);
+    const replacement = jasmine.createSpyObj<RenderedChart>('replacement', ['destroy', 'focusPoint']);
     renderer.create.and.callFake(() => {
       expect(chart.destroy.calls.count()).toBe(1);
       return replacement;
@@ -92,4 +92,97 @@ describe('OlympicChartComponent', () => {
     expect(firstCanvas).not.toBe(secondCanvas);
     expect((other.nativeElement as HTMLElement).querySelector('canvas')).toBe(secondCanvas);
   });
+  it('should explore and open countries on the canvas without rebuilding or trapping Tab', () => {
+    fixture.componentRef.setInput('labels', ['France', 'Italy']);
+    fixture.componentRef.setInput('values', [30, 20]);
+    fixture.detectChanges();
+    const canvas = (fixture.nativeElement as HTMLElement).querySelector('canvas')!;
+    const selected = jasmine.createSpy('selected');
+    fixture.componentInstance.pointSelected.subscribe(selected);
+    const key = (value: string) => {
+      const event = new KeyboardEvent('keydown', { key: value, bubbles: true, cancelable: true });
+      canvas.dispatchEvent(event);
+      fixture.detectChanges();
+      return event;
+    };
+    canvas.dispatchEvent(new FocusEvent('focus'));
+    expect(chart.focusPoint.calls.mostRecent().args).toEqual([0]);
+    expect(key('ArrowLeft').defaultPrevented).toBeTrue();
+    expect(fixture.componentInstance.selection()).toBe('Italy: 20 medals');
+    expect(chart.focusPoint.calls.mostRecent().args).toEqual([1]);
+    key('ArrowRight');
+    expect(fixture.componentInstance.selectedIndex()).toBe(0);
+    key('End');
+    key('Enter');
+    expect(selected).toHaveBeenCalledOnceWith(1);
+    key('Home');
+    expect(fixture.componentInstance.selectedIndex()).toBe(0);
+    expect(key('Tab').defaultPrevented).toBeTrue();
+    expect(fixture.componentInstance.selectedIndex()).toBe(1);
+    expect(key('Tab').defaultPrevented).toBeFalse();
+    expect(renderer.create.calls.count()).toBe(1);
+    (fixture.nativeElement as HTMLElement).dispatchEvent(new FocusEvent('focusout', { relatedTarget: document.body }));
+    expect(chart.focusPoint.calls.mostRecent().args).toEqual([null]);
+  });
+
+  it('should explore years without emitting a country navigation', () => {
+    fixture.componentRef.setInput('type', 'line');
+    fixture.componentRef.setInput('labels', [2012, 2016]);
+    fixture.componentRef.setInput('values', [10, 20]);
+    fixture.detectChanges();
+    const selected = jasmine.createSpy('selected');
+    fixture.componentInstance.pointSelected.subscribe(selected);
+    fixture.componentInstance.move(1);
+    expect(fixture.componentInstance.selection()).toBe('2016: 20 medals');
+    fixture.componentInstance.onKeydown(new KeyboardEvent('keydown', { key: 'Enter' }));
+    expect(selected).not.toHaveBeenCalled();
+    expect((fixture.nativeElement as HTMLElement).querySelector('button')).toBeNull();
+  });
+
+  it('should provide complete fallback data and accessible keyboard instructions without buttons', () => {
+    fixture.componentRef.setInput('labels', ['France', 'Italy']);
+    fixture.componentRef.setInput('values', [30, 20]);
+    fixture.detectChanges();
+    const page = fixture.nativeElement as HTMLElement;
+    const canvas = page.querySelector('canvas')!;
+    expect(canvas.textContent).toBe('France: 30 medals. Italy: 20 medals.');
+    expect(canvas.getAttribute('role')).toBe('img');
+    expect(canvas.getAttribute('aria-label')).toBe('Total medals by country chart');
+    expect(canvas.getAttribute('aria-describedby')).toBe('data-caption data-caption-keys');
+    expect(page.querySelector('#data-caption-keys')?.textContent).toContain('Enter or Space');
+    expect(page.querySelector('button')).toBeNull();
+    fixture.componentInstance.onKeydown(new KeyboardEvent('keydown', { key: 'ArrowRight' }));
+    fixture.detectChanges();
+    expect(page.querySelector('[role="status"]')?.textContent).toBe('Italy: 20 medals');
+  });
+
+  it('should visit every chart item with Tab and allow exiting at either boundary', () => {
+    fixture.componentRef.setInput('labels', ['France', 'Italy', 'Spain']);
+    fixture.componentRef.setInput('values', [30, 20, 10]);
+    fixture.detectChanges();
+    const canvas = (fixture.nativeElement as HTMLElement).querySelector('canvas')!;
+    const tab = (shiftKey = false) => {
+      const event = new KeyboardEvent('keydown', { key: 'Tab', shiftKey, bubbles: true, cancelable: true });
+      canvas.dispatchEvent(event);
+      fixture.detectChanges();
+      return event.defaultPrevented;
+    };
+    canvas.dispatchEvent(new FocusEvent('focus'));
+    expect(fixture.componentInstance.selectedIndex()).toBe(0);
+    expect(tab()).toBeTrue();
+    expect(fixture.componentInstance.selection()).toBe('Italy: 20 medals');
+    expect(tab()).toBeTrue();
+    expect(fixture.componentInstance.selection()).toBe('Spain: 10 medals');
+    expect(tab()).toBeFalse();
+    expect(tab(true)).toBeTrue();
+    expect(fixture.componentInstance.selectedIndex()).toBe(1);
+    expect(tab(true)).toBeTrue();
+    expect(fixture.componentInstance.selectedIndex()).toBe(0);
+    expect(tab(true)).toBeFalse();
+    fixture.componentInstance.rememberTabDirection(new KeyboardEvent('keydown', { key: 'Tab', shiftKey: true }));
+    canvas.dispatchEvent(new FocusEvent('focus'));
+    expect(fixture.componentInstance.selectedIndex()).toBe(2);
+    expect(renderer.create.calls.count()).toBe(1);
+  });
+
 });

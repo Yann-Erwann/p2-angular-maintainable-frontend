@@ -54,4 +54,33 @@ describe('ChartRenderer', () => {
     chart.options.onClick?.call(chart, event, [], chart);
     expect(selected).toHaveBeenCalledOnceWith(1);
   });
+  for (const type of ['pie', 'line'] as const) {
+    it(`should highlight the keyboard-selected ${type} item and its tooltip`, () => {
+      rendered = TestBed.inject(ChartRenderer).create(canvas, { type, labels: ['First', 'Second'], values: [10, 20] }, () => undefined);
+      const chart = Chart.getChart(canvas)!;
+      rendered.focusPoint(1);
+      expect(chart.getActiveElements().map(item => item.index)).toEqual([1]);
+      expect(chart.tooltip?.getActiveElements().map(item => item.index)).toEqual([1]);
+      rendered.focusPoint(null);
+      expect(chart.getActiveElements()).toEqual([]);
+      expect(chart.tooltip?.getActiveElements()).toEqual([]);
+      rendered.focusPoint(99);
+      expect(chart.getActiveElements()).toEqual([]);
+    });
+  }
+
+  it('should paint an opaque white canvas background after every redraw', () => {
+    rendered = TestBed.inject(ChartRenderer).create(canvas, { type: 'pie', labels: ['France'], values: [10] }, () => undefined);
+    const chart = Chart.getChart(canvas)!;
+    const context = canvas.getContext('2d')!;
+    const backgroundPixel = () => Array.from(context.getImageData(0, 0, 1, 1).data);
+    expect(backgroundPixel()).toEqual([255, 255, 255, 255]);
+    rendered.focusPoint(0);
+    expect(backgroundPixel()).toEqual([255, 255, 255, 255]);
+    chart.resize(400, 300);
+    chart.update('none');
+    expect(backgroundPixel()).toEqual([255, 255, 255, 255]);
+    expect(chart.options.color).toBe('#23343b');
+  });
+
 });

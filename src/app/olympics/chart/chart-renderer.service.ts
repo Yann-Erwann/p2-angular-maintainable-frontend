@@ -1,5 +1,16 @@
 import { Injectable } from '@angular/core';
-import { ArcElement, CategoryScale, Chart, Legend, LinearScale, LineController, LineElement, PieController, PointElement, Tooltip } from 'chart.js';
+import { ArcElement, CategoryScale, Chart, Legend, LinearScale, LineController, LineElement, PieController, PointElement, Tooltip, type Plugin } from 'chart.js';
+
+const accessibleBackground: Plugin = {
+  id: 'accessibleCanvasBackground',
+  beforeDraw: ({ ctx, width, height }) => {
+    ctx.save();
+    ctx.globalCompositeOperation = 'destination-over';
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, width, height);
+    ctx.restore();
+  },
+};
 
 Chart.register(ArcElement, CategoryScale, Legend, LinearScale, LineController, LineElement, PieController, PointElement, Tooltip);
 
@@ -11,6 +22,7 @@ export interface OlympicChartData {
 
 export interface RenderedChart {
   destroy(): void;
+  focusPoint(index: number | null): void;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -22,6 +34,7 @@ export class ChartRenderer {
   ): RenderedChart {
     const chart = new Chart(canvas, {
       type: data.type,
+      plugins: [accessibleBackground],
       data: {
         labels: [...data.labels],
         datasets: [{
@@ -37,6 +50,7 @@ export class ChartRenderer {
       },
       options: {
         animation: false,
+        color: '#23343b',
         responsive: true,
         maintainAspectRatio: false,
         onClick: (event) => {
@@ -50,6 +64,15 @@ export class ChartRenderer {
         },
       },
     });
-    return { destroy: () => chart.destroy() };
+    return {
+      destroy: () => chart.destroy(),
+      focusPoint: (index) => {
+        const element = index === null ? undefined : chart.getDatasetMeta(0).data[index];
+        const active = element && index !== null ? [{ datasetIndex: 0, index }] : [];
+        chart.setActiveElements(active);
+        chart.tooltip?.setActiveElements(active, element instanceof ArcElement || element instanceof PointElement ? element.getCenterPoint(false) : { x: 0, y: 0 });
+        chart.update('none');
+      },
+    };
   }
 }
