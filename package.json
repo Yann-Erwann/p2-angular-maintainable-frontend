@@ -4,8 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
-    "build:analyze": "ng build --configuration production,analysis",
+    "build": "node scripts/build.mjs",
+    "build:analyze": "node scripts/build.mjs --configuration production,analysis",
     "preview": "pnpm dlx serve -s --config serve.json",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
