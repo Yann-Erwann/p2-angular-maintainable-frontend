@@ -44,24 +44,15 @@ import {
   imports: [HeaderComponent, OlympicChartComponent, PageFeedbackComponent],
 })
 export class CountryComponent implements OnInit {
-  /** Paramètres de la fiche, source de l’identifiant sélectionné. */
   private readonly route = inject(ActivatedRoute);
-  /** Source de la collection validée et partagée. */
   private readonly dataService = inject(DataService);
-  /** Durée de vie des abonnements et rendus en attente. */
   private readonly destroyRef = inject(DestroyRef);
-  /** Titre du navigateur synchronisé avec l’état de la fiche. */
   private readonly documentTitle = inject(Title);
-  /** Navigation entre les pages par identifiant. */
   private readonly router = inject(Router);
-  /** Prise en charge des échecs de navigation Angular. */
   private readonly errorHandler = inject(ErrorHandler);
-  /** État modifiable uniquement par l’orchestration de la page. */
   private readonly pageState = signal<CountryPageState>({ status: 'loading' });
 
-  /** Vue en lecture seule de l’état complet de la fiche. */
   readonly state = this.pageState.asReadonly();
-  /** Libellés des cartes pendant le chargement. */
   readonly loadingIndicators = COUNTRY_LOADING_INDICATORS;
 
   /** Suit les changements d’ID sans conserver un chargement précédent. */

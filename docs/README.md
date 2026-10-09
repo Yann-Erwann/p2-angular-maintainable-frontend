@@ -1,20 +1,24 @@
 # Documentation du projet
 
-Les chemins des commandes et des exemples de code sont relatifs à la racine du dépôt.
+## Guides actuels
 
-| Sujet                   | Document                                                                                                                                               |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Architecture actuelle   | [Architecture](architecture/architecture.md)                                                                                                           |
-| Décisions techniques    | [États des pages](decisions/001-page-state.md), [cache HTTP](decisions/002-http-cache.md), [frontière des graphiques](decisions/003-chart-boundary.md) |
-| Schéma modifiable       | [Arborescence cible](architecture/arborescence-cible.drawio)                                                                                           |
-| Analyse historique      | [Notes d’architecture](architecture/notes-architecture.md)                                                                                             |
-| Migration Angular       | [Migration](migration/MIGRATION.md)                                                                                                                    |
-| Vérifications actuelles | [Validation](validation/VALIDATION.md)                                                                                                                 |
-| Accessibilité           | [Revue d’accessibilité](validation/ACCESSIBILITY.md)                                                                                                   |
-| Bundles et performances | [Validation des bundles](validation/BUNDLE-VALIDATION.md)                                                                                              |
-| Interface et responsive | [Validation UI](validation/UI-VALIDATION.md)                                                                                                           |
-| Commentaires Compodoc   | [Conventions](compodoc-conventions.md)                                                                                                                 |
+- [README](../README.md) : installation, commandes et comportement des pages.
+- [Architecture](architecture/architecture.md) : responsabilités et contrats.
+- [Commentaires Compodoc](compodoc-conventions.md) : règles de rédaction.
+- [Contribution](../CONTRIBUTING.md) : conventions de code et de commits.
 
-Les maquettes et les rapports Lighthouse locaux restent dans `doc/`.
-La documentation Compodoc est générée dans `documentation/` avec `pnpm docs`.
-Les règles de contribution restent dans [CONTRIBUTING.md](../CONTRIBUTING.md).
+Les décisions détaillées expliquent les [états des pages](decisions/001-page-state.md),
+le [cache HTTP](decisions/002-http-cache.md) et la [frontière Chart.js](decisions/003-chart-boundary.md).
+
+## Rapports et historique
+
+Ces documents conservent les constats de leurs dates de rédaction, les résultats
+mesurés ne constituent pas une garantie pour toute révision ultérieure.
+
+- [Validation](validation/VALIDATION.md), [accessibilité](validation/ACCESSIBILITY.md),
+  [bundles](validation/BUNDLE-VALIDATION.md) et [interface](validation/UI-VALIDATION.md).
+- [Migration Angular](migration/MIGRATION.md) et [notes d’architecture](architecture/notes-architecture.md).
+- [Schéma modifiable](architecture/arborescence-cible.drawio), à comparer à l’architecture actuelle.
+
+Les maquettes et rapports locaux sont dans `doc/`. Compodoc génère
+`documentation/` avec `pnpm docs`, ce dossier n’est pas versionné.

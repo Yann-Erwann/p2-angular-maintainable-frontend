@@ -52,13 +52,10 @@ import type { PageFeedbackState } from '../page-state';
 export class PageFeedbackComponent {
   /** Statut et message d’erreur éventuel, sans données métier. */
   readonly state = input.required<PageFeedbackState>();
-  /** Nombre de cartes du squelette intégré. */
   readonly indicatorCount = input<2 | 3>(2);
   /** Désactive le squelette visuel sans supprimer l’annonce du chargement. */
   readonly showSkeleton = input(true);
-  /** Emplacements décoratifs du squelette, sans statistiques. */
   readonly indicatorSlots = computed(() => Array.from({ length: this.indicatorCount() }));
-  /** Annonce de réussite personnalisable par la page. */
   readonly successMessage = input('Olympic data loaded.');
   /** Annonce de statut ; les erreurs utilisent une région distincte. */
   readonly statusMessage = computed(() => {

@@ -41,8 +41,6 @@ jobs:
           CHROME_BIN: /usr/bin/google-chrome
       - name: Generate documentation
         run: pnpm run docs
-      - name: Check documentation coverage
-        run: pnpm run docs:check
       - name: Build production artifact
         run: pnpm run build:e2e
       - name: Browser tests

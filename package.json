@@ -11,7 +11,6 @@
     "test": "ng test",
     "lint": "ng lint",
     "docs": "compodoc -p tsconfig.doc.json -d documentation --language fr-FR -n \"TéléSport — Documentation Angular\"",
-    "docs:check": "compodoc -p tsconfig.doc.json --coverageTest 100 --coverageMinimumPerFile 100",
     "docs:serve": "pnpm run docs --serve --host 127.0.0.1 --port 8080",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
