@@ -1,5 +1,27 @@
 # Contrôles d'accessibilité et limites
 
+## Nouvel accueil — version actuelle
+
+Les noms des pays du tableau sont des liens natifs : Tab et Maj+Tab les
+parcourent, Entrée ouvre les résultats. Le focus souligne le lien et met la
+ligne en évidence. `aria-describedby` associe les médailles et le pourcentage
+au pays sélectionné. Les tests du tableau et du tooltip passent dans la suite
+complète de 170 tests ; les audits Lighthouse ci-dessous précèdent ces ajouts.
+
+La maquette du nouvel accueil réintroduit un tableau de répartition à côté
+du camembert sur desktop, et sous le graphique sur mobile. Le tableau utilise
+une légende accessible et des en-têtes `scope="col"` / `scope="row"`.
+Les pourcentages sont du texte ; leurs barres, les pastilles de couleur et
+les pictogrammes sont décoratifs. Les descriptions complètes, les données de
+remplacement du canvas et les annonces du point actif sont conservées.
+Le parcours Tab / Maj+Tab des pays et Entrée vers le détail est vérifié.
+Le titre HTML de l’accueil évite de répéter visuellement le texte intégré dans
+la bannière desktop, et devient visible lorsqu’il reçoit le focus clavier.
+Sur mobile, le titre et l’introduction sont affichés en HTML.
+Les quatre audits Lighthouse de l’accueil et du pays 1 donnent 100 en
+accessibilité. Build, lint et 169 tests passent ; l’écoute avec un lecteur
+d’écran reste à réaliser. [Rapports locaux](doc/lighthouse-home-ui-2026-10-09/README.md).
+
 ## Structure sémantique — version actuelle
 
 La bannière contient la navigation principale nommée. Un unique `main`

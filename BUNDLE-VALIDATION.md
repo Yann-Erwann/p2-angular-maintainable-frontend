@@ -1,6 +1,24 @@
 # Réduction du bundle Chart.js
 
-## Parcours Chart.js avec Tab — version actuelle
+## Nouvel accueil suivant la maquette — mesure avant les derniers ajustements
+
+La bannière WebP panoramique pèse 25 262 octets (1339 px), avec une version
+670 px de 10 954 octets. Le mobile réutilise la bannière compacte existante.
+Le thème, chargé dès le premier rendu, est limité à la classe de l’accueil.
+La disposition initiale et la bannière suivent la route hash avant Angular.
+
+Le total initial du build est 288,98 kB, avec une estimation de transfert de
+79,85 kB. Chart.js reste différé : 180,22 kB bruts, 55,32 kB estimés.
+Les libellés et valeurs sont dessinés par un plugin local ; aucun paquet de
+visualisation supplémentaire n’est ajouté. Le tableau est alimenté par les
+participations réelles, avec une protection du calcul lorsque le total est nul.
+
+Build sans avertissement de budget, lint et 169 tests passent. Les quatre
+mesures Lighthouse (accueil et pays 1, mobile / desktop) donnent 100 en
+accessibilité, bonnes pratiques et SEO. Performance 100 desktop, 98 mobile ;
+CLS nul. [Rapports locaux](doc/lighthouse-home-ui-2026-10-09/README.md).
+
+## Parcours Chart.js avec Tab — validation précédente
 
 Tab / Maj+Tab sélectionnent successivement les pays ou années dans le canvas.
 Le surlignage, l'infobulle et l'annonce changent sans recréer le graphique.
@@ -332,3 +350,24 @@ Ces règles sont celles de `serve`, pas une configuration du serveur Angular
 de développement ou d’un hébergement externe. Le serveur/CDN de production
 doit appliquer la même politique aux ressources effectivement servies.
 Référence : [configuration des en-têtes de serve-handler](https://github.com/vercel/serve-handler#headers-array).
+
+## Préchargement du graphique et des données — 9 octobre 2026
+
+`pnpm run build` exécute `scripts/build.mjs` : Angular compile avec `--stats-json`,
+puis le script lit l'entry point du composant graphique pour ajouter son nom
+hashé dans un `modulepreload` du `<head>`. Aucun hash n'est fixé dans les sources.
+`olympic.json` possède un `preload` de type `fetch` avec `crossorigin="anonymous"`.
+
+Contrôle Chromium à cache froid, avec `main` volontairement retardé : le JSON
+et le module graphique sont découverts par le parseur HTML avant l'exécution
+de `main`. Une seule ressource transférée pour chacun ; le graphique est rendu
+sans erreur JavaScript. Les départs mesurés sont 15,7 ms pour le JSON et 16,2 ms
+pour le graphique. Ces temps locaux ne constituent pas une garantie réseau.
+
+Après les ajustements du tooltip et de la navigation du tableau, le build
+initial mesure 289,39 kB bruts (79,97 kB estimés au transfert), et le module
+graphique 181,25 kB bruts (55,70 kB estimés). Lint et 170 tests passent.
+Le CLS mobile reproduit à 0,456 avec la feuille globale retardée de deux secondes
+passe à zéro après désactivation de `inlineCritical` : la feuille complète
+minifiée est chargée avant le premier rendu. Les scores Lighthouse précédents
+ne constituent pas une nouvelle mesure complète de cette révision.

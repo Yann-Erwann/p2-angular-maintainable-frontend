@@ -68,16 +68,21 @@ statiques dans `dist/olympic-games-starter/browser/`. Pour un build de développ
 pnpm run build --configuration development
 ```
 
-`pnpm run build` utilise Angular CLI directement, avec `optimization` et `aot`
-activés en production : minification JS/CSS, tree-shaking et CSS critique inline.
+`pnpm run build` utilise Angular CLI puis ajoute le préchargement du module
+graphique dans le HTML, à partir du nom hashé trouvé dans `stats.json`.
+`optimization` et `aot` restent activés en production : minification JS/CSS et
+tree-shaking. La feuille de styles complète est chargée avant le premier rendu
+pour éviter les déplacements de mise en page liés aux styles différés.
 Angular génère les liens `modulepreload` de son graphe initial. La page d’accueil
 est incluse dans le bundle initial ; la page pays utilise `loadComponent` et se
 télécharge lorsqu’elle est visitée. Les graphiques utilisent `@defer` après une
 réponse valide : affichage à l’entrée dans le viewport et préchargement sur idle.
-Les pages d’erreur ne téléchargent aucun module graphique. DataService charge
-le JSON seulement sur les pages qui en ont besoin et partage la réponse.
-Le build copie uniquement `robots.txt`, les données JSON et les deux versions
-WebP de la bannière TéléSport. Le PNG original reste dans les sources.
+Le module graphique et `olympic.json` sont préchargés depuis le HTML initial,
+en parallèle des ressources initiales. Le module reste différé pour son
+exécution ; DataService valide les données et partage la réponse.
+Un appel direct à `ng build` contourne l'ajout du `modulepreload` du graphique.
+Le build copie uniquement `robots.txt`, les données JSON et les versions
+WebP des bannières TéléSport compacte et panoramique. Le PNG original reste dans les sources.
 La bannière commune renvoie à l’accueil et remplace les liens « Go back ».
 Elle utilise `srcset`, des dimensions réservées et un ratio fixe pour limiter
 le transfert et éviter les déplacements de mise en page : 10,5 kB à 874 px et
@@ -248,9 +253,13 @@ indicateurs de l’accueil ou les trois du détail, puis le graphique. Les blocs
 sont masqués aux lecteurs d’écran ; la région de statut annonce le chargement.
 Le squelette est retiré dès la réception des données ou d’une erreur.
 
-Les tableaux sous les graphiques ont été retirés. Le graphique occupe une
-colonne centrée sur toutes les tailles, avec une largeur maximale de 64 rem.
-Les indicateurs sont empilés sur mobile.
+L’accueil suit la maquette `doc/UI/desktop/home.png` : bannière TéléSport
+panoramique, deux cartes d’indicateurs et panneau réunissant le camembert
+et le tableau Country / Medals / Percentage. Les valeurs et pourcentages
+proviennent des participations réelles. Les libellés et les valeurs sont
+également dessinés sur le camembert. Sur mobile, le tableau passe sous
+le graphique et la bannière compacte conserve la lisibilité du titre.
+Le détail pays conserve son graphique seul, centré jusqu’à 64 rem.
 
 La mise en page et les graphiques sont vérifiés à 320, 480, 768, 1024 et
 1280 pixels. Les constats, mesures, états et limites sont consignés dans

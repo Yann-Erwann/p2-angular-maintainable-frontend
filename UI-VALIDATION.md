@@ -1,5 +1,43 @@
 # Validation de l'interface responsive
 
+## Accueil suivant la nouvelle maquette — 9 octobre 2026
+
+Les derniers ajustements retirent les chevrons des indicateurs et les ronds
+des traits de légende ; les traits rejoignent le bord du camembert.
+Le tooltip blanc présente une médaille dessinée à gauche et le pays, son total
+et son pourcentage à droite. Les pays du tableau sont des liens accessibles
+avec Tab et Entrée. Build, lint et 170 tests passent sur cette version.
+Les captures et scores Lighthouse suivants précèdent ces ajustements.
+
+Référence : `doc/UI/desktop/home.png`. L’accueil utilise la nouvelle bannière
+panoramique, le titre de section en dégradé, deux cartes d’indicateurs et
+une carte réunissant le camembert et un tableau de répartition. Les pictogrammes
+sont des SVG décoratifs ; les libellés, valeurs et pourcentages restent du texte.
+Les valeurs de la maquette sont remplacées par les totaux réellement livrés.
+
+La bannière desktop est encodée en WebP : 25 262 octets à 1339 px,
+10 954 octets à 670 px. Le mobile utilise la bannière compacte existante
+et affiche le titre et l’introduction en HTML. Le thème est limité à l’accueil ;
+la bannière des pages pays et introuvable reste celle de la version précédente.
+
+Captures examinées à 1454 × 1082, 412 × 823 et 320 × 740 : aucune erreur
+JavaScript ni débordement horizontal. Les indicateurs restent côte à côte ;
+le tableau passe sous le graphique à 1000 px. À 320 px, les noms longs
+peuvent revenir à la ligne dans leur cellule. Les cinq pays se parcourent avec
+Tab / Maj+Tab, Entrée ouvre le pays et Tab parcourt ses trois années.
+
+Build sans avertissement de budget, lint et 169 tests passent. Les tests
+vérifient les pourcentages (dont le total nul), les valeurs et libellés dessinés,
+le surlignage et le changement de bannière après navigation.
+
+Lighthouse sur l’accueil et le pays 1, mobile et desktop : performance 100
+sur desktop et 98 sur mobile ; accessibilité, bonnes pratiques et SEO à 100.
+CLS nul sur les quatre mesures. Le choix de la bannière est appliqué dès
+le HTML initial pour éviter un saut de disposition sur les accès directs aux pays.
+[Rapports locaux](doc/lighthouse-home-ui-2026-10-09/README.md).
+
+Les constats suivants décrivent les révisions précédentes.
+
 Revue du 8 octobre 2026, sur la modification UI suivant `b3733d0`.
 Chromium headless 154 sous Linux, serveur Angular local, hauteur de viewport
 900 px, facteur de pixels 1. Les données livrées servent aux pages chargées.
