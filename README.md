@@ -43,8 +43,8 @@ Le build de production est écrit dans `dist/olympic-games-starter/browser/`.
 Le build local utilise directement Angular CLI : minification JS/CSS,
 tree-shaking et AOT sont activés. La configuration commune `index.preloadInitial` laisse Angular générer les liens
 de préchargement des modules initiaux. Le graphique d’accueil est chargé avec
-l’application en développement et en production. Le workflow ajoute seulement
-le manifeste de livraison `release.json` avant les tests.
+l’application en développement et en production. Avant les tests, le workflow
+prépare les entrées des routes statiques et le manifeste de livraison `release.json`.
 Le JSON et le fond de bannière sont préchargés depuis le HTML initial. Le graphique d’accueil apparaît dès que les données sont disponibles.
 En production, Angular intègre le CSS critique au HTML et charge la feuille globale
 sans bloquer le rendu. Les styles de mise en page sont chargés avec chaque page
@@ -62,11 +62,15 @@ renvoie actuellement `max-age=600` (dix minutes), indépendamment de `serve.json
 `build:analyze` ajoute les source maps et `stats.json` pour examiner les bundles.
 Relancer `pnpm run build` pour retrouver un build sans source maps.
 
+Le routage utilise des URL sans `#`. Pour GitHub Pages, le workflow génère une
+entrée HTML par pays et un repli `404.html`, avec le même chemin de base que
+l’application. Un autre serveur doit renvoyer `index.html` pour les routes Angular.
+
 ## Pages et clavier
 
-- **Accueil** (`/#/`) : nombre de pays et d’éditions, camembert et tableau
+- **Accueil** (`/`) : nombre de pays et d’éditions, camembert et tableau
   Country / Medals / Percentage. Les liens du tableau ouvrent les pays.
-- **Pays** (`/#/country/:id`) : participations, médailles, effectifs cumulés et
+- **Pays** (`/country/:id`) : participations, médailles, effectifs cumulés et
   courbe chronologique. Le filtre est un popover HTML contenant des boutons,
   sans `<select>`. Il exclut le pays courant et n’a pas de défilement interne.
 - Les chargements, données vides, pays absents et erreurs ont des états distincts.

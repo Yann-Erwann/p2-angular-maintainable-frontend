@@ -23,7 +23,8 @@ stable des participations et cumule les effectifs sans dédupliquer les personne
 
 ## Navigation et présentation
 
-Les URL utilisent le hash : `/#/` et `/#/country/:id`. La route est la source du
+Les URL utilisent le routage par chemin : `/` et `/country/:id`.
+Le workflow génère les entrées des pays et `404.html` pour GitHub Pages. La route est la source du
 pays sélectionné. Un ID invalide est rejeté avant HTTP, un pays absent diffère
 d’un pays sans participation. `switchMap` conserve la dernière sélection et
 les erreurs restent dans son flux interne pour permettre une nouvelle sélection.

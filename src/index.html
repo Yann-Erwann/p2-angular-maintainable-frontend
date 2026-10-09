@@ -81,8 +81,9 @@
       <noscript><p class="page-message">Enable JavaScript to explore Olympic results.</p></noscript>
     </app-root>
     <script>
-      // Match the hash route before Angular starts to keep the banner layout stable.
-      const initialPath = location.hash.slice(1).split(/[?#]/)[0];
+      // Match the route before Angular starts to keep the banner layout stable.
+      const basePath = new URL(document.baseURI).pathname;
+      const initialPath = '/' + location.pathname.slice(basePath.length);
       if (initialPath && initialPath !== '/' && !initialPath.startsWith('/country/')) {
         document.querySelector('app-root').classList.remove('app-shell--dashboard');
       }

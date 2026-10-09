@@ -5,7 +5,7 @@ test('home → France → Italy → history → home reuses the JSON response', 
   page.on('request', (request) => {
     if (request.url().endsWith('/assets/mock/olympic.json')) requests++;
   });
-  await page.goto('#/');
+  await page.goto('./');
   await expect(page.getByRole('rowheader', { name: /France/ })).toContainText('France');
   await page.getByRole('link', { name: 'France' }).click();
   await expect(page).toHaveTitle('France | Olympic Games');
@@ -23,7 +23,7 @@ test('home → France → Italy → history → home reuses the JSON response', 
 });
 
 test('a mouse click on a medal sector opens its associated country', async ({ page }) => {
-  await page.goto('#/');
+  await page.goto('./');
   const canvas = page.locator('canvas');
   await expect(canvas).toBeVisible();
   const bounds = await canvas.boundingBox();
@@ -42,7 +42,9 @@ test('a mouse click on a medal sector opens its associated country', async ({ pa
 });
 
 test('a direct country URL survives reload under the production prefix', async ({ page }) => {
-  await page.goto('#/country/5');
+  const response = await page.goto('country/5');
+  expect(response?.status()).toBe(200);
+  expect(new URL(page.url()).hash).toBe('');
   await expect(page).toHaveTitle('France | Olympic Games');
   await expect(page.locator('canvas')).toBeVisible();
   await page.reload();
@@ -51,13 +53,13 @@ test('a direct country URL survives reload under the production prefix', async (
 });
 
 test('unknown routes and invalid country identifiers have distinct feedback', async ({ page }) => {
-  await page.goto('#/unknown/nested');
+  await page.goto('unknown/nested');
   await expect(page).toHaveTitle('Page not found | Olympic Games');
   await expect(page.locator('canvas')).toHaveCount(0);
-  await page.goto('#/country/invalid');
+  await page.goto('country/invalid');
   await expect(page.getByRole('status')).toHaveText('Country not found.');
   await expect(page.locator('app-header')).toHaveCount(0);
-  await page.goto('#/country/999');
+  await page.goto('country/999');
   await expect(page.getByRole('status')).toHaveText('Country not found.');
 });
 
@@ -69,7 +71,7 @@ test('a failed HTTP load displays a safe error and recovers on another country',
     if (fail) await route.fulfill({ status: 503, body: 'private server details' });
     else await route.continue();
   });
-  await page.goto('#/country/5');
+  await page.goto('country/5');
   await expect(page.getByRole('alert')).toHaveText(
     'Olympic data is temporarily unavailable. Please try again later.',
   );
@@ -77,7 +79,8 @@ test('a failed HTTP load displays a safe error and recovers on another country',
   await expect(page.locator('canvas')).toHaveCount(0);
   fail = false;
   await page.evaluate(() => {
-    location.hash = '/country/1';
+    history.pushState(null, '', new URL('country/1', document.baseURI));
+    dispatchEvent(new PopStateEvent('popstate'));
   });
   await expect(page).toHaveTitle('Italy | Olympic Games');
   await expect(page.locator('canvas')).toBeVisible();
@@ -87,14 +90,14 @@ test('empty data and a country without participations retain their distinct mean
   page,
 }) => {
   await page.route('**/assets/mock/olympic.json', (route) => route.fulfill({ json: [] }));
-  await page.goto('#/');
+  await page.goto('./');
   await expect(page.getByRole('status')).toHaveText('No Olympic data available.');
   await expect(page.locator('canvas')).toHaveCount(0);
   await page.unroute('**/assets/mock/olympic.json');
   await page.route('**/assets/mock/olympic.json', (route) =>
     route.fulfill({ json: [{ id: 5, country: 'France', participations: [] }] }),
   );
-  await page.goto('#/country/5');
+  await page.goto('country/5');
   await page.reload();
   await expect(page).toHaveTitle('France | Olympic Games');
   await expect(page.locator('app-header dd')).toHaveText(['0', '0', '0']);
@@ -105,7 +108,7 @@ test('empty data and a country without participations retain their distinct mean
 test('the chart supports keyboard selection and focus exits at both boundaries', async ({
   page,
 }) => {
-  await page.goto('#/');
+  await page.goto('./');
   const canvas = page.locator('canvas');
   await expect(canvas).toBeVisible();
   await canvas.focus();
@@ -132,8 +135,8 @@ for (const width of [320, 768, 1280]) {
   test(`home and France stay readable at ${width}px`, async ({ page }, testInfo) => {
     await page.setViewportSize({ width, height: 1000 });
     for (const [name, route] of [
-      ['home', '#/'],
-      ['france', '#/country/5'],
+      ['home', './'],
+      ['france', 'country/5'],
     ]) {
       await page.goto(route);
       await expect(page.locator('canvas')).toBeVisible();
@@ -153,7 +156,7 @@ for (const width of [320, 768, 1280]) {
 test('country dropdown supports Tab, Enter, Escape and outside dismissal', async ({
   page,
 }, testInfo) => {
-  await page.goto('#/country/5');
+  await page.goto('country/5');
   const trigger = page.getByRole('button', { name: 'Country', exact: true });
   await expect(page).toHaveTitle('France | Olympic Games');
   await trigger.focus();
@@ -195,7 +198,7 @@ test('country dropdown supports Tab, Enter, Escape and outside dismissal', async
 });
 
 test('header text is reachable with Tab and the home heading stays stable', async ({ page }) => {
-  await page.goto('#/');
+  await page.goto('./');
   const homeLink = page.getByRole('link', { name: 'Home — TéléSport' });
   const title = page.locator('.brand__title');
   const description = page.locator('.brand__description');
@@ -214,7 +217,7 @@ test('header text is reachable with Tab and the home heading stays stable', asyn
   await expect(page.locator('#home-page-title')).toHaveAttribute('tabindex', '-1');
   await page.keyboard.press('Shift+Tab');
   await expect(description).toBeFocused();
-  await page.goto('#/country/5');
+  await page.goto('country/5');
   await homeLink.focus();
   await page.keyboard.press('Enter');
   await expect(page).toHaveTitle('Medals by country | Olympic Games');
@@ -227,7 +230,7 @@ test('the entire country banner links back to home', async ({ page }, testInfo) 
     { x: 12, y: 12 },
     { x: 300, y: 90 },
   ]) {
-    await page.goto('#/country/5');
+    await page.goto('country/5');
     await expect(page).toHaveTitle('France | Olympic Games');
     await expect(page.locator('.brand__name')).toHaveText('TéléSport');
     await expect(page.locator('.brand__title')).toHaveText('Olympic games app');
@@ -239,7 +242,7 @@ test('the entire country banner links back to home', async ({ page }, testInfo) 
   }
 });
 
-for (const route of ['#/', '#/country/5']) {
+for (const route of ['./', 'country/5']) {
   test(`critical styles keep ${route} stable while the stylesheet is delayed`, async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 1000 });
     await page.addInitScript(() => {
