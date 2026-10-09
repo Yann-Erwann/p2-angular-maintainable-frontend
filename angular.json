@@ -32,7 +32,7 @@
                 "output": "assets/mock"
               },
               {
-                "glob": "teleSport*.webp",
+                "glob": "{teleSport,telesport-header}*.webp",
                 "input": "src/assets/images",
                 "output": "assets/images"
               }

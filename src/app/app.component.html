@@ -1,42 +1,39 @@
 <header class="brand">
   <nav aria-label="Main navigation">
-    <a class="brand__link" routerLink="/" aria-label="Home — TéléSport">
-      @if (dashboardLayout()) {
-        <picture>
-          <source
-            media="(max-width: 600px)"
-            srcset="assets/images/teleSport-small.webp 438w, assets/images/teleSport.webp 874w"
-            sizes="calc(100vw - 32px)"
-          />
-          <img
-            class="brand__banner"
-            src="assets/images/teleSport-home.webp"
-            srcset="
-              assets/images/teleSport-home-small.webp  670w,
-              assets/images/teleSport-home.webp       1339w
-            "
-            sizes="(min-width: 1500px) 1428px, calc(100vw - 72px)"
-            width="1339"
-            height="211"
-            alt="TéléSport — Olympic games app. Explore and compare Olympic medals across countries."
-            loading="eager"
-            fetchpriority="high"
-          />
-        </picture>
-      } @else {
+    <div class="brand__hero">
+      <picture class="brand__picture">
         <img
           class="brand__banner"
-          src="assets/images/teleSport.webp"
-          srcset="assets/images/teleSport-small.webp 438w, assets/images/teleSport.webp 874w"
-          sizes="(min-width: 544px) 512px, calc(100vw - 32px)"
-          width="874"
-          height="251"
-          alt="TéléSport — Olympic Games"
+          src="assets/images/telesport-header.webp"
+          srcset="
+            assets/images/telesport-header-small.webp  670w,
+            assets/images/telesport-header.webp       1339w
+          "
+          sizes="(min-width: 1500px) 1428px, calc(100vw - 32px)"
+          width="1339"
+          height="211"
+          alt=""
           loading="eager"
           fetchpriority="high"
         />
-      }
-    </a>
+      </picture>
+      <span class="brand__content">
+        <a class="brand__link brand__name" routerLink="/" aria-label="Home — TéléSport"
+          >TéléSport</a
+        >
+        <svg class="brand__mark" viewBox="0 0 120 48" aria-hidden="true">
+          <g fill="none" stroke-width="4">
+            <circle cx="24" cy="18" r="14" stroke="#0085c7" />
+            <circle cx="60" cy="18" r="14" stroke="#222" />
+            <circle cx="96" cy="18" r="14" stroke="#df0024" />
+            <circle cx="42" cy="32" r="14" stroke="#f4c300" />
+            <circle cx="78" cy="32" r="14" stroke="#009f3d" />
+          </g>
+        </svg>
+        <span class="brand__title">Olympic games app</span>
+        <span class="brand__description">Explore and compare Olympic medals across countries</span>
+      </span>
+    </div>
   </nav>
 </header>
 <main id="main-content" #mainContent tabindex="-1">

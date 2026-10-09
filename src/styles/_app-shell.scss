@@ -1,19 +1,64 @@
 /** Layout partagé avec le HTML de chargement avant le démarrage Angular. */
 @mixin layout {
-  .brand__banner {
-    display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 874 / 251;
-    border-radius: 0.75rem;
-  }
-  .brand__link {
-    display: block;
-  }
   .brand {
     width: 100%;
     max-width: 32rem;
     margin: 0 auto 1rem;
+  }
+  .brand__hero {
+    position: relative;
+    display: grid;
+    align-items: center;
+    min-height: 12rem;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    background: #c8e7f4;
+    color: #0c204b;
+    text-decoration: none;
+  }
+  .brand__link {
+    color: inherit;
+    text-decoration: none;
+  }
+  .brand__picture {
+    position: absolute;
+    inset: 0;
+  }
+  .brand__banner {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .brand__content {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    gap: 0.2rem;
+    padding: 1rem;
+    text-align: center;
+  }
+  .brand__name {
+    font-size: clamp(1.1rem, 2.3vw, 2rem);
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+  .brand__mark {
+    width: clamp(4rem, 9vw, 7rem);
+    height: auto;
+  }
+  .brand__title {
+    font-size: clamp(1.1rem, 2.4vw, 2rem);
+    font-weight: 750;
+    line-height: 1.25;
+  }
+  .brand__description {
+    max-width: 32rem;
+    color: #344e74;
+    font-size: clamp(0.8rem, 1.35vw, 1.15rem);
+    line-height: 1.4;
   }
   & {
     display: block;
@@ -32,16 +77,25 @@
       max-width: none;
       margin-bottom: 1.75rem;
     }
-    .brand__banner {
-      aspect-ratio: 1339 / 211;
+    .brand__hero {
+      min-height: clamp(11rem, 15.76vw, 14.1rem);
       border-radius: 1.25rem;
     }
+    .brand__content {
+      width: 56%;
+      margin-left: 25%;
+    }
     @media (max-width: 600px) {
-      .brand__banner {
-        aspect-ratio: 874 / 251;
-      }
       .brand {
         margin-bottom: 1rem;
+      }
+      .brand__content {
+        width: 100%;
+        margin-left: 0;
+        padding: 1rem;
+      }
+      .brand__banner {
+        object-position: center;
       }
     }
   }

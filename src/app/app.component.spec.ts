@@ -87,17 +87,22 @@ describe('Accessible application navigation', () => {
       TestBed.inject(LocationStrategy).prepareExternalUrl('/'),
     );
     expect(homeLink?.getAttribute('aria-label')).toBe('Home — TéléSport');
-    const banner = homeLink?.querySelector('img');
-    expect(banner?.getAttribute('width')).toBe('874');
-    expect(banner?.getAttribute('height')).toBe('251');
-    expect(banner?.getAttribute('srcset')).toContain('teleSport-small.webp 438w');
+    const banner = page.querySelector('.brand__banner');
+    expect(banner?.getAttribute('width')).toBe('1339');
+    expect(banner?.getAttribute('height')).toBe('211');
+    expect(banner?.getAttribute('alt')).toBe('');
+    expect(homeLink?.textContent?.trim()).toBe('TéléSport');
+    expect(page.querySelector('.brand__title')?.textContent).toBe('Olympic games app');
+    expect(banner?.getAttribute('srcset')?.replace(/\s+/g, ' ')).toContain(
+      'telesport-header-small.webp 670w',
+    );
     homeLink?.click();
     await fixture.whenStable();
     expect(router.url).toBe('/');
     fixture.detectChanges();
     expect(fixture.componentInstance.homeLayout()).toBeTrue();
     expect(page.querySelector('.brand__banner')?.getAttribute('src')).toBe(
-      'assets/images/teleSport-home.webp',
+      'assets/images/telesport-header.webp',
     );
     await router.navigateByUrl('/country/2');
     fixture.detectChanges();
@@ -105,7 +110,7 @@ describe('Accessible application navigation', () => {
     expect(fixture.componentInstance.homeLayout()).toBeFalse();
     expect(fixture.componentInstance.countryLayout()).toBeTrue();
     expect(page.querySelector('.brand__banner')?.getAttribute('src')).toBe(
-      'assets/images/teleSport-home.webp',
+      'assets/images/telesport-header.webp',
     );
     http.verify();
   });
