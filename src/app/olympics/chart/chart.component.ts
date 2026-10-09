@@ -10,7 +10,7 @@ import { ChartRenderer, type RenderedChart, type OlympicChartData } from './char
       [attr.aria-describedby]="dataDescriptionId() + ' ' + dataDescriptionId() + '-keys'"
       (focus)="onCanvasFocus()" (keydown)="onKeydown($event)">{{ textAlternative() }}</canvas></div>
     <p class="visually-hidden chart-selection" role="status" aria-live="polite" aria-atomic="true">{{ selection() }}</p>`,
-  host: { '(focusout)': 'onFocusout($event)', '(document:keydown)': 'rememberTabDirection($event)' },
+  host: { '[class.dashboard]': 'dashboard()', '(focusout)': 'onFocusout($event)', '(document:keydown)': 'rememberTabDirection($event)' },
   styleUrl: './chart.component.scss',
 })
 export class OlympicChartComponent {
@@ -19,6 +19,7 @@ export class OlympicChartComponent {
   readonly values = input.required<readonly number[]>();
   readonly dataDescriptionId = input.required<string>();
   readonly pointSelected = output<number>();
+  readonly dashboard = input(false);
   private readonly canvas = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
   readonly selectedIndex = signal(0);
   readonly textAlternative = computed(() => this.labels().length
@@ -36,6 +37,7 @@ export class OlympicChartComponent {
         type: this.type(),
         labels: this.labels(),
         values: this.values(),
+        ...(this.dashboard() ? { dashboard: true } : {}),
       }, (index) => this.pointSelected.emit(index));
       this.rendered = chart;
       untracked(() => {

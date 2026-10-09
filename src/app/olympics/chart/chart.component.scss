@@ -16,3 +16,7 @@ canvas {
 }
 
 .chart-drawing { position: relative; flex: 1; min-height: 0; }
+
+:host(.dashboard) { height: 25rem; padding: 0; border: 0; border-radius: 0; background: transparent; }
+@media (max-width: 1000px) { :host(.dashboard) { height: 25rem; } }
+@media (max-width: 600px) { :host(.dashboard) { height: 19rem; } }

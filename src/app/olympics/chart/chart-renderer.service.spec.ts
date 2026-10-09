@@ -83,4 +83,23 @@ describe('ChartRenderer', () => {
     expect(chart.options.color).toBe('#23343b');
   });
 
+  it('should draw dashboard values and labels while preserving point selection', () => {
+    rendered = TestBed.inject(ChartRenderer).create(canvas, {
+      type: 'pie', labels: ['Italy', 'United States'], values: [96, 345], dashboard: true,
+    }, () => undefined);
+    const chart = Chart.getChart(canvas)!;
+    const fillText = spyOn(chart.ctx, 'fillText').and.callThrough();
+    chart.resize(650, 400);
+    chart.update('none');
+    expect(fillText.calls.allArgs().some(args => args[0] === '345')).toBeTrue();
+    expect(fillText.calls.allArgs().some(args => args[0] === 'United States')).toBeTrue();
+    expect(chart.legend?.options.display).toBeFalse();
+    rendered.focusPoint(1);
+    expect(chart.getActiveElements().map(item => item.index)).toEqual([1]);
+    expect(chart.tooltip?.getActiveElements().map(item => item.index)).toEqual([1]);
+    chart.resize(300, 300);
+    chart.update('none');
+    expect(chart.canvas.width).toBeGreaterThan(0);
+  });
+
 });
