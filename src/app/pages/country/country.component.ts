@@ -63,9 +63,12 @@ export class CountryComponent implements OnInit {
       takeUntilDestroyed(this.destroyRef),
     ).subscribe((state) => {
       this.pageState.set(state);
-      const title = state.status === 'success' || state.status === 'empty'
-        ? state.data?.country ?? 'Country details'
-        : state.status === 'not-found' ? 'Country not found' : 'Country details';
+      let title = 'Country details';
+      if (state.status === 'success' || state.status === 'empty') {
+        title = state.data?.country ?? 'Country details';
+      } else if (state.status === 'not-found') {
+        title = 'Country not found';
+      }
       this.documentTitle.setTitle(`${title} | Olympic Games`);
     });
   }
