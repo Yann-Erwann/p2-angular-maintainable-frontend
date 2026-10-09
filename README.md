@@ -92,7 +92,7 @@ d’assistance reste à vérifier humainement.
 ## Tests navigateur et performances
 
 Le workflow démarre le serveur de production sous
-`/p2-angular-maintainable-frontend/` sur le port 4187, pour les audits Lighthouse. Playwright reste disponible localement.
+`/p2-angular-maintainable-frontend/` sur le port 4187 avec Playwright pour les tests navigateur et les audits Lighthouse.
 Les tests Playwright vérifient navigation, cache, erreurs, clavier et affichage responsive.
 Pour tester localement un build servi à la racine :
 
@@ -111,18 +111,25 @@ PRODUCTION_SERVER_URL=http://localhost:3000/ pnpm run test:e2e
 `PLAYWRIGHT_CHROMIUM_EXECUTABLE=/usr/bin/chromium` permet d’utiliser un navigateur
 système. Les rapports sont dans `playwright-report/` et `test-results/`.
 
-L’action `treosh/lighthouse-ci-action@v12` exécute Lighthouse CI, sans Playwright,
-dans deux étapes GitHub Actions (mobile et desktop). Il est obligatoire sur chaque exécution
-du workflow, y compris manuelle. Il réalise trois audits par route en mobile et
-desktop : accueil et chaque pays du JSON livré. Les routes d’erreur renvoient
-un HTTP 404 et restent couvertes par les tests navigateur ; elles ne font pas
-partie des audits Lighthouse.
-Chaque catégorie (performance, accessibilité, bonnes pratiques et SEO) doit avoir
-un score exact de 100 à chaque passage. Un score inférieur, absent ou une erreur
-d’audit fait échouer la validation et bloque le déploiement. Les rapports et assertions sont conservés dans les artefacts
-`lighthouse-mobile` et `lighthouse-desktop`. Les configurations sont dans
-`.github/lighthouse/`, avec `minScore: 1` et `aggregationMethod: pessimistic`. Voir
-[Validation](docs/validation/VALIDATION.md) pour le protocole et ses limites.
+Les tests `e2e/lighthouse.spec.ts` lancent Chromium avec Playwright et exécutent
+Lighthouse sur l’accueil et chaque pays du JSON livré, en mobile et desktop,
+avec trois passages. Chaque catégorie (performance, accessibilité, bonnes
+pratiques et SEO) doit atteindre exactement 100 à chaque passage. Les audits
+n’ont aucun retry : un score inférieur, absent ou une erreur fait échouer les
+tests et bloque le déploiement. Les rapports JSON et HTML sont joints au rapport
+Playwright et conservés dans `validation-reports`, même en cas d’échec.
+Les routes d’erreur HTTP 404 restent couvertes par les tests fonctionnels.
+
+Pour exécuter uniquement Lighthouse sur le build préfixé :
+
+```bash
+pnpm run build:e2e
+RELEASE_REVISION=local node .github/scripts/prepare-release.mjs
+pnpm run test:e2e --project=lighthouse
+```
+
+Playwright démarre automatiquement le serveur local si `PRODUCTION_SERVER_URL`
+n’est pas renseigné. Voir [Validation](docs/validation/VALIDATION.md).
 
 La CI vérifie le code, génère Compodoc et audite le build de production préfixé
 avant de livrer ce même artefact sur GitHub Pages depuis `main`.

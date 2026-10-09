@@ -21,5 +21,24 @@ export default defineConfig({
       executablePath: process.env['PLAYWRIGHT_CHROMIUM_EXECUTABLE'],
     },
   },
-  projects: [{ name: 'chromium', use: { browserName: 'chromium' } }],
+  webServer: externalServer
+    ? undefined
+    : {
+        command: 'node .github/scripts/serve-production.mjs',
+        url: 'http://127.0.0.1:4187/p2-angular-maintainable-frontend/',
+        reuseExistingServer: !process.env['CI'],
+      },
+  projects: [
+    {
+      name: 'chromium',
+      testIgnore: '**/lighthouse.spec.ts',
+      use: { browserName: 'chromium' },
+    },
+    {
+      name: 'lighthouse',
+      testMatch: '**/lighthouse.spec.ts',
+      retries: 0,
+      use: { browserName: 'chromium' },
+    },
+  ],
 });

@@ -51,6 +51,3 @@ Thumbs.db
 /playwright-report
 /test-results
 /validation-artifacts
-
-# Lighthouse CI reports
-/.lighthouseci

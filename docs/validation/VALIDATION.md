@@ -1,36 +1,20 @@
 # Validation de la consolidation — 9 octobre 2026
 
-## Seuil Lighthouse obligatoire — 10 octobre 2026
+## Lighthouse dans Playwright — 10 octobre 2026
 
-L’action `treosh/lighthouse-ci-action@v12` exécute Lighthouse CI sans Playwright.
-Les configurations mobile et desktop sont dans `.github/lighthouse/`.
-Les assertions de catégorie utilisent le niveau `error`, `minScore: 1` et
-`aggregationMethod: pessimistic`. Les artefacts `lighthouse-mobile` et
-`lighthouse-desktop` conservent les rapports et résultats d’assertion.
-Les tests Playwright restent disponibles localement et le contrôle après
-déploiement existant reste séparé.
+Le projet Playwright `lighthouse` remplace l’action Lighthouse CI dédiée.
+`e2e/lighthouse.spec.ts` utilise Chromium lancé par Playwright et l’API Lighthouse.
+Chaque route valide du JSON livré et l’accueil sont audités trois fois, en mobile
+et desktop. Les quatre catégories doivent avoir un score exact de 100 à chaque
+passage ; les retries sont désactivés pour ces audits. Une erreur ou un score
+absent échoue aussi. Les rapports HTML et JSON sont joints aux résultats Playwright
+et conservés dans l’artefact `validation-reports`, même en cas d’échec.
+Les routes HTTP 404 restent couvertes par les tests fonctionnels.
 
-Le workflow exige désormais un score exact de 100 dans les quatre catégories
-Lighthouse à chacun des trois passages, sur chaque route en mobile et desktop.
-Les routes couvrent l’accueil et tous les pays du JSON livré. Les URL de pays
-invalide, pays absent et page inconnue renvoient volontairement un HTTP 404 :
-elles sont exclues de la collecte Lighthouse et restent couvertes par les tests
-navigateur. Aucun lancement manuel ne peut désactiver
-ce contrôle. Une erreur ou un score absent échoue aussi ; le déploiement dépend
-de cette validation. Les rapports restent disponibles même en cas de score insuffisant.
-Cette modification définit le seuil ; elle ne prouve pas que le site l’atteint.
-Les mesures historiques ci-dessous précèdent cette règle.
-
-## Extraction des scripts de livraison — 10 octobre 2026
-
-La préparation des routes et du manifeste, le serveur local et le contrôle après
-déploiement sont dans `.github/scripts/`. Lighthouse CI gère désormais ses audits
-et le cycle de vie du serveur via l’action dédiée. Les validations historiques
-ci-dessous précèdent cette intégration.
-Contrôles locaux réussis : syntaxe Node et shell, formatage, lint, 15 parcours
-navigateur, six audits Lighthouse et vérification du manifeste et des pages
-sur le serveur local. Le workflow distant et la publication n’ont pas été exécutés.
-Les notes ci-dessous décrivent les validations et l’organisation antérieures.
+Playwright gère le serveur local du build préfixé via `webServer`. La préparation
+de livraison et le contrôle après déploiement restent dans `.github/scripts/`.
+Cette configuration définit le seuil ; elle ne prouve pas que le site l’atteint.
+Les validations et mesures historiques ci-dessous précèdent cette intégration.
 
 ## CSS critique
 

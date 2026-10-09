@@ -53,6 +53,12 @@ déplacements à l’arrivée de la feuille globale. L’accueil et son graphiqu
 initiaux, la route pays est chargée à la demande et le rendu de son graphique reste différé.
 Karma vérifie les contrats, Playwright les parcours sur le build de production.
 
+Le workflow GitHub Actions orchestre les scripts de `.github/scripts/` pour préparer
+l’artefact et vérifier la révision et les pages après publication. Playwright
+sert le build testé et exécute les audits Lighthouse avec un seuil de 100 dans
+les quatre catégories, à chaque passage en mobile et desktop. Le contrôle distant fait échouer le job en cas d’erreur,
+sans annuler automatiquement la publication.
+
 Les décisions détaillées concernent les [états](../decisions/001-page-state.md),
 le [cache](../decisions/002-http-cache.md) et [Chart.js](../decisions/003-chart-boundary.md).
 Voir [Validation](../validation/VALIDATION.md) pour les résultats datés et leurs limites.
