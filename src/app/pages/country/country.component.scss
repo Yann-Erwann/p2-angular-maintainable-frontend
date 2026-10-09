@@ -32,46 +32,84 @@
   width: 16rem;
   max-width: 100%;
   min-height: 3.5rem;
-  padding: 0 1.5rem;
+  anchor-name: --country-picker;
+}
+.country-picker__trigger,
+.country-picker__option {
+  display: flex;
+  align-items: center;
   gap: 0.75rem;
+  width: 100%;
+  min-height: 3.5rem;
+  padding: 0.6rem 1.5rem;
+  border: 0;
   border-radius: 3rem;
   color: white;
   background: linear-gradient(120deg, #009bb0, #005960);
   box-shadow: 0 6px 22px #048d9a24;
-}
-.country-picker__select {
-  appearance: none;
-  flex: 1;
-  width: 100%;
-  min-width: 0;
-  height: 3.5rem;
-  border: 0;
-  background: transparent;
-  color: white;
   font:
     650 1.3rem system-ui,
     sans-serif;
-  padding: 0.8rem 1.5rem 0.8rem 0;
   cursor: pointer;
-  max-width: 100%;
 }
-.country-picker__select--long {
+.country-picker__trigger--long,
+.country-picker__option {
   font-size: 1rem;
 }
-.country-picker__option {
-  color: var(--dashboard-text);
-  background: white;
-}
-.country-picker__select:disabled {
+.country-picker__trigger:disabled {
   opacity: 1;
   cursor: wait;
 }
+.country-picker__name {
+  flex: 1;
+  text-align: left;
+}
 .country-picker__chevron {
-  position: absolute;
-  right: 1.8rem;
   width: 1rem;
   height: 1rem;
-  pointer-events: none;
+  flex: 0 0 auto;
+}
+.country-picker__dropdown {
+  position: fixed;
+  position-anchor: --country-picker;
+  inset: auto;
+  top: anchor(bottom);
+  left: anchor(left);
+  width: 16rem;
+  max-width: calc(100vw - 2rem);
+  max-height: none;
+  margin: 0.5rem 0 0;
+  padding: 0.5rem;
+  border: 1px solid #dceaf2;
+  border-radius: 1.5rem;
+  background: #f7fbff;
+  box-shadow: 0 12px 36px #286f9630;
+  overflow: visible;
+}
+@supports not (top: anchor(bottom)) {
+  .country-picker__dropdown {
+    inset: 50% auto auto 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+.country-picker__list {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.country-picker__option {
+  padding-inline: 0.75rem;
+  box-shadow: none;
+}
+.country-picker__option:hover {
+  background: linear-gradient(120deg, #007d8e, #00454b);
+}
+.country-picker__trigger:focus-visible,
+.country-picker__option:focus-visible {
+  outline: 3px solid #23343b;
+  outline-offset: 3px;
 }
 .country-picker__flag {
   position: relative;

@@ -18,10 +18,7 @@
   @if (page.status === 'loading') {
     <div class="country-picker">
       <span class="country-picker__flag" aria-hidden="true"></span>
-      <label class="visually-hidden" for="country-select">Country</label>
-      <select class="country-picker__select" id="country-select" disabled>
-        <option class="country-picker__option">Loading country...</option>
-      </select>
+      <button class="country-picker__trigger" type="button" disabled>Loading country...</button>
       <svg class="country-picker__chevron" viewBox="0 0 24 24" aria-hidden="true">
         <path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" />
       </svg>
@@ -53,31 +50,50 @@
   @if (page.status === 'success' || page.status === 'empty') {
     @let vm = page.data;
     <div class="country-picker">
-      <span
-        [class]="'country-picker__flag country-picker__flag--' + vm.flagCode"
-        aria-hidden="true"
-      ></span>
-      <label class="visually-hidden" for="country-select">Country</label>
-      <select
-        class="country-picker__select"
-        #countrySelect
-        id="country-select"
-        [class.country-picker__select--long]="vm.summary.name.length > 10"
-        (change)="changeCountry(countrySelect.value)"
+      <button
+        class="country-picker__trigger"
+        type="button"
+        popovertarget="country-options"
+        aria-label="Country"
+        [class.country-picker__trigger--long]="vm.summary.name.length > 10"
       >
-        @for (country of vm.options; track country.id) {
-          <option
-            class="country-picker__option"
-            [value]="country.id"
-            [selected]="country.id === vm.summary.id"
-          >
-            {{ country.name }}
-          </option>
-        }
-      </select>
-      <svg class="country-picker__chevron" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" />
-      </svg>
+        <span
+          [class]="
+            'country-picker__flag' + (vm.flagCode ? ' country-picker__flag--' + vm.flagCode : '')
+          "
+          aria-hidden="true"
+        ></span>
+        <span class="country-picker__name">{{ vm.summary.name }}</span>
+        <svg class="country-picker__chevron" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" />
+        </svg>
+      </button>
+      <div class="country-picker__dropdown" id="country-options" popover>
+        <ul class="country-picker__list" aria-label="Countries">
+          @for (country of vm.options; track country.id) {
+            @if (country.id !== vm.summary.id) {
+              <li class="country-picker__item">
+                <button
+                  class="country-picker__option"
+                  type="button"
+                  popovertarget="country-options"
+                  popovertargetaction="hide"
+                  (click)="changeCountry('' + country.id)"
+                >
+                  <span
+                    [class]="
+                      'country-picker__flag' +
+                      (country.flagCode ? ' country-picker__flag--' + country.flagCode : '')
+                    "
+                    aria-hidden="true"
+                  ></span>
+                  <span class="country-picker__name">{{ country.name }}</span>
+                </button>
+              </li>
+            }
+          }
+        </ul>
+      </div>
     </div>
     <app-header variant="country" [title]="vm.summary.name" [indicators]="vm.indicators" />
     @if (page.status === 'success') {

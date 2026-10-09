@@ -20,6 +20,7 @@ export interface CountryViewModel {
   readonly options: readonly {
     readonly id: number;
     readonly name: string;
+    readonly flagCode: string;
   }[];
   /** Cartes identifiées par leur clé métier, indépendamment de leur position. */
   readonly indicators: readonly Indicator[];
@@ -71,6 +72,7 @@ export function createCountryState(countries: readonly Olympic[], id: number): C
       options: countries.map((item) => ({
         id: item.id,
         name: item.country,
+        flagCode: COUNTRY_CODES[item.country] ?? '',
       })),
       indicators: countryIndicators(summary.entries, summary.totalMedals, summary.athleteEntries),
       flagCode: COUNTRY_CODES[summary.name] ?? '',

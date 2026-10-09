@@ -53,7 +53,7 @@ describe('CountryComponent', () => {
     data.complete();
   });
 
-  it('should select the current country and navigate to another country using the native selector', async () => {
+  it('should select the current country and navigate to another country using the dropdown', async () => {
     const countries: readonly Olympic[] = [
       { id: 2, country: 'Italy', participations: [] },
       { id: 5, country: 'France', participations: [] },
@@ -63,20 +63,29 @@ describe('CountryComponent', () => {
     component = await harness.navigateByUrl('/country/5', CountryComponent);
     data.next(countries);
     harness.detectChanges();
-    const select = harness.routeNativeElement!.querySelector('select')!;
-    expect(select.value).toBe('5');
-    expect(select.disabled).toBeFalse();
+    const trigger = harness.routeNativeElement!.querySelector<HTMLButtonElement>(
+      '.country-picker__trigger',
+    )!;
+    expect(trigger.textContent).toContain('France');
+    expect(trigger.disabled).toBeFalse();
+    expect(
+      harness.routeNativeElement!.querySelector('.country-picker__dropdown')?.textContent,
+    ).not.toContain('France');
     expect(
       harness.routeNativeElement
         ?.querySelector('.country-picker__flag')
         ?.classList.contains('country-picker__flag--fr'),
     ).toBeTrue();
-    select.value = '2';
-    select.dispatchEvent(new Event('change', { bubbles: true }));
+    const options =
+      harness.routeNativeElement!.querySelectorAll<HTMLButtonElement>('.country-picker__option');
+    options[0].click();
     await harness.fixture.whenStable();
     harness.detectChanges();
     expect(countrySummary(component).name).toBe('Italy');
-    expect(select.value).toBe('2');
+    expect(trigger.textContent).toContain('Italy');
+    expect(
+      harness.routeNativeElement!.querySelector('.country-picker__dropdown')?.textContent,
+    ).not.toContain('Italy');
     expect(
       harness.routeNativeElement
         ?.querySelector('.country-picker__flag')
@@ -129,15 +138,7 @@ describe('CountryComponent', () => {
       {
         id: 2,
         country: 'Italy',
-        participations: [
-          {
-            id: 1,
-            year: 2012,
-            city: 'London',
-            medalsCount: 15,
-            athleteCount: 120,
-          },
-        ],
+        participations: [{ id: 1, year: 2012, city: 'London', medalsCount: 15, athleteCount: 120 }],
       },
       {
         id: 1,
@@ -256,7 +257,10 @@ describe('CountryComponent', () => {
         item.textContent?.trim(),
       ),
     ).toEqual(['—', '—', '—']);
-    expect(harness.routeNativeElement?.querySelector('select')?.disabled).toBeTrue();
+    expect(
+      harness.routeNativeElement?.querySelector<HTMLButtonElement>('.country-picker__trigger')
+        ?.disabled,
+    ).toBeTrue();
     expect(harness.routeNativeElement?.querySelector('canvas')).toBeNull();
   });
 
@@ -295,24 +299,15 @@ describe('CountryComponent', () => {
   });
 
   for (const scenario of [
-    {
-      status: 0,
-      message: 'Unable to connect. Check your connection and try again.',
-    },
+    { status: 0, message: 'Unable to connect. Check your connection and try again.' },
     { status: 404, message: 'Olympic data could not be found.' },
-    {
-      status: 503,
-      message: 'Olympic data is temporarily unavailable. Please try again later.',
-    },
+    { status: 503, message: 'Olympic data is temporarily unavailable. Please try again later.' },
   ]) {
     it(`should display a safe error for HTTP status ${scenario.status}`, async () => {
       const harness = await RouterTestingHarness.create();
       component = await harness.navigateByUrl('/country/1', CountryComponent);
       data.error(
-        new HttpErrorResponse({
-          status: scenario.status,
-          error: 'private server details',
-        }),
+        new HttpErrorResponse({ status: scenario.status, error: 'private server details' }),
       );
       harness.detectChanges();
       await renderCharts(harness.fixture);
@@ -334,15 +329,7 @@ describe('CountryComponent', () => {
       {
         id: 1,
         country: 'France',
-        participations: [
-          {
-            id: 1,
-            year: 2012,
-            city: 'London',
-            medalsCount: 10,
-            athleteCount: 100,
-          },
-        ],
+        participations: [{ id: 1, year: 2012, city: 'London', medalsCount: 10, athleteCount: 100 }],
       },
     ]);
     harness.detectChanges();

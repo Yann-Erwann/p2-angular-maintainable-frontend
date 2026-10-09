@@ -13,11 +13,7 @@ describe('Country statistics', () => {
       participation(3, 2012, 20),
       participation(4, 2016, 30),
     ]);
-    const country: Olympic = Object.freeze({
-      id: 5,
-      country: 'France',
-      participations,
-    });
+    const country: Olympic = Object.freeze({ id: 5, country: 'France', participations });
     const summary = summarizeCountry(country);
     expect(summary.participations.map((item) => item.id)).toEqual([2, 3, 4, 1]);
     expect(participations.map((item) => item.id)).toEqual([1, 2, 3, 4]);
@@ -27,11 +23,7 @@ describe('Country statistics', () => {
   });
 
   it('should retain country identity with zero totals for no participations', () => {
-    const summary = summarizeCountry({
-      id: 5,
-      country: 'France',
-      participations: [],
-    });
+    const summary = summarizeCountry({ id: 5, country: 'France', participations: [] });
     expect(summary).toEqual({
       id: 5,
       name: 'France',
@@ -48,7 +40,7 @@ describe('Country statistics', () => {
     const state = createCountryState(countries, 5);
     expect(state.status).toBe('empty');
     if (state.status !== 'empty') throw new Error('Expected an empty country.');
-    expect(state.data.options).toEqual([{ id: 5, name: 'France' }]);
+    expect(state.data.options).toEqual([{ id: 5, name: 'France', flagCode: 'fr' }]);
     expect(state.data.indicators.map((item) => item.value)).toEqual([0, 0, 0]);
   });
 
