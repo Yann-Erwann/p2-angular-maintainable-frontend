@@ -15,7 +15,9 @@
     "typecheck": "tsc --noEmit -p tsconfig.app.json && tsc --noEmit -p tsconfig.spec.json && tsc --noEmit -p tsconfig.e2e.json",
     "build:e2e": "pnpm run build --base-href /p2-angular-maintainable-frontend/",
     "test:e2e": "playwright test",
-    "preview:production": "node scripts/serve-production.mjs"
+    "preview:production": "node scripts/serve-production.mjs",
+    "perf:measure": "node scripts/measure-performance.mjs",
+    "perf:compare": "node scripts/compare-performance.mjs"
   },
   "private": true,
   "dependencies": {
