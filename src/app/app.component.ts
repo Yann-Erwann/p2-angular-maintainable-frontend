@@ -84,7 +84,11 @@ export class AppComponent implements OnInit {
         }
         this.pendingFocus = afterNextRender(
           () => {
-            this.main().nativeElement.querySelector<HTMLElement>('h1')?.focus();
+            const main = this.main().nativeElement;
+            const heading =
+              main.querySelector<HTMLElement>('[data-page-heading]') ??
+              main.querySelector<HTMLElement>('h1');
+            heading?.focus();
           },
           { injector: this.injector },
         );

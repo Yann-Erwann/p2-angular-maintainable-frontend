@@ -62,7 +62,8 @@ describe('Accessible application navigation', () => {
 
     const page = fixture.nativeElement as HTMLElement;
     expect(page.querySelector('.skip-link')).toBeNull();
-    expect(page.querySelector('h1')?.getAttribute('tabindex')).toBe('0');
+    expect(page.querySelector('h1')?.getAttribute('tabindex')).toBe('-1');
+    expect(page.querySelector('[data-page-heading]')?.getAttribute('tabindex')).toBe('0');
     expect(page.querySelectorAll('main').length).toBe(1);
     expect(page.querySelectorAll('h1').length).toBe(1);
     expect(document.title).toBe('Medals by country | Olympic Games');

@@ -1,5 +1,9 @@
 <header class="results-header__heading">
-  <h2 class="results-header__title" [attr.tabindex]="variant() === 'country' ? null : 0">
+  <h2
+    [attr.data-page-heading]="variant() === 'dashboard' ? '' : null"
+    class="results-header__title"
+    [attr.tabindex]="variant() === 'country' ? null : 0"
+  >
     @if (variant() === 'dashboard') {
       <svg class="results-header__heading-icon" viewBox="0 0 24 24" aria-hidden="true">
         <path fill="currentColor" d="M3 13h4v8H3zm7-10h4v18h-4zm7 7h4v11h-4z" />
@@ -12,6 +16,8 @@
   @for (indicator of indicators(); track indicator.kind) {
     <dl
       class="results-header__indicator"
+      [class.results-header__indicator--medals]="indicator.kind === 'medals'"
+      [class.results-header__indicator--athletes]="indicator.kind === 'athletes'"
       [attr.data-kind]="indicator.kind"
       tabindex="0"
       [attr.aria-label]="indicator.label + ': ' + (loading() ? 'Loading' : indicator.value)"
@@ -123,9 +129,7 @@
         </svg>
       }
       <dt class="results-header__label">{{ indicator.label }}</dt>
-      <dd class="results-header__value">
-        {{ loading() ? '—' : indicator.value }}
-      </dd>
+      <dd class="results-header__value">{{ loading() ? '—' : indicator.value }}</dd>
     </dl>
   }
 </div>
