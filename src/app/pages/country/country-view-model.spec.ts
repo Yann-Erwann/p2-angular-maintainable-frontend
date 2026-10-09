@@ -1,6 +1,5 @@
 import type { Olympic, Participation } from '../../models/olympic';
-import { summarizeCountry } from './country-summary';
-import { createCountryState } from './country-view-model';
+import { createCountryState, summarizeCountry } from './country-view-model';
 
 const participation = (id: number, year: number, medalsCount: number): Participation =>
   Object.freeze({ id, year, city: 'Tokyo', medalsCount, athleteCount: 100 });

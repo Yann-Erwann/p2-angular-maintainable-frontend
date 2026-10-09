@@ -2,11 +2,47 @@ import type { Olympic } from '../../models/olympic';
 import { MEDAL_COLORS } from '../../olympics/chart/chart-colors';
 import type { ChartItem } from '../../olympics/chart/chart.model';
 import type { Indicator } from '../../olympics/header/indicator.model';
-import { summarizeOlympics, type CountryMedalRow } from './olympic-summary';
+
+export interface CountryMedalRow {
+  readonly id: number;
+  readonly name: string;
+  readonly medals: number;
+  /** Part de la collection arrondie à une décimale, ou zéro sans médaille. */
+  readonly percentage: number;
+}
+
+/** Éditions distinctes et répartition des médailles de la collection. */
+export interface OlympicSummary {
+  /** Nombre d’années distinctes, et non nombre de participations. */
+  readonly editions: number;
+  /** Une ligne par pays dans l’ordre de la collection reçue. */
+  readonly rows: readonly CountryMedalRow[];
+}
+
+/**
+ * Conserve l’ordre des pays sans mutation. Les parts concernent uniquement la collection
+ * fournie : arrondi à une décimale sans redistribution ; zéro si aucune médaille.
+ */
+export function summarizeOlympics(countries: readonly Olympic[]): OlympicSummary {
+  const totals = countries.map((country) => ({
+    id: country.id,
+    name: country.country,
+    medals: country.participations.reduce((sum, item) => sum + item.medalsCount, 0),
+  }));
+  const totalMedals = totals.reduce((sum, country) => sum + country.medals, 0);
+  return {
+    editions: new Set(
+      countries.flatMap((country) => country.participations.map((item) => item.year)),
+    ).size,
+    rows: totals.map((country) => ({
+      ...country,
+      percentage: totalMedals ? Math.round((country.medals / totalMedals) * 1000) / 10 : 0,
+    })),
+  };
+}
 
 /** Le tableau et le graphique partagent l’ordre des pays pour la sélection par index. */
 export interface HomeViewModel {
-  /** Identité, statistiques et couleur réunies pour chaque pays. */
   readonly rows: readonly (CountryMedalRow & { readonly color: string })[];
   /** Cartes identifiées par leur clé métier, indépendamment de leur position. */
   readonly indicators: readonly Indicator[];
@@ -21,7 +57,6 @@ export type HomePageState =
   | { readonly status: 'error'; readonly message: string }
   | { readonly status: 'success'; readonly data: HomeViewModel };
 
-/** Prépare les cartes de pays et d’éditions distinctes. */
 function homeIndicators(countries: number, editions: number): readonly Indicator[] {
   return [
     { kind: 'countries', label: 'Number of countries', value: countries },
@@ -29,7 +64,6 @@ function homeIndicators(countries: number, editions: number): readonly Indicator
   ];
 }
 
-/** Cartes réservées au chargement de l’accueil. */
 export const HOME_LOADING_INDICATORS = homeIndicators(0, 0);
 
 /** Prépare une vue sans mutation ; des pays à zéro médaille restent un succès. */

@@ -1,5 +1,5 @@
 import type { Olympic } from '../../models/olympic';
-import { summarizeOlympics } from './olympic-summary';
+import { summarizeOlympics } from './home-view-model';
 
 const country = (id: number, medalsCount: number, year = 2012): Olympic =>
   Object.freeze({

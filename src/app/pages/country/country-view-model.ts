@@ -1,9 +1,35 @@
-import type { Olympic } from '../../models/olympic';
+import type { Olympic, Participation } from '../../models/olympic';
 import type { ChartItem } from '../../olympics/chart/chart.model';
 import type { Indicator } from '../../olympics/header/indicator.model';
-import { summarizeCountry, type CountrySummary } from './country-summary';
 
-/** Correspondance des pays connus avec les variantes visuelles des drapeaux. */
+export interface CountrySummary {
+  readonly id: number;
+  readonly name: string;
+  /** Copie triée par année croissante, stable à année égale. */
+  readonly participations: readonly Participation[];
+  /** Nombre de participations, y compris celles d’une même année. */
+  readonly entries: number;
+  readonly totalMedals: number;
+  /** Cumul par participation, sans déduplication des personnes. */
+  readonly athleteEntries: number;
+}
+
+/**
+ * Trie une copie par année croissante, de façon stable à année égale, puis cumule les compteurs.
+ * @param country Pays validé. Sans participation, les totaux restent à zéro.
+ */
+export function summarizeCountry(country: Olympic): CountrySummary {
+  const participations = [...country.participations].sort((a, b) => a.year - b.year);
+  return {
+    id: country.id,
+    name: country.country,
+    participations,
+    entries: participations.length,
+    totalMedals: participations.reduce((total, item) => total + item.medalsCount, 0),
+    athleteEntries: participations.reduce((total, item) => total + item.athleteCount, 0),
+  };
+}
+
 const COUNTRY_CODES: Readonly<Record<string, string>> = {
   France: 'fr',
   Italy: 'it',
@@ -14,7 +40,6 @@ const COUNTRY_CODES: Readonly<Record<string, string>> = {
 
 /** Vue complète du pays ; le détail et le sélecteur proviennent de la même collection. */
 export interface CountryViewModel {
-  /** Identité et statistiques calculées du pays sélectionné. */
   readonly summary: CountrySummary;
   /** Pays du sélecteur dans l’ordre du fichier, avec leurs identifiants. */
   readonly options: readonly {
@@ -41,7 +66,6 @@ export type CountryPageState =
   | { readonly status: 'success'; readonly data: CountryViewModel }
   | { readonly status: 'empty'; readonly data: CountryViewModel };
 
-/** Prépare les cartes de participations, médailles et effectifs cumulés. */
 function countryIndicators(
   entries: number,
   medals: number,
@@ -54,7 +78,6 @@ function countryIndicators(
   ];
 }
 
-/** Cartes réservées au chargement, sans statistiques disponibles. */
 export const COUNTRY_LOADING_INDICATORS = countryIndicators(0, 0, 0);
 
 /**
@@ -84,7 +107,6 @@ export function createCountryState(countries: readonly Olympic[], id: number): C
   };
 }
 
-/** Titre du pays trouvé ou titre de repli cohérent avec l’état. */
 export function countryDocumentTitle(state: CountryPageState): string {
   if (state.status === 'success' || state.status === 'empty') {
     return `${state.data.summary.name} | Olympic Games`;
