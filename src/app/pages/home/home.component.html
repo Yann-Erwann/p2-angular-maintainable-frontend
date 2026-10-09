@@ -47,9 +47,9 @@
         <tbody>
           @for (country of summary().breakdown; track country.id) {
             <tr [style.--medal-color]="country.color">
-              <th scope="row"><span class="country-dot" aria-hidden="true"></span>{{ country.country }}</th>
-              <td>{{ country.medals }}</td>
-              <td><span class="percentage-cell"><span class="percentage-track" aria-hidden="true"><span [style.width.%]="country.percentage"></span></span><span>{{ country.percentage }}%</span></span></td>
+              <th scope="row"><a class="country-link" [routerLink]="['/country', country.id]" [attr.aria-describedby]="'country-medals-' + country.id + ' country-percentage-' + country.id"><span class="country-dot" aria-hidden="true"></span>{{ country.country }}</a></th>
+              <td [id]="'country-medals-' + country.id">{{ country.medals }}<span class="visually-hidden"> medals</span></td>
+              <td [id]="'country-percentage-' + country.id"><span class="percentage-cell"><span class="percentage-track" aria-hidden="true"><span [style.width.%]="country.percentage"></span></span><span>{{ country.percentage }}%<span class="visually-hidden"> of total</span></span></span></td>
             </tr>
           }
         </tbody>

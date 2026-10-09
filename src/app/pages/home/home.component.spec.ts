@@ -181,7 +181,11 @@ describe('HomeComponent', () => {
     expect(page.querySelector('canvas')).toBe(chartAt(fixture.nativeElement as HTMLElement).canvas);
     expect(Array.from(page.querySelectorAll('tbody tr'), row =>
       Array.from(row.querySelectorAll('th, td'), cell => cell.textContent?.trim()),
-    )).toEqual([['France', '30', '66.7%'], ['Italy', '15', '33.3%']]);
+    )).toEqual([['France', '30 medals', '66.7% of total'], ['Italy', '15 medals', '33.3% of total']]);
+    const countryLinks = Array.from(page.querySelectorAll<HTMLAnchorElement>('tbody .country-link'));
+    expect(countryLinks.map(link => link.getAttribute('href'))).toEqual(['/country/1', '/country/2']);
+    expect(countryLinks.every(link => link.tabIndex === 0)).toBeTrue();
+    expect(countryLinks[0].getAttribute('aria-describedby')).toBe('country-medals-1 country-percentage-1');
     expect(page.querySelectorAll('thead th[scope="col"]').length).toBe(3);
     expect(page.querySelector('#country-medals-description')?.textContent).toContain('France: 30 medals.');
     expect(page.querySelector('#country-medals-description')?.textContent).toContain('Italy: 15 medals.');

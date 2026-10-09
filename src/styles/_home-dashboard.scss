@@ -83,6 +83,10 @@ th:nth-child(3) { width: 48%; }
 thead { background: #edf3f8b3; color: #506a9b; }
 thead th { padding-top: 1rem; padding-bottom: 1rem; }
 tbody tr + tr { border-top: 1px solid #e8eff5; }
+.country-link { display: inline-block; color: inherit; text-decoration: none; border-radius: .2rem; }
+.country-link:hover { text-decoration: underline; }
+.country-link:focus-visible { outline: 3px solid #008b97; outline-offset: 3px; text-decoration: underline; }
+tbody tr:focus-within { background: #edf7fc; }
 .country-dot { display: inline-block; width: 1.2rem; height: 1.2rem; margin-right: .75rem; border-radius: 50%; vertical-align: -.2rem; background: var(--medal-color); box-shadow: inset 0 2px 3px #ffffff40; }
 .percentage-cell { display: flex; align-items: center; gap: .75rem; color: #506a9b; }
 .percentage-cell > span:last-child { min-width: 3.25rem; text-align: right; font-variant-numeric: tabular-nums; }

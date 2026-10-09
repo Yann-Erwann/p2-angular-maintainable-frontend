@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, DestroyRef, ErrorHandler,
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import type { Olympic } from '../../models/olympic';
 import { olympicLoadState } from '../../olympics/olympic-load-state';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { OlympicChartComponent } from '../../olympics/chart/chart.component';
 import { HeaderComponent } from '../../olympics/header/header.component';
 import { PageFeedbackComponent } from '../../olympics/page-feedback/page-feedback.component';
@@ -16,7 +16,7 @@ import { DataService } from '../../services/data.service';
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss'],
     standalone: true,
-    imports: [HeaderComponent, OlympicChartComponent, PageFeedbackComponent],
+    imports: [HeaderComponent, OlympicChartComponent, PageFeedbackComponent, RouterLink],
 })
 export class HomeComponent implements OnInit {
   private readonly pageState = signal<PageState<readonly Olympic[]>>({ status: 'loading' });
