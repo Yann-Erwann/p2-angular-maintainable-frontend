@@ -42,7 +42,6 @@ testem.log
 .DS_Store
 Thumbs.db
 .workspace/authorized_keys
-/scripts
 
 # Documentation
 /doc

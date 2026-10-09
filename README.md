@@ -43,7 +43,8 @@ Le build de production est écrit dans `dist/olympic-games-starter/browser/`.
 Le build local utilise directement Angular CLI : minification JS/CSS,
 tree-shaking et AOT sont activés. La configuration commune `index.preloadInitial` laisse Angular générer les liens
 de préchargement des modules initiaux. Le graphique d’accueil est chargé avec
-l’application en développement et en production.
+l’application en développement et en production. Le workflow ajoute seulement
+le manifeste de livraison `release.json` avant les tests.
 Le JSON et le fond de bannière sont préchargés depuis le HTML initial. Le graphique d’accueil apparaît dès que les données sont disponibles.
 
 ```bash
@@ -81,29 +82,38 @@ d’assistance reste à vérifier humainement.
 
 ## Tests navigateur et performances
 
-Playwright démarre le serveur sous `/p2-angular-maintainable-frontend/` sur le port
-4187 et vérifie navigation, cache, erreurs, clavier et affichage responsive.
+Le workflow démarre le serveur de production sous
+`/p2-angular-maintainable-frontend/` sur le port 4187, puis lance Playwright.
+Il vérifie navigation, cache, erreurs, clavier et affichage responsive.
+Pour tester localement un build servi à la racine :
 
 ```bash
 pnpm exec playwright install chromium
-pnpm run build:e2e
-pnpm run test:e2e
+pnpm run build
+pnpm run preview
+```
+
+Dans un autre terminal, avec l’adresse affichée par `preview` :
+
+```bash
+PRODUCTION_SERVER_URL=http://localhost:3000/ pnpm run test:e2e
 ```
 
 `PLAYWRIGHT_CHROMIUM_EXECUTABLE=/usr/bin/chromium` permet d’utiliser un navigateur
 système. Les rapports sont dans `playwright-report/` et `test-results/`.
-Pour mesurer les performances, lancer `pnpm run preview:production`, puis :
 
-```bash
-pnpm run perf:measure http://127.0.0.1:4187/p2-angular-maintainable-frontend/ validation-artifacts/after
-pnpm run perf:compare validation-artifacts/before validation-artifacts/after
-```
-
-Comparer des mesures réalisées dans les mêmes conditions. Voir
+Pour mesurer les performances, lancer le workflow manuellement avec l’option
+`measure_performance`. Il réalise trois audits Lighthouse par page et conserve
+les rapports dans les artefacts de validation. Voir
 [Validation](docs/validation/VALIDATION.md) pour le protocole et ses limites.
-La CI vérifie le code, génère Compodoc et teste le build de production avant de
-livrer le même artefact sur GitHub Pages depuis `main`. Après publication, elle
-contrôle le HTML, les données et le rendu de l’accueil et de la France.
+
+La CI vérifie le code, génère Compodoc et teste le build de production préfixé
+avant de livrer ce même artefact sur GitHub Pages depuis `main`.
+Après publication, elle contrôle la révision et le HTML de la livraison, les
+données, les ressources et les erreurs JavaScript, puis parcourt l’accueil et
+la France avec rechargement direct et retour à l’accueil. Les diagnostics sont
+conservés 14 jours. Un contrôle échoué fait échouer le job, le site déjà publié
+reste en ligne : corriger ou rétablir la version précédente par un nouveau commit.
 
 ## Repères et documentation
 
@@ -113,7 +123,6 @@ contrôle le HTML, les données et le rendu de l’accueil et de la France.
 | `src/app/services/`  | Chargement, validation et cache des données     |
 | `src/app/olympics/`  | Indicateurs, feedback et intégration Chart.js   |
 | `e2e/`               | Tests navigateur                                |
-| `scripts/`           | Build, prévisualisation et mesures              |
 | `.github/workflows/` | Validation et déploiement GitHub Actions        |
 | `docs/`              | Guides et rapports de validation                |
 | `doc/`               | Maquettes et rapports locaux                    |

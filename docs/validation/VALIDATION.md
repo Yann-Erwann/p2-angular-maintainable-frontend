@@ -1,5 +1,31 @@
 # Validation de la consolidation — 9 octobre 2026
 
+## Contrôle de livraison après simplification
+
+Les builds de développement et de production préfixée passent. Le HTML de chacun
+contient les préchargements générés par Angular. Le graphique initial a été
+vérifié avec `ng serve`, en retardant le JSON, puis en naviguant vers la France.
+Les 175 tests unitaires et les 13 parcours Playwright passent localement.
+Le chargement initial de production atteint 492,66 kB bruts (140,49 kB estimés
+au transfert), car Chart.js est désormais initial. Les six audits cités ci-dessous
+précèdent ce changement, ils ne mesurent pas cette dernière révision.
+Le contrôle post-déploiement a été exécuté sur un serveur local avec une révision
+de test : accueil, navigation vers la France, rechargement direct et retour passent.
+Quatre défauts simulés sont rejetés : mauvaise révision, HTML ne correspondant pas
+au manifeste, module JavaScript manquant et erreur JavaScript à l’exécution.
+Les erreurs du navigateur, captures et traces sont bien conservées.
+Les six audits Lighthouse optionnels ont été exécutés depuis l’étape du workflow.
+Le YAML, la syntaxe des blocs Node/shell et le formatage passent aussi.
+
+La CI est configurée pour livrer le même artefact que celui testé et comparer
+`release.json` au SHA attendu après publication. Les outils de contrôle sont
+installés avant de déployer. Angular génère le HTML et ses préchargements via `index.preloadInitial`.
+Le manifeste, Lighthouse et le contrôle après déploiement sont intégrés au YAML
+GitHub Actions, le dossier `scripts/` est supprimé.
+Un échec du contrôle fait échouer le job, sans annuler automatiquement la publication.
+La CI distante et le contrôle sur GitHub Pages n’ont pas été exécutés pour ces changements.
+La génération Compodoc reste vérifiée, le seuil documentaire de 100 % a été retiré.
+
 ## Vérification finale avant les commits
 
 Le découpage en 12 commits a été préparé dans un dossier temporaire. Chaque état
@@ -35,8 +61,9 @@ transfert ne représentent pas ceux d'un hébergement compressé.
 
 Les audits de performance utilisent trois premières visites par page, le profil
 mobile Lighthouse par défaut et les médianes. Les références portent sur l'accueil
-et la France (`/#/country/5`). Les scripts `perf:measure` et `perf:compare` rendent
-le protocole reproductible. Le JavaScript mesuré inclut tous les scripts transférés
+et la France (`/#/country/5`). L’option `measure_performance` du workflow remplace les anciennes commandes
+locales de mesure. Les comparaisons historiques ci-dessous ont été réalisées
+avec les anciens scripts, elles n’ont pas été renouvelées. Le JavaScript mesuré inclut tous les scripts transférés
 pendant la visite initiale, y compris les modules préchargés/différés, la taille
 initiale du build est également contrôlée séparément.
 
