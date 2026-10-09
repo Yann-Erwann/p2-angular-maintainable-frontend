@@ -5,7 +5,21 @@ avec graphiques Chart.js et données locales dans `src/assets/mock/olympic.json`
 
 Les conventions de contribution et de commits atomiques sont décrites dans
 [CONTRIBUTING.md](CONTRIBUTING.md). Les vérifications de migration sont consignées
-dans [MIGRATION.md](MIGRATION.md).
+dans [MIGRATION.md](docs/migration/MIGRATION.md).
+
+## Repères dans le dépôt
+
+| Emplacement               | Contenu                                                       |
+| ------------------------- | ------------------------------------------------------------- |
+| `src/`                    | Application Angular et tests unitaires                        |
+| `e2e/`                    | Tests navigateur Playwright                                   |
+| `scripts/`                | Build, prévisualisation et mesures de performance             |
+| [`docs/`](docs/README.md) | Architecture, migration, décisions et validations             |
+| `doc/`                    | Maquettes et rapports locaux                                  |
+| `documentation/`          | Documentation Compodoc générée                                |
+| Racine                    | README, contribution, manifestes et configurations des outils |
+
+L’[index de documentation](docs/README.md) permet de retrouver les documents par sujet.
 
 ## Prérequis
 
@@ -38,7 +52,7 @@ pnpm start
 ```
 
 Ouvrir <http://localhost:4200>. Le serveur recharge l'application après une
-modification des sources. `pnpm-lock.yaml` est le lockfile du projet ; ne pas
+modification des sources. `pnpm-lock.yaml` est le lockfile du projet, ne pas
 le modifier à la main. Une installation figée échoue si le manifeste et le
 lockfile ne correspondent pas.
 
@@ -51,12 +65,14 @@ pnpm start --host 0.0.0.0 --port 4200
 Ajouter une dépendance avec `pnpm add <package>` ou une dépendance de développement
 avec `pnpm add -D <package>`, puis versionner ensemble `package.json` et
 `pnpm-lock.yaml`. Les autorisations de scripts de dépendances sont définies dans
-`pnpm-workspace.yaml` ; toute nouvelle autorisation doit être examinée.
+`pnpm-workspace.yaml`, toute nouvelle autorisation doit être examinée.
 
 ## Compiler, tester et vérifier le code
 
 ```bash
+pnpm run format:check
 pnpm run lint
+pnpm run typecheck
 pnpm test --watch=false
 pnpm run build
 ```
@@ -74,12 +90,12 @@ graphique dans le HTML, à partir du nom hashé trouvé dans `stats.json`.
 tree-shaking. La feuille de styles complète est chargée avant le premier rendu
 pour éviter les déplacements de mise en page liés aux styles différés.
 Angular génère les liens `modulepreload` de son graphe initial. La page d’accueil
-est incluse dans le bundle initial ; la page pays utilise `loadComponent` et se
+est incluse dans le bundle initial, la page pays utilise `loadComponent` et se
 télécharge lorsqu’elle est visitée. Les graphiques utilisent `@defer` après une
 réponse valide : affichage à l’entrée dans le viewport et préchargement sur idle.
 Le module graphique et `olympic.json` sont préchargés depuis le HTML initial,
 en parallèle des ressources initiales. Le module reste différé pour son
-exécution ; DataService valide les données et partage la réponse.
+exécution, DataService valide les données et partage la réponse.
 Un appel direct à `ng build` contourne l'ajout du `modulepreload` du graphique.
 Le build copie uniquement `robots.txt`, les données JSON et les versions
 WebP des bannières TéléSport compacte et panoramique. Le PNG original reste dans les sources.
@@ -113,6 +129,38 @@ pnpm tsc --noEmit -p tsconfig.app.json
 pnpm tsc --noEmit -p tsconfig.spec.json
 ```
 
+## Générer la documentation Angular
+
+La documentation HTML séparée est générée avec [Compodoc](https://compodoc.app/).
+Les commentaires `/** ... */` dans les sources documentent les contrats métier,
+les états de présentation, le cache HTTP et le cycle de vie des graphiques.
+Les balises Compodoc précisent uniquement les contrats qui en ont besoin.
+Les exemples détaillés du graphique sont dans son fichier `chart.component.md`,
+affiché dans un onglet de la documentation générée.
+Les [conventions du projet](docs/compodoc-conventions.md)
+précisent la portée des commentaires et les références officielles consultées.
+Les commentaires `//` expliquent localement le code et ne remplacent pas les
+descriptions JSDoc des symboles.
+
+```bash
+pnpm run docs
+pnpm run docs:check
+pnpm run docs:serve
+```
+
+`docs` génère le site dans `documentation/`. `docs:check` impose une couverture
+documentaire de 100 %, globalement et par fichier. `docs:serve` régénère le site
+et le sert sur <http://127.0.0.1:8080>. Depuis le menu **Composants**,
+ouvrir **CountryComponent** pour consulter sa description, ses propriétés et
+ses méthodes. Les fonctions sont accessibles dans la section des éléments divers.
+Préfixer les commandes par `mise exec --` si mise n'est pas activé dans le shell.
+
+`tsconfig.doc.json` limite l'analyse à `src/app/**/*.ts` et exclut les tests.
+Le dossier HTML généré est ignoré par Git, les commentaires, la configuration
+et le lockfile permettent de le reconstruire. Après un changement de commentaire,
+relancer la génération. Cet outil documente la structure Angular existante,
+les symboles sans description métier auront seulement leur documentation structurelle.
+
 ## Analyser le JavaScript de production
 
 ```bash
@@ -128,7 +176,7 @@ le contenu des sources et les maps disponibles des dépendances, ainsi que
 originaux. Utiliser l’onglet Coverage pendant la navigation et les interactions
 pour identifier le code non exécuté. Importer `stats.json` dans
 [l’analyseur officiel esbuild](https://esbuild.github.io/analyze/) pour examiner
-la composition des bundles. Les source maps facilitent l’analyse ; elles ne
+la composition des bundles. Les source maps facilitent l’analyse, elles ne
 réduisent pas elles-mêmes le JavaScript.
 
 `pnpm run build` régénère le build de production habituel sans source maps.
@@ -153,13 +201,15 @@ mais doit les revalider avant réutilisation. `serve` fournit les ETag permettan
 une réponse 304 lorsque le contenu n’a pas changé.
 
 Pour contrôler une visite répétée, décocher **Disable cache** dans les outils
-réseau puis revisiter la page ; les fichiers versionnés peuvent être repris du
+réseau puis revisiter la page, les fichiers versionnés peuvent être repris du
 cache. Le rechargement forcé peut contourner le cache. Les données en mémoire
 partagées par DataService s’appliquent uniquement pendant la session Angular.
 
 Cette configuration s’applique à `pnpm run preview`. Sur un autre hébergement,
 reprendre les mêmes règles HTTP et vérifier les en-têtes réellement retournés.
-La conteneurisation et le déploiement de production relèvent d’I19.
+Le déploiement GitHub Pages est décrit dans la section de livraison ci-dessous.
+Le serveur de tests préfixé utilise `no-cache` pour toutes les ressources afin de
+comparer les premières visites, il ne remplace pas les règles de cache de l’hébergement.
 
 ## États des pages
 
@@ -169,24 +219,25 @@ compréhensible en cas d'échec réseau ou HTTP. Un pays sans participations con
 son titre et ses compteurs à zéro, avec un message de série vide.
 
 `DataService` traduit les erreurs en `DataLoadError` et conserve l'erreur technique
-comme cause pour le diagnostic ; les templates affichent uniquement le message
+comme cause pour le diagnostic, les templates affichent uniquement le message
 utilisateur. Un pays absent est distingué d'une panne HTTP.
 
 Avant de transmettre une réponse aux pages, `DataService` reçoit un contenu
 `unknown` et le valide à l'exécution : collection de pays, champs obligatoires,
-textes non vides, compteurs numériques finis et non négatifs, identifiants et
+textes non vides, compteurs entiers sûrs et non négatifs, identifiants et
 années entiers positifs sûrs. Les identifiants de pays sont uniques dans la
-collection ; ceux des participations sont uniques au sein de chaque pays.
+collection, ceux des participations sont uniques au sein de chaque pays.
 Une collection vide ou un pays sans participations reste valide. Les champs
 supplémentaires sont conservés et aucune conversion implicite n'est appliquée.
 Un contenu invalide fait échouer toute la réponse et affiche une erreur de données.
 
-Chaque page possède un signal d'état unique contenant les données ou le message
-d'erreur ; les statistiques sont dérivées avec `computed`. RxJS compose le
+Chaque page possède un signal privé d’état unique, exposé en lecture seule.
+Les variantes chargées contiennent un modèle d’affichage préparé par des fonctions
+pures, le feedback reçoit uniquement le statut et le message éventuel. RxJS compose le
 chargement et, pour le pays, les paramètres de route avec `switchMap`.
-`ActivatedRoute` fournit l’ID ; `DataService.getCountryById` charge et sélectionne
-le pays. Un chargement validé est partagé et conservé en mémoire jusqu’au
-rechargement de l’application. Les navigations réutilisent ces données statiques ;
+`ActivatedRoute` fournit l’ID, la page charge la collection avec
+`DataService.getOlympics` et une fonction pure sélectionne le pays. Un chargement validé est partagé et conservé en mémoire jusqu’au
+rechargement de l’application. Les navigations réutilisent ces données statiques,
 les erreurs ne sont pas mémorisées et une nouvelle tentative reste possible. Les
 abonnements utilisent `takeUntilDestroyed` : quitter la page annule une requête
 HTTP encore en cours si aucun autre consommateur ne l’utilise et arrête
@@ -198,17 +249,19 @@ les indicateurs et la description accessible
 restent disponibles avant le graphique. Un
 emplacement de même hauteur limite les déplacements de mise en page, et un
 message explicite signale un échec du chargement JavaScript du graphique.
-Le bloc est créé après une réponse valide ; les états d’erreur et vide ne
-demandent pas Chart.js. Le graphique est créé lorsque son emplacement devient
-visible. Les états d’erreur et vide
-gardent le panneau masqué. La légende et les infobulles Chart.js sont conservées.
+Le bloc est créé après une réponse valide, les états d’erreur et vide ne
+créent aucune instance Chart.js. Les préchargements de modules dans le HTML sont
+conservés et peuvent néanmoins transférer le code du graphique. Le graphique est
+créé lorsque son emplacement devient visible. Les états d’erreur et vide gardent
+le panneau masqué. Les infobulles Chart.js sont conservées, les pays et leurs
+couleurs sont identifiés dans le tableau de l’accueil.
 Voir la [documentation Angular sur le préchargement des blocs différés](https://angular.dev/guide/templates/defer#prefetching-data-with-prefetch).
 Le composant possède son canvas et reçoit uniquement le type du
-graphique, ses libellés et ses valeurs. `afterRenderEffect` crée le graphique
+graphique, ses éléments `{ label, value }` et la description accessible. `afterRenderEffect` crée le graphique
 une fois le canvas disponible, détruit l'instance précédente avant remplacement
 des données et libère l'instance au retrait du composant. `ChartRenderer`
 enregistre uniquement les contrôleurs pie/line, leurs éléments et échelles,
-ainsi que la légende et les infobulles de Chart.js ; la sélection d'un pays remonte à la page, qui gère la
+ainsi que la légende et les infobulles de Chart.js, la sélection d'un pays remonte à la page, qui gère la
 navigation. Aucun graphique ne dépend d'un identifiant global de canvas.
 
 L’application utilise la détection des changements zoneless et des composants
@@ -229,8 +282,9 @@ Le titre du document reprend le nom du pays chargé. Le clic du graphique et
 la sélection directe dans Chart.js utilise les mêmes ID, indépendamment des libellés.
 Les tests couvrent les accès directs, l’historique simulé et l’annulation des
 requêtes lors de changements rapides de pays.
-Le repli serveur nécessaire au rechargement des URL profondes en production
-reste à configurer et vérifier dans I19.
+Les routes avec hash ne demandent aucun repli serveur pour les fiches : le serveur
+reçoit toujours la racine du site préfixé. Le rechargement direct de la France est
+vérifié sur le build de production par Playwright et par le contrôle post-déploiement.
 
 ## Métadonnées et indexation
 
@@ -243,14 +297,14 @@ par le routeur et les données du pays.
 Il autorise l’exploration de toutes les pages. Aucune balise `noindex` ou
 `nofollow` ni aucun en-tête `X-Robots-Tag` n’est envoyé par la configuration
 locale, afin de permettre le contrôle d’indexabilité de Lighthouse. Le site
-peut donc être indexé s’il est publié ; l’indexation effective dépend des
+peut donc être indexé s’il est publié, l’indexation effective dépend des
 moteurs de recherche. Aucun sitemap n’est publié.
 
 ## Interface responsive
 
 Pendant le chargement, un squelette statique représente le titre, les deux
 indicateurs de l’accueil ou les trois du détail, puis le graphique. Les blocs
-sont masqués aux lecteurs d’écran ; la région de statut annonce le chargement.
+sont masqués aux lecteurs d’écran, la région de statut annonce le chargement.
 Le squelette est retiré dès la réception des données ou d’une erreur.
 
 L’accueil suit la maquette `doc/UI/desktop/home.png` : bannière TéléSport
@@ -259,14 +313,23 @@ et le tableau Country / Medals / Percentage. Les valeurs et pourcentages
 proviennent des participations réelles. Les libellés et les valeurs sont
 également dessinés sur le camembert. Sur mobile, le tableau passe sous
 le graphique et la bannière compacte conserve la lisibilité du titre.
-Le détail pays conserve son graphique seul, centré jusqu’à 64 rem.
+Les textes de la bannière sont des éléments HTML distincts de son fond décoratif
+préchargé. Sur la page pays, toute la bannière permet de revenir à l’accueil.
+Le détail pays suit `doc/UI/desktop/detail_country.png` : même bannière
+panoramique, filtre avec drapeaux dans un popover natif, trois cartes d’indicateurs
+et courbe remplie avec les valeurs des participations. La liste reprend le style
+du bouton, exclut le pays sélectionné et affiche les autres pays sans défilement
+interne. Tab parcourt les options, Entrée choisit un pays, Échap ou un clic extérieur
+ferme la liste. Les cartes sont empilées sur mobile, Tab parcourt
+les trois années directement dans le canvas. Le graphique se charge aussi
+sur idle pour rester accessible au clavier lorsqu’il est sous le viewport.
 
 La mise en page et les graphiques sont vérifiés à 320, 480, 768, 1024 et
 1280 pixels. Les constats, mesures, états et limites sont consignés dans
-[UI-VALIDATION.md](UI-VALIDATION.md).
+[UI-VALIDATION.md](docs/validation/UI-VALIDATION.md).
 
 La structure utilise `header`, `nav` et un unique `main`. Chaque page forme
-une `section` reliée à son titre ; les graphiques sont des `figure` avec
+une `section` reliée à son titre, les graphiques sont des `figure` avec
 `figcaption`, et les statistiques utilisent `dl`, `dt` et `dd`.
 
 Les données des graphiques sont décrites dans un texte destiné aux lecteurs
@@ -277,20 +340,22 @@ normalement du graphique. Les flèches, Home et End restent disponibles.
 Entrée ou Espace ouvre le pays sélectionné. La sélection est surlignée et annoncée.
 Le canvas contient aussi les valeurs comme texte de remplacement et son
 fond blanc est peint directement à chaque dessin.
-Tab et Maj+Tab parcourent la bannière, les titres, chaque indicateur,
+Tab et Maj+Tab parcourent le lien TéléSport, le titre et la description de la
+bannière, les titres de page, chaque indicateur,
 le graphique sans piège de focus. Le lien « Skip to main
 content » est supprimé à la demande du projet. Après une navigation,
-le titre de la nouvelle page reçoit le focus. Les
+le titre de la nouvelle page reçoit le focus. À l’accueil, le focus vise
+« Medals per Country » sans faire apparaître de titre masqué par-dessus. Les
 contrastes et les régions d'annonce ont été vérifiés sur le périmètre décrit
-dans [ACCESSIBILITY.md](ACCESSIBILITY.md). L'écoute avec un lecteur d'écran
+dans [ACCESSIBILITY.md](docs/validation/ACCESSIBILITY.md). L'écoute avec un lecteur d'écran
 et l'audit RGAA complet restent à réaliser.
 
 ## Éditeur et architecture
 
 Ouvrir la racine du dépôt dans VS Code dans l'environnement où les dépendances
-sont installées. Les extensions recommandées sont dans `.vscode/extensions.json` ;
+sont installées. Les extensions recommandées sont dans `.vscode/extensions.json`,
 ESLint est configuré par `eslint.config.js` et se lance avec `pnpm run lint`.
-Les types Jasmine sont chargés par `tsconfig.spec.json` ; le `tsconfig.json`
+Les types Jasmine sont chargés par `tsconfig.spec.json`, le `tsconfig.json`
 racine référence les configurations de l'application et des tests.
 
 La structure actuelle est la suivante :
@@ -298,15 +363,72 @@ La structure actuelle est la suivante :
 - `src/main.ts` démarre `AppComponent` avec `bootstrapApplication` et signale les erreurs.
 - `src/app/app.config.ts` fournit le routeur, HTTP et la détection des changements zoneless.
 - `src/app/app.routes.ts` définit `/`, `/country/:id`, `/not-found` et le repli vers la page inconnue.
-- `src/app/pages/` contient les pages standalone et leurs tests.
+- `src/app/pages/` contient les pages standalone, les calculs purs, les modèles d’affichage et leurs tests.
 - `src/app/olympics/header/` contient `HeaderComponent`, qui affiche le titre et les indicateurs fournis par les pages d'accueil et de pays.
-- `src/app/services/data.service.ts` centralise l'URL et le chargement HTTP ; les pages injectent `DataService`.
-- `src/app/models/olympic.ts` décrit les pays et participations ; il ne valide pas les réponses HTTP à l'exécution.
+- `src/app/services/data.service.ts` centralise l'URL et le chargement HTTP, les pages injectent `DataService`.
+- `src/app/models/olympic.ts` décrit les pays et participations, il ne valide pas les réponses HTTP à l'exécution.
 - `src/assets/mock/olympic.json` contient les données de démonstration.
 - `src/test.ts` initialise les tests Angular avec `@angular/platform-browser-dynamic`.
 
 Les étapes Angular 18 → 19 → 20 → 21 sont déjà présentes dans l'historique.
-Le développement courant utilise Angular 21 ; les plages du manifeste restent
-sur cette majeure. Les documents [architecture.md](architecture.md) et
-[notes-architecture.md](notes-architecture.md) décrivent également des travaux
-prévus et des constats historiques.
+Le développement courant utilise Angular 21, les plages du manifeste restent
+sur cette majeure. [architecture.md](docs/architecture/architecture.md) décrit l’implémentation actuelle,
+[notes-architecture.md](docs/architecture/notes-architecture.md) conserve les constats historiques.
+
+## Parcours navigateur sur le build de production
+
+```bash
+pnpm exec playwright install chromium
+pnpm run build:e2e
+pnpm run test:e2e
+```
+
+Playwright démarre le serveur statique du dépôt sur
+<http://127.0.0.1:4187/p2-angular-maintainable-frontend/>. Le serveur prend en charge
+ce préfixe et les types MIME JavaScript, il n'utilise aucun téléchargement à
+l'exécution. Le port doit être libre. Les tests couvrent les parcours, le cache,
+les accès directs, les erreurs et le clavier, les captures à 320, 768 et 1280 px
+sont jointes au rapport dans `playwright-report/` et `test-results/` (ignorés par Git).
+
+Pour utiliser un Chromium système déjà installé :
+
+```bash
+PLAYWRIGHT_CHROMIUM_EXECUTABLE=/usr/bin/chromium pnpm run test:e2e
+```
+
+Cette variable s'applique aussi aux scripts de mesure et de vérification après
+livraison. La CI installe Chromium et ses dépendances système conformément à la
+[documentation Playwright](https://playwright.dev/docs/ci). Pour consulter
+manuellement le build préfixé, utiliser `pnpm run preview:production`.
+
+## Formatage, mesures et livraison
+
+`pnpm run format` applique [Prettier](https://prettier.io/docs/install) et
+`pnpm run format:check` contrôle les fichiers.
+Les artefacts, rapports, images et le lockfile sont exclus. Les règles métier
+additionnent les effectifs par édition et trient une copie des participations par
+année, les années égales restent dans leur ordre initial.
+
+Avec le serveur de production lancé, mesurer trois fois l'accueil et la France :
+
+```bash
+pnpm run perf:measure http://127.0.0.1:4187/p2-angular-maintainable-frontend/ validation-artifacts/after
+pnpm run perf:compare validation-artifacts/before validation-artifacts/after
+```
+
+La comparaison produit les médianes du LCP, du CLS, du transfert total et du
+JavaScript chargé pendant la visite initiale, y compris le graphique préchargé.
+Elle échoue si le JavaScript augmente de plus de 5 % ou le LCP de plus de 10 %.
+Les deux dossiers doivent provenir du même navigateur, serveur et profil mobile
+Lighthouse. Voir [VALIDATION.md](docs/validation/VALIDATION.md) pour les résultats et limites.
+
+Le workflow vérifie les PR et `main`, puis déploie uniquement depuis `main` après
+réussite des contrôles. Il réutilise le build validé et vérifie ensuite le HTML,
+les données et les pages dans Chromium. Les notes de décision décrivent
+[les états](docs/decisions/001-page-state.md), [le cache](docs/decisions/002-http-cache.md)
+et [Chart.js](docs/decisions/003-chart-boundary.md).
+
+Pour revenir à une version précédente, créer un commit qui rétablit la révision
+fonctionnelle (ou annule les commits responsables), le faire vérifier puis fusionner
+sur `main`. Le pipeline valide et livre cet état, aucune réécriture de l'historique
+n'est nécessaire. Un lancement manuel du workflow doit également cibler `main`.

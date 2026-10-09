@@ -1,0 +1,135 @@
+# Validation de la consolidation — 9 octobre 2026
+
+## Vérification finale avant les commits
+
+Le découpage en 12 commits a été préparé dans un dossier temporaire. Chaque état
+intermédiaire passe la compilation TypeScript de l’application et des tests,
+ainsi que le build de production. Le dossier de travail conserve les sources finales.
+
+Sur les sources finales : formatage, lint, typage application/tests/Playwright,
+175 tests Karma/Jasmine, 13 tests navigateur et couverture documentaire Compodoc
+à 100 % passent. Le parcours navigateur vérifie notamment les textes de l’en-tête
+avec Tab, le titre stable « Medals per Country », la bannière pays cliquable,
+le filtre sans le pays courant ni défilement interne et les mises en page responsive.
+L’infobulle du pays a aussi été examinée à 320 et 1280 px.
+
+Les mesures Lighthouse historiques ci-dessous n’ont pas été renouvelées pour
+ces dernières modifications. Les rapports HTML Compodoc, captures et builds
+générés restent hors de Git.
+
+## Référence et protocole
+
+La référence est l'état du dossier au début du travail, avec ses modifications
+préexistantes conservées. Un snapshot des sources et du build préfixé a été pris
+avant refactorisation dans `/tmp/olympic-expert-baseline/`.
+
+Sur cette référence : lint, compilation TypeScript application/tests, build et
+Compodoc passent, 172 tests Karma/Jasmine passent. Le lancement initial de Karma
+dans le sandbox ne pouvait pas ouvrir son port, la vérification réussie utilise
+le même code avec accès au port local et à Chromium.
+
+Node 24.21.0, pnpm 12.10.1, Chromium headless 154, Playwright 1.64.0 et Lighthouse
+13.5.0 sous Linux/WSL. Les builds sont servis sans compression et avec `no-cache`
+sous `/p2-angular-maintainable-frontend/`, sur la même machine. Les chiffres de
+transfert ne représentent pas ceux d'un hébergement compressé.
+
+Les audits de performance utilisent trois premières visites par page, le profil
+mobile Lighthouse par défaut et les médianes. Les références portent sur l'accueil
+et la France (`/#/country/5`). Les scripts `perf:measure` et `perf:compare` rendent
+le protocole reproductible. Le JavaScript mesuré inclut tous les scripts transférés
+pendant la visite initiale, y compris les modules préchargés/différés, la taille
+initiale du build est également contrôlée séparément.
+
+## Changements vérifiés
+
+- Modèles en lecture seule, validation des compteurs entiers sûrs non négatifs.
+- Tri chronologique stable sur une copie, aucune mutation des participations.
+- Calculs purs, lignes associant identité et statistiques, modèles d'affichage.
+- États de pages explicites, sélection par route et récupération après erreur.
+- Contrat graphique `{ label, value }`, configurations et plugins séparés.
+- Indicateurs identifiés par leur signification et styles appartenant aux composants.
+- Préchargements et règles de cache en mémoire conservés.
+- Outillage aligné : aucune incompatibilité de peer dependency signalée par pnpm.
+
+## Contrôles automatiques finaux
+
+| Contrôle                         | Résultat                                                   |
+| -------------------------------- | ---------------------------------------------------------- |
+| `pnpm install --frozen-lockfile` | Réussi, lockfile inchangé à l'installation                 |
+| `pnpm peers check`               | Aucune incompatibilité signalée                            |
+| `pnpm run format:check`          | Réussi                                                     |
+| `pnpm run lint`                  | Réussi                                                     |
+| `pnpm run typecheck`             | Application, tests unitaires et tests navigateur : réussi  |
+| `pnpm test --watch=false`        | 175 tests réussis avec Chromium                            |
+| `pnpm run docs`                  | Compodoc généré avec succès                                |
+| `pnpm run build:e2e`             | Production préfixée : réussi, sans avertissement de budget |
+| `pnpm run test:e2e`              | 10 tests Chromium réussis                                  |
+| Contrôle de livraison local      | HTML, JSON, accueil et accès direct France : réussi        |
+| `git diff --check`               | Réussi                                                     |
+
+Les artefacts locaux sont conservés dans `validation-artifacts/` : rapports
+Lighthouse avant/après, comparaison JSON, captures et journaux des tests. Ce dossier
+est ignoré par Git. Les rapports navigateur sont aussi dans `playwright-report/` et
+la documentation générée dans `documentation/`. Les commandes du README permettent
+de reconstruire ces preuves.
+
+## Performance
+
+Médianes de trois passages par page. Les tailles transférées sont exprimées en
+octets, le LCP est exprimé en millisecondes.
+
+| Page    | Mesure               |    Avant |    Après | Évolution |
+| ------- | -------------------- | -------: | -------: | --------: |
+| Accueil | JavaScript transféré |  473 318 |  484 702 |   +2,41 % |
+| Accueil | Transfert total      |  509 697 |  506 619 |   −0,60 % |
+| Accueil | LCP                  | 3 508,64 | 3 666,05 |   +4,49 % |
+| Accueil | CLS                  |        0 |        0 |    Stable |
+| France  | JavaScript transféré |  480 478 |  495 512 |   +3,13 % |
+| France  | Transfert total      |  516 857 |  517 429 |   +0,11 % |
+| France  | LCP                  | 3 615,80 | 3 650,25 |   +0,95 % |
+| France  | CLS                  |        0 |        0 |    Stable |
+
+Les seuils de +5 % de JavaScript et +10 % de LCP sont respectés. La taille initiale
+du build passe de 299,61 kB à 296,86 kB. Le transfert JavaScript de la visite inclut
+les styles désormais encapsulés dans les composants et les modules différés,
+il ne correspond donc pas à la seule taille initiale du build. Ces mesures locales
+ne constituent pas une mesure terrain et leur précision dépend du profil simulé
+et de la charge de la machine.
+
+## Comparaison visuelle
+
+Six captures avant/après : accueil et France, viewport de 320, 768 et 1280 pixels,
+hauteur 1000 pixels, facteur de pixels 1. Les captures de la vérification finale
+après refactorisation sont identiques octet par octet à la référence (SHA-256).
+Les tests navigateur contrôlent aussi l'absence de débordement horizontal et
+joignent les captures au rapport Playwright.
+
+## Accessibilité et limites
+
+Le parcours réel au clavier est automatisé dans Chromium : sélection d'un pays,
+Entrée, focus du nouveau titre, exploration des années, sortie avec Tab et Maj+Tab.
+Les textes de remplacement, descriptions et annonces sont aussi vérifiés par les
+tests unitaires. Les captures desktop de référence et de résultat ont été examinées.
+
+**La vérification manuelle avec lecteur d'écran reste à réaliser.** Aucun lecteur
+d'écran avec session graphique/audio exploitable n'est disponible dans cet
+exécuteur, aucun résultat d'écoute n'est revendiqué. Avant de déclarer ce contrôle
+terminé, relever la version du lecteur et du navigateur et vérifier : annonces de
+chargement/erreur, lecture des données, changement de pays, entrée/sortie du canvas
+et focus après navigation. Ce contrôle ne constitue pas un audit RGAA complet.
+
+La CI et le contrôle post-déploiement sont configurés et vérifiés localement.
+Le workflow distant et une nouvelle publication GitHub Pages n'ont pas été exécutés
+pendant cette session. Les contrôles distant et humain restent des preuves à
+obtenir dans leurs environnements respectifs.
+
+## Livraison et retour arrière
+
+Les PR passent par le job de validation. Depuis `main`, le job de déploiement
+réutilise l'artefact de production validé. Le smoke check vérifie le HTML, le JSON,
+le démarrage Angular, l'accueil et la France en accès direct dans Chromium.
+
+Pour revenir à une version fonctionnelle, annuler les commits responsables ou
+rétablir leur contenu dans un nouveau commit, puis faire valider/fusionner sur
+`main`. Le pipeline livre cet état sans réécriture de l'historique. Aucune migration
+persistante ni changement de format du JSON livré n'est nécessaire.

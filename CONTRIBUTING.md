@@ -92,13 +92,13 @@ Les identifiants `I01`, `I02`, etc. du plan local ne sont pas des numéros d'iss
 GitHub. Ne pas utiliser leur partie numérique comme numéro d'issue GitHub.
 
 Lorsqu'une issue GitHub existe, utiliser son vrai numéro dans le nom de branche
-et la PR. Convention de branche : `<type>/<issue-number>-<short-description>` ;
+et la PR. Convention de branche : `<type>/<issue-number>-<short-description>`,
 sans issue distante, utiliser `<type>/<short-description>`.
 
 La PR décrit le problème, le comportement obtenu, le périmètre, les validations
-et les critères encore ouverts. Lier l'issue réelle ; utiliser `Refs #<issue-number>`
+et les critères encore ouverts. Lier l'issue réelle, utiliser `Refs #<issue-number>`
 pour une contribution partielle. Préférer `Closes #<issue-number>` dans la PR
-qui satisfait tous ses critères. Remplacer ces placeholders avant publication ;
+qui satisfait tous ses critères. Remplacer ces placeholders avant publication,
 n'ajouter aucune référence fictive ni promesse de clôture pour un travail partiel.
 
 Indiquer les dépendances entre les contributions. Un ordre de travail ne prouve
@@ -119,16 +119,16 @@ pnpm exec ng test --watch=false
 pnpm run build
 ```
 
-Utiliser des tests ciblés lorsque cela suffit à vérifier le changement ; le
+Utiliser des tests ciblés lorsque cela suffit à vérifier le changement, le
 navigateur Chrome ou Chromium est nécessaire aux tests Karma. Pour une
 modification documentaire seule, relire les exemples, vérifier les liens locaux
-et contrôler le diff ; il n'est pas nécessaire de relancer les tests applicatifs.
+et contrôler le diff, il n'est pas nécessaire de relancer les tests applicatifs.
 Consigner les échecs ou les contrôles indisponibles avec leur cause.
 
 ## Historique et cherry-pick
 
 Aucun amend, rebase, force-push ou autre réécriture automatique de l'historique
-n'est prévu. Corriger une contribution déjà commitée par un nouveau commit ;
+n'est prévu. Corriger une contribution déjà commitée par un nouveau commit,
 ces conventions ne justifient pas une réorganisation des anciens commits.
 
 Le cherry-pick n'est pas automatique. Avant un transfert demandé, examiner le
