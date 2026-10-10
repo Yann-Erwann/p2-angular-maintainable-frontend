@@ -119,10 +119,14 @@ describe('HomeComponent', () => {
       { id: 1, country: 'France', participations: [] },
       { id: 5, country: 'France', participations: [] },
     ]);
-    component.selectCountry(-1);
-    component.selectCountry(2);
+    fixture.detectChanges();
+    await renderDeferredBlocks(fixture);
+    const chart = fixture.debugElement.query(By.directive(OlympicChartComponent))
+      .componentInstance as OlympicChartComponent;
+    chart.pointSelected.emit(-1);
+    chart.pointSelected.emit(2);
     expect(navigate).not.toHaveBeenCalled();
-    component.selectCountry(1);
+    chart.pointSelected.emit(1);
     await fixture.whenStable();
     expect(navigate).toHaveBeenCalledTimes(1);
     expect(navigate).toHaveBeenCalledWith(['/country', 5]);
@@ -133,7 +137,11 @@ describe('HomeComponent', () => {
     vi.spyOn(TestBed.inject(Router), 'navigate').mockRejectedValue(failure);
     const report = vi.spyOn(TestBed.inject(ErrorHandler), 'handleError');
     data.next([{ id: 1, country: 'France', participations: [] }]);
-    component.selectCountry(0);
+    fixture.detectChanges();
+    await renderDeferredBlocks(fixture);
+    const chart = fixture.debugElement.query(By.directive(OlympicChartComponent))
+      .componentInstance as OlympicChartComponent;
+    chart.pointSelected.emit(0);
     await fixture.whenStable();
     expect(report).toHaveBeenCalledTimes(1);
     expect(report).toHaveBeenCalledWith(failure);

@@ -40,7 +40,7 @@ export class HomeComponent implements OnInit {
   /** État public consommé par le template. */
   readonly state = this.pageState.asReadonly();
   /** Indicateurs neutres affichés pendant le chargement. */
-  readonly loadingIndicators = HOME_LOADING_INDICATORS;
+  protected readonly loadingIndicators = HOME_LOADING_INDICATORS;
   /** Charge les données et transforme les erreurs en état affichable. */
   ngOnInit(): void {
     this.dataService
@@ -56,7 +56,7 @@ export class HomeComponent implements OnInit {
   }
 
   /** L’index correspond aux lignes du modèle courant ; une sélection absente est ignorée. */
-  selectCountry(index: number): void {
+  protected selectCountry(index: number): void {
     const state = this.state();
     if (state.status !== 'success') return;
     const country = state.data.rows[index];
