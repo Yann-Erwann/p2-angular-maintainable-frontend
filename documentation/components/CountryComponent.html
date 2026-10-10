@@ -910,9 +910,9 @@ import {
   switchMap,
   type Observable,
 } from &#x27;rxjs&#x27;;
-import { toDataLoadError } from &#x27;../../data-access/data-load-error&#x27;;
-import { OlympicDataService } from &#x27;../../data-access/olympic-data.service&#x27;;
-import { parseCountryId } from &#x27;../../domain/country-id&#x27;;
+import { toOlympicDataLoadError } from &#x27;../../services/olympic-data-load-error&#x27;;
+import { OlympicDataService } from &#x27;../../services/olympic-data.service&#x27;;
+import { parseCountryId } from &#x27;../../routing/country-id.parser&#x27;;
 import { OlympicChartComponent } from &#x27;../../ui/chart/chart.component&#x27;;
 import { HeaderComponent } from &#x27;../../ui/header/header.component&#x27;;
 import { PageFeedbackComponent } from &#x27;../../ui/page-feedback/page-feedback.component&#x27;;
@@ -985,7 +985,10 @@ export class CountryComponent implements OnInit {
     return this.dataService.getOlympics().pipe(
       map((countries) &#x3D;&gt; createCountryState(countries, id)),
       catchError((error: unknown) &#x3D;&gt;
-        of&lt;CountryPageState&gt;({ status: &#x27;error&#x27;, message: toDataLoadError(error).message }),
+        of&lt;CountryPageState&gt;({
+          status: &#x27;error&#x27;,
+          message: toOlympicDataLoadError(error).message,
+        }),
       ),
       startWith({ status: &#x27;loading&#x27; } as const),
     );
@@ -1142,7 +1145,7 @@ export class CountryComponent implements OnInit {
                 <p class="comment">
                     <code>./country.component.scss</code>
                 </p>
-                <pre class="line-numbers"><code class="language-scss">@use &#x27;../../../../styles/olympic-page&#x27;;
+                <pre class="line-numbers"><code class="language-scss">@use &#x27;../../ui/styles/olympic-page&#x27;;
 
 :host {
   display: block;
@@ -1191,7 +1194,7 @@ export class CountryComponent implements OnInit {
   border: 0;
   border-radius: 3rem;
   color: white;
-  background: linear-gradient(120deg, #009bb0, #005960);
+  background: linear-gradient(120deg, #006b78, #00454b);
   box-shadow: 0 6px 22px #048d9a24;
   font:
     650 1.3rem system-ui,

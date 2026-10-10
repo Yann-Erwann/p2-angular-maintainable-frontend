@@ -6,7 +6,9 @@ et de consulter les résultats d’un pays. Les données locales sont dans
 
 ## Démarrer
 
-Prérequis : Node.js 24, pnpm 12.10.1 et Chrome ou Chromium pour les tests.
+Prérequis : Node.js 24 et pnpm 12.10.1. Les tests unitaires utilisent Vitest et
+jsdom dans Node.js ; Chrome ou Chromium n’est requis que pour les tests E2E et
+les audits Lighthouse.
 Les versions sont fixées dans `mise.toml` et `package.json`.
 Cloner le dépôt puis entrer dans son dossier :
 
@@ -37,14 +39,15 @@ pnpm run build
 ```
 
 `pnpm run format` applique le formatage. `pnpm test` surveille les changements.
-Karma détecte les navigateurs Linux usuels, `CHROME_BIN` permet d’en choisir un autre.
+Les tests unitaires s’exécutent avec Vitest dans Node.js, sans lancer de navigateur.
 
 Le build de production est écrit dans `dist/olympic-games-starter/browser/`.
 Le build local utilise directement Angular CLI : minification JS/CSS,
 tree-shaking et AOT sont activés. La configuration commune `index.preloadInitial` laisse Angular générer les liens
 de préchargement des modules initiaux. Le graphique d’accueil est chargé avec
 l’application en développement et en production. Avant les audits, le workflow
-prépare les entrées des routes statiques et le manifeste de livraison `release.json`.
+copie `index.html` en `404.html` afin que GitHub Pages serve le shell Angular
+pour les navigations directes d’une SPA.
 Le JSON et le fond de bannière sont préchargés depuis le HTML initial. Le graphique d’accueil apparaît dès que les données sont disponibles.
 En production, Angular intègre le CSS critique au HTML et charge la feuille globale
 sans bloquer le rendu. Les styles de mise en page sont chargés avec chaque page
@@ -55,10 +58,12 @@ pnpm run preview
 pnpm run build:analyze
 ```
 
-`preview` sert le dernier build avec `serve.json` et peut télécharger `serve`.
+`preview` sert le dernier build avec `serve.json`; `serve` est installé et verrouillé
+dans les dépendances de développement.
 Les fichiers JS/CSS hashés sont mis en cache un an, les ressources sans hash sont
-revalidées. Ces règles concernent uniquement ce serveur local. GitHub Pages
-renvoie actuellement `max-age=600` (dix minutes), indépendamment de `serve.json`.
+revalidées. Ces règles concernent uniquement ce serveur local. Les en-têtes de
+cache de GitHub Pages sont déterminés par le déploiement et ne sont pas définis
+par `serve.json`.
 `build:analyze` ajoute les source maps et `stats.json` pour examiner les bundles.
 Relancer `pnpm run build` pour retrouver un build sans source maps.
 
@@ -120,23 +125,25 @@ avec trois passages. Chaque catégorie (performance, accessibilité, bonnes
 pratiques et SEO) doit atteindre au moins 80 à chaque passage. Les audits
 n’ont aucun retry : un score inférieur à 80, absent ou une erreur fait échouer
 les tests et bloque le déploiement. Les rapports JSON et HTML sont joints au rapport
-Playwright et conservés dans `validation-reports`, même en cas d’échec.
+Playwright. En CI, ils sont conservés dans l’artefact `validation-reports`, avec
+`playwright-report/` et `test-results/`, même en cas d’échec.
 Les routes d’erreur HTTP 404 restent couvertes par les tests fonctionnels.
 
 Pour exécuter uniquement Lighthouse sur le build préfixé :
 
 ```bash
 pnpm run build:e2e
-RELEASE_REVISION=local node .github/scripts/prepare-release.mjs
+cp dist/olympic-games-starter/browser/index.html dist/olympic-games-starter/browser/404.html
 pnpm run test:e2e --project=lighthouse
 ```
 
 Playwright démarre automatiquement le serveur local si `PRODUCTION_SERVER_URL`
-n’est pas renseigné. Voir [Validation](docs/validation/VALIDATION.md).
+n’est pas renseigné. Les rapports locaux sont disponibles dans
+`playwright-report/` et `test-results/`.
 
 La CI vérifie le code, génère Compodoc et audite le build de production préfixé
 avant de livrer ce même artefact sur GitHub Pages depuis `main`.
-Après publication, elle contrôle la révision et le HTML de la livraison, les
+Après publication, elle contrôle le HTML de la livraison, les
 données, les ressources et les erreurs JavaScript, puis parcourt l’accueil et
 la France avec rechargement direct et retour à l’accueil. Les diagnostics sont
 conservés 14 jours. Un contrôle échoué fait échouer le job, le site déjà publié
@@ -144,27 +151,28 @@ reste en ligne : corriger ou rétablir la version précédente par un nouveau co
 
 ## Repères et documentation
 
-| Emplacement                  | Contenu                                                            |
-| ---------------------------- | ------------------------------------------------------------------ |
-| `src/app/olympics/pages/`    | Pages et leurs calculs/modèles d’affichage                         |
-| `src/app/olympics/services/` | Chargement, validation et cache des données                        |
-| `src/app/olympics/`          | Domaine, routes, UI et intégration Chart.js                        |
-| `e2e/`                       | Tests navigateur                                                   |
-| `.github/workflows/`         | Étapes de validation et de déploiement GitHub Actions              |
-| `.github/scripts/`           | Préparation de livraison, serveur local et contrôle du déploiement |
-| `docs/`                      | Guides et rapports de validation                                   |
-| `doc/`                       | Maquettes et rapports locaux                                       |
+| Emplacement                  | Contenu                                               |
+| ---------------------------- | ----------------------------------------------------- |
+| `src/app/olympics/pages/`    | Pages et leurs calculs/modèles d’affichage            |
+| `src/app/olympics/services/` | Chargement, validation et cache des données           |
+| `src/app/olympics/`          | Domaine, routes, UI et intégration Chart.js           |
+| `e2e/`                       | Tests navigateur                                      |
+| `.github/workflows/`         | Étapes de validation et de déploiement GitHub Actions |
+| `.github/scripts/`           | Serveur local                                         |
+| `docs/`                      | Architecture et décisions techniques                  |
+| `doc/`                       | Maquettes, captures et rapports Lighthouse locaux     |
 
 ```bash
 pnpm run docs
 pnpm run docs:serve
 ```
 
-Compodoc génère `documentation/`, ignoré par Git. `docs:serve` régénère le site
+Compodoc génère `documentation/`, versionné dans le dépôt. `docs:serve` régénère le site
 et le sert sur <http://127.0.0.1:8080>. Les commentaires expliquent les contrats
 et décisions utiles, sans objectif de couverture par symbole.
 
 Voir l’[architecture](docs/architecture/architecture.md),
-les [conventions de commentaires](docs/compodoc-conventions.md),
-l’[index documentaire](docs/README.md) et les règles de
+les [décisions d’architecture](docs/decisions/001-page-state.md),
+le [cache HTTP](docs/decisions/002-http-cache.md),
+la [frontière Chart.js](docs/decisions/003-chart-boundary.md) et les règles de
 [contribution et de commits](CONTRIBUTING.md).

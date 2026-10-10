@@ -105,7 +105,7 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                         </div>
                         <ul class="links collapse " ${ isNormalMode ? 'id="classes-links"' : 'id="xs-classes-links"' }>
                             <li class="link">
-                                <a href="classes/DataLoadError.html" data-type="entity-link" >DataLoadError</a>
+                                <a href="classes/OlympicDataLoadError.html" data-type="entity-link" >OlympicDataLoadError</a>
                             </li>
                             <li class="link">
                                 <a href="classes/OlympicDataValidationError.html" data-type="entity-link" >OlympicDataValidationError</a>

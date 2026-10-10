@@ -121,7 +121,7 @@
 
 <div class="io-file io-file-path" data-compodoc="entity-file-path">
     <span class="icon ion-ios-document" aria-hidden="true"></span>
-    <code>src/app/olympics/data-access/olympic-data.service.ts</code>
+    <code>src/app/olympics/services/olympic-data.service.ts</code>
 </div>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -260,7 +260,7 @@ Le départ du dernier consommateur annule un chargement encore en cours.</p>
                     <tr>
                         <td class="col-md-4">
                             <div class="io-line">Défini dans <a href="" data-line="27"
-                                    class="link-to-prism">src/app/olympics/data-access/olympic-data.service.ts:27</a></div>
+                                    class="link-to-prism">src/app/olympics/services/olympic-data.service.ts:27</a></div>
                         </td>
                     </tr>
 
@@ -309,7 +309,7 @@ Le départ du dernier consommateur annule un chargement encore en cours.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Défini dans <a href="" data-line="17" class="link-to-prism">src/app/olympics/data-access/olympic-data.service.ts:17</a></div>
+                                <div class="io-line">Défini dans <a href="" data-line="17" class="link-to-prism">src/app/olympics/services/olympic-data.service.ts:17</a></div>
                         </td>
                     </tr>
 
@@ -339,14 +339,14 @@ Le départ du dernier consommateur annule un chargement encore en cours.</p>
                     <td class="col-md-4">
                         <i>Valeur par défaut : </i><code>this.http.get&lt;unknown&gt;(this.olympicUrl).pipe(
     map(validateOlympicData),
-    catchError((error: unknown) &#x3D;&gt; throwError(() &#x3D;&gt; toDataLoadError(error))),
+    catchError((error: unknown) &#x3D;&gt; throwError(() &#x3D;&gt; toOlympicDataLoadError(error))),
     shareReplay({ bufferSize: 1, refCount: true }),
   )</code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Défini dans <a href="" data-line="21" class="link-to-prism">src/app/olympics/data-access/olympic-data.service.ts:21</a></div>
+                                <div class="io-line">Défini dans <a href="" data-line="21" class="link-to-prism">src/app/olympics/services/olympic-data.service.ts:21</a></div>
                         </td>
                     </tr>
 
@@ -379,7 +379,7 @@ Le départ du dernier consommateur annule un chargement encore en cours.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Défini dans <a href="" data-line="19" class="link-to-prism">src/app/olympics/data-access/olympic-data.service.ts:19</a></div>
+                                <div class="io-line">Défini dans <a href="" data-line="19" class="link-to-prism">src/app/olympics/services/olympic-data.service.ts:19</a></div>
                         </td>
                     </tr>
 
@@ -402,8 +402,8 @@ Le départ du dernier consommateur annule un chargement encore en cours.</p>
 import { inject, Injectable } from &#x27;@angular/core&#x27;;
 import { catchError, map, type Observable, shareReplay, throwError } from &#x27;rxjs&#x27;;
 
-import type { Olympic } from &#x27;../domain/olympic.model&#x27;;
-import { toDataLoadError } from &#x27;./data-load-error&#x27;;
+import type { Olympic } from &#x27;../models/olympic.model&#x27;;
+import { toOlympicDataLoadError } from &#x27;./olympic-data-load-error&#x27;;
 import { validateOlympicData } from &#x27;./olympic-data.validator&#x27;;
 
 /**
@@ -420,7 +420,7 @@ export class OlympicDataService {
 
   private readonly olympics$ &#x3D; this.http.get&lt;unknown&gt;(this.olympicUrl).pipe(
     map(validateOlympicData),
-    catchError((error: unknown) &#x3D;&gt; throwError(() &#x3D;&gt; toDataLoadError(error))),
+    catchError((error: unknown) &#x3D;&gt; throwError(() &#x3D;&gt; toOlympicDataLoadError(error))),
     shareReplay({ bufferSize: 1, refCount: true }),
   );
 

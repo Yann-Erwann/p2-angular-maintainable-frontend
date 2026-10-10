@@ -164,7 +164,7 @@
                             <a href="#MEDAL_COLORS" title="src/app/olympics/ui/chart/chart-colors.ts" class="reference-link "><span class="reference-badge reference-badge--variable" aria-hidden="true">V</span><span class="reference-link-label"><b>MEDAL_COLORS</b>&nbsp;&nbsp;&nbsp;(src/.../chart-colors.ts)</span></a>
                         </li>
                         <li>
-                            <a href="#OLYMPICS_ROUTES" title="src/app/olympics/olympics.routes.ts" class="reference-link "><span class="reference-badge reference-badge--variable" aria-hidden="true">V</span><span class="reference-link-label"><b>OLYMPICS_ROUTES</b>&nbsp;&nbsp;&nbsp;(src/.../olympics.routes.ts)</span></a>
+                            <a href="#OLYMPICS_ROUTES" title="src/app/olympics/routing/olympics.routes.ts" class="reference-link "><span class="reference-badge reference-badge--variable" aria-hidden="true">V</span><span class="reference-link-label"><b>OLYMPICS_ROUTES</b>&nbsp;&nbsp;&nbsp;(src/.../olympics.routes.ts)</span></a>
                         </li>
                         <li>
                             <a href="#routes" title="src/app/app.routes.ts" class="reference-link "><span class="reference-badge reference-badge--variable" aria-hidden="true">V</span><span class="reference-link-label"><b>routes</b>&nbsp;&nbsp;&nbsp;(src/.../app.routes.ts)</span></a>
@@ -575,7 +575,7 @@
         </tbody>
     </table>
 </section>
-    <h3>src/app/olympics/olympics.routes.ts</h3>
+    <h3>src/app/olympics/routing/olympics.routes.ts</h3>
     <section data-compodoc="block-properties">
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
@@ -606,7 +606,7 @@
   {
     path: &#x27;country/:id&#x27;,
     loadComponent: () &#x3D;&gt;
-      &quot;import(&#x27;./pages/country/country.component&#x27;).then((module) &#x3D;&gt; module.CountryComponent)&quot;,
+      &quot;import(&#x27;../pages/country/country.component&#x27;).then((module) &#x3D;&gt; module.CountryComponent)&quot;,
   },
 ]</code>
                     </td>
@@ -646,7 +646,7 @@
   {
     path: &#x27;&#x27;,
     loadChildren: () &#x3D;&gt;
-      &quot;import(&#x27;./olympics/olympics.routes&#x27;).then((module) &#x3D;&gt; module.OLYMPICS_ROUTES)&quot;,
+      &quot;import(&#x27;./olympics/routing/olympics.routes&#x27;).then((module) &#x3D;&gt; module.OLYMPICS_ROUTES)&quot;,
   },
   {
     path: &#x27;**&#x27;,

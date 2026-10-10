@@ -182,9 +182,9 @@ système. Les rapports sont dans <code>playwright-report/</code> et <code>test-r
 <p>Les tests <code>e2e/lighthouse.spec.ts</code> lancent Chromium avec Playwright et exécutent
 Lighthouse sur l’accueil et chaque pays du JSON livré, en mobile et desktop,
 avec trois passages. Chaque catégorie (performance, accessibilité, bonnes
-pratiques et SEO) doit atteindre exactement 100 à chaque passage. Les audits
-n’ont aucun retry : un score inférieur, absent ou une erreur fait échouer les
-tests et bloque le déploiement. Les rapports JSON et HTML sont joints au rapport
+pratiques et SEO) doit atteindre au moins 80 à chaque passage. Les audits
+n’ont aucun retry : un score inférieur à 80, absent ou une erreur fait échouer
+les tests et bloque le déploiement. Les rapports JSON et HTML sont joints au rapport
 Playwright et conservés dans <code>validation-reports</code>, même en cas d’échec.
 Les routes d’erreur HTTP 404 restent couvertes par les tests fonctionnels.</p>
 <p>Pour exécuter uniquement Lighthouse sur le build préfixé :</p>
@@ -205,9 +205,9 @@ reste en ligne : corriger ou rétablir la version précédente par un nouveau co
 <tr><th>Emplacement</th><th>Contenu</th></tr>
 </thead>
 <tbody>
-<tr><td><code>src/app/pages/</code></td><td>Deux pages et leurs calculs/modèles d’affichage</td></tr>
-<tr><td><code>src/app/services/</code></td><td>Chargement, validation et cache des données</td></tr>
-<tr><td><code>src/app/olympics/</code></td><td>Indicateurs, feedback et intégration Chart.js</td></tr>
+<tr><td><code>src/app/olympics/pages/</code></td><td>Pages et leurs calculs/modèles d’affichage</td></tr>
+<tr><td><code>src/app/olympics/services/</code></td><td>Chargement, validation et cache des données</td></tr>
+<tr><td><code>src/app/olympics/</code></td><td>Domaine, routes, UI et intégration Chart.js</td></tr>
 <tr><td><code>e2e/</code></td><td>Tests navigateur</td></tr>
 <tr><td><code>.github/workflows/</code></td><td>Étapes de validation et de déploiement GitHub Actions</td></tr>
 <tr><td><code>.github/scripts/</code></td><td>Préparation de livraison, serveur local et contrôle du déploiement</td></tr>

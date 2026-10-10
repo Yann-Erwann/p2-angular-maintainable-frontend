@@ -100,7 +100,7 @@
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
-               <div class="content interface">
+               <div class="content class">
                    <div class="content-data">
 
 
@@ -118,36 +118,33 @@
 
 
 
-
 <ol class="breadcrumb">
-  <li class="breadcrumb-item">Interfaces</li>
-  <li class="breadcrumb-item"
-  >
-  Olympic</li>
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >OlympicDataLoadError</li>
 </ol>
 
 <div class="io-file io-file-path" data-compodoc="entity-file-path">
     <span class="icon ion-ios-document" aria-hidden="true"></span>
-    <code>src/app/olympics/models/olympic.model.ts</code>
+    <code>src/app/olympics/services/olympic-data-load-error.ts</code>
 </div>
 
 <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
-            <a href="#info" 
+            <a href="#info"
                 class="nav-link"
                 class="nav-link active"
                 role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
         <li class="nav-item">
-            <a href="#api" 
+            <a href="#api"
                 class="nav-link"
-                
+
                 role="tab" id="api-tab" data-bs-toggle="tab" data-link="api">API</a>
         </li>
         <li class="nav-item">
-            <a href="#source" 
+            <a href="#source"
                 class="nav-link"
-                
+
                 role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
@@ -159,196 +156,157 @@
                 <h3>Description</h3>
             </p>
             <p class="comment">
-                <p>Pays identifié par un ID unique ; une collection de participations vide est valide.</p>
+                <p>Erreur affichable dont la cause technique reste disponible via <code>Error.cause</code>.</p>
 
             </p>
 
+            <p class="comment">
+                <h3>Etend</h3>
+            </p>
+            <p class="comment">
+                        <code>Error</code>
+            </p>
 
+
+
+                <section data-compodoc="block-relationships">
+            <h3>Relations</h3>
+
+            <div class="row pt-3">
+                <div class="col-sm-6">
+                    <h4>Utilisé par</h4>
+                        <p class="comment"><i>Aucun résultat matchant.</i></p>
+                </div>
+
+                <div class="col-sm-6">
+                    <h4>Dépend de</h4>
+                        <ul class="list-unstyled relationships-list">
+                                <li>
+                                        <code>Error</code>
+                                </li>
+                        </ul>
+                </div>
             </div>
+        </section>
+    </div>
 
-    <div class="tab-pane fade " id="api"><section data-compodoc="block-index">
+    <div class="tab-pane fade " id="api">
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
-    <table class="table table-sm table-bordered index-table">
+        <table class="table table-sm table-bordered index-table">
+            <tbody>
+                <tr>
+                    <td class="col-md-3">
+                        <h6><b>Propriétés</b></h6>
+                    </td>
+                    <td class="col-md-9">
+                        <ul class="index-list">
+                            <li>
+                                <span class="reference-badge reference-badge--property" aria-hidden="true">P</span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#name" >name</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+
+
+
+
+
+</section>
+
+
+            <section data-compodoc="block-properties">
+
+    <h3 id="inputs">
+        Propriétés
+    </h3>
+    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
-                <td class="col-md-3">
-                    <h6><b>Propriétés</b></h6>
-                </td>
-                <td class="col-md-9">
-                    <ul class="index-list">
-                        <li>
-                                <a href="#country" class="reference-link ">
-                                    <span class="reference-badge reference-badge--property" aria-hidden="true">P</span><span class="reference-link-label">country</span>
-                                </a>
-                        </li>
-                        <li>
-                                <a href="#id" class="reference-link ">
-                                    <span class="reference-badge reference-badge--property" aria-hidden="true">P</span><span class="reference-link-label">id</span>
-                                </a>
-                        </li>
-                        <li>
-                                <a href="#participations" class="reference-link ">
-                                    <span class="reference-badge reference-badge--property" aria-hidden="true">P</span><span class="reference-link-label">participations</span>
-                                </a>
-                        </li>
-                    </ul>
+                <td class="col-md-4">
+                    <a name="name"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>name</b></span>
+                        <a href="#name"><span class="icon ion-ios-link"></span></a>
+                    </span>
                 </td>
             </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Valeur par défaut : </i><code>&#x27;OlympicDataLoadError&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Défini dans <a href="" data-line="6" class="link-to-prism">src/app/olympics/services/olympic-data-load-error.ts:6</a></div>
+                        </td>
+                    </tr>
+
+
         </tbody>
     </table>
 </section>
 
 
 
-    <section data-compodoc="block-properties">
-        <h3 id="inputs">Propriétés</h3>
-            <table class="table table-sm table-bordered">
-                <tbody>
-                        <tr>
-                            <td class="col-md-4">
-                                <a name="country"></a>
-                                <span class="name "><b>country</b>
-                                    <a href="#country">
-                                        <span class="icon ion-ios-link"></span>
-                                    </a>
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                <code>country:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-</code>
-                            </td>
-                        </tr>
-
-
-                            <tr>
-                                <td class="col-md-4">
-                                    <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                                </td>
-                            </tr>
 
 
 
 
-
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-line">Défini dans <a href="" data-line="15" class="link-to-prism">src/app/olympics/models/olympic.model.ts:15</a></div>
-                                </td>
-                            </tr>
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-description"><p>Libellé affiché ; la navigation utilise l’identifiant.</p>
-</div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <table class="table table-sm table-bordered">
-                <tbody>
-                        <tr>
-                            <td class="col-md-4">
-                                <a name="id"></a>
-                                <span class="name "><b>id</b>
-                                    <a href="#id">
-                                        <span class="icon ion-ios-link"></span>
-                                    </a>
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                <code>id:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-</code>
-                            </td>
-                        </tr>
-
-
-                            <tr>
-                                <td class="col-md-4">
-                                    <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-
-                                </td>
-                            </tr>
-
-
-
-
-
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-line">Défini dans <a href="" data-line="13" class="link-to-prism">src/app/olympics/models/olympic.model.ts:13</a></div>
-                                </td>
-                            </tr>
-
-                </tbody>
-            </table>
-            <table class="table table-sm table-bordered">
-                <tbody>
-                        <tr>
-                            <td class="col-md-4">
-                                <a name="participations"></a>
-                                <span class="name "><b>participations</b>
-                                    <a href="#participations">
-                                        <span class="icon ion-ios-link"></span>
-                                    </a>
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                <code>participations:     <code>{}</code>
-</code>
-                            </td>
-                        </tr>
-
-
-                            <tr>
-                                <td class="col-md-4">
-                                    <i>Type : </i>    <code>{}</code>
-
-                                </td>
-                            </tr>
-
-
-
-
-
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-line">Défini dans <a href="" data-line="16" class="link-to-prism">src/app/olympics/models/olympic.model.ts:16</a></div>
-                                </td>
-                            </tr>
-
-                </tbody>
-            </table>
-    </section>
-</div>
+    </div>
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">export interface Participation {
-  readonly id: number;
-  readonly year: number;
-  readonly city: string;
-  readonly medalsCount: number;
-  /** Effectif de la participation, sans déduplication des personnes entre éditions. */
-  readonly athleteCount: number;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpErrorResponse } from &#x27;@angular/common/http&#x27;;
+import { OlympicDataValidationError } from &#x27;./olympic-data.validator&#x27;;
+
+/** Erreur affichable dont la cause technique reste disponible via &#x60;Error.cause&#x60;. */
+export class OlympicDataLoadError extends Error {
+  override readonly name &#x3D; &#x27;OlympicDataLoadError&#x27;;
 }
 
-/** Pays identifié par un ID unique ; une collection de participations vide est valide. */
-export interface Olympic {
-  readonly id: number;
-  /** Libellé affiché ; la navigation utilise l’identifiant. */
-  readonly country: string;
-  readonly participations: readonly Participation[];
+/**
+ * Traduit la cause en message affichable, sans détail serveur.
+ * Une {@link OlympicDataLoadError} existante est conservée avec sa cause.
+ */
+export function toOlympicDataLoadError(cause: unknown): OlympicDataLoadError {
+  if (cause instanceof OlympicDataLoadError) {
+    return cause;
+  }
+
+  let message &#x3D; &#x27;Unable to load Olympic data. Please try again.&#x27;;
+  if (cause instanceof OlympicDataValidationError) {
+    message &#x3D; &#x27;Olympic data is invalid. Please try again later.&#x27;;
+  } else if (cause instanceof HttpErrorResponse) {
+    if (cause.status &#x3D;&#x3D;&#x3D; 0) {
+      message &#x3D; &#x27;Unable to connect. Check your connection and try again.&#x27;;
+    } else if (cause.status &#x3D;&#x3D;&#x3D; 404) {
+      message &#x3D; &#x27;Olympic data could not be found.&#x27;;
+    } else if (cause.status &gt;&#x3D; 500) {
+      message &#x3D; &#x27;Olympic data is temporarily unavailable. Please try again later.&#x27;;
+    }
+  }
+
+  return new OlympicDataLoadError(message, { cause });
 }
 </code></pre>
     </div>
 </div>
+
 
 
 
@@ -382,8 +340,8 @@ export interface Olympic {
 
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
-            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
-            var COMPODOC_CURRENT_PAGE_URL = 'Olympic.html';
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'OlympicDataLoadError.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

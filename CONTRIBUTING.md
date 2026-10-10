@@ -119,8 +119,9 @@ pnpm exec ng test --watch=false
 pnpm run build
 ```
 
-Utiliser des tests ciblés lorsque cela suffit à vérifier le changement, le
-navigateur Chrome ou Chromium est nécessaire aux tests Karma. Pour une
+Utiliser des tests ciblés lorsque cela suffit à vérifier le changement. Les tests
+unitaires Vitest s’exécutent dans Node.js avec jsdom ; Chrome ou Chromium reste
+nécessaire uniquement aux tests E2E. Pour une
 modification documentaire seule, relire les exemples, vérifier les liens locaux
 et contrôler le diff, il n'est pas nécessaire de relancer les tests applicatifs.
 Consigner les échecs ou les contrôles indisponibles avec leur cause.

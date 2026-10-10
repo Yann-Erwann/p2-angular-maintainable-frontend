@@ -501,7 +501,7 @@ lors des transitions pour les lecteurs d’écran.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Défini dans <a href="" data-line="73" class="link-to-prism">src/app/olympics/ui/page-feedback/page-feedback.component.ts:73</a></div>
+                                <div class="io-line">Défini dans <a href="" data-line="71" class="link-to-prism">src/app/olympics/ui/page-feedback/page-feedback.component.ts:71</a></div>
                         </td>
                     </tr>
 
@@ -566,8 +566,6 @@ lors des transitions pour les lecteurs d’écran.</p>
         return &#x27;Loading Olympic data...&#x27;;
       case &#x27;empty&#x27;:
         return &#x27;No Olympic data available.&#x27;;
-      case &#x27;not-found&#x27;:
-        return &#x27;Country not found.&#x27;;
       case &#x27;success&#x27;:
         return this.successMessage();
       case &#x27;error&#x27;:
@@ -592,7 +590,7 @@ lors des transitions pour les lecteurs d’écran.</p>
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { ChangeDetectionStrategy, Component, computed, input } from &#x27;@angular/core&#x27;;
-import type { PageFeedbackState } from &#x27;../page-state&#x27;;
+import type { PageFeedbackState } from &#x27;./page-feedback-state&#x27;;
 
 /**
  * Annonces de statut et d’erreur sans données métier ; les régions restent présentes
@@ -655,8 +653,6 @@ export class PageFeedbackComponent {
         return &#x27;Loading Olympic data...&#x27;;
       case &#x27;empty&#x27;:
         return &#x27;No Olympic data available.&#x27;;
-      case &#x27;not-found&#x27;:
-        return &#x27;Country not found.&#x27;;
       case &#x27;success&#x27;:
         return this.successMessage();
       case &#x27;error&#x27;:

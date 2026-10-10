@@ -737,8 +737,8 @@
 import { takeUntilDestroyed } from &#x27;@angular/core/rxjs-interop&#x27;;
 import { Router, RouterLink } from &#x27;@angular/router&#x27;;
 import { catchError, map, of } from &#x27;rxjs&#x27;;
-import { toDataLoadError } from &#x27;../../data-access/data-load-error&#x27;;
-import { OlympicDataService } from &#x27;../../data-access/olympic-data.service&#x27;;
+import { toOlympicDataLoadError } from &#x27;../../services/olympic-data-load-error&#x27;;
+import { OlympicDataService } from &#x27;../../services/olympic-data.service&#x27;;
 import { OlympicChartComponent } from &#x27;../../ui/chart/chart.component&#x27;;
 import { HeaderComponent } from &#x27;../../ui/header/header.component&#x27;;
 import { PageFeedbackComponent } from &#x27;../../ui/page-feedback/page-feedback.component&#x27;;
@@ -766,7 +766,7 @@ export class HomeComponent implements OnInit {
       .pipe(
         map(createHomeState),
         catchError((error: unknown) &#x3D;&gt;
-          of&lt;HomePageState&gt;({ status: &#x27;error&#x27;, message: toDataLoadError(error).message }),
+          of&lt;HomePageState&gt;({ status: &#x27;error&#x27;, message: toOlympicDataLoadError(error).message }),
         ),
         takeUntilDestroyed(this.destroyRef),
       )
@@ -924,7 +924,7 @@ export class HomeComponent implements OnInit {
                 <p class="comment">
                     <code>./home.component.scss</code>
                 </p>
-                <pre class="line-numbers"><code class="language-scss">@use &#x27;../../../../styles/olympic-page&#x27;;
+                <pre class="line-numbers"><code class="language-scss">@use &#x27;../../ui/styles/olympic-page&#x27;;
 
 :host {
   display: block;
