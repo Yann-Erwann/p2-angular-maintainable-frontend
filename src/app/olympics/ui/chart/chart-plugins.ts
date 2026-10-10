@@ -93,15 +93,23 @@ export const dashboardLabels = (items: readonly ChartItem[]): Plugin => ({
       const cos = Math.cos(angle);
       const sin = Math.sin(angle);
       const radius = element.outerRadius;
-      ctx.font = `600 ${width < 500 ? 17 : 23}px system-ui, sans-serif`;
+      const sectorAngle = element.endAngle - element.startAngle;
+      const valueLabelSize = compact ? 14 : width < 500 ? 17 : 23;
+      const valueLabelRadius = compact && sectorAngle < Math.PI / 4 ? 0.76 : 0.65;
+      ctx.font = `600 ${valueLabelSize}px system-ui, sans-serif`;
       ctx.fillStyle = '#ffffff';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(
-        String(items[index].value),
-        element.x + cos * radius * 0.65,
-        element.y + sin * radius * 0.65,
-      );
+      const valueX = element.x + cos * radius * valueLabelRadius;
+      const valueY = element.y + sin * radius * valueLabelRadius;
+      const value = String(items[index].value);
+      if (compact && sectorAngle < Math.PI / 4) {
+        ctx.strokeStyle = MEDAL_COLORS[index % MEDAL_COLORS.length];
+        ctx.lineWidth = 3;
+        ctx.lineJoin = 'round';
+        ctx.strokeText(value, valueX, valueY);
+      }
+      ctx.fillText(value, valueX, valueY);
       const right = cos >= 0;
       const side = right ? 'right' : 'left';
       const label = String(items[index].label);
