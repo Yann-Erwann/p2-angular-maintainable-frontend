@@ -119,6 +119,15 @@ PRODUCTION_SERVER_URL=http://localhost:3000/ pnpm run test:e2e
 `PLAYWRIGHT_CHROMIUM_EXECUTABLE=/usr/bin/chromium` permet d’utiliser un navigateur
 système. Les rapports sont dans `playwright-report/` et `test-results/`.
 
+Pour ouvrir le rapport HTML en local après une exécution :
+
+```bash
+pnpm exec playwright show-report playwright-report
+```
+
+Le rapport est alors disponible sur <http://localhost:9323>. Arrêter le serveur
+avec `Ctrl+C`.
+
 Les tests `e2e/lighthouse.spec.ts` lancent Chromium avec Playwright et exécutent
 Lighthouse sur l’accueil et chaque pays du JSON livré, en mobile et desktop,
 avec trois passages. Chaque catégorie (performance, accessibilité, bonnes
