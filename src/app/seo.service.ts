@@ -31,7 +31,13 @@ export class SeoService {
   private normalizedPath(url: string): string {
     const path = url.split(/[?#]/, 1)[0] || '/';
     if (path === '/') return path;
-    return path.replace(/\/+$/, '') || '/';
+
+    let end = path.length;
+    while (end > 0 && path[end - 1] === '/') {
+      end -= 1;
+    }
+
+    return path.slice(0, end) || '/';
   }
 
   /** Crée ou met à jour le lien canonical de la page. */
