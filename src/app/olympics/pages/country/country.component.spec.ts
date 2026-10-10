@@ -105,6 +105,15 @@ describe('CountryComponent', () => {
     expect(chartSpy).not.toHaveBeenCalled();
   });
 
+  it('should redirect an invalid country ID without loading data', async () => {
+    const harness = await RouterTestingHarness.create();
+    await harness.navigateByUrl('/country/1.5', CountryComponent);
+    await harness.fixture.whenStable();
+
+    expect(TestBed.inject(Router).url).toBe('/not-found');
+    expect(vi.mocked(dataService.getOlympics).mock.calls).toHaveLength(0);
+  });
+
   it('should derive the selected country from new route parameters after the response completes', async () => {
     const harness = await RouterTestingHarness.create();
     component = await harness.navigateByUrl('/country/1', CountryComponent);

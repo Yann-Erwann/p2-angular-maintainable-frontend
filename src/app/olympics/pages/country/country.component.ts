@@ -21,7 +21,6 @@ import {
 } from 'rxjs';
 import { toOlympicDataLoadError } from '../../services/olympic-data-load-error';
 import { OlympicDataService } from '../../services/olympic-data.service';
-import { parseCountryId } from '../../routing/country-id.parser';
 import { OlympicChartComponent } from '../../ui/chart/chart.component';
 import { HeaderComponent } from '../../ui/header/header.component';
 import { PageFeedbackComponent } from '../../ui/page-feedback/page-feedback.component';
@@ -64,13 +63,18 @@ export class CountryComponent implements OnInit {
   /** État public consommé par le template de détail. */
   readonly state = this.pageState.asReadonly();
   /** Indicateurs neutres affichés pendant le chargement. */
-  readonly loadingIndicators = COUNTRY_LOADING_INDICATORS;
+  protected readonly loadingIndicators = COUNTRY_LOADING_INDICATORS;
 
   /** Observe l’ID de route et recharge le détail sans terminer sur une erreur. */
   ngOnInit(): void {
+    this.observeCountryRoute();
+  }
+
+  /** Abonne la page aux changements d’ID de route. */
+  private observeCountryRoute(): void {
     this.route.paramMap
       .pipe(
-        map((params) => parseCountryId(params.get('id'))),
+        map((params) => this.countryIdFrom(params.get('id'))),
         distinctUntilChanged(),
         switchMap((id) => this.loadCountry(id)),
         takeUntilDestroyed(this.destroyRef),
@@ -88,10 +92,14 @@ export class CountryComponent implements OnInit {
   }
 
   /** La route reste la source de sélection ; seules les options chargées sont acceptées. */
-  changeCountry(value: string): void {
-    const id = parseCountryId(value);
+  protected changeCountry(id: number): void {
     const state = this.state();
-    if (id === null || (state.status !== 'success' && state.status !== 'empty')) return;
+    if (
+      !Number.isSafeInteger(id) ||
+      id <= 0 ||
+      (state.status !== 'success' && state.status !== 'empty')
+    )
+      return;
     if (!state.data.options.some((country) => country.id === id)) return;
     void this.router
       .navigate(['/country', id])
@@ -101,6 +109,7 @@ export class CountryComponent implements OnInit {
   /** Rejette l’ID invalide sans HTTP et garde les erreurs dans le chargement. */
   private loadCountry(id: number | null): Observable<CountryPageState> {
     if (id === null) return of({ status: 'not-found' });
+
     return this.dataService.getOlympics().pipe(
       map((countries) => createCountryState(countries, id)),
       catchError((error: unknown) =>
@@ -111,5 +120,13 @@ export class CountryComponent implements OnInit {
       ),
       startWith({ status: 'loading' } as const),
     );
+  }
+
+  /** Convertit uniquement une représentation décimale d’un entier positif sûr. */
+  private countryIdFrom(value: string | null): number | null {
+    if (value === null || value === '') return null;
+
+    const id = Number(value);
+    return Number.isSafeInteger(id) && id > 0 && String(id) === value ? id : null;
   }
 }
