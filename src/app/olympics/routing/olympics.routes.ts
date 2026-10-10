@@ -16,3 +16,5 @@ export const OLYMPICS_ROUTES: Routes = [
       import('../pages/country/country.component').then((module) => module.CountryComponent),
   },
 ];
+
+export default OLYMPICS_ROUTES;

@@ -13,7 +13,7 @@ export const routes: Routes = [
   {
     path: '',
     loadChildren: () =>
-      import('./olympics/routing/olympics.routes').then((module) => module.OLYMPICS_ROUTES),
+      import('./olympics/routing/olympics.routes').then((module) => module.default),
   },
   {
     path: '**',
