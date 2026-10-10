@@ -181,6 +181,7 @@ et le sert sur <http://127.0.0.1:8080>. Les commentaires expliquent les contrats
 et décisions utiles, sans objectif de couverture par symbole.
 
 Voir l’[architecture](docs/architecture/architecture.md),
+la [note d’architecture](docs/architecture/notes-architecture.md),
 les [décisions d’architecture](docs/decisions/001-page-state.md),
 le [cache HTTP](docs/decisions/002-http-cache.md),
 la [frontière Chart.js](docs/decisions/003-chart-boundary.md) et les règles de
