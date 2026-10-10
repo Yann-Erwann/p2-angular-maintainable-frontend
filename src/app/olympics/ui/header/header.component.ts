@@ -7,7 +7,7 @@ import type { Indicator } from './indicator.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
+  styleUrl: './header.component.scss',
   host: {
     class: 'results-header',
     '[class.results-header--dashboard]': "variant() !== 'standard'",
