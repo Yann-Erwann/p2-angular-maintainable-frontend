@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  pages: read
 
 concurrency:
   group: angular-${{ github.workflow }}-${{ github.ref }}
@@ -20,12 +21,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 12.10.1
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 24
-      - name: Install pnpm
-        run: npm install --global pnpm@12.10.1
+          cache: pnpm
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Install Chromium
@@ -42,12 +46,15 @@ jobs:
           CHROME_BIN: /usr/bin/google-chrome
       - name: Generate documentation
         run: pnpm run docs
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v5
       - name: Build production artifact
-        run: pnpm run build:e2e
-      - name: Prepare static routes and release manifest
         env:
-          RELEASE_REVISION: ${{ github.sha }}
-        run: node .github/scripts/prepare-release.mjs
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+        run: pnpm run build --configuration production --base-href "${BASE_PATH%/}/"
+      - name: Prepare SPA fallback
+        run: cp dist/olympic-games-starter/browser/index.html dist/olympic-games-starter/browser/404.html
       - name: Playwright browser tests and Lighthouse 80
         run: pnpm run test:e2e
       - name: Upload validated site
@@ -81,12 +88,15 @@ jobs:
     steps:
       - name: Checkout smoke check
         uses: actions/checkout@v6
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 12.10.1
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 24
-      - name: Install pnpm for browser smoke check
-        run: npm install --global pnpm@12.10.1
+          cache: pnpm
       - name: Install verification dependencies
         run: pnpm install --frozen-lockfile
       - name: Install verification browser
@@ -97,10 +107,9 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
       - name: Verify deployed pages and data
-        run: node .github/scripts/verify-deployment.mjs
+        run: pnpm exec playwright test e2e/verify-deployment.spec.ts --project=chromium
         env:
-          DEPLOYMENT_URL: ${{ steps.deployment.outputs.page_url }}
-          EXPECTED_REVISION: ${{ github.sha }}
+          PRODUCTION_SERVER_URL: ${{ steps.deployment.outputs.page_url }}
       - name: Upload deployment diagnostics
         if: always()
         uses: actions/upload-artifact@v4

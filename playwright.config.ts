@@ -1,6 +1,7 @@
 import { defineConfig } from '@playwright/test';
 
 const externalServer = process.env['PRODUCTION_SERVER_URL'];
+const localServerUrl = 'http://127.0.0.1:4187/';
 
 export default defineConfig({
   testDir: './e2e',
@@ -10,7 +11,7 @@ export default defineConfig({
   workers: 1,
   reporter: [['list'], ['html', { open: 'never' }]],
   use: {
-    baseURL: externalServer ?? 'http://127.0.0.1:4187/p2-angular-maintainable-frontend/',
+    baseURL: externalServer ?? localServerUrl,
     viewport: { width: 1280, height: 1000 },
     deviceScaleFactor: 1,
     trace: 'retain-on-failure',
@@ -24,8 +25,9 @@ export default defineConfig({
   webServer: externalServer
     ? undefined
     : {
-        command: 'node .github/scripts/serve-production.mjs',
-        url: 'http://127.0.0.1:4187/p2-angular-maintainable-frontend/',
+        command:
+          'pnpm run build:e2e:local && pnpm exec serve -s dist/olympic-games-starter/local-e2e/browser --listen 4187',
+        url: localServerUrl,
         reuseExistingServer: !process.env['CI'],
       },
   projects: [
