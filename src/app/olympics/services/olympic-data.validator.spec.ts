@@ -19,7 +19,7 @@ describe('validateOlympicData', () => {
 
   it('should accept an empty collection and participation IDs reused across countries', () => {
     expect(validateOlympicData([])).toEqual([]);
-    expect(validateOlympicData([country, { ...country, id: 2, country: 'Italy' }]).length).toBe(2);
+    expect(validateOlympicData([country, { ...country, id: 2, country: 'Italy' }])).toHaveLength(2);
   });
 
   const malformed: readonly {
