@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { LocationStrategy } from '@angular/common';
 import { provideRouter } from '@angular/router';
@@ -64,9 +65,13 @@ describe('Accessible application navigation', () => {
     expect(page.querySelector('.skip-link')).toBeNull();
     expect(page.querySelector('h1')?.getAttribute('tabindex')).toBe('-1');
     expect(page.querySelector('[data-page-heading]')?.getAttribute('tabindex')).toBe('0');
-    expect(page.querySelectorAll('main')).toHaveSize(1);
-    expect(page.querySelectorAll('h1')).toHaveSize(1);
+    expect(page.querySelectorAll('main')).toHaveLength(1);
+    expect(page.querySelectorAll('h1')).toHaveLength(1);
     expect(document.title).toBe('Medals by country | Olympic Games');
+    expect(document.head.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe(
+      new URL(TestBed.inject(LocationStrategy).prepareExternalUrl('/'), document.baseURI).href,
+    );
+    expect(document.head.querySelector('meta[name="robots"]')).toBeNull();
 
     await router.navigateByUrl('/country/2');
     fixture.detectChanges();
@@ -76,41 +81,49 @@ describe('Accessible application navigation', () => {
     expect(document.activeElement).toBe(page.querySelector('h1'));
     expect(page.querySelector('h1')?.textContent?.trim()).toBe('Olympic results');
     expect(document.title).toBe('Italy | Olympic Games');
+    expect(document.head.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe(
+      new URL(TestBed.inject(LocationStrategy).prepareExternalUrl('/country/2'), document.baseURI)
+        .href,
+    );
 
     await router.navigateByUrl('/unknown');
     fixture.detectChanges();
     await fixture.whenStable();
     expect(document.activeElement).not.toBe(page.querySelector('h1'));
-    expect(page.querySelector('h1')?.getAttribute('tabindex')).toBe('0');
+    expect(page.querySelector('h1')?.getAttribute('tabindex')).toBeNull();
     expect(document.title).toBe('Page not found | Olympic Games');
+    expect(document.head.querySelector('link[rel="canonical"]')).toBeNull();
+    expect(document.head.querySelector('meta[name="robots"]')?.getAttribute('content')).toBe(
+      'noindex, nofollow',
+    );
 
-    const homeLink = page.querySelector<HTMLAnchorElement>('.brand__link');
-    expect(homeLink?.getAttribute('href')).toBe(
+    const homeArea = page.querySelector<HTMLAnchorElement>('.brand__home-area');
+    expect(homeArea?.getAttribute('href')).toBe(
       TestBed.inject(LocationStrategy).prepareExternalUrl('/'),
     );
-    expect(homeLink?.getAttribute('aria-label')).toBe('Home — TéléSport');
+    expect(homeArea?.getAttribute('aria-label')).toBe('Home — TéléSport');
     const banner = page.querySelector('.brand__banner');
     expect(banner?.getAttribute('width')).toBe('1339');
     expect(banner?.getAttribute('height')).toBe('211');
     expect(banner?.getAttribute('alt')).toBe('');
-    expect(homeLink?.textContent?.trim()).toBe('TéléSport');
+    expect(page.querySelector('.brand__name')?.textContent?.trim()).toBe('TéléSport');
     expect(page.querySelector('.brand__title')?.textContent).toBe('Olympic games app');
     expect(banner?.getAttribute('srcset')?.replace(/\s+/g, ' ')).toContain(
       'telesport-header-small.webp 670w',
     );
-    homeLink?.click();
+    homeArea?.click();
     await fixture.whenStable();
     expect(router.url).toBe('/');
     fixture.detectChanges();
-    expect(fixture.componentInstance.homeLayout()).toBeTrue();
+    expect(fixture.componentInstance.homeLayout()).toBe(true);
     expect(page.querySelector('.brand__banner')?.getAttribute('src')).toBe(
       'assets/images/telesport-header.webp',
     );
     await router.navigateByUrl('/country/2');
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(fixture.componentInstance.homeLayout()).toBeFalse();
-    expect(fixture.componentInstance.countryLayout()).toBeTrue();
+    expect(fixture.componentInstance.homeLayout()).toBe(false);
+    expect(fixture.componentInstance.countryLayout()).toBe(true);
     expect(page.querySelector('.brand__banner')?.getAttribute('src')).toBe(
       'assets/images/telesport-header.webp',
     );

@@ -1,3 +1,4 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { renderDeferredBlocks } from '../testing/render-deferred-blocks';
 import { Chart } from 'chart.js';
 import { Location } from '@angular/common';
@@ -81,7 +82,7 @@ describe('Country routing', () => {
     harness.detectChanges();
     await renderDeferredBlocks(harness.fixture);
     const previousChart = chartAt(harness.routeNativeElement);
-    const destroy = spyOn(previousChart, 'destroy').and.callThrough();
+    const destroy = vi.spyOn(previousChart, 'destroy');
 
     const reused = await harness.navigateByUrl('/country/2', CountryComponent);
     expect(reused).toBe(country);
@@ -108,7 +109,7 @@ describe('Country routing', () => {
     let request = http.expectOne(url);
     for (const id of [2, 1, 2]) {
       await harness.navigateByUrl(`/country/${id}`, CountryComponent);
-      expect(request.cancelled).toBeTrue();
+      expect(request.cancelled).toBe(true);
       request = http.expectOne(url);
     }
     expect(country.state().status).toBe('loading');
@@ -170,7 +171,7 @@ describe('Country routing', () => {
       await renderDeferredBlocks(harness.fixture);
       const pie = chartAt(harness.routeNativeElement);
       const pieCanvas = pie.canvas;
-      const destroyPie = spyOn(pie, 'destroy').and.callThrough();
+      const destroyPie = vi.spyOn(pie, 'destroy');
 
       country = await harness.navigateByUrl('/country/1', CountryComponent);
       expect(destroyPie).toHaveBeenCalledTimes(1);
@@ -180,7 +181,7 @@ describe('Country routing', () => {
       await renderDeferredBlocks(harness.fixture);
       const line = chartAt(harness.routeNativeElement);
       const lineCanvas = line.canvas;
-      const destroyLine = spyOn(line, 'destroy').and.callThrough();
+      const destroyLine = vi.spyOn(line, 'destroy');
 
       await harness.navigateByUrl('/not-found', NotFoundComponent);
       expect(destroyLine).toHaveBeenCalledTimes(1);

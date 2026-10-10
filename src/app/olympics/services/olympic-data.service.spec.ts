@@ -1,9 +1,9 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { HttpErrorResponse, provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
 import type { Olympic } from '../models/olympic.model';
-import type { OlympicDataLoadError } from './olympic-data-load-error';
 import { OlympicDataService } from './olympic-data.service';
 import { OlympicDataValidationError } from './olympic-data.validator';
 
@@ -39,22 +39,26 @@ describe('OlympicDataService', () => {
         ],
       },
     ];
-    const nextSpy = jasmine.createSpy<(data: readonly Olympic[]) => void>('next');
+    const nextSpy = vi.fn();
     service.getOlympics().subscribe(nextSpy);
 
     const request = httpTesting.expectOne('./assets/mock/olympic.json');
     expect(request.request.method).toBe('GET');
     request.flush(data);
 
-    expect(nextSpy).toHaveBeenCalledOnceWith(data);
+    expect(nextSpy).toHaveBeenCalledTimes(1);
+
+    expect(nextSpy).toHaveBeenCalledWith(data);
   });
 
   it('should preserve a successful empty response', () => {
-    const nextSpy = jasmine.createSpy<(data: readonly Olympic[]) => void>('next');
+    const nextSpy = vi.fn();
     service.getOlympics().subscribe(nextSpy);
     httpTesting.expectOne('./assets/mock/olympic.json').flush([]);
 
-    expect(nextSpy).toHaveBeenCalledOnceWith([]);
+    expect(nextSpy).toHaveBeenCalledTimes(1);
+
+    expect(nextSpy).toHaveBeenCalledWith([]);
   });
 
   for (const scenario of [
@@ -86,24 +90,26 @@ describe('OlympicDataService', () => {
     },
   ]) {
     it(`should propagate ${scenario.name} as a data error without emitting success`, () => {
-      const nextSpy = jasmine.createSpy<(data: readonly Olympic[]) => void>('next');
-      const errorSpy = jasmine.createSpy<(error: OlympicDataLoadError) => void>('error');
+      const nextSpy = vi.fn();
+      const errorSpy = vi.fn();
       service.getOlympics().subscribe({ next: nextSpy, error: errorSpy });
       httpTesting.expectOne('./assets/mock/olympic.json').flush(scenario.payload);
 
       expect(nextSpy).not.toHaveBeenCalled();
-      expect(errorSpy).toHaveBeenCalledOnceWith(
-        jasmine.objectContaining({
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
           message: 'Olympic data is invalid. Please try again later.',
-          cause: jasmine.any(OlympicDataValidationError),
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          cause: expect.any(OlympicDataValidationError),
         }),
       );
     });
   }
 
   it('should propagate HTTP errors instead of returning an empty collection', () => {
-    const nextSpy = jasmine.createSpy<(data: readonly Olympic[]) => void>('next');
-    const errorSpy = jasmine.createSpy<(error: OlympicDataLoadError) => void>('error');
+    const nextSpy = vi.fn();
+    const errorSpy = vi.fn();
     service.getOlympics().subscribe({ next: nextSpy, error: errorSpy });
     httpTesting.expectOne('./assets/mock/olympic.json').flush('Unavailable', {
       status: 503,
@@ -111,10 +117,12 @@ describe('OlympicDataService', () => {
     });
 
     expect(nextSpy).not.toHaveBeenCalled();
-    expect(errorSpy).toHaveBeenCalledOnceWith(
-      jasmine.objectContaining({
+    expect(errorSpy).toHaveBeenCalledTimes(1);
+    expect(errorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
         message: 'Olympic data is temporarily unavailable. Please try again later.',
-        cause: jasmine.objectContaining({ status: 503 }),
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        cause: expect.objectContaining({ status: 503 }),
       }),
     );
   });
@@ -124,30 +132,45 @@ describe('OlympicDataService', () => {
     { status: 400, message: 'Unable to load Olympic data. Please try again.' },
   ]) {
     it(`should translate HTTP status ${scenario.status} and retain its cause`, () => {
-      const errorSpy = jasmine.createSpy<(error: OlympicDataLoadError) => void>('error');
-      service.getOlympics().subscribe({ next: () => fail('Expected a failure'), error: errorSpy });
+      const errorSpy = vi.fn();
+      service.getOlympics().subscribe({
+        next: () => {
+          throw new Error('Expected a failure');
+        },
+        error: errorSpy,
+      });
       httpTesting.expectOne('./assets/mock/olympic.json').flush('private server details', {
         status: scenario.status,
         statusText: 'Technical failure',
       });
-      expect(errorSpy).toHaveBeenCalledOnceWith(
-        jasmine.objectContaining({
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
           message: scenario.message,
-          cause: jasmine.any(HttpErrorResponse),
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          cause: expect.any(HttpErrorResponse),
         }),
       );
     });
   }
 
   it('should translate network failures without returning a successful empty response', () => {
-    const errorSpy = jasmine.createSpy<(error: OlympicDataLoadError) => void>('error');
-    service.getOlympics().subscribe({ next: () => fail('Expected a failure'), error: errorSpy });
+    const errorSpy = vi.fn();
+    service.getOlympics().subscribe({
+      next: () => {
+        throw new Error('Expected a failure');
+      },
+      error: errorSpy,
+    });
     httpTesting.expectOne('./assets/mock/olympic.json').error(new ProgressEvent('error'));
 
-    expect(errorSpy).toHaveBeenCalledOnceWith(
-      jasmine.objectContaining({
+    expect(errorSpy).toHaveBeenCalledTimes(1);
+
+    expect(errorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
         message: 'Unable to connect. Check your connection and try again.',
-        cause: jasmine.objectContaining({ status: 0 }),
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        cause: expect.objectContaining({ status: 0 }),
       }),
     );
   });

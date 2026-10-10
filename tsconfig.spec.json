@@ -4,8 +4,8 @@
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist/out-tsc/spec",
-    "types": ["jasmine"]
+    "types": ["vitest/globals"]
   },
-  "files": ["src/test.ts", "src/polyfills.ts"],
+  "files": ["src/testing/vitest.setup.ts"],
   "include": ["src/**/*.spec.ts", "src/**/*.d.ts"]
 }

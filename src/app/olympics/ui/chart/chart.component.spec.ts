@@ -1,20 +1,27 @@
-import { provideZoneChangeDetection } from '@angular/core';
+/* eslint-disable @typescript-eslint/unbound-method */
+
+import { beforeEach, describe, expect, it, type MockedObject, vi } from 'vitest';
 import { type ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChartRenderer, type RenderedChart } from './chart-renderer.service';
 import { OlympicChartComponent } from './chart.component';
 
 describe('OlympicChartComponent', () => {
   let fixture: ComponentFixture<OlympicChartComponent>;
-  let renderer: jasmine.SpyObj<ChartRenderer>;
-  let chart: jasmine.SpyObj<RenderedChart>;
+  let renderer: MockedObject<ChartRenderer>;
+  let chart: MockedObject<RenderedChart>;
 
   beforeEach(() => {
-    renderer = jasmine.createSpyObj<ChartRenderer>('ChartRenderer', ['create']);
-    chart = jasmine.createSpyObj<RenderedChart>('RenderedChart', ['destroy', 'focusPoint']);
-    renderer.create.and.returnValue(chart);
+    renderer = {
+      create: vi.fn().mockName('ChartRenderer.create'),
+    };
+    chart = {
+      destroy: vi.fn().mockName('RenderedChart.destroy'),
+      focusPoint: vi.fn().mockName('RenderedChart.focusPoint'),
+    };
+    renderer.create.mockReturnValue(chart);
     TestBed.configureTestingModule({
       imports: [OlympicChartComponent],
-      providers: [provideZoneChangeDetection(), { provide: ChartRenderer, useValue: renderer }],
+      providers: [{ provide: ChartRenderer, useValue: renderer }],
     });
     fixture = TestBed.createComponent(OlympicChartComponent);
     fixture.componentRef.setInput('type', 'pie');
@@ -23,22 +30,22 @@ describe('OlympicChartComponent', () => {
   });
 
   it('should create after the view renders using its own canvas and typed inputs', () => {
-    expect(renderer.create.calls.count()).toBe(0);
+    expect(vi.mocked(renderer.create).mock.calls.length).toBe(0);
     fixture.detectChanges();
-    const [canvas, data] = renderer.create.calls.mostRecent().args;
+    const [canvas, data] = vi.mocked(renderer.create).mock.lastCall!;
     expect((fixture.nativeElement as HTMLElement).querySelector('canvas')).toBe(canvas);
     expect(data).toEqual({ type: 'pie', items: [{ label: 'France', value: 30 }] });
-    expect(renderer.create.calls.count()).toBe(1);
+    expect(vi.mocked(renderer.create).mock.calls.length).toBe(1);
   });
 
   it('should release the previous instance before replacing changed data', () => {
     fixture.detectChanges();
-    const replacement = jasmine.createSpyObj<RenderedChart>('replacement', [
-      'destroy',
-      'focusPoint',
-    ]);
-    renderer.create.and.callFake(() => {
-      expect(chart.destroy.calls.count()).toBe(1);
+    const replacement = {
+      destroy: vi.fn().mockName('replacement.destroy'),
+      focusPoint: vi.fn().mockName('replacement.focusPoint'),
+    };
+    renderer.create.mockImplementation(() => {
+      expect(vi.mocked(chart.destroy).mock.calls.length).toBe(1);
       return replacement;
     });
     fixture.componentRef.setInput('items', [
@@ -47,8 +54,8 @@ describe('OlympicChartComponent', () => {
     ]);
     fixture.componentRef.setInput('type', 'line');
     fixture.detectChanges();
-    expect(renderer.create.calls.count()).toBe(2);
-    expect(renderer.create.calls.mostRecent().args[1]).toEqual({
+    expect(vi.mocked(renderer.create).mock.calls.length).toBe(2);
+    expect(vi.mocked(renderer.create).mock.lastCall![1]).toEqual({
       type: 'line',
       items: [
         { label: 2012, value: 10 },
@@ -56,37 +63,38 @@ describe('OlympicChartComponent', () => {
       ],
     });
     fixture.destroy();
-    expect(chart.destroy.calls.count()).toBe(1);
-    expect(replacement.destroy.calls.count()).toBe(1);
+    expect(vi.mocked(chart.destroy).mock.calls.length).toBe(1);
+    expect(vi.mocked(replacement.destroy).mock.calls.length).toBe(1);
   });
 
   it('should keep its instance when inputs do not change', () => {
     fixture.detectChanges();
     fixture.detectChanges();
-    expect(renderer.create.calls.count()).toBe(1);
-    expect(chart.destroy.calls.count()).toBe(0);
+    expect(vi.mocked(renderer.create).mock.calls.length).toBe(1);
+    expect(vi.mocked(chart.destroy).mock.calls.length).toBe(0);
   });
 
   it('should release its instance exactly once when destroyed', () => {
     fixture.detectChanges();
     fixture.destroy();
     TestBed.tick();
-    expect(chart.destroy.calls.count()).toBe(1);
-    expect(renderer.create.calls.count()).toBe(1);
+    expect(vi.mocked(chart.destroy).mock.calls.length).toBe(1);
+    expect(vi.mocked(renderer.create).mock.calls.length).toBe(1);
   });
 
   it('should never create a chart if destroyed before rendering', () => {
     fixture.destroy();
     TestBed.tick();
-    expect(renderer.create.calls.count()).toBe(0);
+    expect(vi.mocked(renderer.create).mock.calls.length).toBe(0);
   });
 
   it('should emit the country selection received from the renderer', () => {
-    const selected = jasmine.createSpy('selected');
+    const selected = vi.fn();
     fixture.componentInstance.pointSelected.subscribe(selected);
     fixture.detectChanges();
-    renderer.create.calls.mostRecent().args[2](0);
-    expect(selected).toHaveBeenCalledOnceWith(0);
+    vi.mocked(renderer.create).mock.lastCall![2](0);
+    expect(selected).toHaveBeenCalledTimes(1);
+    expect(selected).toHaveBeenCalledWith(0);
   });
 
   it('should pass distinct canvases to concurrent chart instances', () => {
@@ -96,8 +104,8 @@ describe('OlympicChartComponent', () => {
     other.componentRef.setInput('items', [{ label: 2012, value: 10 }]);
     other.componentRef.setInput('dataDescriptionId', 'other-caption');
     other.detectChanges();
-    const firstCanvas = renderer.create.calls.argsFor(0)[0];
-    const secondCanvas = renderer.create.calls.argsFor(1)[0];
+    const firstCanvas = vi.mocked(renderer.create).mock.calls[0][0];
+    const secondCanvas = vi.mocked(renderer.create).mock.calls[1][0];
     expect(firstCanvas).not.toBe(secondCanvas);
     expect((other.nativeElement as HTMLElement).querySelector('canvas')).toBe(secondCanvas);
   });
@@ -108,7 +116,7 @@ describe('OlympicChartComponent', () => {
     ]);
     fixture.detectChanges();
     const canvas = (fixture.nativeElement as HTMLElement).querySelector('canvas')!;
-    const selected = jasmine.createSpy('selected');
+    const selected = vi.fn();
     fixture.componentInstance.pointSelected.subscribe(selected);
     const key = (value: string) => {
       const event = new KeyboardEvent('keydown', { key: value, bubbles: true, cancelable: true });
@@ -117,25 +125,26 @@ describe('OlympicChartComponent', () => {
       return event;
     };
     canvas.dispatchEvent(new FocusEvent('focus'));
-    expect(chart.focusPoint.calls.mostRecent().args).toEqual([0]);
-    expect(key('ArrowLeft').defaultPrevented).toBeTrue();
+    expect(vi.mocked(chart.focusPoint).mock.lastCall).toEqual([0]);
+    expect(key('ArrowLeft').defaultPrevented).toBe(true);
     expect(fixture.componentInstance.selection()).toBe('Italy: 20 medals');
-    expect(chart.focusPoint.calls.mostRecent().args).toEqual([1]);
+    expect(vi.mocked(chart.focusPoint).mock.lastCall).toEqual([1]);
     key('ArrowRight');
     expect(fixture.componentInstance.selectedIndex()).toBe(0);
     key('End');
     key('Enter');
-    expect(selected).toHaveBeenCalledOnceWith(1);
+    expect(selected).toHaveBeenCalledTimes(1);
+    expect(selected).toHaveBeenCalledWith(1);
     key('Home');
     expect(fixture.componentInstance.selectedIndex()).toBe(0);
-    expect(key('Tab').defaultPrevented).toBeTrue();
+    expect(key('Tab').defaultPrevented).toBe(true);
     expect(fixture.componentInstance.selectedIndex()).toBe(1);
-    expect(key('Tab').defaultPrevented).toBeFalse();
-    expect(renderer.create.calls.count()).toBe(1);
+    expect(key('Tab').defaultPrevented).toBe(false);
+    expect(vi.mocked(renderer.create).mock.calls.length).toBe(1);
     (fixture.nativeElement as HTMLElement).dispatchEvent(
       new FocusEvent('focusout', { relatedTarget: document.body }),
     );
-    expect(chart.focusPoint.calls.mostRecent().args).toEqual([null]);
+    expect(vi.mocked(chart.focusPoint).mock.lastCall).toEqual([null]);
   });
 
   it('should explore years without emitting a country navigation', () => {
@@ -145,7 +154,7 @@ describe('OlympicChartComponent', () => {
       { label: 2016, value: 20 },
     ]);
     fixture.detectChanges();
-    const selected = jasmine.createSpy('selected');
+    const selected = vi.fn();
     fixture.componentInstance.pointSelected.subscribe(selected);
     fixture.componentInstance.move(1);
     expect(fixture.componentInstance.selection()).toBe('2016: 20 medals');
@@ -194,21 +203,21 @@ describe('OlympicChartComponent', () => {
     };
     canvas.dispatchEvent(new FocusEvent('focus'));
     expect(fixture.componentInstance.selectedIndex()).toBe(0);
-    expect(tab()).toBeTrue();
+    expect(tab()).toBe(true);
     expect(fixture.componentInstance.selection()).toBe('Italy: 20 medals');
-    expect(tab()).toBeTrue();
+    expect(tab()).toBe(true);
     expect(fixture.componentInstance.selection()).toBe('Spain: 10 medals');
-    expect(tab()).toBeFalse();
-    expect(tab(true)).toBeTrue();
+    expect(tab()).toBe(false);
+    expect(tab(true)).toBe(true);
     expect(fixture.componentInstance.selectedIndex()).toBe(1);
-    expect(tab(true)).toBeTrue();
+    expect(tab(true)).toBe(true);
     expect(fixture.componentInstance.selectedIndex()).toBe(0);
-    expect(tab(true)).toBeFalse();
+    expect(tab(true)).toBe(false);
     fixture.componentInstance.rememberTabDirection(
       new KeyboardEvent('keydown', { key: 'Tab', shiftKey: true }),
     );
     canvas.dispatchEvent(new FocusEvent('focus'));
     expect(fixture.componentInstance.selectedIndex()).toBe(2);
-    expect(renderer.create.calls.count()).toBe(1);
+    expect(vi.mocked(renderer.create).mock.calls.length).toBe(1);
   });
 });

@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { OlympicDataValidationError, validateOlympicData } from './olympic-data.validator';
 
 describe('validateOlympicData', () => {
@@ -21,7 +22,10 @@ describe('validateOlympicData', () => {
     expect(validateOlympicData([country, { ...country, id: 2, country: 'Italy' }]).length).toBe(2);
   });
 
-  const malformed: readonly { name: string; payload: unknown }[] = [
+  const malformed: readonly {
+    name: string;
+    payload: unknown;
+  }[] = [
     { name: 'null response', payload: null },
     { name: 'object response', payload: {} },
     { name: 'string response', payload: 'private server details' },

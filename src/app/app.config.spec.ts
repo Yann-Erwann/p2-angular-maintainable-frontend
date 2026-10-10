@@ -1,3 +1,4 @@
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingHarness } from '@angular/router/testing';
@@ -41,10 +42,10 @@ describe('Application routing', () => {
       const harness = await RouterTestingHarness.create();
       await harness.navigateByUrl(url);
       const request = httpTesting.expectOne('./assets/mock/olympic.json');
-      expect(request.cancelled).toBeFalse();
+      expect(request.cancelled).toBe(false);
 
       await harness.navigateByUrl('/not-found', NotFoundComponent);
-      expect(request.cancelled).toBeTrue();
+      expect(request.cancelled).toBe(true);
       httpTesting.expectNone('./assets/mock/olympic.json');
     });
   }

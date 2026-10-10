@@ -109,7 +109,7 @@ module.exports = defineConfig([
     },
   },
   {
-    files: ['playwright.config.ts', 'e2e/**/*.ts'],
+    files: ['playwright.config.ts', 'e2e/**/*.ts', 'vitest-base.config.ts'],
     languageOptions: { parserOptions: { projectService: false, project: './tsconfig.e2e.json' } },
   },
 ]);

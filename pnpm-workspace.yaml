@@ -1,5 +1,6 @@
 allowBuilds:
   '@parcel/watcher': true
+  canvas: true
   core-js-pure: true
   esbuild: true
   lmdb: true

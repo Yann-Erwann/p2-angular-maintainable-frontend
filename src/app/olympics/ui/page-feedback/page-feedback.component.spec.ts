@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { PageFeedbackComponent } from './page-feedback.component';
 
@@ -11,7 +12,7 @@ describe('PageFeedbackComponent', () => {
     const status = page.querySelector('[role="status"]');
     expect(page.querySelector('.loading-skeleton')).toBeNull();
     expect(status?.textContent?.trim()).toContain('Loading Olympic data');
-    expect(status?.classList.contains('visually-hidden')).toBeTrue();
+    expect(status?.classList.contains('visually-hidden')).toBe(true);
 
     fixture.componentRef.setInput('state', { status: 'success' });
     fixture.detectChanges();
@@ -34,7 +35,7 @@ describe('PageFeedbackComponent', () => {
     fixture.detectChanges();
     expect(page.querySelector('[role="status"]')).toBe(status);
     expect(status?.textContent?.trim()).toBe('Loaded results for Italy.');
-    expect(status?.classList.contains('visually-hidden')).toBeTrue();
+    expect(status?.classList.contains('visually-hidden')).toBe(true);
 
     fixture.componentRef.setInput('state', { status: 'error', message: 'Unable to connect.' });
     fixture.detectChanges();
@@ -42,7 +43,7 @@ describe('PageFeedbackComponent', () => {
     expect(status?.textContent?.trim()).toBe('');
     expect(alert?.textContent?.trim()).toBe('Unable to connect.');
     expect(alert?.getAttribute('aria-atomic')).toBe('true');
-    expect(alert?.classList.contains('visually-hidden')).toBeFalse();
+    expect(alert?.classList.contains('visually-hidden')).toBe(false);
   });
 
   it('should show a decorative skeleton only while loading and keep the status announcement', () => {
@@ -51,7 +52,7 @@ describe('PageFeedbackComponent', () => {
     fixture.detectChanges();
     const page = fixture.nativeElement as HTMLElement;
     expect(page.querySelector('.loading-skeleton')?.getAttribute('aria-hidden')).toBe('true');
-    expect(page.querySelectorAll('.loading-skeleton__indicator')).toHaveSize(2);
+    expect(page.querySelectorAll('.loading-skeleton__indicator')).toHaveLength(2);
     expect(page.querySelector('[role="status"]')?.textContent?.trim()).toContain(
       'Loading Olympic data',
     );
@@ -59,7 +60,7 @@ describe('PageFeedbackComponent', () => {
 
     fixture.componentRef.setInput('indicatorCount', 3);
     fixture.detectChanges();
-    expect(page.querySelectorAll('.loading-skeleton__indicator')).toHaveSize(3);
+    expect(page.querySelectorAll('.loading-skeleton__indicator')).toHaveLength(3);
 
     for (const state of [
       { status: 'success' },

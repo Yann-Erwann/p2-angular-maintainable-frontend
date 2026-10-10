@@ -1,3 +1,4 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
@@ -20,14 +21,15 @@ describe('OlympicDataService shared loading', () => {
   afterEach(() => http.verify());
 
   it('should share a pending request without cancelling it when one consumer leaves', () => {
-    const next = jasmine.createSpy('next');
+    const next = vi.fn();
     const first = service.getOlympics().subscribe();
     const second = service.getOlympics().subscribe(next);
     const request = http.expectOne(url);
     first.unsubscribe();
-    expect(request.cancelled).toBeFalse();
+    expect(request.cancelled).toBe(false);
     request.flush(countries);
-    expect(next).toHaveBeenCalledOnceWith(countries);
+    expect(next).toHaveBeenCalledTimes(1);
+    expect(next).toHaveBeenCalledWith(countries);
     second.unsubscribe();
   });
 
@@ -36,30 +38,32 @@ describe('OlympicDataService shared loading', () => {
     const second = service.getOlympics().subscribe();
     const request = http.expectOne(url);
     first.unsubscribe();
-    expect(request.cancelled).toBeFalse();
+    expect(request.cancelled).toBe(false);
     second.unsubscribe();
-    expect(request.cancelled).toBeTrue();
-    const next = jasmine.createSpy('next');
+    expect(request.cancelled).toBe(true);
+    const next = vi.fn();
     service.getOlympics().subscribe(next);
     http.expectOne(url).flush(countries);
-    expect(next).toHaveBeenCalledOnceWith(countries);
+    expect(next).toHaveBeenCalledTimes(1);
+    expect(next).toHaveBeenCalledWith(countries);
   });
 
   for (const payload of [countries, []]) {
     it('should reuse a completed valid response across page consumers', () => {
       service.getOlympics().subscribe();
       http.expectOne(url).flush(payload);
-      const next = jasmine.createSpy('next');
+      const next = vi.fn();
       service.getOlympics().subscribe(next);
       service.getOlympics().subscribe();
       http.expectNone(url);
-      expect(next).toHaveBeenCalledOnceWith(payload);
+      expect(next).toHaveBeenCalledTimes(1);
+      expect(next).toHaveBeenCalledWith(payload);
     });
   }
 
   for (const invalid of [false, true]) {
     it(`should retry after ${invalid ? 'validation' : 'HTTP'} failure without caching the error`, () => {
-      const error = jasmine.createSpy('error');
+      const error = vi.fn();
       service.getOlympics().subscribe({ error });
       const request = http.expectOne(url);
       if (invalid) {
@@ -68,10 +72,11 @@ describe('OlympicDataService shared loading', () => {
         request.flush('Unavailable', { status: 503, statusText: 'Unavailable' });
       }
       expect(error).toHaveBeenCalledTimes(1);
-      const next = jasmine.createSpy('next');
+      const next = vi.fn();
       service.getOlympics().subscribe(next);
       http.expectOne(url).flush(countries);
-      expect(next).toHaveBeenCalledOnceWith(countries);
+      expect(next).toHaveBeenCalledTimes(1);
+      expect(next).toHaveBeenCalledWith(countries);
     });
   }
 });

@@ -1,9 +1,9 @@
+import { afterEach, beforeEach, describe, expect, it, type MockedObject, vi } from 'vitest';
 import { renderDeferredBlocks } from '../../../../testing/render-deferred-blocks';
 import { Chart } from 'chart.js';
 import { ChartRenderer } from '../../ui/chart/chart-renderer.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { provideZoneChangeDetection } from '@angular/core';
 import { Router, provideRouter } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { of, ReplaySubject } from 'rxjs';
@@ -32,17 +32,18 @@ function chartAt(page: HTMLElement | null) {
 
 describe('CountryComponent', () => {
   let data: ReplaySubject<readonly Olympic[]>;
-  let dataService: jasmine.SpyObj<OlympicDataService>;
+  let dataService: MockedObject<Pick<OlympicDataService, 'getOlympics'>>;
   let component: CountryComponent;
 
   beforeEach(() => {
     data = new ReplaySubject<readonly Olympic[]>(1);
-    dataService = jasmine.createSpyObj<OlympicDataService>('OlympicDataService', ['getOlympics']);
-    dataService.getOlympics.and.returnValue(data.asObservable());
+    dataService = {
+      getOlympics: vi.fn().mockName('OlympicDataService.getOlympics'),
+    };
+    dataService.getOlympics.mockReturnValue(data.asObservable());
     TestBed.configureTestingModule({
       imports: [CountryComponent],
       providers: [
-        provideZoneChangeDetection(),
         provideRouter(routes),
         { provide: OlympicDataService, useValue: dataService },
       ],
@@ -58,7 +59,7 @@ describe('CountryComponent', () => {
       { id: 2, country: 'Italy', participations: [] },
       { id: 5, country: 'France', participations: [] },
     ];
-    dataService.getOlympics.and.returnValue(of(countries));
+    dataService.getOlympics.mockReturnValue(of(countries));
     const harness = await RouterTestingHarness.create();
     component = await harness.navigateByUrl('/country/5', CountryComponent);
     data.next(countries);
@@ -67,7 +68,7 @@ describe('CountryComponent', () => {
       '.country-picker__trigger',
     )!;
     expect(trigger.textContent).toContain('France');
-    expect(trigger.disabled).toBeFalse();
+    expect(trigger.disabled).toBe(false);
     expect(
       harness.routeNativeElement!.querySelector('.country-picker__dropdown')?.textContent,
     ).not.toContain('France');
@@ -75,7 +76,7 @@ describe('CountryComponent', () => {
       harness.routeNativeElement
         ?.querySelector('.country-picker__flag')
         ?.classList.contains('country-picker__flag--fr'),
-    ).toBeTrue();
+    ).toBe(true);
     const options =
       harness.routeNativeElement!.querySelectorAll<HTMLButtonElement>('.country-picker__option');
     options[0].click();
@@ -90,18 +91,18 @@ describe('CountryComponent', () => {
       harness.routeNativeElement
         ?.querySelector('.country-picker__flag')
         ?.classList.contains('country-picker__flag--it'),
-    ).toBeTrue();
-    expect(dataService.getOlympics.calls.count()).toBe(2);
+    ).toBe(true);
+    expect(vi.mocked(dataService.getOlympics).mock.calls).toHaveLength(2);
   });
 
   it('should stop consuming route and data changes after leaving the page', async () => {
     const harness = await RouterTestingHarness.create();
     component = await harness.navigateByUrl('/country/1', CountryComponent);
-    const chartSpy = spyOn(TestBed.inject(ChartRenderer), 'create').and.callThrough();
-    expect(data.observed).toBeTrue();
+    const chartSpy = vi.spyOn(TestBed.inject(ChartRenderer), 'create');
+    expect(data.observed).toBe(true);
 
     await harness.navigateByUrl('/not-found');
-    expect(data.observed).toBeFalse();
+    expect(data.observed).toBe(false);
     data.next([{ id: 1, country: 'France', participations: [] }]);
     expect(component.state().status).toBe('loading');
     expect(chartSpy).not.toHaveBeenCalled();
@@ -122,7 +123,7 @@ describe('CountryComponent', () => {
     const reused = await harness.navigateByUrl('/country/2', CountryComponent);
     expect(reused).toBe(component);
     expect(countrySummary(component).name).toBe('Italy');
-    expect(dataService.getOlympics.calls.count()).toBe(2);
+    expect(vi.mocked(dataService.getOlympics).mock.calls).toHaveLength(2);
     expect(harness.routeNativeElement?.querySelector('app-header')?.textContent).toContain('Italy');
   });
 
@@ -131,9 +132,9 @@ describe('CountryComponent', () => {
 
     component = await harness.navigateByUrl('/country/1', CountryComponent);
 
-    const chartSpy = spyOn(TestBed.inject(ChartRenderer), 'create').and.callThrough();
+    const chartSpy = vi.spyOn(TestBed.inject(ChartRenderer), 'create');
 
-    expect(dataService.getOlympics.calls.count()).toBe(1);
+    expect(vi.mocked(dataService.getOlympics).mock.calls).toHaveLength(1);
     data.next([
       {
         id: 2,
@@ -210,7 +211,7 @@ describe('CountryComponent', () => {
   it('should keep totals at zero for a country without participations', async () => {
     const harness = await RouterTestingHarness.create();
     component = await harness.navigateByUrl('/country/1', CountryComponent);
-    const chartSpy = spyOn(TestBed.inject(ChartRenderer), 'create').and.callThrough();
+    const chartSpy = vi.spyOn(TestBed.inject(ChartRenderer), 'create');
 
     data.next([{ id: 1, country: 'France', participations: [] }]);
 
@@ -260,7 +261,7 @@ describe('CountryComponent', () => {
     expect(
       harness.routeNativeElement?.querySelector<HTMLButtonElement>('.country-picker__trigger')
         ?.disabled,
-    ).toBeTrue();
+    ).toBe(true);
     expect(harness.routeNativeElement?.querySelector('canvas')).toBeNull();
   });
 

@@ -1,9 +1,10 @@
+import { afterEach, beforeEach, describe, expect, it, type MockedObject, vi } from 'vitest';
 import { renderDeferredBlocks } from '../../../../testing/render-deferred-blocks';
 import { Chart } from 'chart.js';
 import { ChartRenderer } from '../../ui/chart/chart-renderer.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { type ComponentFixture, TestBed } from '@angular/core/testing';
-import { ErrorHandler, provideZoneChangeDetection } from '@angular/core';
+import { ErrorHandler } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { OlympicChartComponent } from '../../ui/chart/chart.component';
 import { provideRouter, Router } from '@angular/router';
@@ -32,16 +33,17 @@ describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
   let data: Subject<readonly Olympic[]>;
-  let dataService: jasmine.SpyObj<OlympicDataService>;
+  let dataService: MockedObject<Pick<OlympicDataService, 'getOlympics'>>;
 
   beforeEach(async () => {
     data = new Subject<readonly Olympic[]>();
-    dataService = jasmine.createSpyObj<OlympicDataService>('OlympicDataService', ['getOlympics']);
-    dataService.getOlympics.and.returnValue(data.asObservable());
+    dataService = {
+      getOlympics: vi.fn().mockName('OlympicDataService.getOlympics'),
+    };
+    dataService.getOlympics.mockReturnValue(data.asObservable());
     await TestBed.configureTestingModule({
       imports: [HomeComponent],
       providers: [
-        provideZoneChangeDetection(),
         provideRouter([]),
         { provide: OlympicDataService, useValue: dataService },
       ],
@@ -57,31 +59,31 @@ describe('HomeComponent', () => {
   });
 
   it('should stop consuming data when destroyed', () => {
-    expect(data.observed).toBeTrue();
+    expect(data.observed).toBe(true);
     fixture.destroy();
-    expect(data.observed).toBeFalse();
+    expect(data.observed).toBe(false);
     data.next([]);
     expect(component.state().status).toBe('loading');
   });
 
   it('should cancel a pending chart render when destroyed', () => {
-    const chartSpy = spyOn(TestBed.inject(ChartRenderer), 'create').and.callThrough();
+    const chartSpy = vi.spyOn(TestBed.inject(ChartRenderer), 'create');
     data.next([{ id: 1, country: 'France', participations: [] }]);
     fixture.destroy();
     TestBed.tick();
     expect(chartSpy).not.toHaveBeenCalled();
-    expect(data.observed).toBeFalse();
+    expect(data.observed).toBe(false);
   });
 
   it('should render only the latest response when several arrive before rendering', async () => {
-    const chartSpy = spyOn(TestBed.inject(ChartRenderer), 'create').and.callThrough();
+    const chartSpy = vi.spyOn(TestBed.inject(ChartRenderer), 'create');
     data.next([{ id: 1, country: 'France', participations: [] }]);
     data.next([{ id: 2, country: 'Italy', participations: [] }]);
     fixture.detectChanges();
     await renderDeferredBlocks(fixture);
     expect(chartSpy).toHaveBeenCalledTimes(1);
     expect(chartAt(fixture.nativeElement as HTMLElement).data.labels).toEqual(['Italy']);
-    expect(homeView(component).rows).toHaveSize(1);
+    expect(homeView(component).rows).toHaveLength(1);
   });
 
   it('should render the home chart immediately after data arrives', async () => {
@@ -96,7 +98,7 @@ describe('HomeComponent', () => {
   });
 
   it('should navigate when the isolated chart emits a country selection', async () => {
-    const navigate = spyOn(TestBed.inject(Router), 'navigate').and.resolveTo(true);
+    const navigate = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
     data.next([{ id: 1, country: 'France', participations: [] }]);
     fixture.detectChanges();
     await renderDeferredBlocks(fixture);
@@ -104,17 +106,18 @@ describe('HomeComponent', () => {
       .componentInstance as OlympicChartComponent;
     chart.pointSelected.emit(0);
     await fixture.whenStable();
-    expect(navigate).toHaveBeenCalledOnceWith(['/country', 1]);
+    expect(navigate).toHaveBeenCalledTimes(1);
+    expect(navigate).toHaveBeenCalledWith(['/country', 1]);
 
     const canvas = (fixture.nativeElement as HTMLElement).querySelector('canvas');
     canvas?.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
     await fixture.whenStable();
     expect(navigate).toHaveBeenCalledTimes(2);
-    expect(navigate.calls.mostRecent().args).toEqual([['/country', 1]]);
+    expect(vi.mocked(navigate).mock.lastCall).toEqual([['/country', 1]]);
   });
 
   it('should navigate by ID for duplicate names and ignore invalid chart indices', async () => {
-    const navigate = spyOn(TestBed.inject(Router), 'navigate').and.resolveTo(true);
+    const navigate = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
     data.next([
       { id: 1, country: 'France', participations: [] },
       { id: 5, country: 'France', participations: [] },
@@ -124,28 +127,30 @@ describe('HomeComponent', () => {
     expect(navigate).not.toHaveBeenCalled();
     component.selectCountry(1);
     await fixture.whenStable();
-    expect(navigate).toHaveBeenCalledOnceWith(['/country', 5]);
+    expect(navigate).toHaveBeenCalledTimes(1);
+    expect(navigate).toHaveBeenCalledWith(['/country', 5]);
   });
 
   it('should keep reporting navigation errors from country selection', async () => {
     const failure = new Error('Navigation failed');
-    spyOn(TestBed.inject(Router), 'navigate').and.rejectWith(failure);
-    const report = spyOn(TestBed.inject(ErrorHandler), 'handleError');
+    vi.spyOn(TestBed.inject(Router), 'navigate').mockRejectedValue(failure);
+    const report = vi.spyOn(TestBed.inject(ErrorHandler), 'handleError');
     data.next([{ id: 1, country: 'France', participations: [] }]);
     component.selectCountry(0);
     await fixture.whenStable();
-    expect(report).toHaveBeenCalledOnceWith(failure);
+    expect(report).toHaveBeenCalledTimes(1);
+    expect(report).toHaveBeenCalledWith(failure);
   });
 
   it('should create', () => {
     data.next([]);
-    expect(dataService.getOlympics.calls.count()).toBe(1);
+    expect(vi.mocked(dataService.getOlympics).mock.calls).toHaveLength(1);
     expect(component).toBeTruthy();
   });
 
   it('should render country and edition totals with the medal chart', async () => {
-    const chartSpy = spyOn(TestBed.inject(ChartRenderer), 'create').and.callThrough();
-    expect(dataService.getOlympics.calls.count()).toBe(1);
+    const chartSpy = vi.spyOn(TestBed.inject(ChartRenderer), 'create');
+    expect(vi.mocked(dataService.getOlympics).mock.calls).toHaveLength(1);
     data.next([
       {
         id: 1,
@@ -165,7 +170,7 @@ describe('HomeComponent', () => {
     fixture.detectChanges();
     await renderDeferredBlocks(fixture);
 
-    expect(homeView(component).rows).toHaveSize(2);
+    expect(homeView(component).rows).toHaveLength(2);
     expect(homeView(component).indicators[1].value).toBe(2);
     expect(chartSpy).toHaveBeenCalledTimes(1);
     expect(chartAt(fixture.nativeElement as HTMLElement).data.labels).toEqual(['France', 'Italy']);
@@ -174,7 +179,7 @@ describe('HomeComponent', () => {
     const page = fixture.nativeElement as HTMLElement;
     expect(
       page.querySelector('app-header .results-header__heading > h2')?.textContent?.trim(),
-    ).toBe('Medals per Country');
+    ).toBe('Olympic summary');
     expect(
       Array.from(
         page.querySelectorAll(
@@ -199,11 +204,11 @@ describe('HomeComponent', () => {
       '/country/1',
       '/country/2',
     ]);
-    expect(countryLinks.every((link) => link.tabIndex === 0)).toBeTrue();
+    expect(countryLinks.every((link) => link.tabIndex === 0)).toBe(true);
     expect(countryLinks[0].getAttribute('aria-describedby')).toBe(
       'country-medals-1 country-percentage-1',
     );
-    expect(page.querySelectorAll('thead th[scope="col"]')).toHaveSize(3);
+    expect(page.querySelectorAll('thead th[scope="col"]')).toHaveLength(3);
     expect(page.querySelector('#country-medals-description')?.textContent).toContain(
       'France: 30 medals.',
     );
@@ -226,14 +231,14 @@ describe('HomeComponent', () => {
     expect(
       Array.from(page.querySelectorAll('app-header dd'), (item) => item.textContent?.trim()),
     ).toEqual(['—', '—']);
-    expect(page.querySelector('.chart-card')?.hasAttribute('hidden')).toBeFalse();
+    expect(page.querySelector('.chart-card')?.hasAttribute('hidden')).toBe(false);
     expect(page.querySelector('.chart-placeholder')).not.toBeNull();
     expect(page.querySelector('.loading-skeleton')).toBeNull();
     expect(page.querySelector('canvas')).toBeNull();
   });
 
   it('should distinguish an empty response from a loading or failure state', async () => {
-    const chartSpy = spyOn(TestBed.inject(ChartRenderer), 'create').and.callThrough();
+    const chartSpy = vi.spyOn(TestBed.inject(ChartRenderer), 'create');
     data.next([]);
     fixture.detectChanges();
     await renderDeferredBlocks(fixture);
@@ -303,7 +308,7 @@ describe('HomeComponent', () => {
     );
     expect(
       chartAt(fixture.nativeElement as HTMLElement).isPluginEnabled('dashboardMedalLabels'),
-    ).toBeTrue();
-    expect(chartAt(fixture.nativeElement as HTMLElement).legend?.options.display).toBeFalse();
+    ).toBe(true);
+    expect(chartAt(fixture.nativeElement as HTMLElement).legend?.options.display).toBe(false);
   });
 });

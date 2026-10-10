@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import type { Olympic, Participation } from '../../models/olympic.model';
 import { createCountryState, summarizeCountry } from './country-view-model';
 

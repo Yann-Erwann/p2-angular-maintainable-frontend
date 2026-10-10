@@ -1,20 +1,27 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { ArcElement, Chart } from 'chart.js';
 import { ChartRenderer, type RenderedChart } from './chart-renderer.service';
 
 describe('ChartRenderer', () => {
+  let container: HTMLDivElement;
   let canvas: HTMLCanvasElement;
   let rendered: RenderedChart | undefined;
 
   beforeEach(() => {
+    container = document.createElement('div');
+    container.getBoundingClientRect = () => new DOMRect(0, 0, 300, 150);
     canvas = document.createElement('canvas');
-    document.body.appendChild(canvas);
+    canvas.width = 300;
+    canvas.height = 150;
+    container.appendChild(canvas);
+    document.body.appendChild(container);
     rendered = undefined;
   });
 
   afterEach(() => {
     rendered?.destroy();
-    canvas.remove();
+    container.remove();
   });
 
   for (const type of ['pie', 'line'] as const) {
@@ -29,12 +36,12 @@ describe('ChartRenderer', () => {
       const chart = Chart.getChart(canvas);
       expect(chart?.data.labels).toEqual([...labels]);
       expect(chart?.data.datasets[0].data).toEqual([10, 20]);
-      expect(chart?.options.animation).toBeFalse();
-      expect(chart?.options.responsive).toBeTrue();
-      expect(chart?.options.maintainAspectRatio).toBeFalse();
+      expect(chart?.options.animation).toBe(false);
+      expect(chart?.options.responsive).toBe(true);
+      expect(chart?.options.maintainAspectRatio).toBe(false);
       expect(chart?.canvas).toBe(canvas);
-      expect(chart?.legend?.options.display).toBeFalse();
-      expect(chart?.isPluginEnabled('tooltip')).toBeTrue();
+      expect(chart?.legend?.options.display).toBe(false);
+      expect(chart?.isPluginEnabled('tooltip')).toBe(true);
       rendered.destroy();
       rendered = undefined;
       expect(Chart.getChart(canvas)).toBeUndefined();
@@ -42,7 +49,7 @@ describe('ChartRenderer', () => {
   }
 
   it('should emit the selected pie index and ignore clicks outside a country', () => {
-    const selected = jasmine.createSpy('selected');
+    const selected = vi.fn();
     rendered = TestBed.inject(ChartRenderer).create(
       canvas,
       {
@@ -58,13 +65,14 @@ describe('ChartRenderer', () => {
     if (!chart) {
       throw new Error('Expected a rendered pie chart.');
     }
-    const hits = spyOn(chart, 'getElementsAtEventForMode').and.returnValue([]);
+    const hits = vi.spyOn(chart, 'getElementsAtEventForMode').mockReturnValue([]);
     const event = { type: 'click', native: new MouseEvent('click'), x: 0, y: 0 } as const;
     chart.options.onClick?.call(chart, event, [], chart);
     expect(selected).not.toHaveBeenCalled();
-    hits.and.returnValue([{ index: 1, datasetIndex: 0, element: new ArcElement({}) }]);
+    hits.mockReturnValue([{ index: 1, datasetIndex: 0, element: new ArcElement({}) }]);
     chart.options.onClick?.call(chart, event, [], chart);
-    expect(selected).toHaveBeenCalledOnceWith(1);
+    expect(selected).toHaveBeenCalledTimes(1);
+    expect(selected).toHaveBeenCalledWith(1);
   });
   for (const type of ['pie', 'line'] as const) {
     it(`should highlight the keyboard-selected ${type} item and its tooltip`, () => {
@@ -106,12 +114,12 @@ describe('ChartRenderer', () => {
     );
     const chart = Chart.getChart(canvas)!;
     chart.resize(650, 336);
-    const text = spyOn(chart.ctx, 'fillText').and.callThrough();
+    const text = vi.spyOn(chart.ctx, 'fillText');
     chart.update('none');
-    expect(text.calls.allArgs().some((args) => args[0] === '45')).toBeTrue();
+    expect(vi.mocked(text).mock.calls.some((args) => args[0] === '45')).toBe(true);
     const dataset = chart.data.datasets[0];
-    expect('fill' in dataset && dataset.fill).toBeTrue();
-    expect(chart.legend?.options.display).toBeFalse();
+    expect('fill' in dataset && dataset.fill).toBe(true);
+    expect(chart.legend?.options.display).toBe(false);
     expect(chart.scales['y'].min).toBeLessThanOrEqual(33);
     expect(chart.scales['y'].max).toBeGreaterThanOrEqual(45);
     rendered.focusPoint(2);
@@ -132,7 +140,7 @@ describe('ChartRenderer', () => {
     );
     const chart = Chart.getChart(canvas)!;
     chart.resize(650, 400);
-    const arc = spyOn(chart.ctx, 'arc').and.callThrough();
+    const arc = vi.spyOn(chart.ctx, 'arc');
     rendered.focusPoint(0);
     expect(chart.tooltip?.title[0].trim()).toBe('France');
     expect(chart.tooltip?.body[0].lines.map((line) => line.trim())).toEqual([
@@ -140,8 +148,8 @@ describe('ChartRenderer', () => {
       '25% of total',
     ]);
     expect(
-      arc.calls.allArgs().some((args) => args[0] === 11 && args[1] === 13 && args[2] === 7),
-    ).toBeTrue();
+      vi.mocked(arc).mock.calls.some((args) => args[0] === 11 && args[1] === 13 && args[2] === 7),
+    ).toBe(true);
   });
 
   it('should paint an opaque white canvas background after every redraw', () => {
@@ -175,12 +183,12 @@ describe('ChartRenderer', () => {
       () => undefined,
     );
     const chart = Chart.getChart(canvas)!;
-    const fillText = spyOn(chart.ctx, 'fillText').and.callThrough();
+    const fillText = vi.spyOn(chart.ctx, 'fillText');
     chart.resize(650, 400);
     chart.update('none');
-    expect(fillText.calls.allArgs().some((args) => args[0] === '345')).toBeTrue();
-    expect(fillText.calls.allArgs().some((args) => args[0] === 'United States')).toBeTrue();
-    expect(chart.legend?.options.display).toBeFalse();
+    expect(vi.mocked(fillText).mock.calls.some((args) => args[0] === '345')).toBe(true);
+    expect(vi.mocked(fillText).mock.calls.some((args) => args[0] === 'United States')).toBe(true);
+    expect(chart.legend?.options.display).toBe(false);
     rendered.focusPoint(1);
     expect(chart.getActiveElements().map((item) => item.index)).toEqual([1]);
     expect(chart.tooltip?.getActiveElements().map((item) => item.index)).toEqual([1]);
