@@ -25,7 +25,7 @@ import { SeoService } from './seo.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  styleUrl: './app.component.scss',
   host: {
     class: 'app-shell app-shell--dashboard',
     '[class.app-shell--country]': 'countryLayout()',
@@ -34,8 +34,6 @@ import { SeoService } from './seo.service';
   imports: [RouterLink, RouterOutlet],
 })
 export class AppComponent implements OnInit {
-  /** Titre historique conservé par le shell Angular. */
-  title = 'olympic-games-starter';
   /** Routeur utilisé pour lire la route affichée et ses changements. */
   private readonly router = inject(Router);
   /** Emplacement initial utilisé lorsque le routeur n’a pas encore émis d’événement. */
@@ -51,17 +49,17 @@ export class AppComponent implements OnInit {
     { initialValue: this.location.path() || '/' },
   );
   /** Indique que la page courante est l’accueil. */
-  readonly homeLayout = computed(
+  protected readonly homeLayout = computed(
     () => !this.router.parseUrl(this.routeUrl()).root.children['primary']?.segments.length,
   );
   /** Indique que la page courante affiche le détail d’un pays. */
-  readonly countryLayout = computed(
+  protected readonly countryLayout = computed(
     () =>
       this.router.parseUrl(this.routeUrl()).root.children['primary']?.segments[0]?.path ===
       'country',
   );
   /** Active la variante qui permet de revenir à l’accueil. */
-  readonly returnHomeLayout = computed(() => !this.homeLayout());
+  protected readonly returnHomeLayout = computed(() => !this.homeLayout());
   /** Nettoie l’écoute de destruction du shell. */
   private readonly destroyRef = inject(DestroyRef);
   /** Injecteur fourni aux effets exécutés après le rendu. */
@@ -72,9 +70,19 @@ export class AppComponent implements OnInit {
   private pendingFocus?: AfterRenderRef;
 
   /** Met à jour les métadonnées et le focus après chaque navigation complète. */
-  ngOnInit() {
-    this.destroyRef.onDestroy(() => this.pendingFocus?.destroy());
+  ngOnInit(): void {
+    this.initializeSeo();
+    this.observeNavigation();
+  }
+
+  /** Synchronise immédiatement les métadonnées avec la route initiale. */
+  private initializeSeo(): void {
     this.seo.update(this.routeUrl(), this.isNoIndexRoute());
+  }
+
+  /** Observe les navigations pour synchroniser le SEO et le focus. */
+  private observeNavigation(): void {
+    this.destroyRef.onDestroy(() => this.pendingFocus?.destroy());
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),

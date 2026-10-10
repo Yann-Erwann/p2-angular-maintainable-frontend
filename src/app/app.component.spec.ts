@@ -23,13 +23,6 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'olympic-games-starter'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-
-    expect(app.title).toEqual('olympic-games-starter');
-  });
-
   it('should render the router outlet', () => {
     const fixture = TestBed.createComponent(AppComponent);
 
@@ -115,15 +108,15 @@ describe('Accessible application navigation', () => {
     await fixture.whenStable();
     expect(router.url).toBe('/');
     fixture.detectChanges();
-    expect(fixture.componentInstance.homeLayout()).toBe(true);
+    expect(page.classList.contains('app-shell--return-home')).toBe(false);
     expect(page.querySelector('.brand__banner')?.getAttribute('src')).toBe(
       'assets/images/telesport-header.webp',
     );
     await router.navigateByUrl('/country/2');
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(fixture.componentInstance.homeLayout()).toBe(false);
-    expect(fixture.componentInstance.countryLayout()).toBe(true);
+    expect(page.classList.contains('app-shell--return-home')).toBe(true);
+    expect(page.classList.contains('app-shell--country')).toBe(true);
     expect(page.querySelector('.brand__banner')?.getAttribute('src')).toBe(
       'assets/images/telesport-header.webp',
     );
