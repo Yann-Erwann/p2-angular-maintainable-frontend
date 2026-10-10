@@ -167,9 +167,7 @@ reste en ligne : corriger ou rétablir la version précédente par un nouveau co
 | `src/app/olympics/`          | Domaine, routes, UI et intégration Chart.js           |
 | `e2e/`                       | Tests navigateur                                      |
 | `.github/workflows/`         | Étapes de validation et de déploiement GitHub Actions |
-| `.github/scripts/`           | Serveur local                                         |
 | `docs/`                      | Architecture et décisions techniques                  |
-| `doc/`                       | Maquettes, captures et rapports Lighthouse locaux     |
 
 ```bash
 pnpm run docs
