@@ -1,4 +1,4 @@
-name: Validate and deploy Angular
+name: Validate, deploy and verify Angular
 
 on:
   pull_request:
@@ -85,8 +85,21 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Checkout smoke check
+      - name: Deploy validated artifact
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  verify:
+    needs: deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
         uses: actions/checkout@v6
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -99,17 +112,12 @@ jobs:
           cache: pnpm
       - name: Install verification dependencies
         run: pnpm install --frozen-lockfile
-      - name: Install verification browser
+      - name: Install Chromium
         run: pnpm exec playwright install --with-deps chromium
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
-      - name: Deploy validated artifact
-        id: deployment
-        uses: actions/deploy-pages@v4
       - name: Verify deployed pages and data
         run: pnpm exec playwright test e2e/verify-deployment.spec.ts --project=chromium
         env:
-          PRODUCTION_SERVER_URL: ${{ steps.deployment.outputs.page_url }}
+          PRODUCTION_SERVER_URL: ${{ needs.deploy.outputs.page_url }}
       - name: Upload deployment diagnostics
         if: always()
         uses: actions/upload-artifact@v4
