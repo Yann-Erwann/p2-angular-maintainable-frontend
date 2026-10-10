@@ -118,10 +118,7 @@ export const dashboardLabels = (items: readonly ChartItem[]): Plugin => ({
       const startX = element.x + cos * radius;
       const startY = element.y + sin * radius;
       const elbowX = element.x + cos * (radius + (compact ? 14 : 30));
-      const elbowY = placeLabel(
-        element.y + sin * (radius + (compact ? 18 : 30)),
-        side,
-      );
+      const elbowY = placeLabel(element.y + sin * (radius + (compact ? 18 : 30)), side);
       const endX = right
         ? Math.min(width - textWidth - labelGap, elbowX + (compact ? 24 : 70))
         : Math.max(textWidth + labelGap, elbowX - (compact ? 20 : 30));
