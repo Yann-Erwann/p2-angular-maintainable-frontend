@@ -3,9 +3,13 @@ import { MEDAL_COLORS } from '../../ui/chart/chart-colors';
 import type { ChartItem } from '../../ui/chart/chart.model';
 import type { Indicator } from '../../ui/header/indicator.model';
 
+/** Ligne de tableau et de graphique représentant un pays. */
 export interface CountryMedalRow {
+  /** Identifiant utilisé pour naviguer vers le pays. */
   readonly id: number;
+  /** Nom affiché dans le tableau et le graphique. */
   readonly name: string;
+  /** Total de médailles du pays. */
   readonly medals: number;
   /** Part de la collection arrondie à une décimale, ou zéro sans médaille. */
   readonly percentage: number;
@@ -43,17 +47,22 @@ export function summarizeOlympics(countries: readonly Olympic[]): OlympicSummary
 
 /** Le tableau et le graphique partagent l’ordre des pays pour la sélection par index. */
 export interface HomeViewModel {
+  /** Lignes colorées affichées dans le tableau. */
   readonly rows: readonly (CountryMedalRow & { readonly color: string })[];
+  /** Indicateurs globaux affichés dans l’en-tête. */
   readonly indicators: readonly Indicator[];
+  /** Données adaptées au graphique de répartition. */
   readonly chartItems: readonly ChartItem[];
 }
 
+/** États affichables de la page d’accueil. */
 export type HomePageState =
   | { readonly status: 'loading' }
   | { readonly status: 'empty' }
   | { readonly status: 'error'; readonly message: string }
   | { readonly status: 'success'; readonly data: HomeViewModel };
 
+/** Construit les indicateurs globaux de la page d’accueil. */
 function homeIndicators(countries: number, editions: number): readonly Indicator[] {
   return [
     { kind: 'countries', label: 'Number of countries', value: countries },
@@ -61,6 +70,7 @@ function homeIndicators(countries: number, editions: number): readonly Indicator
   ];
 }
 
+/** Indicateurs neutres affichés pendant le chargement. */
 export const HOME_LOADING_INDICATORS = homeIndicators(0, 0);
 
 /** Prépare une vue sans mutation ; des pays à zéro médaille restent un succès. */

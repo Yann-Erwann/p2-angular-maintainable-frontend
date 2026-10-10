@@ -252,10 +252,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Défini dans <a href="" data-line="5" class="link-to-prism">src/app/olympics/services/olympic-data.validator.ts:5</a></div>
+                                <div class="io-line">Défini dans <a href="" data-line="6" class="link-to-prism">src/app/olympics/services/olympic-data.validator.ts:6</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Nom stable utilisé pour distinguer une donnée invalide d’une erreur HTTP.</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -275,29 +281,36 @@
 
 /** Signale des données invalides, distinctes d’une erreur HTTP. */
 export class OlympicDataValidationError extends Error {
+  /** Nom stable utilisé pour distinguer une donnée invalide d’une erreur HTTP. */
   override readonly name &#x3D; &#x27;OlympicDataValidationError&#x27;;
 }
 
+/** Vérifie qu’une valeur est un objet indexable non nul. */
 function isRecord(value: unknown): value is Record&lt;string, unknown&gt; {
   return typeof value &#x3D;&#x3D;&#x3D; &#x27;object&#x27; &amp;&amp; value !&#x3D;&#x3D; null &amp;&amp; !Array.isArray(value);
 }
 
+/** Vérifie qu’une valeur est un tableau, y compris lorsqu’il est vide. */
 function isArray(value: unknown): value is unknown[] {
   return Array.isArray(value);
 }
 
+/** Vérifie qu’une valeur est un entier sûr strictement positif. */
 function isPositiveInteger(value: unknown): value is number {
   return typeof value &#x3D;&#x3D;&#x3D; &#x27;number&#x27; &amp;&amp; Number.isSafeInteger(value) &amp;&amp; value &gt; 0;
 }
 
+/** Vérifie qu’une valeur est un compteur entier sûr non négatif. */
 function isCount(value: unknown): value is number {
   return typeof value &#x3D;&#x3D;&#x3D; &#x27;number&#x27; &amp;&amp; Number.isSafeInteger(value) &amp;&amp; value &gt;&#x3D; 0;
 }
 
+/** Vérifie qu’un texte contient au moins un caractère non blanc. */
 function isText(value: unknown): value is string {
   return typeof value &#x3D;&#x3D;&#x3D; &#x27;string&#x27; &amp;&amp; value.trim().length &gt; 0;
 }
 
+/** Vérifie la forme et les compteurs d’une participation. */
 function isParticipation(value: unknown): value is Participation {
   return (
     isRecord(value) &amp;&amp;

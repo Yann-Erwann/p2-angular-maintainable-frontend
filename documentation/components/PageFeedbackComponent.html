@@ -373,9 +373,15 @@ lors des transitions pour les lecteurs d’écran.</p>
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Défini dans <a href="" data-line="54" class="link-to-prism">src/app/olympics/ui/page-feedback/page-feedback.component.ts:54</a></div>
+                                    <div class="io-line">Défini dans <a href="" data-line="56" class="link-to-prism">src/app/olympics/ui/page-feedback/page-feedback.component.ts:56</a></div>
                             </td>
                         </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Nombre de blocs indicateurs affichés dans le squelette.</p>
+</div>
+                    </td>
+                </tr>
             </tbody>
         </table>
         <table class="table table-sm table-bordered">
@@ -399,7 +405,7 @@ lors des transitions pour les lecteurs d’écran.</p>
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Défini dans <a href="" data-line="56" class="link-to-prism">src/app/olympics/ui/page-feedback/page-feedback.component.ts:56</a></div>
+                                    <div class="io-line">Défini dans <a href="" data-line="58" class="link-to-prism">src/app/olympics/ui/page-feedback/page-feedback.component.ts:58</a></div>
                             </td>
                         </tr>
                 <tr>
@@ -431,9 +437,15 @@ lors des transitions pour les lecteurs d’écran.</p>
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Défini dans <a href="" data-line="53" class="link-to-prism">src/app/olympics/ui/page-feedback/page-feedback.component.ts:53</a></div>
+                                    <div class="io-line">Défini dans <a href="" data-line="54" class="link-to-prism">src/app/olympics/ui/page-feedback/page-feedback.component.ts:54</a></div>
                             </td>
                         </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>État annoncé aux lecteurs d’écran et affiché dans le squelette.</p>
+</div>
+                    </td>
+                </tr>
             </tbody>
         </table>
         <table class="table table-sm table-bordered">
@@ -457,9 +469,15 @@ lors des transitions pour les lecteurs d’écran.</p>
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Défini dans <a href="" data-line="58" class="link-to-prism">src/app/olympics/ui/page-feedback/page-feedback.component.ts:58</a></div>
+                                    <div class="io-line">Défini dans <a href="" data-line="62" class="link-to-prism">src/app/olympics/ui/page-feedback/page-feedback.component.ts:62</a></div>
                             </td>
                         </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Message annoncé lorsque les données sont disponibles.</p>
+</div>
+                    </td>
+                </tr>
             </tbody>
         </table>
 </section>
@@ -501,10 +519,16 @@ lors des transitions pour les lecteurs d’écran.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Défini dans <a href="" data-line="71" class="link-to-prism">src/app/olympics/ui/page-feedback/page-feedback.component.ts:71</a></div>
+                                <div class="io-line">Défini dans <a href="" data-line="77" class="link-to-prism">src/app/olympics/ui/page-feedback/page-feedback.component.ts:77</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Message d’erreur annoncé uniquement en cas d’échec.</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -533,10 +557,16 @@ lors des transitions pour les lecteurs d’écran.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Défini dans <a href="" data-line="57" class="link-to-prism">src/app/olympics/ui/page-feedback/page-feedback.component.ts:57</a></div>
+                                <div class="io-line">Défini dans <a href="" data-line="60" class="link-to-prism">src/app/olympics/ui/page-feedback/page-feedback.component.ts:60</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Emplacements répétés du squelette d’indicateurs.</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -576,10 +606,16 @@ lors des transitions pour les lecteurs d’écran.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Défini dans <a href="" data-line="59" class="link-to-prism">src/app/olympics/ui/page-feedback/page-feedback.component.ts:59</a></div>
+                                <div class="io-line">Défini dans <a href="" data-line="64" class="link-to-prism">src/app/olympics/ui/page-feedback/page-feedback.component.ts:64</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Message correspondant à l’état courant hors erreur.</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -641,12 +677,17 @@ import type { PageFeedbackState } from &#x27;./page-feedback-state&#x27;;
   styles: &#x27;:host { display: block; } :host(.page-feedback--quiet) { position: absolute; }&#x27;,
 })
 export class PageFeedbackComponent {
+  /** État annoncé aux lecteurs d’écran et affiché dans le squelette. */
   readonly state &#x3D; input.required&lt;PageFeedbackState&gt;();
+  /** Nombre de blocs indicateurs affichés dans le squelette. */
   readonly indicatorCount &#x3D; input&lt;2 | 3&gt;(2);
   /** Désactive le squelette visuel sans supprimer l’annonce du chargement. */
   readonly showSkeleton &#x3D; input(true);
+  /** Emplacements répétés du squelette d’indicateurs. */
   readonly indicatorSlots &#x3D; computed(() &#x3D;&gt; Array.from({ length: this.indicatorCount() }));
+  /** Message annoncé lorsque les données sont disponibles. */
   readonly successMessage &#x3D; input(&#x27;Olympic data loaded.&#x27;);
+  /** Message correspondant à l’état courant hors erreur. */
   readonly statusMessage &#x3D; computed(() &#x3D;&gt; {
     switch (this.state().status) {
       case &#x27;loading&#x27;:
@@ -659,6 +700,7 @@ export class PageFeedbackComponent {
         return &#x27;&#x27;;
     }
   });
+  /** Message d’erreur annoncé uniquement en cas d’échec. */
   readonly errorMessage &#x3D; computed(() &#x3D;&gt; {
     const state &#x3D; this.state();
     return state.status &#x3D;&#x3D;&#x3D; &#x27;error&#x27; ? state.message : &#x27;&#x27;;

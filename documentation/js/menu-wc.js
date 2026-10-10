@@ -126,6 +126,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <li class="link">
                                     <a href="injectables/OlympicDataService.html" data-type="entity-link" >OlympicDataService</a>
                                 </li>
+                                <li class="link">
+                                    <a href="injectables/SeoService.html" data-type="entity-link" >SeoService</a>
+                                </li>
                             </ul>
                         </li>
                     <li class="chapter">

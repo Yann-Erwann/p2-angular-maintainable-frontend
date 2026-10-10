@@ -2,29 +2,36 @@ import type { Olympic, Participation } from '../models/olympic.model';
 
 /** Signale des données invalides, distinctes d’une erreur HTTP. */
 export class OlympicDataValidationError extends Error {
+  /** Nom stable utilisé pour distinguer une donnée invalide d’une erreur HTTP. */
   override readonly name = 'OlympicDataValidationError';
 }
 
+/** Vérifie qu’une valeur est un objet indexable non nul. */
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
+/** Vérifie qu’une valeur est un tableau, y compris lorsqu’il est vide. */
 function isArray(value: unknown): value is unknown[] {
   return Array.isArray(value);
 }
 
+/** Vérifie qu’une valeur est un entier sûr strictement positif. */
 function isPositiveInteger(value: unknown): value is number {
   return typeof value === 'number' && Number.isSafeInteger(value) && value > 0;
 }
 
+/** Vérifie qu’une valeur est un compteur entier sûr non négatif. */
 function isCount(value: unknown): value is number {
   return typeof value === 'number' && Number.isSafeInteger(value) && value >= 0;
 }
 
+/** Vérifie qu’un texte contient au moins un caractère non blanc. */
 function isText(value: unknown): value is string {
   return typeof value === 'string' && value.trim().length > 0;
 }
 
+/** Vérifie la forme et les compteurs d’une participation. */
 function isParticipation(value: unknown): value is Participation {
   return (
     isRecord(value) &&

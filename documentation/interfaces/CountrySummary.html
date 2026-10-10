@@ -155,6 +155,13 @@
 <div class="tab-content">
     <div class="tab-pane fade active in" id="info">
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Résumé trié et agrégé utilisé par la page de détail.</p>
+
+            </p>
 
 
             </div>
@@ -243,7 +250,7 @@
 
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Défini dans <a href="" data-line="14" class="link-to-prism">src/app/olympics/pages/country/country-view-model.ts:14</a></div>
+                                    <div class="io-line">Défini dans <a href="" data-line="18" class="link-to-prism">src/app/olympics/pages/country/country-view-model.ts:18</a></div>
                                 </td>
                             </tr>
 
@@ -288,7 +295,7 @@
 
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Défini dans <a href="" data-line="11" class="link-to-prism">src/app/olympics/pages/country/country-view-model.ts:11</a></div>
+                                    <div class="io-line">Défini dans <a href="" data-line="14" class="link-to-prism">src/app/olympics/pages/country/country-view-model.ts:14</a></div>
                                 </td>
                             </tr>
 
@@ -333,10 +340,16 @@
 
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Défini dans <a href="" data-line="6" class="link-to-prism">src/app/olympics/pages/country/country-view-model.ts:6</a></div>
+                                    <div class="io-line">Défini dans <a href="" data-line="8" class="link-to-prism">src/app/olympics/pages/country/country-view-model.ts:8</a></div>
                                 </td>
                             </tr>
 
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-description"><p>Identifiant du pays dans les données validées.</p>
+</div>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <table class="table table-sm table-bordered">
@@ -372,10 +385,16 @@
 
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Défini dans <a href="" data-line="7" class="link-to-prism">src/app/olympics/pages/country/country-view-model.ts:7</a></div>
+                                    <div class="io-line">Défini dans <a href="" data-line="10" class="link-to-prism">src/app/olympics/pages/country/country-view-model.ts:10</a></div>
                                 </td>
                             </tr>
 
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-description"><p>Nom affiché du pays.</p>
+</div>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <table class="table table-sm table-bordered">
@@ -411,7 +430,7 @@
 
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Défini dans <a href="" data-line="9" class="link-to-prism">src/app/olympics/pages/country/country-view-model.ts:9</a></div>
+                                    <div class="io-line">Défini dans <a href="" data-line="12" class="link-to-prism">src/app/olympics/pages/country/country-view-model.ts:12</a></div>
                                 </td>
                             </tr>
 
@@ -456,10 +475,16 @@
 
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Défini dans <a href="" data-line="12" class="link-to-prism">src/app/olympics/pages/country/country-view-model.ts:12</a></div>
+                                    <div class="io-line">Défini dans <a href="" data-line="16" class="link-to-prism">src/app/olympics/pages/country/country-view-model.ts:16</a></div>
                                 </td>
                             </tr>
 
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-description"><p>Total de médailles sur toutes les participations.</p>
+</div>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
     </section>
@@ -471,13 +496,17 @@
 import type { ChartItem } from &#x27;../../ui/chart/chart.model&#x27;;
 import type { Indicator } from &#x27;../../ui/header/indicator.model&#x27;;
 
+/** Résumé trié et agrégé utilisé par la page de détail. */
 export interface CountrySummary {
+  /** Identifiant du pays dans les données validées. */
   readonly id: number;
+  /** Nom affiché du pays. */
   readonly name: string;
   /** Copie triée par année croissante, stable à année égale. */
   readonly participations: readonly Participation[];
   /** Nombre de participations, y compris celles d’une même année. */
   readonly entries: number;
+  /** Total de médailles sur toutes les participations. */
   readonly totalMedals: number;
   /** Cumul par participation, sans déduplication des personnes. */
   readonly athleteEntries: number;
@@ -499,6 +528,7 @@ export function summarizeCountry(country: Olympic): CountrySummary {
   };
 }
 
+/** Codes de drapeau disponibles pour les pays du jeu de données. */
 const COUNTRY_CODES: Readonly&lt;Record&lt;string, string&gt;&gt; &#x3D; {
   France: &#x27;fr&#x27;,
   Italy: &#x27;it&#x27;,
@@ -509,6 +539,7 @@ const COUNTRY_CODES: Readonly&lt;Record&lt;string, string&gt;&gt; &#x3D; {
 
 /** Vue complète du pays ; le détail et le sélecteur proviennent de la même collection. */
 export interface CountryViewModel {
+  /** Résumé et participations affichés dans le détail. */
   readonly summary: CountrySummary;
   /** Pays du sélecteur dans l’ordre du fichier, avec leurs identifiants. */
   readonly options: readonly {
@@ -516,9 +547,11 @@ export interface CountryViewModel {
     readonly name: string;
     readonly flagCode: string;
   }[];
+  /** Indicateurs numériques de l’en-tête. */
   readonly indicators: readonly Indicator[];
   /** Code du drapeau connu, ou chaîne vide pour l’emplacement neutre. */
   readonly flagCode: string;
+  /** Points de la courbe historique des médailles. */
   readonly chartItems: readonly ChartItem[];
 }
 
@@ -533,6 +566,7 @@ export type CountryPageState &#x3D;
   | { readonly status: &#x27;success&#x27;; readonly data: CountryViewModel }
   | { readonly status: &#x27;empty&#x27;; readonly data: CountryViewModel };
 
+/** Construit les indicateurs affichés pendant le chargement ou le succès. */
 function countryIndicators(
   entries: number,
   medals: number,
@@ -545,6 +579,7 @@ function countryIndicators(
   ];
 }
 
+/** Indicateurs neutres affichés avant le chargement des données. */
 export const COUNTRY_LOADING_INDICATORS &#x3D; countryIndicators(0, 0, 0);
 
 /**
@@ -574,6 +609,7 @@ export function createCountryState(countries: readonly Olympic[], id: number): C
   };
 }
 
+/** Retourne le titre du document correspondant à l’état courant du pays. */
 export function countryDocumentTitle(state: CountryPageState): string {
   if (state.status &#x3D;&#x3D;&#x3D; &#x27;success&#x27; || state.status &#x3D;&#x3D;&#x3D; &#x27;empty&#x27;) {
     return &#x60;${state.data.summary.name} | Olympic Games&#x60;;

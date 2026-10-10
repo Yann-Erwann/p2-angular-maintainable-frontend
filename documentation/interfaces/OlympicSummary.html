@@ -230,7 +230,7 @@
 
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Défini dans <a href="" data-line="17" class="link-to-prism">src/app/olympics/pages/home/home-view-model.ts:17</a></div>
+                                    <div class="io-line">Défini dans <a href="" data-line="21" class="link-to-prism">src/app/olympics/pages/home/home-view-model.ts:21</a></div>
                                 </td>
                             </tr>
 
@@ -275,7 +275,7 @@
 
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Défini dans <a href="" data-line="19" class="link-to-prism">src/app/olympics/pages/home/home-view-model.ts:19</a></div>
+                                    <div class="io-line">Défini dans <a href="" data-line="23" class="link-to-prism">src/app/olympics/pages/home/home-view-model.ts:23</a></div>
                                 </td>
                             </tr>
 
@@ -297,9 +297,13 @@ import { MEDAL_COLORS } from &#x27;../../ui/chart/chart-colors&#x27;;
 import type { ChartItem } from &#x27;../../ui/chart/chart.model&#x27;;
 import type { Indicator } from &#x27;../../ui/header/indicator.model&#x27;;
 
+/** Ligne de tableau et de graphique représentant un pays. */
 export interface CountryMedalRow {
+  /** Identifiant utilisé pour naviguer vers le pays. */
   readonly id: number;
+  /** Nom affiché dans le tableau et le graphique. */
   readonly name: string;
+  /** Total de médailles du pays. */
   readonly medals: number;
   /** Part de la collection arrondie à une décimale, ou zéro sans médaille. */
   readonly percentage: number;
@@ -337,17 +341,22 @@ export function summarizeOlympics(countries: readonly Olympic[]): OlympicSummary
 
 /** Le tableau et le graphique partagent l’ordre des pays pour la sélection par index. */
 export interface HomeViewModel {
+  /** Lignes colorées affichées dans le tableau. */
   readonly rows: readonly (CountryMedalRow &amp; { readonly color: string })[];
+  /** Indicateurs globaux affichés dans l’en-tête. */
   readonly indicators: readonly Indicator[];
+  /** Données adaptées au graphique de répartition. */
   readonly chartItems: readonly ChartItem[];
 }
 
+/** États affichables de la page d’accueil. */
 export type HomePageState &#x3D;
   | { readonly status: &#x27;loading&#x27; }
   | { readonly status: &#x27;empty&#x27; }
   | { readonly status: &#x27;error&#x27;; readonly message: string }
   | { readonly status: &#x27;success&#x27;; readonly data: HomeViewModel };
 
+/** Construit les indicateurs globaux de la page d’accueil. */
 function homeIndicators(countries: number, editions: number): readonly Indicator[] {
   return [
     { kind: &#x27;countries&#x27;, label: &#x27;Number of countries&#x27;, value: countries },
@@ -355,6 +364,7 @@ function homeIndicators(countries: number, editions: number): readonly Indicator
   ];
 }
 
+/** Indicateurs neutres affichés pendant le chargement. */
 export const HOME_LOADING_INDICATORS &#x3D; homeIndicators(0, 0);
 
 /** Prépare une vue sans mutation ; des pays à zéro médaille restent un succès. */

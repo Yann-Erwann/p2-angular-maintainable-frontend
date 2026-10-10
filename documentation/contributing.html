@@ -189,8 +189,9 @@ contient pas de changement étranger à son périmètre.</p>
 <p>Pour une modification applicative, exécuter les contrôles adaptés :</p>
 <b>Example :</b><div><pre class="line-numbers"><code class="language-bash">pnpm run lint
 pnpm exec ng test --watch=false
-pnpm run build</code></pre></div><p>Utiliser des tests ciblés lorsque cela suffit à vérifier le changement, le
-navigateur Chrome ou Chromium est nécessaire aux tests Karma. Pour une
+pnpm run build</code></pre></div><p>Utiliser des tests ciblés lorsque cela suffit à vérifier le changement. Les tests
+unitaires Vitest s’exécutent dans Node.js avec jsdom ; Chrome ou Chromium reste
+nécessaire uniquement aux tests E2E. Pour une
 modification documentaire seule, relire les exemples, vérifier les liens locaux
 et contrôler le diff, il n&#39;est pas nécessaire de relancer les tests applicatifs.
 Consigner les échecs ou les contrôles indisponibles avec leur cause.</p>

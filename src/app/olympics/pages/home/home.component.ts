@@ -17,6 +17,7 @@ import { HeaderComponent } from '../../ui/header/header.component';
 import { PageFeedbackComponent } from '../../ui/page-feedback/page-feedback.component';
 import { createHomeState, HOME_LOADING_INDICATORS, type HomePageState } from './home-view-model';
 
+/** Page d’accueil chargée depuis le service partagé de données olympiques. */
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-home',
@@ -25,14 +26,22 @@ import { createHomeState, HOME_LOADING_INDICATORS, type HomePageState } from './
   imports: [HeaderComponent, OlympicChartComponent, PageFeedbackComponent, RouterLink],
 })
 export class HomeComponent implements OnInit {
+  /** Service partagé de chargement et de cache des données. */
   private readonly dataService = inject(OlympicDataService);
+  /** Routeur utilisé par la sélection d’un pays dans le tableau ou le graphique. */
   private readonly router = inject(Router);
+  /** Gestionnaire de secours pour les erreurs de navigation. */
   private readonly errorHandler = inject(ErrorHandler);
+  /** Arrête l’écoute lorsque la page est détruite. */
   private readonly destroyRef = inject(DestroyRef);
+  /** État interne de la page d’accueil. */
   private readonly pageState = signal<HomePageState>({ status: 'loading' });
 
+  /** État public consommé par le template. */
   readonly state = this.pageState.asReadonly();
+  /** Indicateurs neutres affichés pendant le chargement. */
   readonly loadingIndicators = HOME_LOADING_INDICATORS;
+  /** Charge les données et transforme les erreurs en état affichable. */
   ngOnInit(): void {
     this.dataService
       .getOlympics()

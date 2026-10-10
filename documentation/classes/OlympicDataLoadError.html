@@ -252,10 +252,16 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Défini dans <a href="" data-line="6" class="link-to-prism">src/app/olympics/services/olympic-data-load-error.ts:6</a></div>
+                                <div class="io-line">Défini dans <a href="" data-line="7" class="link-to-prism">src/app/olympics/services/olympic-data-load-error.ts:7</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Nom stable utilisé pour reconnaître cette erreur dans les diagnostics.</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -276,6 +282,7 @@ import { OlympicDataValidationError } from &#x27;./olympic-data.validator&#x27;;
 
 /** Erreur affichable dont la cause technique reste disponible via &#x60;Error.cause&#x60;. */
 export class OlympicDataLoadError extends Error {
+  /** Nom stable utilisé pour reconnaître cette erreur dans les diagnostics. */
   override readonly name &#x3D; &#x27;OlympicDataLoadError&#x27;;
 }
 

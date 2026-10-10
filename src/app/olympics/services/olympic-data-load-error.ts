@@ -3,6 +3,7 @@ import { OlympicDataValidationError } from './olympic-data.validator';
 
 /** Erreur affichable dont la cause technique reste disponible via `Error.cause`. */
 export class OlympicDataLoadError extends Error {
+  /** Nom stable utilisé pour reconnaître cette erreur dans les diagnostics. */
   override readonly name = 'OlympicDataLoadError';
 }
 

@@ -321,6 +321,11 @@ ne déplacent pas le focus.</p>
                             </li>
                             <li>
                                 <span class="reference-badge reference-badge--property" aria-hidden="true">P</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#returnHomeLayout" >returnHomeLayout</a>
+                            </li>
+                            <li>
+                                <span class="reference-badge reference-badge--property" aria-hidden="true">P</span>
                                     <span class="modifier">Private</span>
                                     <span class="modifier">Readonly</span>
                                 <a href="#router" >router</a>
@@ -330,6 +335,12 @@ ne déplacent pas le focus.</p>
                                     <span class="modifier">Private</span>
                                     <span class="modifier">Readonly</span>
                                 <a href="#routeUrl" >routeUrl</a>
+                            </li>
+                            <li>
+                                <span class="reference-badge reference-badge--property" aria-hidden="true">P</span>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#seo" >seo</a>
                             </li>
                             <li>
                                 <span class="reference-badge reference-badge--property" aria-hidden="true">P</span>
@@ -349,6 +360,11 @@ ne déplacent pas le focus.</p>
                     </td>
                     <td class="col-md-9">
                         <ul class="index-list">
+                            <li>
+                                <span class="reference-badge reference-badge--method" aria-hidden="true">M</span>
+                                    <span class="modifier">Private</span>
+                                <a href="#isNoIndexRoute" >isNoIndexRoute</a>
+                            </li>
                             <li>
                                 <span class="reference-badge reference-badge--method" aria-hidden="true">M</span>
                                 <a href="#ngOnInit" >ngOnInit</a>
@@ -379,6 +395,47 @@ ne déplacent pas le focus.</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="isNoIndexRoute"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>isNoIndexRoute</b></span>
+                        <a href="#isNoIndexRoute"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>isNoIndexRoute()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Défini dans <a href="" data-line="104"
+                                    class="link-to-prism">src/app/app.component.ts:104</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Indique si la route courante doit être exclue des moteurs de recherche.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Renvoie : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="ngOnInit"></a>
                     <span class="name">
                         <span ><b>ngOnInit</b></span>
@@ -395,14 +452,16 @@ ne déplacent pas le focus.</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Défini dans <a href="" data-line="58"
-                                    class="link-to-prism">src/app/app.component.ts:58</a></div>
+                            <div class="io-line">Défini dans <a href="" data-line="75"
+                                    class="link-to-prism">src/app/app.component.ts:75</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                        <div class="io-description"><p>Met à jour les métadonnées et le focus après chaque navigation complète.</p>
+</div>
 
                         <div class="io-description">
                             <b>Renvoie : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
@@ -448,10 +507,16 @@ ne déplacent pas le focus.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Défini dans <a href="" data-line="48" class="link-to-prism">src/app/app.component.ts:48</a></div>
+                                <div class="io-line">Défini dans <a href="" data-line="58" class="link-to-prism">src/app/app.component.ts:58</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Indique que la page courante affiche le détail d’un pays.</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -481,10 +546,16 @@ ne déplacent pas le focus.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Défini dans <a href="" data-line="53" class="link-to-prism">src/app/app.component.ts:53</a></div>
+                                <div class="io-line">Défini dans <a href="" data-line="66" class="link-to-prism">src/app/app.component.ts:66</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Nettoie l’écoute de destruction du shell.</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -515,10 +586,16 @@ ne déplacent pas le focus.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Défini dans <a href="" data-line="45" class="link-to-prism">src/app/app.component.ts:45</a></div>
+                                <div class="io-line">Défini dans <a href="" data-line="54" class="link-to-prism">src/app/app.component.ts:54</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Indique que la page courante est l’accueil.</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -548,10 +625,16 @@ ne déplacent pas le focus.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Défini dans <a href="" data-line="54" class="link-to-prism">src/app/app.component.ts:54</a></div>
+                                <div class="io-line">Défini dans <a href="" data-line="68" class="link-to-prism">src/app/app.component.ts:68</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Injecteur fourni aux effets exécutés après le rendu.</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -581,10 +664,16 @@ ne déplacent pas le focus.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Défini dans <a href="" data-line="37" class="link-to-prism">src/app/app.component.ts:37</a></div>
+                                <div class="io-line">Défini dans <a href="" data-line="42" class="link-to-prism">src/app/app.component.ts:42</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Emplacement initial utilisé lorsque le routeur n’a pas encore émis d’événement.</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -614,10 +703,16 @@ ne déplacent pas le focus.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Défini dans <a href="" data-line="55" class="link-to-prism">src/app/app.component.ts:55</a></div>
+                                <div class="io-line">Défini dans <a href="" data-line="70" class="link-to-prism">src/app/app.component.ts:70</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Conteneur principal dont le titre peut recevoir le focus après navigation.</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -642,10 +737,54 @@ ne déplacent pas le focus.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Défini dans <a href="" data-line="56" class="link-to-prism">src/app/app.component.ts:56</a></div>
+                                <div class="io-line">Défini dans <a href="" data-line="72" class="link-to-prism">src/app/app.component.ts:72</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Référence de l’effet de focus en attente, si une navigation est en cours.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="returnHomeLayout"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>returnHomeLayout</b></span>
+                        <a href="#returnHomeLayout"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Valeur par défaut : </i><code>computed(() &#x3D;&gt; !this.homeLayout())</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Défini dans <a href="" data-line="64" class="link-to-prism">src/app/app.component.ts:64</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Active la variante qui permet de revenir à l’accueil.</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -675,10 +814,16 @@ ne déplacent pas le focus.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Défini dans <a href="" data-line="36" class="link-to-prism">src/app/app.component.ts:36</a></div>
+                                <div class="io-line">Défini dans <a href="" data-line="40" class="link-to-prism">src/app/app.component.ts:40</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Routeur utilisé pour lire la route affichée et ses changements.</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -714,10 +859,55 @@ ne déplacent pas le focus.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Défini dans <a href="" data-line="38" class="link-to-prism">src/app/app.component.ts:38</a></div>
+                                <div class="io-line">Défini dans <a href="" data-line="46" class="link-to-prism">src/app/app.component.ts:46</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>URL après redirection, exposée réactivement aux classes de mise en page.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="seo"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>seo</b></span>
+                        <a href="#seo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Valeur par défaut : </i><code>inject(SeoService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Défini dans <a href="" data-line="44" class="link-to-prism">src/app/app.component.ts:44</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Service qui synchronise les métadonnées avec la route courante.</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -745,10 +935,16 @@ ne déplacent pas le focus.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Défini dans <a href="" data-line="35" class="link-to-prism">src/app/app.component.ts:35</a></div>
+                                <div class="io-line">Défini dans <a href="" data-line="38" class="link-to-prism">src/app/app.component.ts:38</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Titre historique conservé par le shell Angular.</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -774,7 +970,8 @@ ne déplacent pas le focus.</p>
 import { Location } from &#x27;@angular/common&#x27;;
 import { takeUntilDestroyed, toSignal } from &#x27;@angular/core/rxjs-interop&#x27;;
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from &#x27;@angular/router&#x27;;
-import { filter, map, skip } from &#x27;rxjs&#x27;;
+import { filter, map, skip, tap } from &#x27;rxjs&#x27;;
+import { SeoService } from &#x27;./seo.service&#x27;;
 
 /**
  * Shell et focus après navigation. Le premier affichage et les liens vers un fragment
@@ -788,13 +985,20 @@ import { filter, map, skip } from &#x27;rxjs&#x27;;
   host: {
     class: &#x27;app-shell app-shell--dashboard&#x27;,
     &#x27;[class.app-shell--country]&#x27;: &#x27;countryLayout()&#x27;,
+    &#x27;[class.app-shell--return-home]&#x27;: &#x27;returnHomeLayout()&#x27;,
   },
   imports: [RouterLink, RouterOutlet],
 })
 export class AppComponent implements OnInit {
+  /** Titre historique conservé par le shell Angular. */
   title &#x3D; &#x27;olympic-games-starter&#x27;;
+  /** Routeur utilisé pour lire la route affichée et ses changements. */
   private readonly router &#x3D; inject(Router);
+  /** Emplacement initial utilisé lorsque le routeur n’a pas encore émis d’événement. */
   private readonly location &#x3D; inject(Location);
+  /** Service qui synchronise les métadonnées avec la route courante. */
+  private readonly seo &#x3D; inject(SeoService);
+  /** URL après redirection, exposée réactivement aux classes de mise en page. */
   private readonly routeUrl &#x3D; toSignal(
     this.router.events.pipe(
       filter((event) &#x3D;&gt; event instanceof NavigationEnd),
@@ -802,24 +1006,35 @@ export class AppComponent implements OnInit {
     ),
     { initialValue: this.location.path() || &#x27;/&#x27; },
   );
+  /** Indique que la page courante est l’accueil. */
   readonly homeLayout &#x3D; computed(
     () &#x3D;&gt; !this.router.parseUrl(this.routeUrl()).root.children[&#x27;primary&#x27;]?.segments.length,
   );
+  /** Indique que la page courante affiche le détail d’un pays. */
   readonly countryLayout &#x3D; computed(
     () &#x3D;&gt;
       this.router.parseUrl(this.routeUrl()).root.children[&#x27;primary&#x27;]?.segments[0]?.path &#x3D;&#x3D;&#x3D;
       &#x27;country&#x27;,
   );
+  /** Active la variante qui permet de revenir à l’accueil. */
+  readonly returnHomeLayout &#x3D; computed(() &#x3D;&gt; !this.homeLayout());
+  /** Nettoie l’écoute de destruction du shell. */
   private readonly destroyRef &#x3D; inject(DestroyRef);
+  /** Injecteur fourni aux effets exécutés après le rendu. */
   private readonly injector &#x3D; inject(Injector);
+  /** Conteneur principal dont le titre peut recevoir le focus après navigation. */
   private readonly main &#x3D; viewChild.required&lt;ElementRef&lt;HTMLElement&gt;&gt;(&#x27;mainContent&#x27;);
+  /** Référence de l’effet de focus en attente, si une navigation est en cours. */
   private pendingFocus?: AfterRenderRef;
 
+  /** Met à jour les métadonnées et le focus après chaque navigation complète. */
   ngOnInit() {
     this.destroyRef.onDestroy(() &#x3D;&gt; this.pendingFocus?.destroy());
+    this.seo.update(this.routeUrl(), this.isNoIndexRoute());
     this.router.events
       .pipe(
         filter((event) &#x3D;&gt; event instanceof NavigationEnd),
+        tap((event) &#x3D;&gt; this.seo.update(event.urlAfterRedirects, this.isNoIndexRoute())),
         skip(1),
         takeUntilDestroyed(this.destroyRef),
       )
@@ -840,15 +1055,23 @@ export class AppComponent implements OnInit {
         );
       });
   }
+
+  /** Indique si la route courante doit être exclue des moteurs de recherche. */
+  private isNoIndexRoute(): boolean {
+    let route &#x3D; this.router.routerState.snapshot.root;
+    while (route.firstChild) route &#x3D; route.firstChild;
+    return route.routeConfig?.data?.[&#x27;noindex&#x27;] &#x3D;&#x3D;&#x3D; true;
+  }
 }
 </code></pre>
     </div>
 
     <div class="tab-pane fade " id="templateData">
         <pre class="line-numbers"><code class="language-html">&lt;header class&#x3D;&quot;brand&quot;&gt;
-  &lt;nav aria-label&#x3D;&quot;Main navigation&quot;&gt;
+  &lt;nav aria-labelledby&#x3D;&quot;main-navigation-title&quot;&gt;
+    &lt;h2 id&#x3D;&quot;main-navigation-title&quot; class&#x3D;&quot;visually-hidden&quot;&gt;Main navigation&lt;/h2&gt;
     &lt;div class&#x3D;&quot;brand__hero&quot;&gt;
-      @if (countryLayout()) {
+      @if (returnHomeLayout()) {
         &lt;a class&#x3D;&quot;brand__home-area&quot; routerLink&#x3D;&quot;/&quot; aria-label&#x3D;&quot;Home — TéléSport&quot;&gt;&lt;/a&gt;
       }
       &lt;picture class&#x3D;&quot;brand__picture&quot;&gt;
@@ -868,8 +1091,8 @@ export class AppComponent implements OnInit {
         /&gt;
       &lt;/picture&gt;
       &lt;span class&#x3D;&quot;brand__content&quot;&gt;
-        @if (countryLayout()) {
-          &lt;span class&#x3D;&quot;brand__name&quot; tabindex&#x3D;&quot;0&quot;&gt;TéléSport&lt;/span&gt;
+        @if (returnHomeLayout()) {
+          &lt;span class&#x3D;&quot;brand__name&quot;&gt;TéléSport&lt;/span&gt;
         } @else {
           &lt;a class&#x3D;&quot;brand__link brand__name&quot; routerLink&#x3D;&quot;/&quot; aria-label&#x3D;&quot;Home — TéléSport&quot;
             &gt;TéléSport&lt;/a
@@ -884,10 +1107,8 @@ export class AppComponent implements OnInit {
             &lt;circle cx&#x3D;&quot;78&quot; cy&#x3D;&quot;32&quot; r&#x3D;&quot;14&quot; stroke&#x3D;&quot;#009f3d&quot; /&gt;
           &lt;/g&gt;
         &lt;/svg&gt;
-        &lt;span class&#x3D;&quot;brand__title&quot; tabindex&#x3D;&quot;0&quot;&gt;Olympic games app&lt;/span&gt;
-        &lt;span class&#x3D;&quot;brand__description&quot; tabindex&#x3D;&quot;0&quot;
-          &gt;Explore and compare Olympic medals across countries&lt;/span
-        &gt;
+        &lt;span class&#x3D;&quot;brand__title&quot;&gt;Olympic games app&lt;/span&gt;
+        &lt;span class&#x3D;&quot;brand__description&quot;&gt;Explore and compare Olympic medals across countries&lt;/span&gt;
       &lt;/span&gt;
     &lt;/div&gt;
   &lt;/nav&gt;
@@ -904,9 +1125,7 @@ export class AppComponent implements OnInit {
                 </p>
                 <pre class="line-numbers"><code class="language-scss">@use &#x27;../styles/app-shell&#x27;;
 
-:host {
-  @include app-shell.layout;
-}
+@include app-shell.layout(&#x27;:host&#x27;);
 </code></pre>
     </div>
 
@@ -935,7 +1154,7 @@ export class AppComponent implements OnInit {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><header class="brand">  <nav aria-label="Main navigation">    <div class="brand__hero">      @if (countryLayout()) {        <a class="brand__home-area" routerLink="/" aria-label="Home — TéléSport"></a>      }      <picture class="brand__picture">        <img          class="brand__banner"          src="assets/images/telesport-header.webp"          srcset="            assets/images/telesport-header-small.webp  670w,            assets/images/telesport-header.webp       1339w          "          sizes="(min-width: 1500px) 1428px, calc(100vw - 32px)"          width="1339"          height="211"          alt=""          loading="eager"          fetchpriority="high"        />      </picture>      <span class="brand__content">        @if (countryLayout()) {          <span class="brand__name" tabindex="0">TéléSport</span>        } @else {          <a class="brand__link brand__name" routerLink="/" aria-label="Home — TéléSport"            >TéléSport</a          >        }        <svg class="brand__mark" viewBox="0 0 120 48" aria-hidden="true">          <g fill="none" stroke-width="4">            <circle cx="24" cy="18" r="14" stroke="#0085c7" />            <circle cx="60" cy="18" r="14" stroke="#222" />            <circle cx="96" cy="18" r="14" stroke="#df0024" />            <circle cx="42" cy="32" r="14" stroke="#f4c300" />            <circle cx="78" cy="32" r="14" stroke="#009f3d" />          </g>        </svg>        <span class="brand__title" tabindex="0">Olympic games app</span>        <span class="brand__description" tabindex="0"          >Explore and compare Olympic medals across countries</span        >      </span>    </div>  </nav></header><main id="main-content" #mainContent tabindex="-1">  <router-outlet></router-outlet></main></div>'
+        var COMPONENT_TEMPLATE = '<div><header class="brand">  <nav aria-labelledby="main-navigation-title">    <h2 id="main-navigation-title" class="visually-hidden">Main navigation</h2>    <div class="brand__hero">      @if (returnHomeLayout()) {        <a class="brand__home-area" routerLink="/" aria-label="Home — TéléSport"></a>      }      <picture class="brand__picture">        <img          class="brand__banner"          src="assets/images/telesport-header.webp"          srcset="            assets/images/telesport-header-small.webp  670w,            assets/images/telesport-header.webp       1339w          "          sizes="(min-width: 1500px) 1428px, calc(100vw - 32px)"          width="1339"          height="211"          alt=""          loading="eager"          fetchpriority="high"        />      </picture>      <span class="brand__content">        @if (returnHomeLayout()) {          <span class="brand__name">TéléSport</span>        } @else {          <a class="brand__link brand__name" routerLink="/" aria-label="Home — TéléSport"            >TéléSport</a          >        }        <svg class="brand__mark" viewBox="0 0 120 48" aria-hidden="true">          <g fill="none" stroke-width="4">            <circle cx="24" cy="18" r="14" stroke="#0085c7" />            <circle cx="60" cy="18" r="14" stroke="#222" />            <circle cx="96" cy="18" r="14" stroke="#df0024" />            <circle cx="42" cy="32" r="14" stroke="#f4c300" />            <circle cx="78" cy="32" r="14" stroke="#009f3d" />          </g>        </svg>        <span class="brand__title">Olympic games app</span>        <span class="brand__description">Explore and compare Olympic medals across countries</span>      </span>    </div>  </nav></header><main id="main-content" #mainContent tabindex="-1">  <router-outlet></router-outlet></main></div>'
     var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'CountryComponent', 'selector': 'app-country'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'NotFoundComponent', 'selector': 'app-not-found'},{'name': 'OlympicChartComponent', 'selector': 'app-olympic-chart'},{'name': 'PageFeedbackComponent', 'selector': 'app-page-feedback'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'AppComponent'};

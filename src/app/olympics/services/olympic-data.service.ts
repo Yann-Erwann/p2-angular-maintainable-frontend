@@ -14,16 +14,19 @@ import { validateOlympicData } from './olympic-data.validator';
  */
 @Injectable({ providedIn: 'root' })
 export class OlympicDataService {
+  /** Client HTTP utilisé pour lire le fichier de données local. */
   private readonly http = inject(HttpClient);
   /** Chemin relatif conservant le préfixe du site déployé. */
   private readonly olympicUrl = './assets/mock/olympic.json';
 
+  /** Réponse partagée et mémorisée tant qu’elle possède un consommateur. */
   private readonly olympics$ = this.http.get<unknown>(this.olympicUrl).pipe(
     map(validateOlympicData),
     catchError((error: unknown) => throwError(() => toOlympicDataLoadError(error))),
     shareReplay({ bufferSize: 1, refCount: true }),
   );
 
+  /** Retourne les données validées, en réutilisant la requête réussie. */
   getOlympics(): Observable<readonly Olympic[]> {
     return this.olympics$;
   }

@@ -226,8 +226,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Défini dans <a href="" data-line="46"
-                                    class="link-to-prism">src/app/olympics/ui/chart/chart-renderer.service.ts:46</a></div>
+                            <div class="io-line">Défini dans <a href="" data-line="47"
+                                    class="link-to-prism">src/app/olympics/ui/chart/chart-renderer.service.ts:47</a></div>
                         </td>
                     </tr>
 
@@ -349,6 +349,7 @@ Chart.register(
 
 /** Contrat de cycle de vie et de focus masquant l’instance Chart.js. */
 export interface RenderedChart {
+  /** Détruit l’instance Chart.js et libère le canvas. */
   destroy(): void;
   /** &#x60;null&#x60; ou un index absent retire la mise en évidence et l’infobulle. */
   focusPoint(index: number | null): void;

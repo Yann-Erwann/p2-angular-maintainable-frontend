@@ -15,8 +15,12 @@ import type { Indicator } from './indicator.model';
   },
 })
 export class HeaderComponent {
+  /** Titre principal de la page affichée. */
   readonly title = input.required<string>();
+  /** Indicateurs numériques affichés sous le titre. */
   readonly indicators = input.required<readonly Indicator[]>();
+  /** Affiche l’état de chargement des indicateurs. */
   readonly loading = input(false);
+  /** Variante de mise en page correspondant à la page consommatrice. */
   readonly variant = input<'standard' | 'dashboard' | 'country'>('standard');
 }

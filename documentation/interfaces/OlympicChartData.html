@@ -230,10 +230,16 @@
 
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Défini dans <a href="" data-line="10" class="link-to-prism">src/app/olympics/ui/chart/chart.model.ts:10</a></div>
+                                    <div class="io-line">Défini dans <a href="" data-line="14" class="link-to-prism">src/app/olympics/ui/chart/chart.model.ts:14</a></div>
                                 </td>
                             </tr>
 
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-description"><p>Collection ordonnée des valeurs représentées.</p>
+</div>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <table class="table table-sm table-bordered">
@@ -269,10 +275,16 @@
 
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Défini dans <a href="" data-line="9" class="link-to-prism">src/app/olympics/ui/chart/chart.model.ts:9</a></div>
+                                    <div class="io-line">Défini dans <a href="" data-line="12" class="link-to-prism">src/app/olympics/ui/chart/chart.model.ts:12</a></div>
                                 </td>
                             </tr>
 
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-description"><p>Type de graphique choisi par la page consommatrice.</p>
+</div>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
     </section>
@@ -281,13 +293,17 @@
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">export interface ChartItem {
+  /** Libellé du pays ou année affiché sur le graphique. */
   readonly label: string | number;
+  /** Valeur numérique représentée par le point ou le secteur. */
   readonly value: number;
 }
 
 /** Entrée de l’adaptateur sans dépendance aux modèles métier. */
 export interface OlympicChartData {
+  /** Type de graphique choisi par la page consommatrice. */
   readonly type: &#x27;pie&#x27; | &#x27;line&#x27;;
+  /** Collection ordonnée des valeurs représentées. */
   readonly items: readonly ChartItem[];
 }
 </code></pre>

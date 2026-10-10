@@ -30,6 +30,7 @@ Chart.register(
 
 /** Contrat de cycle de vie et de focus masquant l’instance Chart.js. */
 export interface RenderedChart {
+  /** Détruit l’instance Chart.js et libère le canvas. */
   destroy(): void;
   /** `null` ou un index absent retire la mise en évidence et l’infobulle. */
   focusPoint(index: number | null): void;

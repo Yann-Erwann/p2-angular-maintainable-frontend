@@ -34,10 +34,15 @@ import { SeoService } from './seo.service';
   imports: [RouterLink, RouterOutlet],
 })
 export class AppComponent implements OnInit {
+  /** Titre historique conservé par le shell Angular. */
   title = 'olympic-games-starter';
+  /** Routeur utilisé pour lire la route affichée et ses changements. */
   private readonly router = inject(Router);
+  /** Emplacement initial utilisé lorsque le routeur n’a pas encore émis d’événement. */
   private readonly location = inject(Location);
+  /** Service qui synchronise les métadonnées avec la route courante. */
   private readonly seo = inject(SeoService);
+  /** URL après redirection, exposée réactivement aux classes de mise en page. */
   private readonly routeUrl = toSignal(
     this.router.events.pipe(
       filter((event) => event instanceof NavigationEnd),
@@ -45,20 +50,28 @@ export class AppComponent implements OnInit {
     ),
     { initialValue: this.location.path() || '/' },
   );
+  /** Indique que la page courante est l’accueil. */
   readonly homeLayout = computed(
     () => !this.router.parseUrl(this.routeUrl()).root.children['primary']?.segments.length,
   );
+  /** Indique que la page courante affiche le détail d’un pays. */
   readonly countryLayout = computed(
     () =>
       this.router.parseUrl(this.routeUrl()).root.children['primary']?.segments[0]?.path ===
       'country',
   );
+  /** Active la variante qui permet de revenir à l’accueil. */
   readonly returnHomeLayout = computed(() => !this.homeLayout());
+  /** Nettoie l’écoute de destruction du shell. */
   private readonly destroyRef = inject(DestroyRef);
+  /** Injecteur fourni aux effets exécutés après le rendu. */
   private readonly injector = inject(Injector);
+  /** Conteneur principal dont le titre peut recevoir le focus après navigation. */
   private readonly main = viewChild.required<ElementRef<HTMLElement>>('mainContent');
+  /** Référence de l’effet de focus en attente, si une navigation est en cours. */
   private pendingFocus?: AfterRenderRef;
 
+  /** Met à jour les métadonnées et le focus après chaque navigation complète. */
   ngOnInit() {
     this.destroyRef.onDestroy(() => this.pendingFocus?.destroy());
     this.seo.update(this.routeUrl(), this.isNoIndexRoute());
@@ -87,6 +100,7 @@ export class AppComponent implements OnInit {
       });
   }
 
+  /** Indique si la route courante doit être exclue des moteurs de recherche. */
   private isNoIndexRoute(): boolean {
     let route = this.router.routerState.snapshot.root;
     while (route.firstChild) route = route.firstChild;

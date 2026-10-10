@@ -439,6 +439,12 @@
                     </td>
                 </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Fournisseurs globaux de l’application, du routage et des requêtes HTTP.</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -474,6 +480,12 @@
                     </td>
                 </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Codes de drapeau disponibles pour les pays du jeu de données.</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -500,6 +512,12 @@
                     </td>
                 </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Indicateurs neutres affichés avant le chargement des données.</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -529,6 +547,12 @@
                     </td>
                 </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Indicateurs neutres affichés pendant le chargement.</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -612,6 +636,12 @@
                     </td>
                 </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Routes lazy-loadées du domaine olympique.</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -642,6 +672,7 @@
     path: &#x27;not-found&#x27;,
     component: NotFoundComponent,
     title: &#x27;Page not found | Olympic Games&#x27;,
+    data: { noindex: true },
   },
   {
     path: &#x27;&#x27;,
@@ -652,6 +683,7 @@
     path: &#x27;**&#x27;,
     component: NotFoundComponent,
     title: &#x27;Page not found | Olympic Games&#x27;,
+    data: { noindex: true },
   },
 ]</code>
                     </td>
@@ -659,7 +691,7 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Le titre d’une fiche est défini après chargement par <a href="../components/CountryComponent.html">CountryComponent</a>.</p>
+                    <div class="io-description"><p>Le titre d’une fiche est complété après chargement par <a href="../components/CountryComponent.html">CountryComponent</a>.</p>
 </div>
                 </td>
             </tr>

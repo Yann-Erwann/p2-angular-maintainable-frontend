@@ -44,19 +44,29 @@ import {
   imports: [HeaderComponent, OlympicChartComponent, PageFeedbackComponent],
 })
 export class CountryComponent implements OnInit {
+  /** Paramètres de route contenant l’identifiant du pays. */
   private readonly route = inject(ActivatedRoute);
+  /** Service partagé de chargement et de cache des données olympiques. */
   private readonly dataService = inject(OlympicDataService);
+  /** Arrête l’écoute lorsque le composant est détruit. */
   private readonly destroyRef = inject(DestroyRef);
+  /** Titre du document synchronisé avec le pays affiché. */
   private readonly documentTitle = inject(Title);
+  /** Routeur utilisé pour les pays invalides et les changements de pays. */
   private readonly router = inject(Router);
+  /** Gestionnaire de secours pour les erreurs de navigation. */
   private readonly errorHandler = inject(ErrorHandler);
+  /** État interne de la page, hors cas redirigé vers la page 404. */
   private readonly pageState = signal<Exclude<CountryPageState, { status: 'not-found' }>>({
     status: 'loading',
   });
 
+  /** État public consommé par le template de détail. */
   readonly state = this.pageState.asReadonly();
+  /** Indicateurs neutres affichés pendant le chargement. */
   readonly loadingIndicators = COUNTRY_LOADING_INDICATORS;
 
+  /** Observe l’ID de route et recharge le détail sans terminer sur une erreur. */
   ngOnInit(): void {
     this.route.paramMap
       .pipe(

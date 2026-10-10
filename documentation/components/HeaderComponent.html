@@ -309,9 +309,15 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Défini dans <a href="" data-line="19" class="link-to-prism">src/app/olympics/ui/header/header.component.ts:19</a></div>
+                                    <div class="io-line">Défini dans <a href="" data-line="21" class="link-to-prism">src/app/olympics/ui/header/header.component.ts:21</a></div>
                             </td>
                         </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Indicateurs numériques affichés sous le titre.</p>
+</div>
+                    </td>
+                </tr>
             </tbody>
         </table>
         <table class="table table-sm table-bordered">
@@ -335,9 +341,15 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Défini dans <a href="" data-line="20" class="link-to-prism">src/app/olympics/ui/header/header.component.ts:20</a></div>
+                                    <div class="io-line">Défini dans <a href="" data-line="23" class="link-to-prism">src/app/olympics/ui/header/header.component.ts:23</a></div>
                             </td>
                         </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Affiche l’état de chargement des indicateurs.</p>
+</div>
+                    </td>
+                </tr>
             </tbody>
         </table>
         <table class="table table-sm table-bordered">
@@ -361,9 +373,15 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Défini dans <a href="" data-line="18" class="link-to-prism">src/app/olympics/ui/header/header.component.ts:18</a></div>
+                                    <div class="io-line">Défini dans <a href="" data-line="19" class="link-to-prism">src/app/olympics/ui/header/header.component.ts:19</a></div>
                             </td>
                         </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Titre principal de la page affichée.</p>
+</div>
+                    </td>
+                </tr>
             </tbody>
         </table>
         <table class="table table-sm table-bordered">
@@ -387,9 +405,15 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Défini dans <a href="" data-line="21" class="link-to-prism">src/app/olympics/ui/header/header.component.ts:21</a></div>
+                                    <div class="io-line">Défini dans <a href="" data-line="25" class="link-to-prism">src/app/olympics/ui/header/header.component.ts:25</a></div>
                             </td>
                         </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Variante de mise en page correspondant à la page consommatrice.</p>
+</div>
+                    </td>
+                </tr>
             </tbody>
         </table>
 </section>
@@ -420,9 +444,13 @@ import type { Indicator } from &#x27;./indicator.model&#x27;;
   },
 })
 export class HeaderComponent {
+  /** Titre principal de la page affichée. */
   readonly title &#x3D; input.required&lt;string&gt;();
+  /** Indicateurs numériques affichés sous le titre. */
   readonly indicators &#x3D; input.required&lt;readonly Indicator[]&gt;();
+  /** Affiche l’état de chargement des indicateurs. */
   readonly loading &#x3D; input(false);
+  /** Variante de mise en page correspondant à la page consommatrice. */
   readonly variant &#x3D; input&lt;&#x27;standard&#x27; | &#x27;dashboard&#x27; | &#x27;country&#x27;&gt;(&#x27;standard&#x27;);
 }
 </code></pre>

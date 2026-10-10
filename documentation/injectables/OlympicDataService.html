@@ -259,14 +259,16 @@ Le départ du dernier consommateur annule un chargement encore en cours.</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Défini dans <a href="" data-line="27"
-                                    class="link-to-prism">src/app/olympics/services/olympic-data.service.ts:27</a></div>
+                            <div class="io-line">Défini dans <a href="" data-line="30"
+                                    class="link-to-prism">src/app/olympics/services/olympic-data.service.ts:30</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                        <div class="io-description"><p>Retourne les données validées, en réutilisant la requête réussie.</p>
+</div>
 
                         <div class="io-description">
                             <b>Renvoie : </b>        <code><a href="../interfaces/Olympic.html" target="_self" >Observable&lt;readonly Olympic[]&gt;</a></code>
@@ -309,10 +311,16 @@ Le départ du dernier consommateur annule un chargement encore en cours.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Défini dans <a href="" data-line="17" class="link-to-prism">src/app/olympics/services/olympic-data.service.ts:17</a></div>
+                                <div class="io-line">Défini dans <a href="" data-line="18" class="link-to-prism">src/app/olympics/services/olympic-data.service.ts:18</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Client HTTP utilisé pour lire le fichier de données local.</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -346,10 +354,16 @@ Le départ du dernier consommateur annule un chargement encore en cours.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Défini dans <a href="" data-line="21" class="link-to-prism">src/app/olympics/services/olympic-data.service.ts:21</a></div>
+                                <div class="io-line">Défini dans <a href="" data-line="23" class="link-to-prism">src/app/olympics/services/olympic-data.service.ts:23</a></div>
                         </td>
                     </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Réponse partagée et mémorisée tant qu’elle possède un consommateur.</p>
+</div>
+                </td>
+            </tr>
 
         </tbody>
     </table>
@@ -379,7 +393,7 @@ Le départ du dernier consommateur annule un chargement encore en cours.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Défini dans <a href="" data-line="19" class="link-to-prism">src/app/olympics/services/olympic-data.service.ts:19</a></div>
+                                <div class="io-line">Défini dans <a href="" data-line="20" class="link-to-prism">src/app/olympics/services/olympic-data.service.ts:20</a></div>
                         </td>
                     </tr>
 
@@ -414,16 +428,19 @@ import { validateOlympicData } from &#x27;./olympic-data.validator&#x27;;
  */
 @Injectable({ providedIn: &#x27;root&#x27; })
 export class OlympicDataService {
+  /** Client HTTP utilisé pour lire le fichier de données local. */
   private readonly http &#x3D; inject(HttpClient);
   /** Chemin relatif conservant le préfixe du site déployé. */
   private readonly olympicUrl &#x3D; &#x27;./assets/mock/olympic.json&#x27;;
 
+  /** Réponse partagée et mémorisée tant qu’elle possède un consommateur. */
   private readonly olympics$ &#x3D; this.http.get&lt;unknown&gt;(this.olympicUrl).pipe(
     map(validateOlympicData),
     catchError((error: unknown) &#x3D;&gt; throwError(() &#x3D;&gt; toOlympicDataLoadError(error))),
     shareReplay({ bufferSize: 1, refCount: true }),
   );
 
+  /** Retourne les données validées, en réutilisant la requête réussie. */
   getOlympics(): Observable&lt;readonly Olympic[]&gt; {
     return this.olympics$;
   }
