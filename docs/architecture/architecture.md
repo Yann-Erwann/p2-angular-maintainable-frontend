@@ -18,25 +18,25 @@ Les noms HomeComponent et CountryComponent sont conservés et remplissent les r�
 
 ## 2. Arborescence actuelle
 
-| Chemin actuel                                           | Rôle et contenu                                                               |
-| ------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| `src/main.ts`                                           | Bootstrap standalone, traitement de l’échec de démarrage                      |
-| `src/app/app.config.ts`                                 | Providers de l’application : routing, HTTP et détection zoneless               |
-| `src/app/app.routes.ts`                                 | Accueil, country/:id, not-found et wildcard                                   |
-| `src/app/app.component.*`                               | Coquille de l’application et router-outlet dans une structure sémantique      |
-| `src/app/olympics/models/`                              | Interfaces métier Olympics                                                    |
-| `src/app/olympics/services/`                            | Chargement, cache, validation et erreurs de données                           |
-| `src/app/olympics/ui/`                                  | Graphique, en-tête et retours d’état présentés par les pages                  |
-| `src/app/olympics/pages/home/`                          | HomeComponent et projection du dashboard                                      |
-| `src/app/olympics/pages/country/`                       | CountryComponent et projection de la fiche pays                               |
-| `src/app/olympics/routing/`                             | Routes et parsing des paramètres de la fonctionnalité Olympics                |
-| `src/app/pages/not-found/`                              | NotFoundComponent et retour vers l’accueil                                    |
-| `src/assets/mock/olympic.json`                          | Source des données actuelle conservée                                         |
-| `src/environments/`                                     | Configurations existantes, sans endpoint futur inventé                        |
-| `src/polyfills.ts` et `src/testing/vitest.setup.ts`     | Polyfills applicatifs et APIs DOM manquantes dans jsdom                         |
-| `vitest-base.config.ts`                                 | Configuration du runner Vitest Node/jsdom                                      |
-| `pnpm-lock.yaml`                                        | Lockfile pnpm versionné avec le manifeste                                     |
-| `README.md` et `docs/architecture/`                     | Documentation du projet et décisions d’architecture                           |
+| Chemin actuel                                       | Rôle et contenu                                                          |
+| --------------------------------------------------- | ------------------------------------------------------------------------ |
+| `src/main.ts`                                       | Bootstrap standalone, traitement de l’échec de démarrage                 |
+| `src/app/app.config.ts`                             | Providers de l’application : routing, HTTP et détection zoneless         |
+| `src/app/app.routes.ts`                             | Accueil, country/:id, not-found et wildcard                              |
+| `src/app/app.component.*`                           | Coquille de l’application et router-outlet dans une structure sémantique |
+| `src/app/olympics/models/`                          | Interfaces métier Olympics                                               |
+| `src/app/olympics/services/`                        | Chargement, cache, validation et erreurs de données                      |
+| `src/app/olympics/ui/`                              | Graphique, en-tête et retours d’état présentés par les pages             |
+| `src/app/olympics/pages/home/`                      | HomeComponent et projection du dashboard                                 |
+| `src/app/olympics/pages/country/`                   | CountryComponent et projection de la fiche pays                          |
+| `src/app/olympics/routing/`                         | Routes et parsing des paramètres de la fonctionnalité Olympics           |
+| `src/app/pages/not-found/`                          | NotFoundComponent et retour vers l’accueil                               |
+| `src/assets/mock/olympic.json`                      | Source des données actuelle conservée                                    |
+| `src/environments/`                                 | Configurations existantes, sans endpoint futur inventé                   |
+| `src/polyfills.ts` et `src/testing/vitest.setup.ts` | Polyfills applicatifs et APIs DOM manquantes dans jsdom                  |
+| `vitest-base.config.ts`                             | Configuration du runner Vitest Node/jsdom                                |
+| `pnpm-lock.yaml`                                    | Lockfile pnpm versionné avec le manifeste                                |
+| `README.md` et `docs/architecture/`                 | Documentation du projet et décisions d’architecture                      |
 
 Les composants regroupent leurs fichiers près de la source et les tests restent à côté du code. `PageFeedbackComponent` utilise toutefois un template inline et des styles inline complémentaires.
 
@@ -63,14 +63,14 @@ L’application actuelle est standalone : `app.module.ts` et `app-routing.module
 
 ## 3. Composants et responsabilités
 
-| Composant                | Rôle                                                              | Entrées / sorties                                                     | Ce qu’il ne possède pas                |
-| ------------------------ | ----------------------------------------------------------------- | ---------------------------------------------------------------------- | -------------------------------------- |
-| AppComponent             | Coquille sémantique et affichage des routes                       | RouterOutlet                                                           | Données olympiques, calculs            |
-| HomeComponent            | Contexte, chargement du dashboard, KPI, composition et navigation | État depuis OlympicDataService, événements countrySelected             | Instance Chart.js, URL HTTP            |
-| CountryComponent         | ID depuis ActivatedRoute, sélection, état et présentation du pays | ID de route, données, retour accueil                                   | Transport HTTP, moteur graphique       |
-| HeaderComponent          | Afficher titre et indicateurs dans les deux pages                 | title: string, indicators: readonly Indicator[]                        | Service, routing ou calculs métier     |
-| OlympicChartComponent    | Rendu du graphique de médailles en camembert ou en courbe          | type, items et dataDescriptionId ; sortie pointSelected: number      | Chargement, agrégation et navigation  |
-| NotFoundComponent        | Message pour destination/pays introuvable et retour               | RouterLink vers /                                                      | Chargement de données                  |
+| Composant             | Rôle                                                              | Entrées / sorties                                               | Ce qu’il ne possède pas              |
+| --------------------- | ----------------------------------------------------------------- | --------------------------------------------------------------- | ------------------------------------ |
+| AppComponent          | Coquille sémantique et affichage des routes                       | RouterOutlet                                                    | Données olympiques, calculs          |
+| HomeComponent         | Contexte, chargement du dashboard, KPI, composition et navigation | État depuis OlympicDataService, événements countrySelected      | Instance Chart.js, URL HTTP          |
+| CountryComponent      | ID depuis ActivatedRoute, sélection, état et présentation du pays | ID de route, données, retour accueil                            | Transport HTTP, moteur graphique     |
+| HeaderComponent       | Afficher titre et indicateurs dans les deux pages                 | title: string, indicators: readonly Indicator[]                 | Service, routing ou calculs métier   |
+| OlympicChartComponent | Rendu du graphique de médailles en camembert ou en courbe         | type, items et dataDescriptionId ; sortie pointSelected: number | Chargement, agrégation et navigation |
+| NotFoundComponent     | Message pour destination/pays introuvable et retour               | RouterLink vers /                                               | Chargement de données                |
 
 HeaderComponent est la réutilisation explicite requise. `OlympicChartComponent` encapsule les deux rendus Chart.js actuels : camembert pour l’accueil et courbe pour le détail pays.
 
@@ -104,7 +104,7 @@ export interface Indicator {
 
 Participation et Olympic sont dans models/. Indicator appartient au dossier header/, car il décrit son contrat de présentation. Les imports entre ces fichiers doivent être explicites lors de l’implémentation.
 
-| Calcul                     | Responsabilité actuelle  | Règle                                                                 |
+| Calcul                     | Responsabilité actuelle | Règle                                                                 |
 | -------------------------- | ----------------------- | --------------------------------------------------------------------- |
 | Nombre de pays             | home-view-model.ts      | Longueur de la collection de pays du contrat                          |
 | Nombre de JO               | home-view-model.ts      | Nombre d’années distinctes sur toutes les participations              |

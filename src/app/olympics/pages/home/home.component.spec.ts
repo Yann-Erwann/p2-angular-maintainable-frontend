@@ -43,10 +43,7 @@ describe('HomeComponent', () => {
     dataService.getOlympics.mockReturnValue(data.asObservable());
     await TestBed.configureTestingModule({
       imports: [HomeComponent],
-      providers: [
-        provideRouter([]),
-        { provide: OlympicDataService, useValue: dataService },
-      ],
+      providers: [provideRouter([]), { provide: OlympicDataService, useValue: dataService }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HomeComponent);

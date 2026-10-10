@@ -43,10 +43,7 @@ describe('CountryComponent', () => {
     dataService.getOlympics.mockReturnValue(data.asObservable());
     TestBed.configureTestingModule({
       imports: [CountryComponent],
-      providers: [
-        provideRouter(routes),
-        { provide: OlympicDataService, useValue: dataService },
-      ],
+      providers: [provideRouter(routes), { provide: OlympicDataService, useValue: dataService }],
     });
   });
 
