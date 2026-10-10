@@ -76,10 +76,21 @@ export function createMedalDistributionConfig(
         },
       },
       layout: {
-        padding: (context) =>
-          context.chart.width >= 520
-            ? { left: 145, right: 90, top: 15, bottom: 15 }
-            : { left: 10, right: 10, top: 15, bottom: 15 },
+        padding: (context) => {
+          if (context.chart.width >= 520) {
+            return { left: 145, right: 90, top: 15, bottom: 15 };
+          }
+
+          context.chart.ctx.save();
+          context.chart.ctx.font = '600 11px system-ui, sans-serif';
+          const longestLabel = Math.max(
+            ...items.map((item) => context.chart.ctx.measureText(String(item.label)).width),
+            0,
+          );
+          context.chart.ctx.restore();
+          const side = Math.min(78, Math.max(48, Math.ceil(longestLabel + 8)));
+          return { left: side, right: side, top: 22, bottom: 22 };
+        },
       },
       onClick: (event, _elements, chart) => {
         if (!event.native) return;

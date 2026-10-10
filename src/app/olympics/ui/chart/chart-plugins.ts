@@ -53,11 +53,39 @@ export const dashboardTooltipMedal: Plugin = {
   },
 };
 
-/** Compteurs des secteurs et noms des pays sur les grands canvas. */
+/** Compteurs des secteurs et noms des pays autour du camembert, y compris sur mobile. */
 export const dashboardLabels = (items: readonly ChartItem[]): Plugin => ({
   id: 'dashboardMedalLabels',
   afterDatasetsDraw: (chart) => {
     const { ctx, width } = chart;
+    const compact = width < 520;
+    const labelSize = compact ? 11 : 15;
+    const labelGap = compact ? 6 : 12;
+    const labelDistance = compact ? 18 : 20;
+    const labelPositions: Record<'left' | 'right', number[]> = { left: [], right: [] };
+
+    const placeLabel = (preferred: number, side: 'left' | 'right'): number => {
+      const min = compact ? 12 : 14;
+      const max = chart.height - min;
+      let position = Math.max(min, Math.min(max, preferred));
+      const occupied = labelPositions[side];
+      while (occupied.some((value) => Math.abs(value - position) < labelDistance)) {
+        const next = position + labelDistance;
+        if (next <= max) {
+          position = next;
+          continue;
+        }
+        const previous = position - labelDistance;
+        if (previous >= min) {
+          position = previous;
+          continue;
+        }
+        break;
+      }
+      occupied.push(position);
+      return position;
+    };
+
     ctx.save();
     chart.getDatasetMeta(0).data.forEach((element, index) => {
       if (!(element instanceof ArcElement) || items[index].value <= 0) return;
@@ -74,20 +102,23 @@ export const dashboardLabels = (items: readonly ChartItem[]): Plugin => ({
         element.x + cos * radius * 0.65,
         element.y + sin * radius * 0.65,
       );
-      if (width < 520) return;
       const right = cos >= 0;
+      const side = right ? 'right' : 'left';
       const label = String(items[index].label);
-      ctx.font = '600 15px system-ui, sans-serif';
+      ctx.font = `600 ${labelSize}px system-ui, sans-serif`;
       const textWidth = ctx.measureText(label).width;
       const startX = element.x + cos * radius;
       const startY = element.y + sin * radius;
-      const elbowX = element.x + cos * (radius + 30);
-      const elbowY = Math.max(14, Math.min(chart.height - 14, element.y + sin * (radius + 30)));
+      const elbowX = element.x + cos * (radius + (compact ? 14 : 30));
+      const elbowY = placeLabel(
+        element.y + sin * (radius + (compact ? 18 : 30)),
+        side,
+      );
       const endX = right
-        ? Math.min(width - textWidth - 22, elbowX + 70)
-        : Math.max(textWidth + 22, elbowX - 30);
+        ? Math.min(width - textWidth - labelGap, elbowX + (compact ? 24 : 70))
+        : Math.max(textWidth + labelGap, elbowX - (compact ? 20 : 30));
       ctx.strokeStyle = MEDAL_COLORS[index % MEDAL_COLORS.length];
-      ctx.lineWidth = 2;
+      ctx.lineWidth = compact ? 1.5 : 2;
       ctx.beginPath();
       ctx.moveTo(startX, startY);
       ctx.lineTo(elbowX, elbowY);
@@ -95,7 +126,7 @@ export const dashboardLabels = (items: readonly ChartItem[]): Plugin => ({
       ctx.stroke();
       ctx.fillStyle = '#0c204b';
       ctx.textAlign = right ? 'left' : 'right';
-      ctx.fillText(label, endX + (right ? 12 : -12), elbowY);
+      ctx.fillText(label, endX + (right ? labelGap : -labelGap), elbowY);
     });
     ctx.restore();
   },
