@@ -1,11 +1,22 @@
 /** Layout partagé avec le HTML de chargement avant le démarrage Angular. */
-@mixin layout {
-  .brand {
+@mixin layout($root) {
+  #{$root} {
+    display: block;
+    width: 100%;
+    max-width: 72rem;
+    min-height: 100dvh;
+    margin: 0 auto;
+    padding: clamp(1rem, 3vw, 2rem);
+    overflow-wrap: anywhere;
+  }
+
+  #{$root} .brand {
     width: 100%;
     max-width: 32rem;
     margin: 0 auto 1rem;
   }
-  .brand__hero {
+
+  #{$root} .brand__hero {
     position: relative;
     display: grid;
     align-items: center;
@@ -16,29 +27,34 @@
     color: #0c204b;
     text-decoration: none;
   }
-  .brand__link {
+
+  #{$root} .brand__link {
     color: inherit;
     text-decoration: none;
   }
-  .brand__link:focus-visible,
-  .brand__name:focus-visible,
-  .brand__title:focus-visible,
-  .brand__description:focus-visible {
+
+  #{$root} .brand__link:focus-visible,
+  #{$root} .brand__name:focus-visible,
+  #{$root} .brand__title:focus-visible,
+  #{$root} .brand__description:focus-visible {
     outline: 3px solid #23343b;
     outline-offset: 3px;
     border-radius: 0.25rem;
   }
-  .brand__picture {
+
+  #{$root} .brand__picture {
     position: absolute;
     inset: 0;
   }
-  .brand__banner {
+
+  #{$root} .brand__banner {
     display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
-  .brand__content {
+
+  #{$root} .brand__content {
     position: relative;
     display: grid;
     justify-items: center;
@@ -46,81 +62,85 @@
     padding: 1rem;
     text-align: center;
   }
-  .brand__name {
+
+  #{$root} .brand__name {
     font-size: clamp(1.1rem, 2.3vw, 2rem);
     font-weight: 800;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     line-height: 1.2;
   }
-  .brand__mark {
+
+  #{$root} .brand__mark {
     width: clamp(4rem, 9vw, 7rem);
     height: auto;
   }
-  .brand__title {
+
+  #{$root} .brand__title {
     font-size: clamp(1.1rem, 2.4vw, 2rem);
     font-weight: 750;
     line-height: 1.25;
   }
-  .brand__description {
+
+  #{$root} .brand__description {
     max-width: 32rem;
     color: #344e74;
     font-size: clamp(0.8rem, 1.35vw, 1.15rem);
     line-height: 1.4;
   }
-  & {
-    display: block;
-    width: 100%;
-    max-width: 72rem;
-    min-height: 100dvh;
-    margin: 0 auto;
-    padding: clamp(1rem, 3vw, 2rem);
-    overflow-wrap: anywhere;
-  }
-  &.app-shell--dashboard {
+
+  #{$root}.app-shell--dashboard {
     max-width: 1500px;
     padding: 0.5rem clamp(1rem, 2.5vw, 2.25rem) 2.5rem;
     color: var(--dashboard-text);
-    .brand {
-      max-width: none;
-      margin-bottom: 1.75rem;
-    }
-    .brand__hero {
-      min-height: clamp(11rem, 15.76vw, 14.1rem);
-      border-radius: 1.25rem;
-    }
-    .brand__content {
-      width: 56%;
-      margin-left: 25%;
-    }
-    @media (max-width: 600px) {
-      .brand {
-        margin-bottom: 1rem;
-      }
-      .brand__content {
-        width: 100%;
-        margin-left: 0;
-        padding: 1rem;
-      }
-      .brand__banner {
-        object-position: center;
-      }
-    }
   }
-  &.app-shell--country .brand {
+
+  #{$root}.app-shell--dashboard .brand {
+    max-width: none;
+    margin-bottom: 1.75rem;
+  }
+
+  #{$root}.app-shell--dashboard .brand__hero {
+    min-height: clamp(11rem, 15.76vw, 14.1rem);
+    border-radius: 1.25rem;
+  }
+
+  #{$root}.app-shell--dashboard .brand__content {
+    width: 56%;
+    margin-left: 25%;
+  }
+
+  #{$root}.app-shell--country .brand,
+  #{$root}.app-shell--return-home .brand {
     margin-bottom: 1rem;
   }
-  &.app-shell--country {
-    .brand__home-area {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      cursor: pointer;
-      border-radius: inherit;
+
+  #{$root}.app-shell--return-home .brand__home-area {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    cursor: pointer;
+    border-radius: inherit;
+  }
+
+  #{$root}.app-shell--return-home .brand__home-area:focus-visible {
+    outline: 3px solid #23343b;
+    outline-offset: -4px;
+  }
+
+  @media (max-width: 600px) {
+    #{$root}.app-shell--dashboard .brand {
+      margin-bottom: 1rem;
     }
-    .brand__home-area:focus-visible {
-      outline: 3px solid #23343b;
-      outline-offset: -4px;
+
+    #{$root}.app-shell--dashboard .brand__content {
+      width: 100%;
+      margin-left: 0;
+      padding: 1rem;
+    }
+
+    #{$root}.app-shell--dashboard .brand__banner {
+      object-position: center;
     }
   }
 }

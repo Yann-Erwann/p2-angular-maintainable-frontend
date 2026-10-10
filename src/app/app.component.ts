@@ -14,7 +14,8 @@ import {
 import { Location } from '@angular/common';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
-import { filter, map, skip } from 'rxjs';
+import { filter, map, skip, tap } from 'rxjs';
+import { SeoService } from './seo.service';
 
 /**
  * Shell et focus après navigation. Le premier affichage et les liens vers un fragment
@@ -28,6 +29,7 @@ import { filter, map, skip } from 'rxjs';
   host: {
     class: 'app-shell app-shell--dashboard',
     '[class.app-shell--country]': 'countryLayout()',
+    '[class.app-shell--return-home]': 'returnHomeLayout()',
   },
   imports: [RouterLink, RouterOutlet],
 })
@@ -35,6 +37,7 @@ export class AppComponent implements OnInit {
   title = 'olympic-games-starter';
   private readonly router = inject(Router);
   private readonly location = inject(Location);
+  private readonly seo = inject(SeoService);
   private readonly routeUrl = toSignal(
     this.router.events.pipe(
       filter((event) => event instanceof NavigationEnd),
@@ -50,6 +53,7 @@ export class AppComponent implements OnInit {
       this.router.parseUrl(this.routeUrl()).root.children['primary']?.segments[0]?.path ===
       'country',
   );
+  readonly returnHomeLayout = computed(() => !this.homeLayout());
   private readonly destroyRef = inject(DestroyRef);
   private readonly injector = inject(Injector);
   private readonly main = viewChild.required<ElementRef<HTMLElement>>('mainContent');
@@ -57,9 +61,11 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.destroyRef.onDestroy(() => this.pendingFocus?.destroy());
+    this.seo.update(this.routeUrl(), this.isNoIndexRoute());
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
+        tap((event) => this.seo.update(event.urlAfterRedirects, this.isNoIndexRoute())),
         skip(1),
         takeUntilDestroyed(this.destroyRef),
       )
@@ -79,5 +85,11 @@ export class AppComponent implements OnInit {
           { injector: this.injector },
         );
       });
+  }
+
+  private isNoIndexRoute(): boolean {
+    let route = this.router.routerState.snapshot.root;
+    while (route.firstChild) route = route.firstChild;
+    return route.routeConfig?.data?.['noindex'] === true;
   }
 }

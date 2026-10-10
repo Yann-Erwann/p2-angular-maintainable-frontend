@@ -1,7 +1,8 @@
 <header class="brand">
-  <nav aria-label="Main navigation">
+  <nav aria-labelledby="main-navigation-title">
+    <h2 id="main-navigation-title" class="visually-hidden">Main navigation</h2>
     <div class="brand__hero">
-      @if (countryLayout()) {
+      @if (returnHomeLayout()) {
         <a class="brand__home-area" routerLink="/" aria-label="Home — TéléSport"></a>
       }
       <picture class="brand__picture">
@@ -21,8 +22,8 @@
         />
       </picture>
       <span class="brand__content">
-        @if (countryLayout()) {
-          <span class="brand__name" tabindex="0">TéléSport</span>
+        @if (returnHomeLayout()) {
+          <span class="brand__name">TéléSport</span>
         } @else {
           <a class="brand__link brand__name" routerLink="/" aria-label="Home — TéléSport"
             >TéléSport</a
@@ -37,10 +38,8 @@
             <circle cx="78" cy="32" r="14" stroke="#009f3d" />
           </g>
         </svg>
-        <span class="brand__title" tabindex="0">Olympic games app</span>
-        <span class="brand__description" tabindex="0"
-          >Explore and compare Olympic medals across countries</span
-        >
+        <span class="brand__title">Olympic games app</span>
+        <span class="brand__description">Explore and compare Olympic medals across countries</span>
       </span>
     </div>
   </nav>

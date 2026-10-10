@@ -11,6 +11,7 @@
     />
     <meta name="application-name" content="Olympic Games App" />
     <meta name="theme-color" content="#0b6470" />
+    <link rel="canonical" href="/" />
     <link rel="preload" href="assets/mock/olympic.json" as="fetch" crossorigin="anonymous" />
     <link
       rel="preload"
@@ -37,7 +38,8 @@
   <body>
     <app-root class="app-shell app-shell--dashboard">
       <header class="brand">
-        <nav aria-label="Main navigation">
+        <nav aria-labelledby="main-navigation-title">
+          <h2 id="main-navigation-title" class="visually-hidden">Main navigation</h2>
           <div class="brand__hero">
             <picture class="brand__picture">
               <img
@@ -76,7 +78,7 @@
           </div>
         </nav>
       </header>
-      <h1 class="page-title visually-hidden">Medals per Country</h1>
+      <h1 class="page-title">Medals per Country</h1>
       <output class="page-message">Loading Olympic Games...</output>
       <noscript><p class="page-message">Enable JavaScript to explore Olympic results.</p></noscript>
     </app-root>

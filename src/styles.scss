@@ -60,6 +60,4 @@ body:has(app-root.app-shell--dashboard) {
 }
 
 // Le shell statique conserve les mêmes dimensions avant le premier rendu Angular.
-app-root:not([ng-version]) {
-  @include app-shell.layout;
-}
+@include app-shell.layout('app-root:not([ng-version])');

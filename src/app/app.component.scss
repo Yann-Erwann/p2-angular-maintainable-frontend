@@ -1,5 +1,3 @@
 @use '../styles/app-shell';
 
-:host {
-  @include app-shell.layout;
-}
+@include app-shell.layout(':host');
