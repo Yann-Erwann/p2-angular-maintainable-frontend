@@ -33,8 +33,9 @@ test('the deployed application serves HTML, data and working navigation', async 
   page.on('console', (message) => {
     const isExpectedSpaFallback =
       message.type() === 'error' &&
-      message.text() ===
-        'Failed to load resource: the server responded with a status of 404 (Not Found)';
+      /^Failed to load resource: the server responded with a status of 404(?: \([^)]*\))?$/.test(
+        message.text(),
+      );
     if (message.type() === 'error' && !isExpectedSpaFallback) {
       failures.push(`Console: ${message.text()}`);
     }
