@@ -101,6 +101,12 @@ describe('Accessible application navigation', () => {
     expect(banner?.getAttribute('alt')).toBe('');
     expect(page.querySelector('.brand__name')?.textContent?.trim()).toBe('TéléSport');
     expect(page.querySelector('.brand__title')?.textContent).toBe('Olympic games app');
+    expect(page.querySelector('.brand__picture source')?.getAttribute('media')).toBe(
+      '(max-width: 600px)',
+    );
+    expect(page.querySelector('.brand__picture source')?.getAttribute('srcset')).toBe(
+      'assets/images/telesport-header-mobile.webp',
+    );
     expect(banner?.getAttribute('srcset')?.replace(/\s+/g, ' ')).toContain(
       'telesport-header-small.webp 670w',
     );

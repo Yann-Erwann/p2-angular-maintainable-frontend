@@ -17,9 +17,18 @@
       rel="preload"
       as="image"
       type="image/webp"
+      href="assets/images/telesport-header-mobile.webp"
+      media="(max-width: 600px)"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      as="image"
+      type="image/webp"
       href="assets/images/telesport-header.webp"
       imagesrcset="assets/images/telesport-header-small.webp 670w, assets/images/telesport-header.webp 1339w"
       imagesizes="(min-width: 1500px) 1428px, calc(100vw - 32px)"
+      media="(min-width: 601px)"
       fetchpriority="high"
     />
     <meta property="og:type" content="website" />
@@ -42,6 +51,11 @@
           <h2 id="main-navigation-title" class="visually-hidden">Main navigation</h2>
           <div class="brand__hero">
             <picture class="brand__picture">
+              <source
+                media="(max-width: 600px)"
+                srcset="assets/images/telesport-header-mobile.webp"
+                type="image/webp"
+              />
               <img
                 class="brand__banner"
                 src="assets/images/telesport-header.webp"
