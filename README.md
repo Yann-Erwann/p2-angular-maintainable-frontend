@@ -46,8 +46,9 @@ Le build local utilise directement Angular CLI : minification JS/CSS,
 tree-shaking et AOT sont activés. La configuration commune `index.preloadInitial` laisse Angular générer les liens
 de préchargement des modules initiaux. Le graphique d’accueil est chargé avec
 l’application en développement et en production. Avant les audits, le workflow
-copie `index.html` en `404.html` afin que GitHub Pages serve le shell Angular
-pour les navigations directes d’une SPA.
+prépare une copie locale avec `404.html` pour les tests Playwright des navigations
+directes d’une SPA. L’artefact publié sur Cloudflare Pages est contrôlé
+séparément et ne contient pas de `404.html`.
 Le JSON et le fond de bannière sont préchargés depuis le HTML initial. Le graphique d’accueil apparaît dès que les données sont disponibles.
 En production, Angular intègre le CSS critique au HTML et charge la feuille globale
 sans bloquer le rendu. Les styles de mise en page sont chargés avec chaque page
@@ -62,15 +63,15 @@ pnpm run build:analyze
 dans les dépendances de développement.
 Les fichiers JS/CSS hashés sont mis en cache un an, les ressources sans hash sont
 revalidées. Ces règles concernent uniquement ce serveur local. Les en-têtes de
-cache de GitHub Pages sont déterminés par le déploiement et ne sont pas définis
+cache de Cloudflare Pages sont déterminés par le déploiement et ne sont pas définis
 par `serve.json`.
 `build:analyze` ajoute les source maps et `stats.json` pour examiner les bundles.
 Relancer `pnpm run build` pour retrouver un build sans source maps.
 
 Le routage utilise des URL sans `#`.
-Pour GitHub Pages, le workflow génère une entrée HTML par pays et un repli
-`404.html`, avec le même chemin de base que
-l’application. Un autre serveur doit renvoyer `index.html` pour les routes Angular.
+Le build publié sur Cloudflare Pages utilise `/` comme chemin de base et ne
+contient pas de `404.html`. Le pipeline vérifie cet artefact, puis contrôle les
+routes Angular et les ressources après publication.
 
 ## Pages et clavier
 
@@ -129,10 +130,10 @@ avec `Ctrl+C`.
 Les tests `e2e/lighthouse.spec.ts` lancent Chromium avec Playwright et exécutent
 Lighthouse sur l’accueil et chaque pays du JSON livré, en mobile et desktop.
 Localement, trois passages sont exécutés par défaut ; chaque catégorie
-(performance, accessibilité, bonnes pratiques et SEO) doit atteindre au moins 80
+(performance, accessibilité, bonnes pratiques et SEO) doit atteindre au moins 99
 à chaque passage. En CI, un seul passage est utilisé pour réduire la durée du
 pipeline ; une exécution manuelle avec l’option `full_lighthouse` réactive les
-trois passages. Chaque score inférieur à 80, score absent ou erreur fait échouer
+trois passages. Chaque score inférieur à 99, score absent ou erreur fait échouer
 les tests et bloque le déploiement. Les rapports JSON et HTML sont joints au
 rapport Playwright. Les rapports des tests du build sont conservés dans
 `validation-reports`; les rapports Lighthouse de la version réellement publiée
@@ -151,10 +152,12 @@ Playwright démarre automatiquement le serveur local si `PRODUCTION_SERVER_URL`
 n’est pas renseigné. Les rapports locaux sont disponibles dans
 `playwright-report/` et `test-results/`.
 
-La CI vérifie le code, génère Compodoc et teste le build de production préfixé
-avec Playwright avant de le livrer sur GitHub Pages depuis `main`. Après publication,
-elle rejoue la vérification de navigation et Lighthouse sur l’URL Pages réellement
-déployée, afin de contrôler les routes et ressources servies en production.
+La CI vérifie le code, génère Compodoc et teste le build de production à la racine
+avec Playwright avant de le livrer sur Cloudflare Pages depuis `main`. Le site
+publié est accessible sur
+<https://p2-angular-maintainable-frontend.pages.dev/>. Après publication, elle
+rejoue la vérification de navigation et Lighthouse sur cette URL afin de contrôler
+les routes et ressources servies en production.
 Après publication, elle contrôle le HTML de la livraison, les
 données, les ressources et les erreurs JavaScript, puis parcourt l’accueil et
 la France avec rechargement direct et retour à l’accueil. Les diagnostics sont
