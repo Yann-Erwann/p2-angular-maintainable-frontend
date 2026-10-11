@@ -14,7 +14,6 @@ on:
 
 permissions:
   contents: read
-  pages: read
 
 concurrency:
   group: angular-${{ github.workflow }}-${{ github.ref }}
@@ -27,6 +26,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+
       - name: Setup pnpm and Node
         uses: pnpm/setup@v3
         with:
@@ -34,14 +34,19 @@ jobs:
           runtime: node@24
           cache: true
           install: false
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
       - name: Check formatting
         run: pnpm run format:check
+
       - name: Lint
         run: pnpm run lint
+
       - name: Typecheck
         run: pnpm run typecheck
+
       - name: Unit tests
         run: pnpm test --watch=false
 
@@ -51,6 +56,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+
       - name: Setup pnpm and Node
         uses: pnpm/setup@v3
         with:
@@ -58,8 +64,10 @@ jobs:
           runtime: node@24
           cache: true
           install: false
+
       - name: Install documentation dependencies
         run: pnpm install --frozen-lockfile
+
       - name: Generate documentation
         run: pnpm run docs
 
@@ -80,6 +88,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+
       - name: Setup pnpm and Node
         uses: pnpm/setup@v3
         with:
@@ -87,42 +96,63 @@ jobs:
           runtime: node@24
           cache: true
           install: false
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      - name: Configure Pages
-        id: pages
-        uses: actions/configure-pages@v6
+
       - name: Build production artifact
-        env:
-          BASE_PATH: ${{ steps.pages.outputs.base_path }}
-        run: pnpm run build --configuration production --base-href "${BASE_PATH%/}/"
-      - name: Prepare SPA fallback
-        run: cp dist/olympic-games-starter/browser/index.html dist/olympic-games-starter/browser/404.html
+        run: pnpm run build --configuration production --base-href /
+
+      - name: Check Cloudflare Pages artifact
+        run: |
+          node --input-type=module <<'NODE'
+          import { existsSync, readFileSync } from 'node:fs';
+          import { join } from 'node:path';
+
+          const site = 'dist/olympic-games-starter/browser';
+          const index = join(site, 'index.html');
+          if (!existsSync(index)) throw new Error(`Missing ${index}`);
+          if (existsSync(join(site, '404.html'))) {
+            throw new Error('Remove root 404.html from the published SPA artifact');
+          }
+          const html = readFileSync(index, 'utf8');
+          if (!/<base\b[^>]*\bhref=["']\/["']/i.test(html)) {
+            throw new Error('Angular base href must be / for Cloudflare Pages');
+          }
+          const sources = [...html.matchAll(/<script\b[^>]*\bsrc=["']([^"']+)["'][^>]*>/gi)]
+            .map((match) => match[1])
+            .filter((src) => !/^(https?:)?\/\//i.test(src) && /\.m?js(?:[?#]|$)/i.test(src));
+          if (sources.length === 0) throw new Error('No local JavaScript entrypoints in index.html');
+          for (const src of sources) {
+            const relativePath = decodeURIComponent(new URL(src, 'https://local.invalid/').pathname.slice(1));
+            if (!existsSync(join(site, relativePath))) {
+              throw new Error(`Missing JavaScript entrypoint: ${relativePath}`);
+            }
+          }
+          console.log(`Validated ${sources.length} local JavaScript entrypoint(s)`);
+          NODE
+
       - name: Prepare local E2E artifact
         run: |
-          rm -rf dist/olympic-games-starter/e2e
-          cp -a dist/olympic-games-starter/browser dist/olympic-games-starter/e2e
-          sed -i -E 's#<base href="[^"]*"[^>]*>#<base href="/">#' \
-            dist/olympic-games-starter/e2e/index.html
+          site=dist/olympic-games-starter
+          rm -rf "$site/e2e"
+          cp -a "$site/browser" "$site/e2e"
+          cp "$site/e2e/index.html" "$site/e2e/404.html"
+
       - name: Playwright browser tests
         run: pnpm exec playwright test --project=chromium
         env:
           E2E_USE_EXISTING_BUILD: 'true'
-      - name: Prepare GitHub Pages route entries
-        shell: bash
-        run: |
-          site=dist/olympic-games-starter/browser
-          while read -r country_id; do
-            mkdir -p "$site/country/$country_id"
-            cp "$site/index.html" "$site/country/$country_id/index.html"
-          done < <(node -e "for (const country of JSON.parse(require('fs').readFileSync('src/assets/mock/olympic.json', 'utf8'))) console.log(country.id)")
-          mkdir -p "$site/not-found"
-          cp "$site/index.html" "$site/not-found/index.html"
+
       - name: Upload validated site
         if: success() && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-        uses: actions/upload-pages-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
-          path: dist/olympic-games-starter/browser
+          name: angular-production-site
+          path: dist/olympic-games-starter/browser/
+          if-no-files-found: error
+          retention-days: 7
+
       - name: Upload validation reports
         if: always()
         uses: actions/upload-artifact@v7
@@ -139,20 +169,70 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     runs-on: ubuntu-24.04
     timeout-minutes: 15
-    permissions:
-      actions: read
-      pages: write
-      id-token: write
-      contents: read
     environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      name: cloudflare-pages
+      url: ${{ steps.deployment.outputs.deployment-url }}
     outputs:
-      page_url: ${{ steps.deployment.outputs.page_url }}
+      page_url: ${{ steps.deployment.outputs.deployment-url }}
     steps:
-      - name: Deploy validated artifact
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Setup pnpm and Node for deployment
+        uses: pnpm/setup@v3
+        with:
+          version: 12.10.1
+          runtime: node@24
+          cache: true
+          install: false
+
+      - name: Download validated site
+        uses: actions/download-artifact@v8
+        with:
+          name: angular-production-site
+          path: dist/olympic-games-starter/browser
+
+      - name: Verify deployment artifact
+        run: test -f dist/olympic-games-starter/browser/index.html
+
+      - name: Deploy to Cloudflare Pages
         id: deployment
-        uses: actions/deploy-pages@v5
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          packageManager: pnpm
+          wranglerVersion: '4.149.0'
+          command: pages deploy dist/olympic-games-starter/browser --project-name=p2-angular-maintainable-frontend --branch=main --commit-hash=${{ github.sha }}
+
+      - name: Verify published JavaScript MIME types
+        shell: bash
+        env:
+          DEPLOYMENT_URL: ${{ steps.deployment.outputs.deployment-url }}
+        run: |
+          set -euo pipefail
+          test -n "$DEPLOYMENT_URL"
+          site=dist/olympic-games-starter/browser
+          count=0
+          while IFS= read -r -d '' file; do
+            relative=${file#"$site"/}
+            result=$(curl --silent --show-error --location --retry 3 \
+              --output /dev/null --write-out '%{http_code} %{content_type}' \
+              "${DEPLOYMENT_URL%/}/$relative")
+            read -r status mime <<< "$result"
+            if [[ "$status" != '200' || ! "$mime" =~ (java|ecma)script ]]; then
+              echo "::error::Invalid response for $relative: HTTP $status, MIME $mime"
+              exit 1
+            fi
+            count=$((count + 1))
+          done < <(find "$site" -type f -name '*.js' -print0)
+          if (( count == 0 )); then
+            echo '::error::No JavaScript files found in deployment artifact'
+            exit 1
+          fi
+          echo "Verified $count published JavaScript files"
 
   verify:
     needs: deploy
@@ -165,6 +245,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+
       - name: Setup pnpm and Node
         uses: pnpm/setup@v3
         with:
@@ -172,12 +253,15 @@ jobs:
           runtime: node@24
           cache: true
           install: false
+
       - name: Install verification dependencies
         run: pnpm install --frozen-lockfile
+
       - name: Verify deployed pages and data
         run: pnpm exec playwright test e2e/verify-deployment.spec.ts --project=chromium
         env:
           PRODUCTION_SERVER_URL: ${{ needs.deploy.outputs.page_url }}
+
       - name: Prepare deployed Lighthouse routes
         id: lighthouse_routes
         if: always()
@@ -196,12 +280,14 @@ jobs:
           }
           console.log(`LIGHTHOUSE_COUNTRY_IDS=${countries.map((country) => country.id).join(',')}`);
           NODE
+
       - name: Lighthouse 80 on deployed Pages
         if: always() && steps.lighthouse_routes.outcome == 'success'
         run: pnpm exec playwright test e2e/lighthouse.spec.ts --project=lighthouse
         env:
           PRODUCTION_SERVER_URL: ${{ needs.deploy.outputs.page_url }}
           LIGHTHOUSE_RUNS: ${{ (github.event_name == 'workflow_dispatch' && inputs.full_lighthouse) && '3' || '1' }}
+
       - name: Upload deployment diagnostics
         if: always()
         uses: actions/upload-artifact@v7
