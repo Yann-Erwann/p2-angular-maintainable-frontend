@@ -43,7 +43,7 @@ test('a mouse click on a medal sector opens its associated country', async ({ pa
 
 test('a direct country URL survives reload under the production prefix', async ({ page }) => {
   const response = await page.goto('country/5');
-  expect([200, 404]).toContain(response?.status());
+  expect(response?.status()).toBe(200);
   expect(new URL(page.url()).hash).toBe('');
   await expect(page).toHaveTitle('France | Olympic Games');
   await expect(page.locator('canvas')).toBeVisible();
