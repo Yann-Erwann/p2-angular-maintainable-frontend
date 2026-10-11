@@ -139,7 +139,6 @@ jobs:
           site=dist/olympic-games-starter
           rm -rf "$site/e2e"
           cp -a "$site/browser" "$site/e2e"
-          cp "$site/e2e/index.html" "$site/e2e/404.html"
 
       - name: Playwright browser tests
         run: pnpm exec playwright test --project=chromium
