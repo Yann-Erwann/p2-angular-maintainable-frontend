@@ -113,19 +113,11 @@
           </div>
         </header>
 
-        @defer (on viewport; on idle; prefetch on idle) {
-          <app-olympic-chart
-            type="line"
-            [items]="vm.chartItems"
-            dataDescriptionId="participation-description"
-          />
-        } @placeholder {
-          <div class="chart-placeholder" aria-hidden="true"></div>
-        } @loading {
-          <div class="chart-placeholder" role="status">Loading chart...</div>
-        } @error {
-          <p class="page-message" role="alert">Unable to load the chart. Please reload the page.</p>
-        }
+        <app-olympic-chart
+          type="line"
+          [items]="vm.chartItems"
+          dataDescriptionId="participation-description"
+        />
         <p id="participation-description" class="visually-hidden">
           {{ vm.summary.name }}: medals and athletes by Olympic year.
           @for (participation of vm.summary.participations; track participation.id) {
