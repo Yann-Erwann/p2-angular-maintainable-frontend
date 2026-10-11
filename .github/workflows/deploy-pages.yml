@@ -109,6 +109,15 @@ jobs:
         env:
           E2E_USE_EXISTING_BUILD: 'true'
           LIGHTHOUSE_RUNS: ${{ (github.event_name == 'workflow_dispatch' && inputs.full_lighthouse) && '3' || '1' }}
+      - name: Prepare GitHub Pages route entries
+        run: |
+          site=dist/olympic-games-starter/browser
+          while read -r country_id; do
+            mkdir -p "$site/country/$country_id"
+            cp "$site/index.html" "$site/country/$country_id/index.html"
+          done < <(node -e "for (const country of JSON.parse(require('fs').readFileSync('src/assets/mock/olympic.json', 'utf8'))) console.log(country.id)")
+          mkdir -p "$site/not-found"
+          cp "$site/index.html" "$site/not-found/index.html"
       - name: Upload validated site
         if: success() && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v5
