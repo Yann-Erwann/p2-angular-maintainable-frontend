@@ -282,7 +282,7 @@ jobs:
           console.log(`LIGHTHOUSE_COUNTRY_IDS=${countries.map((country) => country.id).join(',')}`);
           NODE
 
-      - name: Lighthouse 80 on deployed Pages
+      - name: Lighthouse 98 on deployed Cloudflare Pages
         if: always() && steps.lighthouse_routes.outcome == 'success'
         run: pnpm exec playwright test e2e/lighthouse.spec.ts --project=lighthouse
         env:

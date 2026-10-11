@@ -130,10 +130,10 @@ avec `Ctrl+C`.
 Les tests `e2e/lighthouse.spec.ts` lancent Chromium avec Playwright et exécutent
 Lighthouse sur l’accueil et chaque pays du JSON livré, en mobile et desktop.
 Localement, trois passages sont exécutés par défaut ; chaque catégorie
-(performance, accessibilité, bonnes pratiques et SEO) doit atteindre au moins 99
+(performance, accessibilité, bonnes pratiques et SEO) doit atteindre au moins 98
 à chaque passage. En CI, un seul passage est utilisé pour réduire la durée du
 pipeline ; une exécution manuelle avec l’option `full_lighthouse` réactive les
-trois passages. Chaque score inférieur à 99, score absent ou erreur fait échouer
+trois passages. Chaque score inférieur à 98, score absent ou erreur fait échouer
 les tests et bloque le déploiement. Les rapports JSON et HTML sont joints au
 rapport Playwright. Les rapports des tests du build sont conservés dans
 `validation-reports`; les rapports Lighthouse de la version réellement publiée
