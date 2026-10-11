@@ -16,20 +16,18 @@ concurrency:
 
 jobs:
   validate:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+      - name: Setup pnpm and Node
+        uses: pnpm/setup@v3
         with:
           version: 12.10.1
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: pnpm
+          runtime: node@24
+          cache: true
+          install: false
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Install Chromium
@@ -48,7 +46,7 @@ jobs:
         run: pnpm run docs
       - name: Configure Pages
         id: pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
       - name: Build production artifact
         env:
           BASE_PATH: ${{ steps.pages.outputs.base_path }}
@@ -59,12 +57,12 @@ jobs:
         run: pnpm run test:e2e
       - name: Upload validated site
         if: success() && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
           path: dist/olympic-games-starter/browser
       - name: Upload validation reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: validation-reports
           path: |
@@ -76,9 +74,10 @@ jobs:
   deploy:
     needs: validate
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     permissions:
+      actions: read
       pages: write
       id-token: write
       contents: read
@@ -94,22 +93,20 @@ jobs:
 
   verify:
     needs: deploy
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     permissions:
       contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+      - name: Setup pnpm and Node
+        uses: pnpm/setup@v3
         with:
           version: 12.10.1
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: pnpm
+          runtime: node@24
+          cache: true
+          install: false
       - name: Install verification dependencies
         run: pnpm install --frozen-lockfile
       - name: Install Chromium
@@ -120,7 +117,7 @@ jobs:
           PRODUCTION_SERVER_URL: ${{ needs.deploy.outputs.page_url }}
       - name: Upload deployment diagnostics
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: deployment-diagnostics
           path: |
