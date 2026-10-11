@@ -197,6 +197,14 @@ Les flèches représentent les dépendances de consommation. Les détails du tra
 
 **core/** reste absent. Un dossier global ne serait justifié que par des responsabilités réellement transverses et stables. Authentification, session, error handling global ou interceptors ne sont pas ajoutés au titre d’une API encore inconnue.
 
+**UI locale, pas design system autonome.** `src/app/olympics/ui/` constitue un UI kit
+local à la fonctionnalité : composants réutilisables, tokens de présentation comme
+`olympic-colors.ts` et conventions BEM. Il n’est pas traité comme une bibliothèque
+indépendante. Storybook, une stratégie de thème complète, le versionnement de
+composants et les tests visuels ne sont pas nécessaires tant que l’application reste
+limitée à cette fonctionnalité. Cette industrialisation sera réévaluée si plusieurs
+fonctionnalités ou applications doivent partager les mêmes composants.
+
 ## 8. Préparation à une API future
 
 | Élément conservable                  | Adaptation éventuelle lorsque le contrat existe                                 |

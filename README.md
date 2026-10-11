@@ -172,6 +172,10 @@ reste en ligne : corriger ou rétablir la version précédente par un nouveau co
 | `.github/workflows/`         | Étapes de validation et de déploiement GitHub Actions |
 | `docs/`                      | Architecture et décisions techniques                  |
 
+Le dossier `src/app/olympics/ui/` est un UI kit local à la fonctionnalité, et non
+un design system indépendant. Son périmètre et ses limites sont décrits dans
+la [documentation d’architecture](docs/architecture/architecture.md).
+
 ```bash
 pnpm run docs
 pnpm run docs:serve
