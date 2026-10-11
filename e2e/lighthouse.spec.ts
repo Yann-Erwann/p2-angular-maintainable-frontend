@@ -25,7 +25,7 @@ const routes = [
   ...countryIds.map((id) => ({ name: `country-${id}`, path: `country/${id}` })),
 ];
 const categories = ['performance', 'accessibility', 'best-practices', 'seo'] as const;
-const lighthouseThreshold = 0.8;
+const lighthouseThreshold = 0.99;
 const lighthouseRuns = Number.parseInt(process.env['LIGHTHOUSE_RUNS'] ?? '3', 10);
 
 if (!Number.isInteger(lighthouseRuns) || lighthouseRuns < 1) {
@@ -35,7 +35,7 @@ if (!Number.isInteger(lighthouseRuns) || lighthouseRuns < 1) {
 for (const route of routes) {
   for (const profile of ['mobile', 'desktop'] as const) {
     for (let run = 1; run <= lighthouseRuns; run++) {
-      test(`${route.name} ${profile} run ${run}: Lighthouse 80`, async ({
+      test(`${route.name} ${profile} run ${run}: Lighthouse 99`, async ({
         baseURL,
         request,
       }, testInfo) => {
@@ -75,7 +75,7 @@ for (const route of routes) {
             expect
               .soft(
                 result.lhr.categories[category]?.score,
-                `${route.name} ${profile} run ${run}: ${category} must score at least 80`,
+                `${route.name} ${profile} run ${run}: ${category} must score at least 99`,
               )
               .toBeGreaterThanOrEqual(lighthouseThreshold);
           }
