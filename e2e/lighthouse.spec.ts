@@ -12,10 +12,15 @@ const routes = [
 ];
 const categories = ['performance', 'accessibility', 'best-practices', 'seo'] as const;
 const lighthouseThreshold = 0.8;
+const lighthouseRuns = Number.parseInt(process.env['LIGHTHOUSE_RUNS'] ?? '3', 10);
+
+if (!Number.isInteger(lighthouseRuns) || lighthouseRuns < 1) {
+  throw new Error('LIGHTHOUSE_RUNS must be a positive integer.');
+}
 
 for (const route of routes) {
   for (const profile of ['mobile', 'desktop'] as const) {
-    for (let run = 1; run <= 3; run++) {
+    for (let run = 1; run <= lighthouseRuns; run++) {
       test(`${route.name} ${profile} run ${run}: Lighthouse 80`, async ({
         baseURL,
         request,

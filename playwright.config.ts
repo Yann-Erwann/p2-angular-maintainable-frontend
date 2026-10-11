@@ -2,6 +2,10 @@ import { defineConfig } from '@playwright/test';
 
 const externalServer = process.env['PRODUCTION_SERVER_URL'];
 const localServerUrl = 'http://127.0.0.1:4187/';
+const useExistingBuild = process.env['E2E_USE_EXISTING_BUILD'] === 'true';
+const localServerCommand = useExistingBuild
+  ? 'pnpm exec serve -s dist/olympic-games-starter/e2e --listen 4187'
+  : 'pnpm run build:e2e:local && pnpm exec serve -s dist/olympic-games-starter/local-e2e/browser --listen 4187';
 
 export default defineConfig({
   testDir: './e2e',
@@ -25,8 +29,7 @@ export default defineConfig({
   webServer: externalServer
     ? undefined
     : {
-        command:
-          'pnpm run build:e2e:local && pnpm exec serve -s dist/olympic-games-starter/local-e2e/browser --listen 4187',
+        command: localServerCommand,
         url: localServerUrl,
         reuseExistingServer: !process.env['CI'],
       },

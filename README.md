@@ -129,13 +129,16 @@ Le rapport est alors disponible sur <http://localhost:9323>. Arrêter le serveur
 avec `Ctrl+C`.
 
 Les tests `e2e/lighthouse.spec.ts` lancent Chromium avec Playwright et exécutent
-Lighthouse sur l’accueil et chaque pays du JSON livré, en mobile et desktop,
-avec trois passages. Chaque catégorie (performance, accessibilité, bonnes
-pratiques et SEO) doit atteindre au moins 80 à chaque passage. Les audits
-n’ont aucun retry : un score inférieur à 80, absent ou une erreur fait échouer
-les tests et bloque le déploiement. Les rapports JSON et HTML sont joints au rapport
-Playwright. En CI, ils sont conservés dans l’artefact `validation-reports`, avec
-`playwright-report/` et `test-results/`, même en cas d’échec.
+Lighthouse sur l’accueil et chaque pays du JSON livré, en mobile et desktop.
+Localement, trois passages sont exécutés par défaut ; chaque catégorie
+(performance, accessibilité, bonnes pratiques et SEO) doit atteindre au moins 80
+à chaque passage. En CI, un seul passage est utilisé pour réduire la durée du
+pipeline ; une exécution manuelle avec l’option `full_lighthouse` réactive les
+trois passages. Chaque score inférieur à 80, score absent ou erreur fait échouer
+les tests et bloque le déploiement. Les rapports JSON et HTML sont joints au
+rapport Playwright. En CI, ils sont conservés dans l’artefact
+`validation-reports`, avec `playwright-report/` et `test-results/`, même en cas
+d’échec.
 Les routes d’erreur HTTP 404 restent couvertes par les tests fonctionnels.
 
 Pour exécuter uniquement Lighthouse sur le build préfixé :

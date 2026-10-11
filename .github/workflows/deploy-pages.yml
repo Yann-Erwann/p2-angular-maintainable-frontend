@@ -5,6 +5,12 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      full_lighthouse:
+        description: Run three Lighthouse audits per route and profile
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -15,7 +21,7 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
-  validate:
+  quality:
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
@@ -30,8 +36,6 @@ jobs:
           install: false
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      - name: Install Chromium
-        run: pnpm exec playwright install --with-deps chromium
       - name: Check formatting
         run: pnpm run format:check
       - name: Lint
@@ -40,10 +44,51 @@ jobs:
         run: pnpm run typecheck
       - name: Unit tests
         run: pnpm test --watch=false
-        env:
-          CHROME_BIN: /usr/bin/google-chrome
+
+  docs:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Setup pnpm and Node
+        uses: pnpm/setup@v3
+        with:
+          version: 12.10.1
+          runtime: node@24
+          cache: true
+          install: false
+      - name: Install documentation dependencies
+        run: pnpm install --frozen-lockfile
       - name: Generate documentation
         run: pnpm run docs
+
+      - name: Upload documentation
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: documentation
+          path: documentation/
+          if-no-files-found: ignore
+          retention-days: 14
+
+  build:
+    runs-on: ubuntu-24.04
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.0-noble
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Setup pnpm and Node
+        uses: pnpm/setup@v3
+        with:
+          version: 12.10.1
+          runtime: node@24
+          cache: true
+          install: false
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
       - name: Configure Pages
         id: pages
         uses: actions/configure-pages@v6
@@ -53,8 +98,17 @@ jobs:
         run: pnpm run build --configuration production --base-href "${BASE_PATH%/}/"
       - name: Prepare SPA fallback
         run: cp dist/olympic-games-starter/browser/index.html dist/olympic-games-starter/browser/404.html
+      - name: Prepare local E2E artifact
+        run: |
+          rm -rf dist/olympic-games-starter/e2e
+          cp -a dist/olympic-games-starter/browser dist/olympic-games-starter/e2e
+          sed -i -E 's#<base href="[^"]*"[^>]*>#<base href="/">#' \
+            dist/olympic-games-starter/e2e/index.html
       - name: Playwright browser tests and Lighthouse 80
         run: pnpm run test:e2e
+        env:
+          E2E_USE_EXISTING_BUILD: 'true'
+          LIGHTHOUSE_RUNS: ${{ (github.event_name == 'workflow_dispatch' && inputs.full_lighthouse) && '3' || '1' }}
       - name: Upload validated site
         if: success() && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v5
@@ -66,13 +120,13 @@ jobs:
         with:
           name: validation-reports
           path: |
-            documentation/
             playwright-report/
             test-results/
+          if-no-files-found: ignore
           retention-days: 14
 
   deploy:
-    needs: validate
+    needs: [quality, docs, build]
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     runs-on: ubuntu-24.04
     timeout-minutes: 15
@@ -94,6 +148,8 @@ jobs:
   verify:
     needs: deploy
     runs-on: ubuntu-24.04
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.0-noble
     timeout-minutes: 20
     permissions:
       contents: read
@@ -109,8 +165,6 @@ jobs:
           install: false
       - name: Install verification dependencies
         run: pnpm install --frozen-lockfile
-      - name: Install Chromium
-        run: pnpm exec playwright install --with-deps chromium
       - name: Verify deployed pages and data
         run: pnpm exec playwright test e2e/verify-deployment.spec.ts --project=chromium
         env:
