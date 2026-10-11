@@ -1,5 +1,5 @@
 import { type Routes } from '@angular/router';
-
+import { OLYMPICS_ROUTES } from './olympics/routing/olympics.routes';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 /** Le titre d’une fiche est complété après chargement par {@link CountryComponent}. */
@@ -12,8 +12,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    loadChildren: () =>
-      import('./olympics/routing/olympics.routes').then((module) => module.default),
+    children: OLYMPICS_ROUTES,
   },
   {
     path: '**',
