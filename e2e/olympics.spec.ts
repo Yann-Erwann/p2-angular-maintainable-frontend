@@ -99,7 +99,9 @@ test('empty data and a country without participations retain their distinct mean
   await expect(page.locator('canvas')).toHaveCount(0);
   await page.unroute('**/assets/mock/olympic.json');
   await page.route('**/assets/mock/olympic.json', (route) =>
-    route.fulfill({ json: [{ id: 5, country: 'France', participations: [] }] }),
+    route.fulfill({
+      json: [{ id: 5, country: 'France', countryCode: 'fr', participations: [] }],
+    }),
   );
   await page.goto('country/5');
   await page.reload();
