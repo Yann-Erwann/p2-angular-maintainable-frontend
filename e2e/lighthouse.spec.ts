@@ -3,12 +3,26 @@ import lighthouse from 'lighthouse';
 import desktopConfig from 'lighthouse/core/config/desktop-config.js';
 import { readFileSync } from 'node:fs';
 
-const countries = JSON.parse(
-  readFileSync('dist/olympic-games-starter/browser/assets/mock/olympic.json', 'utf8'),
-) as readonly { id: number }[];
+function readCountryIds(): readonly number[] {
+  const configuredIds = process.env['LIGHTHOUSE_COUNTRY_IDS'];
+  if (configuredIds) {
+    const ids = configuredIds.split(',').map((value) => Number.parseInt(value, 10));
+    if (ids.some((id) => !Number.isSafeInteger(id) || id <= 0)) {
+      throw new Error('LIGHTHOUSE_COUNTRY_IDS must contain positive integer identifiers.');
+    }
+    return ids;
+  }
+
+  const countries = JSON.parse(
+    readFileSync('dist/olympic-games-starter/browser/assets/mock/olympic.json', 'utf8'),
+  ) as readonly { id: number }[];
+  return countries.map(({ id }) => id);
+}
+
+const countryIds = readCountryIds();
 const routes = [
   { name: 'home', path: './' },
-  ...countries.map(({ id }) => ({ name: `country-${id}`, path: `country/${id}` })),
+  ...countryIds.map((id) => ({ name: `country-${id}`, path: `country/${id}` })),
 ];
 const categories = ['performance', 'accessibility', 'best-practices', 'seo'] as const;
 const lighthouseThreshold = 0.8;

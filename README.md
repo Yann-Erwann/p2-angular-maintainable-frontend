@@ -98,7 +98,7 @@ d’assistance reste à vérifier humainement.
 ## Tests navigateur et performances
 
 Le workflow démarre le serveur de production sous
-`/p2-angular-maintainable-frontend/` sur le port 4187 avec Playwright pour les tests navigateur et les audits Lighthouse.
+`/p2-angular-maintainable-frontend/` sur le port 4187 avec Playwright pour les tests navigateur du build avant publication.
 Les tests Playwright vérifient navigation, cache, erreurs, clavier et affichage responsive.
 Pour tester localement un build servi à la racine :
 
@@ -134,9 +134,9 @@ Localement, trois passages sont exécutés par défaut ; chaque catégorie
 pipeline ; une exécution manuelle avec l’option `full_lighthouse` réactive les
 trois passages. Chaque score inférieur à 80, score absent ou erreur fait échouer
 les tests et bloque le déploiement. Les rapports JSON et HTML sont joints au
-rapport Playwright. En CI, ils sont conservés dans l’artefact
-`validation-reports`, avec `playwright-report/` et `test-results/`, même en cas
-d’échec.
+rapport Playwright. Les rapports des tests du build sont conservés dans
+`validation-reports`; les rapports Lighthouse de la version réellement publiée
+sont conservés dans `deployment-diagnostics`.
 Les routes d’erreur HTTP 404 restent couvertes par les tests fonctionnels.
 
 Pour exécuter uniquement Lighthouse sur le build préfixé :
@@ -151,8 +151,10 @@ Playwright démarre automatiquement le serveur local si `PRODUCTION_SERVER_URL`
 n’est pas renseigné. Les rapports locaux sont disponibles dans
 `playwright-report/` et `test-results/`.
 
-La CI vérifie le code, génère Compodoc et audite le build de production préfixé
-avant de livrer ce même artefact sur GitHub Pages depuis `main`.
+La CI vérifie le code, génère Compodoc et teste le build de production préfixé
+avec Playwright avant de le livrer sur GitHub Pages depuis `main`. Après publication,
+elle rejoue la vérification de navigation et Lighthouse sur l’URL Pages réellement
+déployée, afin de contrôler les routes et ressources servies en production.
 Après publication, elle contrôle le HTML de la livraison, les
 données, les ressources et les erreurs JavaScript, puis parcourt l’accueil et
 la France avec rechargement direct et retour à l’accueil. Les diagnostics sont

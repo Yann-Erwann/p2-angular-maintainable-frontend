@@ -60,7 +60,7 @@ test('the deployed application serves HTML, data and working navigation', async 
   await expect(page.locator('canvas')).toBeVisible();
 
   const directResponse = await page.goto(new URL('country/5', base).href);
-  expect([200, 404]).toContain(directResponse?.status());
+  expect(directResponse?.status()).toBe(200);
   await page.reload();
   await expect(page).toHaveTitle('France | Olympic Games');
   await expect(page.locator('app-header dd')).toHaveText(['3', '113', '1238']);

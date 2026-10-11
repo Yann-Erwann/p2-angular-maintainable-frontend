@@ -104,11 +104,10 @@ jobs:
           cp -a dist/olympic-games-starter/browser dist/olympic-games-starter/e2e
           sed -i -E 's#<base href="[^"]*"[^>]*>#<base href="/">#' \
             dist/olympic-games-starter/e2e/index.html
-      - name: Playwright browser tests and Lighthouse 80
-        run: pnpm run test:e2e
+      - name: Playwright browser tests
+        run: pnpm exec playwright test --project=chromium
         env:
           E2E_USE_EXISTING_BUILD: 'true'
-          LIGHTHOUSE_RUNS: ${{ (github.event_name == 'workflow_dispatch' && inputs.full_lighthouse) && '3' || '1' }}
       - name: Prepare GitHub Pages route entries
         run: |
           site=dist/olympic-games-starter/browser
@@ -178,6 +177,30 @@ jobs:
         run: pnpm exec playwright test e2e/verify-deployment.spec.ts --project=chromium
         env:
           PRODUCTION_SERVER_URL: ${{ needs.deploy.outputs.page_url }}
+      - name: Prepare deployed Lighthouse routes
+        id: lighthouse_routes
+        if: always()
+        env:
+          PRODUCTION_SERVER_URL: ${{ needs.deploy.outputs.page_url }}
+        run: |
+          node --input-type=module <<'NODE' >> "$GITHUB_ENV"
+          const base = process.env.PRODUCTION_SERVER_URL.endsWith('/')
+            ? process.env.PRODUCTION_SERVER_URL
+            : `${process.env.PRODUCTION_SERVER_URL}/`;
+          const response = await fetch(new URL('assets/mock/olympic.json', base));
+          if (!response.ok) throw new Error(`Unable to load deployed Olympic data: ${response.status}`);
+          const countries = await response.json();
+          if (!Array.isArray(countries) || countries.some((country) => !Number.isSafeInteger(country?.id))) {
+            throw new Error('Deployed Olympic data does not expose valid country identifiers.');
+          }
+          console.log(`LIGHTHOUSE_COUNTRY_IDS=${countries.map((country) => country.id).join(',')}`);
+          NODE
+      - name: Lighthouse 80 on deployed Pages
+        if: always() && steps.lighthouse_routes.outcome == 'success'
+        run: pnpm exec playwright test e2e/lighthouse.spec.ts --project=lighthouse
+        env:
+          PRODUCTION_SERVER_URL: ${{ needs.deploy.outputs.page_url }}
+          LIGHTHOUSE_RUNS: ${{ (github.event_name == 'workflow_dispatch' && inputs.full_lighthouse) && '3' || '1' }}
       - name: Upload deployment diagnostics
         if: always()
         uses: actions/upload-artifact@v7
