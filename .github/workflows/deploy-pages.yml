@@ -101,7 +101,9 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build production artifact
-        run: pnpm run build --configuration production --base-href /
+        run: |
+          pnpm run build --configuration production --base-href /
+          printf '/*\n  ! Link\n' > dist/olympic-games-starter/browser/_headers
 
       - name: Check Cloudflare Pages artifact
         run: |
