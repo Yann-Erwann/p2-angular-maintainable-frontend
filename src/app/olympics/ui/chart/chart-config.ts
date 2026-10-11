@@ -1,5 +1,5 @@
 import type { ChartConfiguration, ScriptableContext } from 'chart.js';
-import { MEDAL_COLORS } from './chart-colors';
+import { MEDAL_COLORS } from '../olympic-colors';
 import type { ChartItem } from './chart.model';
 import {
   accessibleBackground,

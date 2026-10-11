@@ -1,4 +1,4 @@
-/** Palette partagée par le tableau et le camembert, dans l’ordre des pays. */
+/** Palette de présentation partagée par les vues Olympics et les graphiques. */
 export const MEDAL_COLORS: readonly string[] = [
   '#008b97',
   '#4677cf',

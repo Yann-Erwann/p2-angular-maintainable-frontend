@@ -1,5 +1,5 @@
 import { ArcElement, PointElement, type Plugin } from 'chart.js';
-import { MEDAL_COLORS } from './chart-colors';
+import { MEDAL_COLORS } from '../olympic-colors';
 import type { ChartItem } from './chart.model';
 
 /** Le fond blanc est peint dans le canvas pour être conservé dans les captures et exports. */

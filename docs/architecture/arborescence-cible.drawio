@@ -112,15 +112,15 @@
                         <mxGeometry height="650" width="810" x="700" y="370" as="geometry"/>
                     </mxCell>
                 </object>
-                <mxCell id="a-ui-text" parent="a-ui" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=top;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans Mono;fontSize=12;fontColor=#8A5300;spacingLeft=10;spacingTop=10;" value="ui/" vertex="1">
-                    <mxGeometry height="34" width="790" x="10" y="2" as="geometry"/>
+                <mxCell id="a-ui-text" parent="a-ui" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=top;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans Mono;fontSize=12;fontColor=#8A5300;spacingLeft=10;spacingTop=10;" value="ui/&#xa;&#xa;olympic-colors.ts" vertex="1">
+                    <mxGeometry height="44" width="790" x="10" y="2" as="geometry"/>
                 </mxCell>
                 <object label="" path="src/app/olympics/ui/chart" kind="directory" id="a-chart">
                     <mxCell parent="a-ui" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#E8BF73;strokeWidth=1;container=1;collapsible=0;" vertex="1">
                         <mxGeometry height="330" width="780" x="15" y="50" as="geometry"/>
                     </mxCell>
                 </object>
-                <mxCell id="a-chart-text" parent="a-chart" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=top;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans Mono;fontSize=11;fontColor=#8A5300;spacingLeft=10;spacingTop=10;" value="chart/&#xa;&#xa;chart.component.ts&#xa;chart.component.html&#xa;chart.component.scss&#xa;chart.component.spec.ts&#xa;chart.model.ts&#xa;chart-config.ts&#xa;chart-colors.ts&#xa;chart-plugins.ts&#xa;chart-renderer.service.ts&#xa;chart-renderer.service.spec.ts&#xa;chart.component.md" vertex="1">
+                <mxCell id="a-chart-text" parent="a-chart" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=top;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans Mono;fontSize=11;fontColor=#8A5300;spacingLeft=10;spacingTop=10;" value="chart/&#xa;&#xa;chart.component.ts&#xa;chart.component.html&#xa;chart.component.scss&#xa;chart.component.spec.ts&#xa;chart.model.ts&#xa;chart-config.ts&#xa;chart-plugins.ts&#xa;chart-renderer.service.ts&#xa;chart-renderer.service.spec.ts&#xa;chart.component.md" vertex="1">
                     <mxGeometry height="310" width="760" x="10" y="13" as="geometry"/>
                 </mxCell>
                 <object label="" path="src/app/olympics/ui/header" kind="directory" id="a-header">

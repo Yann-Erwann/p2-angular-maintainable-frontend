@@ -1,5 +1,5 @@
 import type { Olympic } from '../../models/olympic.model';
-import { MEDAL_COLORS } from '../../ui/chart/chart-colors';
+import { MEDAL_COLORS } from '../../ui/olympic-colors';
 import type { ChartItem } from '../../ui/chart/chart.model';
 import type { Indicator } from '../../ui/header/indicator.model';
 
