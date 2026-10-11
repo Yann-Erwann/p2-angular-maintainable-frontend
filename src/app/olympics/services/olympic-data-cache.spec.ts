@@ -6,7 +6,7 @@ import { OlympicDataService } from './olympic-data.service';
 
 describe('OlympicDataService shared loading', () => {
   const url = './assets/mock/olympic.json';
-  const countries = [{ id: 1, country: 'France', participations: [] }];
+  const countries = [{ id: 1, country: 'France', countryCode: 'fr', participations: [] }];
   let service: OlympicDataService;
   let http: HttpTestingController;
 

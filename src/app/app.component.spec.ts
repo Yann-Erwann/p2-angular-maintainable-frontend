@@ -51,7 +51,7 @@ describe('Accessible application navigation', () => {
     fixture.detectChanges();
     http
       .expectOne('./assets/mock/olympic.json')
-      .flush([{ id: 2, country: 'Italy', participations: [] }]);
+      .flush([{ id: 2, country: 'Italy', countryCode: 'it', participations: [] }]);
     fixture.detectChanges();
 
     const page = fixture.nativeElement as HTMLElement;

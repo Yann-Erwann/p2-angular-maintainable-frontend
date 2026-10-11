@@ -9,10 +9,10 @@ describe('validateOlympicData', () => {
     medalsCount: 0,
     athleteCount: 100,
   };
-  const country = { id: 1, country: 'France', participations: [participation] };
+  const country = { id: 1, country: 'France', countryCode: 'fr', participations: [participation] };
 
   it('should preserve valid values, zero counts and empty participation lists', () => {
-    const payload = [country, { id: 2, country: 'Italy', participations: [] }];
+    const payload = [country, { id: 2, country: 'Italy', countryCode: 'it', participations: [] }];
     expect(validateOlympicData(payload)).toEqual(payload);
     expect(payload[0]).toBe(country);
   });
@@ -69,6 +69,14 @@ describe('validateOlympicData', () => {
         ).toThrowError(OlympicDataValidationError);
       });
     }
+  }
+
+  for (const countryCode of ['', 'f', 'fra', 'FR', 1, null]) {
+    it(`should reject an invalid country code: ${String(countryCode)}`, () => {
+      expect(() => validateOlympicData([{ ...country, countryCode }])).toThrowError(
+        OlympicDataValidationError,
+      );
+    });
   }
 
   for (const field of ['medalsCount', 'athleteCount']) {

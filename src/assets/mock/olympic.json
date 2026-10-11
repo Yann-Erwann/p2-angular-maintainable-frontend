@@ -2,6 +2,7 @@
   {
     "id": 1,
     "country": "Italy",
+    "countryCode": "it",
     "participations": [
       {
         "id": 1,
@@ -29,6 +30,7 @@
   {
     "id": 2,
     "country": "Spain",
+    "countryCode": "es",
     "participations": [
       {
         "id": 1,
@@ -56,6 +58,7 @@
   {
     "id": 3,
     "country": "United States",
+    "countryCode": "us",
     "participations": [
       {
         "id": 1,
@@ -83,6 +86,7 @@
   {
     "id": 4,
     "country": "Germany",
+    "countryCode": "de",
     "participations": [
       {
         "id": 1,
@@ -110,6 +114,7 @@
   {
     "id": 5,
     "country": "France",
+    "countryCode": "fr",
     "participations": [
       {
         "id": 1,

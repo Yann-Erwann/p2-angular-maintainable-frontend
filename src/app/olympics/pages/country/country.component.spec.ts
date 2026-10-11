@@ -53,8 +53,8 @@ describe('CountryComponent', () => {
 
   it('should select the current country and navigate to another country using the dropdown', async () => {
     const countries: readonly Olympic[] = [
-      { id: 2, country: 'Italy', participations: [] },
-      { id: 5, country: 'France', participations: [] },
+      { id: 2, country: 'Italy', countryCode: 'it', participations: [] },
+      { id: 5, country: 'France', countryCode: 'fr', participations: [] },
     ];
     dataService.getOlympics.mockReturnValue(of(countries));
     const harness = await RouterTestingHarness.create();
@@ -100,7 +100,7 @@ describe('CountryComponent', () => {
 
     await harness.navigateByUrl('/not-found');
     expect(data.observed).toBe(false);
-    data.next([{ id: 1, country: 'France', participations: [] }]);
+    data.next([{ id: 1, country: 'France', countryCode: 'fr', participations: [] }]);
     expect(component.state().status).toBe('loading');
     expect(chartSpy).not.toHaveBeenCalled();
   });
@@ -118,8 +118,8 @@ describe('CountryComponent', () => {
     const harness = await RouterTestingHarness.create();
     component = await harness.navigateByUrl('/country/1', CountryComponent);
     data.next([
-      { id: 1, country: 'France', participations: [] },
-      { id: 2, country: 'Italy', participations: [] },
+      { id: 1, country: 'France', countryCode: 'fr', participations: [] },
+      { id: 2, country: 'Italy', countryCode: 'it', participations: [] },
     ]);
     data.complete();
     harness.detectChanges();
@@ -145,11 +145,13 @@ describe('CountryComponent', () => {
       {
         id: 2,
         country: 'Italy',
+        countryCode: 'it',
         participations: [{ id: 1, year: 2012, city: 'London', medalsCount: 15, athleteCount: 120 }],
       },
       {
         id: 1,
         country: 'France',
+        countryCode: 'fr',
         participations: [
           {
             id: 1,
@@ -219,7 +221,7 @@ describe('CountryComponent', () => {
     component = await harness.navigateByUrl('/country/1', CountryComponent);
     const chartSpy = vi.spyOn(TestBed.inject(ChartRenderer), 'create');
 
-    data.next([{ id: 1, country: 'France', participations: [] }]);
+    data.next([{ id: 1, country: 'France', countryCode: 'fr', participations: [] }]);
 
     expect(countrySummary(component).entries).toBe(0);
     expect(countrySummary(component).totalMedals).toBe(0);
@@ -290,7 +292,7 @@ describe('CountryComponent', () => {
   it('should distinguish a missing country from an HTTP failure', async () => {
     const harness = await RouterTestingHarness.create();
     component = await harness.navigateByUrl('/country/999', CountryComponent);
-    data.next([{ id: 1, country: 'France', participations: [] }]);
+    data.next([{ id: 1, country: 'France', countryCode: 'fr', participations: [] }]);
     harness.detectChanges();
     await harness.fixture.whenStable();
     harness.detectChanges();
@@ -334,6 +336,7 @@ describe('CountryComponent', () => {
       {
         id: 1,
         country: 'France',
+        countryCode: 'fr',
         participations: [{ id: 1, year: 2012, city: 'London', medalsCount: 10, athleteCount: 100 }],
       },
     ]);

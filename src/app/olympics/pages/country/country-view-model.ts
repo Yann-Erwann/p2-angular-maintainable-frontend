@@ -34,15 +34,6 @@ export function summarizeCountry(country: Olympic): CountrySummary {
   };
 }
 
-/** Codes de drapeau disponibles pour les pays du jeu de données. */
-const COUNTRY_CODES: Readonly<Record<string, string>> = {
-  France: 'fr',
-  Italy: 'it',
-  Spain: 'es',
-  Germany: 'de',
-  'United States': 'us',
-};
-
 /** Vue complète du pays ; le détail et le sélecteur proviennent de la même collection. */
 export interface CountryViewModel {
   /** Résumé et participations affichés dans le détail. */
@@ -103,10 +94,10 @@ export function createCountryState(countries: readonly Olympic[], id: number): C
       options: countries.map((item) => ({
         id: item.id,
         name: item.country,
-        flagCode: COUNTRY_CODES[item.country] ?? '',
+        flagCode: item.countryCode,
       })),
       indicators: countryIndicators(summary.entries, summary.totalMedals, summary.athleteEntries),
-      flagCode: COUNTRY_CODES[summary.name] ?? '',
+      flagCode: country.countryCode,
       chartItems: summary.participations.map((item) => ({
         label: item.year,
         value: item.medalsCount,

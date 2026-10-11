@@ -31,6 +31,11 @@ function isText(value: unknown): value is string {
   return typeof value === 'string' && value.trim().length > 0;
 }
 
+/** Vérifie un code ISO 3166-1 alpha-2 normalisé en minuscules. */
+function isCountryCode(value: unknown): value is string {
+  return typeof value === 'string' && /^[a-z]{2}$/.test(value);
+}
+
 /** Vérifie la forme et les compteurs d’une participation. */
 function isParticipation(value: unknown): value is Participation {
   return (
@@ -49,6 +54,7 @@ function isOlympic(value: unknown): value is Olympic {
     !isRecord(value) ||
     !isPositiveInteger(value['id']) ||
     !isText(value['country']) ||
+    !isCountryCode(value['countryCode']) ||
     !isArray(value['participations'])
   ) {
     return false;

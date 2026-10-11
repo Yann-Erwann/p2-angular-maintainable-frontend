@@ -13,7 +13,12 @@ describe('Country statistics', () => {
       participation(3, 2012, 20),
       participation(4, 2016, 30),
     ]);
-    const country: Olympic = Object.freeze({ id: 5, country: 'France', participations });
+    const country: Olympic = Object.freeze({
+      id: 5,
+      country: 'France',
+      countryCode: 'fr',
+      participations,
+    });
     const summary = summarizeCountry(country);
     expect(summary.participations.map((item) => item.id)).toEqual([2, 3, 4, 1]);
     expect(participations.map((item) => item.id)).toEqual([1, 2, 3, 4]);
@@ -23,7 +28,12 @@ describe('Country statistics', () => {
   });
 
   it('should retain country identity with zero totals for no participations', () => {
-    const summary = summarizeCountry({ id: 5, country: 'France', participations: [] });
+    const summary = summarizeCountry({
+      id: 5,
+      country: 'France',
+      countryCode: 'fr',
+      participations: [],
+    });
     expect(summary).toEqual({
       id: 5,
       name: 'France',
@@ -35,7 +45,7 @@ describe('Country statistics', () => {
   });
 
   it('should distinguish an absent country from an existing empty one', () => {
-    const countries = [{ id: 5, country: 'France', participations: [] }];
+    const countries = [{ id: 5, country: 'France', countryCode: 'fr', participations: [] }];
     expect(createCountryState(countries, 999)).toEqual({ status: 'not-found' });
     const state = createCountryState(countries, 5);
     expect(state.status).toBe('empty');
@@ -47,10 +57,11 @@ describe('Country statistics', () => {
   it('should select by ID when names match and preserve chart associations', () => {
     const state = createCountryState(
       [
-        { id: 1, country: 'France', participations: [] },
+        { id: 1, country: 'France', countryCode: 'fr', participations: [] },
         {
           id: 5,
           country: 'France',
+          countryCode: 'us',
           participations: [participation(1, 2020, 40), participation(2, 2012, 10)],
         },
       ],
@@ -58,6 +69,7 @@ describe('Country statistics', () => {
     );
     if (state.status !== 'success') throw new Error('Expected country data.');
     expect(state.data.summary.id).toBe(5);
+    expect(state.data.flagCode).toBe('us');
     expect(state.data.chartItems).toEqual([
       { label: 2012, value: 10 },
       { label: 2020, value: 40 },

@@ -18,6 +18,8 @@ export interface Olympic {
   readonly id: number;
   /** Libellé affiché ; la navigation utilise l’identifiant. */
   readonly country: string;
+  /** Code ISO 3166-1 alpha-2 en minuscules, indépendant du libellé affiché. */
+  readonly countryCode: string;
   /** Participations du pays, éventuellement vide. */
   readonly participations: readonly Participation[];
 }

@@ -28,6 +28,7 @@ describe('OlympicDataService', () => {
       {
         id: 1,
         country: 'France',
+        countryCode: 'fr',
         participations: [
           {
             id: 1,

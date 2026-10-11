@@ -92,6 +92,7 @@ export interface Participation {
 export interface Olympic {
   readonly id: number;
   readonly country: string;
+  readonly countryCode: string;
   readonly participations: readonly Participation[];
 }
 

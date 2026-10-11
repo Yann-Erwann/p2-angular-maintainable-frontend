@@ -6,6 +6,7 @@ const country = (id: number, medalsCount: number, year = 2012): Olympic =>
   Object.freeze({
     id,
     country: `Country ${id}`,
+    countryCode: 'aa',
     participations: Object.freeze([
       Object.freeze({ id: 1, year, city: 'London', medalsCount, athleteCount: 0 }),
     ]),

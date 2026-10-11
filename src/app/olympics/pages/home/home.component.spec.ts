@@ -65,7 +65,7 @@ describe('HomeComponent', () => {
 
   it('should cancel a pending chart render when destroyed', () => {
     const chartSpy = vi.spyOn(TestBed.inject(ChartRenderer), 'create');
-    data.next([{ id: 1, country: 'France', participations: [] }]);
+    data.next([{ id: 1, country: 'France', countryCode: 'fr', participations: [] }]);
     fixture.destroy();
     TestBed.tick();
     expect(chartSpy).not.toHaveBeenCalled();
@@ -74,8 +74,8 @@ describe('HomeComponent', () => {
 
   it('should render only the latest response when several arrive before rendering', async () => {
     const chartSpy = vi.spyOn(TestBed.inject(ChartRenderer), 'create');
-    data.next([{ id: 1, country: 'France', participations: [] }]);
-    data.next([{ id: 2, country: 'Italy', participations: [] }]);
+    data.next([{ id: 1, country: 'France', countryCode: 'fr', participations: [] }]);
+    data.next([{ id: 2, country: 'Italy', countryCode: 'it', participations: [] }]);
     fixture.detectChanges();
     await renderDeferredBlocks(fixture);
     expect(chartSpy).toHaveBeenCalledTimes(1);
@@ -84,7 +84,7 @@ describe('HomeComponent', () => {
   });
 
   it('should render the home chart immediately after data arrives', async () => {
-    data.next([{ id: 1, country: 'France', participations: [] }]);
+    data.next([{ id: 1, country: 'France', countryCode: 'fr', participations: [] }]);
     fixture.detectChanges();
     await fixture.whenStable();
     const page = fixture.nativeElement as HTMLElement;
@@ -96,7 +96,7 @@ describe('HomeComponent', () => {
 
   it('should navigate when the isolated chart emits a country selection', async () => {
     const navigate = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
-    data.next([{ id: 1, country: 'France', participations: [] }]);
+    data.next([{ id: 1, country: 'France', countryCode: 'fr', participations: [] }]);
     fixture.detectChanges();
     await renderDeferredBlocks(fixture);
     const chart = fixture.debugElement.query(By.directive(OlympicChartComponent))
@@ -116,8 +116,8 @@ describe('HomeComponent', () => {
   it('should navigate by ID for duplicate names and ignore invalid chart indices', async () => {
     const navigate = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
     data.next([
-      { id: 1, country: 'France', participations: [] },
-      { id: 5, country: 'France', participations: [] },
+      { id: 1, country: 'France', countryCode: 'fr', participations: [] },
+      { id: 5, country: 'France', countryCode: 'fr', participations: [] },
     ]);
     fixture.detectChanges();
     await renderDeferredBlocks(fixture);
@@ -136,7 +136,7 @@ describe('HomeComponent', () => {
     const failure = new Error('Navigation failed');
     vi.spyOn(TestBed.inject(Router), 'navigate').mockRejectedValue(failure);
     const report = vi.spyOn(TestBed.inject(ErrorHandler), 'handleError');
-    data.next([{ id: 1, country: 'France', participations: [] }]);
+    data.next([{ id: 1, country: 'France', countryCode: 'fr', participations: [] }]);
     fixture.detectChanges();
     await renderDeferredBlocks(fixture);
     const chart = fixture.debugElement.query(By.directive(OlympicChartComponent))
@@ -160,6 +160,7 @@ describe('HomeComponent', () => {
       {
         id: 1,
         country: 'France',
+        countryCode: 'fr',
         participations: [
           { id: 1, year: 2012, city: 'London', medalsCount: 10, athleteCount: 100 },
           { id: 2, year: 2016, city: 'Rio de Janeiro', medalsCount: 20, athleteCount: 150 },
@@ -168,6 +169,7 @@ describe('HomeComponent', () => {
       {
         id: 2,
         country: 'Italy',
+        countryCode: 'it',
         participations: [{ id: 1, year: 2012, city: 'London', medalsCount: 15, athleteCount: 120 }],
       },
     ]);
@@ -284,6 +286,7 @@ describe('HomeComponent', () => {
       {
         id: 1,
         country: 'France',
+        countryCode: 'fr',
         participations: [{ id: 1, year: 2012, city: 'London', medalsCount: 10, athleteCount: 100 }],
       },
     ]);
@@ -304,7 +307,7 @@ describe('HomeComponent', () => {
   });
 
   it('should avoid invalid percentage values when no medals have been won', async () => {
-    data.next([{ id: 1, country: 'France', participations: [] }]);
+    data.next([{ id: 1, country: 'France', countryCode: 'fr', participations: [] }]);
     fixture.detectChanges();
     await renderDeferredBlocks(fixture);
     expect(homeView(component).rows[0].percentage).toBe(0);

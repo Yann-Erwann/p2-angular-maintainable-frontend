@@ -36,6 +36,7 @@ describe('Country routing', () => {
     {
       id: 1,
       country: 'France',
+      countryCode: 'fr',
       participations: [
         { id: 1, year: 2012, city: 'London', medalsCount: 10, athleteCount: 100 },
         { id: 2, year: 2016, city: 'Rio', medalsCount: 20, athleteCount: 150 },
@@ -44,6 +45,7 @@ describe('Country routing', () => {
     {
       id: 2,
       country: 'Italy',
+      countryCode: 'it',
       participations: [{ id: 1, year: 2020, city: 'Tokyo', medalsCount: 15, athleteCount: 120 }],
     },
   ];
