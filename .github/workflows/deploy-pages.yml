@@ -173,9 +173,9 @@ jobs:
     timeout-minutes: 15
     environment:
       name: cloudflare-pages
-      url: ${{ steps.deployment.outputs.deployment-url }}
+      url: 'https://p2-angular-maintainable-frontend.pages.dev/'
     outputs:
-      page_url: ${{ steps.deployment.outputs.deployment-url }}
+      page_url: 'https://p2-angular-maintainable-frontend.pages.dev/'
     steps:
       - name: Checkout
         uses: actions/checkout@v6
