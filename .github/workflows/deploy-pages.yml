@@ -109,23 +109,6 @@ jobs:
       - name: Build production artifact
         run: |
           pnpm run build --configuration production --base-href / --deploy-url /
-          node --input-type=module <<'NODE'
-          import { randomBytes } from 'node:crypto';
-          import { readFileSync, writeFileSync } from 'node:fs';
-          import { join } from 'node:path';
-
-          const site = 'dist/olympic-games-starter/browser';
-          const nonce = randomBytes(16).toString('base64');
-          for (const fileName of ['index.html', '_headers']) {
-            const filePath = join(site, fileName);
-            const content = readFileSync(filePath, 'utf8');
-            const replaced = content.replaceAll('__CSP_NONCE__', nonce);
-            if (replaced === content || replaced.includes('__CSP_NONCE__')) {
-              throw new Error(`CSP nonce placeholder missing or unresolved in ${fileName}`);
-            }
-            writeFileSync(filePath, replaced);
-          }
-          NODE
 
       - name: Check Cloudflare Pages artifact
         run: |
@@ -142,9 +125,20 @@ jobs:
             throw new Error('Remove root 404.html from the published SPA artifact');
           }
           const html = readFileSync(index, 'utf8');
-          const nonce = html.match(/\bngcspnonce=["']([^"']+)["']/i)?.[1];
-          if (!nonce || !/^[A-Za-z0-9+/]{22}==$/.test(nonce)) {
-            throw new Error('Production HTML must contain a generated CSP nonce');
+          if (/__CSP_NONCE__|\bngcspnonce\s*=/.test(html)) {
+            throw new Error('Production HTML must not contain a static Angular CSP nonce');
+          }
+          const cspMeta = html.match(
+            /<meta\b[^>]*http-equiv=["']Content-Security-Policy["'][^>]*content=["']([^"\\]+)["']/i,
+          )?.[1];
+          if (!cspMeta) {
+            throw new Error('Production HTML must contain Angular auto-CSP metadata');
+          }
+          if (!/script-src\s+'strict-dynamic'(?:\s+'sha256-[^']+')+\s+https:\s+'unsafe-inline'/i.test(cspMeta)) {
+            throw new Error('Angular auto-CSP metadata must contain a hashed strict script policy');
+          }
+          if (/'unsafe-eval'/.test(cspMeta)) {
+            throw new Error('Angular auto-CSP must not allow eval');
           }
           const headerText = readFileSync(headers, 'utf8');
           const headerLines = headerText.split(/\r?\n/).filter((line) => line.trim());
@@ -159,7 +153,7 @@ jobs:
           const expectedHeaders = new Map([
             [
               'Content-Security-Policy',
-              `default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self' 'nonce-${nonce}'; style-src 'self' 'nonce-${nonce}'; img-src 'self' data:; connect-src 'self'; font-src 'self' data:; form-action 'self'`,
+              "base-uri 'self'; object-src 'none'; frame-ancestors 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; font-src 'self' data:; form-action 'self'",
             ],
             ['X-Content-Type-Options', 'nosniff'],
             ['X-Frame-Options', 'DENY'],
@@ -172,8 +166,8 @@ jobs:
           for (const [name, value] of expectedHeaders) {
             if (responseHeaders.get(name) !== value) throw new Error(`Invalid security header: ${name}`);
           }
-          if (/unsafe-(?:inline|eval)/.test(responseHeaders.get('Content-Security-Policy'))) {
-            throw new Error('CSP must not allow unsafe inline code or eval');
+          if (/'unsafe-eval'/.test(responseHeaders.get('Content-Security-Policy'))) {
+            throw new Error('CSP must not allow eval');
           }
           if (!/<base\b[^>]*\bhref=["']\/["']/i.test(html)) {
             throw new Error('Angular base href must be / for Cloudflare Pages');
@@ -266,7 +260,7 @@ jobs:
         run: |
           test -f dist/olympic-games-starter/browser/index.html
           test -f dist/olympic-games-starter/browser/_headers
-          ! grep -q '__CSP_NONCE__' dist/olympic-games-starter/browser/index.html
+          ! grep -Eq '__CSP_NONCE__|ngCspNonce=' dist/olympic-games-starter/browser/index.html
           ! grep -q '__CSP_NONCE__' dist/olympic-games-starter/browser/_headers
 
       - name: Deploy to Cloudflare Pages

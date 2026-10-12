@@ -53,6 +53,9 @@
           },
           "configurations": {
             "production": {
+              "security": {
+                "autoCsp": true
+              },
               "optimization": {
                 "scripts": true,
                 "styles": {

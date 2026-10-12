@@ -30,20 +30,28 @@ test('the deployed application serves HTML, data and working navigation', async 
   expect(html).toContain('type="module"');
   if (process.env['PRODUCTION_SERVER_URL']) {
     const headers = htmlResponse.headers();
-    const nonce = html.match(/\bngcspnonce=["']([^"']+)["']/i)?.[1];
-    if (!nonce || !/^[A-Za-z0-9+/]{22}==$/.test(nonce)) {
-      throw new Error('The deployed HTML must expose a generated CSP nonce for Angular styles.');
+    if (/__CSP_NONCE__|\bngcspnonce\s*=/i.test(html)) {
+      throw new Error('The deployed HTML must not contain a static Angular CSP nonce.');
     }
+    const cspMeta = html.match(
+      /<meta\b[^>]*http-equiv=["']Content-Security-Policy["'][^>]*content=["']([^"\\]+)["']/i,
+    )?.[1];
+    if (!cspMeta) throw new Error('The deployed HTML is missing Angular auto-CSP metadata.');
+    const metaDirectives = parseCsp(cspMeta);
+    const scriptSources = metaDirectives.get('script-src') ?? [];
+    expect(scriptSources).toContain("'strict-dynamic'");
+    expect(scriptSources).toContain('https:');
+    expect(scriptSources).toContain("'unsafe-inline'");
+    expect(scriptSources.some((source) => /^'sha256-[^']+'$/.test(source))).toBe(true);
+    expect(cspMeta).not.toContain("'unsafe-eval'");
     const csp = headers['content-security-policy'];
     if (!csp) throw new Error('The deployed application is missing Content-Security-Policy.');
     const directives = parseCsp(csp);
     const expectedDirectives = new Map<string, readonly string[]>([
-      ['default-src', ["'self'"]],
       ['base-uri', ["'self'"]],
       ['object-src', ["'none'"]],
       ['frame-ancestors', ["'none'"]],
-      ['script-src', ["'self'", `'nonce-${nonce}'`]],
-      ['style-src', ["'self'", `'nonce-${nonce}'`]],
+      ['style-src', ["'self'", "'unsafe-inline'"]],
       ['img-src', ["'self'", 'data:']],
       ['connect-src', ["'self'"]],
       ['font-src', ["'self'", 'data:']],
@@ -53,6 +61,9 @@ test('the deployed application serves HTML, data and working navigation', async 
     for (const [name, sources] of expectedDirectives) {
       expect(directives.get(name), `Unexpected ${name} CSP directive`).toEqual(sources);
     }
+    expect(directives.has('default-src')).toBe(false);
+    expect(directives.has('script-src')).toBe(false);
+    expect(csp).not.toContain("'unsafe-eval'");
     expect(headers['x-content-type-options']).toBe('nosniff');
     expect(headers['x-frame-options']).toBe('DENY');
     expect(headers['referrer-policy']).toBe('strict-origin-when-cross-origin');
