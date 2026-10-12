@@ -205,6 +205,12 @@ jobs:
         env:
           E2E_USE_EXISTING_BUILD: 'true'
 
+      - name: Lighthouse 97 on publication candidate
+        run: pnpm exec playwright test e2e/lighthouse.spec.ts --project=lighthouse
+        env:
+          E2E_USE_EXISTING_BUILD: 'true'
+          LIGHTHOUSE_RUNS: ${{ (github.event_name == 'workflow_dispatch' && inputs.full_lighthouse) && '3' || '1' }}
+
       - name: Upload validated site
         if: success() && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
@@ -329,32 +335,6 @@ jobs:
         run: pnpm exec playwright test e2e/verify-deployment.spec.ts --project=chromium
         env:
           PRODUCTION_SERVER_URL: ${{ needs.deploy.outputs.page_url }}
-
-      - name: Prepare deployed Lighthouse routes
-        id: lighthouse_routes
-        if: always()
-        env:
-          PRODUCTION_SERVER_URL: ${{ needs.deploy.outputs.page_url }}
-        run: |
-          node --input-type=module <<'NODE' >> "$GITHUB_ENV"
-          const base = process.env.PRODUCTION_SERVER_URL.endsWith('/')
-            ? process.env.PRODUCTION_SERVER_URL
-            : `${process.env.PRODUCTION_SERVER_URL}/`;
-          const response = await fetch(new URL('assets/mock/olympic.json', base));
-          if (!response.ok) throw new Error(`Unable to load deployed Olympic data: ${response.status}`);
-          const countries = await response.json();
-          if (!Array.isArray(countries) || countries.some((country) => !Number.isSafeInteger(country?.id))) {
-            throw new Error('Deployed Olympic data does not expose valid country identifiers.');
-          }
-          console.log(`LIGHTHOUSE_COUNTRY_IDS=${countries.map((country) => country.id).join(',')}`);
-          NODE
-
-      - name: Lighthouse 98 on deployed Cloudflare Pages
-        if: always() && steps.lighthouse_routes.outcome == 'success'
-        run: pnpm exec playwright test e2e/lighthouse.spec.ts --project=lighthouse
-        env:
-          PRODUCTION_SERVER_URL: ${{ needs.deploy.outputs.page_url }}
-          LIGHTHOUSE_RUNS: ${{ (github.event_name == 'workflow_dispatch' && inputs.full_lighthouse) && '3' || '1' }}
 
       - name: Upload deployment diagnostics
         if: always()

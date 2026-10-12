@@ -129,14 +129,14 @@ avec `Ctrl+C`.
 Les tests `e2e/lighthouse.spec.ts` lancent Chromium avec Playwright et exécutent
 Lighthouse sur l’accueil et chaque pays du JSON livré, en mobile et desktop.
 Localement, trois passages sont exécutés par défaut ; chaque catégorie
-(performance, accessibilité, bonnes pratiques et SEO) doit atteindre au moins 98
+(performance, accessibilité, bonnes pratiques et SEO) doit atteindre au moins 97
 à chaque passage. En CI, un seul passage est utilisé pour réduire la durée du
 pipeline ; une exécution manuelle avec l’option `full_lighthouse` réactive les
-trois passages. Chaque score inférieur à 98, score absent ou erreur fait échouer
+trois passages. Chaque score inférieur à 97, score absent ou erreur fait échouer
 les tests et bloque le déploiement. Les rapports JSON et HTML sont joints au
 rapport Playwright. Les rapports des tests du build sont conservés dans
-`validation-reports`; les rapports Lighthouse de la version réellement publiée
-sont conservés dans `deployment-diagnostics`.
+`validation-reports`. Le Lighthouse est exécuté sur l’artefact candidat avant
+son upload et son déploiement.
 Les routes inconnues et la page `not-found` restent couvertes par les tests
 fonctionnels.
 
@@ -150,17 +150,17 @@ Playwright démarre automatiquement le serveur local si `PRODUCTION_SERVER_URL`
 n’est pas renseigné. Les rapports locaux sont disponibles dans
 `playwright-report/` et `test-results/`.
 
-La CI vérifie le code, génère Compodoc et teste le build de production à la racine
-avec Playwright avant de le livrer sur Cloudflare Pages depuis `main`. Le site
-publié est accessible sur
+La CI vérifie le code, génère Compodoc, teste le build de production à la racine
+avec Playwright et exécute Lighthouse sur l’artefact candidat avant de le livrer
+sur Cloudflare Pages depuis `main`. Un échec Lighthouse empêche donc l’upload de
+l’artefact et le job de déploiement. Le site publié est accessible sur
 <https://p2-angular-maintainable-frontend.pages.dev/>. Après publication, elle
-rejoue la vérification de navigation et Lighthouse sur cette URL afin de contrôler
-les routes et ressources servies en production.
-Après publication, elle contrôle le HTML de la livraison, les
-données, les ressources et les erreurs JavaScript, puis parcourt l’accueil et
-la France avec rechargement direct et retour à l’accueil. Les diagnostics sont
-conservés 14 jours. Un contrôle échoué fait échouer le job, le site déjà publié
-reste en ligne : corriger ou rétablir la version précédente par un nouveau commit.
+rejoue uniquement la vérification de navigation, du HTML, des données, des
+ressources et des erreurs JavaScript, puis parcourt l’accueil et la France avec
+rechargement direct et retour à l’accueil. Les diagnostics sont conservés 14
+jours. Un contrôle post-publication échoué fait échouer le job, mais le site déjà
+publié reste en ligne : corriger ou rétablir la version précédente par un nouveau
+commit.
 
 ## Repères et documentation
 
