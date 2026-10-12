@@ -232,6 +232,7 @@ jobs:
       url: 'https://p2-angular-maintainable-frontend.pages.dev/'
     outputs:
       page_url: 'https://p2-angular-maintainable-frontend.pages.dev/'
+      deployment_url: ${{ steps.deployment.outputs.deployment-url }}
     steps:
       - name: Checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
@@ -324,13 +325,13 @@ jobs:
       - name: Verify deployed pages and data
         run: pnpm exec playwright test e2e/verify-deployment.spec.ts --project=chromium
         env:
-          PRODUCTION_SERVER_URL: ${{ needs.deploy.outputs.page_url }}
+          PRODUCTION_SERVER_URL: ${{ needs.deploy.outputs.deployment_url }}
 
       - name: Prepare deployed Lighthouse routes
         id: lighthouse_routes
         if: always()
         env:
-          PRODUCTION_SERVER_URL: ${{ needs.deploy.outputs.page_url }}
+          PRODUCTION_SERVER_URL: ${{ needs.deploy.outputs.deployment_url }}
         run: |
           node --input-type=module <<'NODE' >> "$GITHUB_ENV"
           const base = process.env.PRODUCTION_SERVER_URL.endsWith('/')
@@ -349,7 +350,7 @@ jobs:
         if: always() && steps.lighthouse_routes.outcome == 'success'
         run: pnpm exec playwright test e2e/lighthouse.spec.ts --project=lighthouse
         env:
-          PRODUCTION_SERVER_URL: ${{ needs.deploy.outputs.page_url }}
+          PRODUCTION_SERVER_URL: ${{ needs.deploy.outputs.deployment_url }}
           LIGHTHOUSE_RUNS: ${{ (github.event_name == 'workflow_dispatch' && inputs.full_lighthouse) && '3' || '1' }}
 
       - name: Upload deployment diagnostics
