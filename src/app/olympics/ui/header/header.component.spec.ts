@@ -64,7 +64,7 @@ describe('HeaderComponent', () => {
     expect(page.querySelector('.results-header__heading > h2')?.textContent?.trim()).toBe(
       'Olympic games',
     );
-    expect(page.querySelectorAll('.results-header__indicators > dl').length).toBe(0);
+    expect(page.querySelectorAll('.results-header__indicators > dl')).toHaveLength(0);
   });
   it('should keep semantic icons and styles when indicators are reordered', () => {
     const indicators: readonly Indicator[] = [
