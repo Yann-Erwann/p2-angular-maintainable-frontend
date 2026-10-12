@@ -45,10 +45,8 @@ Le build de production est écrit dans `dist/olympic-games-starter/browser/`.
 Le build local utilise directement Angular CLI : minification JS/CSS,
 tree-shaking et AOT sont activés. La configuration commune `index.preloadInitial` laisse Angular générer les liens
 de préchargement des modules initiaux. Le graphique d’accueil est chargé avec
-l’application en développement et en production. Avant les audits, le workflow
-prépare une copie locale avec `404.html` pour les tests Playwright des navigations
-directes d’une SPA. L’artefact publié sur Cloudflare Pages est contrôlé
-séparément et ne contient pas de `404.html`.
+l’application en développement et en production. Le workflow prépare une copie
+locale de l’artefact pour les tests Playwright des navigations directes d’une SPA.
 Le JSON et le fond de bannière sont préchargés depuis le HTML initial. Le graphique d’accueil apparaît dès que les données sont disponibles.
 En production, Angular intègre le CSS critique au HTML et charge la feuille globale
 sans bloquer le rendu. Les styles de mise en page sont chargés avec chaque page
@@ -69,9 +67,9 @@ par `serve.json`.
 Relancer `pnpm run build` pour retrouver un build sans source maps.
 
 Le routage utilise des URL sans `#`.
-Le build publié sur Cloudflare Pages utilise `/` comme chemin de base et ne
-contient pas de `404.html`. Le pipeline vérifie cet artefact, puis contrôle les
-routes Angular et les ressources après publication.
+Le build publié sur Cloudflare Pages utilise `/` comme chemin de base. Le pipeline
+vérifie cet artefact, puis contrôle les routes Angular et les ressources après
+publication.
 
 ## Pages et clavier
 
@@ -86,10 +84,10 @@ routes Angular et les ressources après publication.
 
 La bannière conserve son fond décoratif WebP préchargé et ses textes HTML.
 Sur la page pays, toute la bannière renvoie à l’accueil.
-Tab et Maj+Tab parcourent ses textes, les indicateurs et les points du canvas,
-puis sortent du graphique aux extrémités. Entrée ou Espace ouvre le pays sélectionné.
-Les flèches, Home et End restent disponibles. Les valeurs sont aussi fournies
-comme alternative textuelle accessible.
+Le canvas est un unique stop de tabulation. Les flèches explorent ses points,
+Home et End atteignent le premier ou le dernier point, puis Tab ou Maj+Tab sort
+du graphique. Entrée ou Espace ouvre le pays sélectionné dans le camembert.
+Les valeurs sont aussi fournies comme alternative textuelle accessible.
 
 Dans le filtre, Entrée ou Espace ouvre ou sélectionne, Tab parcourt les options,
 Échap ou un clic extérieur ferme le popover. Le bouton est désactivé au chargement.
@@ -98,8 +96,9 @@ d’assistance reste à vérifier humainement.
 
 ## Tests navigateur et performances
 
-Le workflow démarre le serveur de production sous
-`/p2-angular-maintainable-frontend/` sur le port 4187 avec Playwright pour les tests navigateur du build avant publication.
+Le workflow prépare une copie locale de l’artefact de production et démarre le
+serveur à la racine (`/`) sur le port 4187 avec Playwright pour les tests navigateur
+du build avant publication.
 Les tests Playwright vérifient navigation, cache, erreurs, clavier et affichage responsive.
 Pour tester localement un build servi à la racine :
 
@@ -138,13 +137,12 @@ les tests et bloque le déploiement. Les rapports JSON et HTML sont joints au
 rapport Playwright. Les rapports des tests du build sont conservés dans
 `validation-reports`; les rapports Lighthouse de la version réellement publiée
 sont conservés dans `deployment-diagnostics`.
-Les routes d’erreur HTTP 404 restent couvertes par les tests fonctionnels.
+Les routes inconnues et la page `not-found` restent couvertes par les tests
+fonctionnels.
 
-Pour exécuter uniquement Lighthouse sur le build préfixé :
+Pour exécuter uniquement Lighthouse sur le build local :
 
 ```bash
-pnpm run build:e2e
-cp dist/olympic-games-starter/browser/index.html dist/olympic-games-starter/browser/404.html
 pnpm run test:e2e --project=lighthouse
 ```
 
