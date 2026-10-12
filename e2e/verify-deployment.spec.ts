@@ -27,7 +27,12 @@ test('the deployed application serves HTML, data and working navigation', async 
   expect(htmlResponse.headers()['content-type']).toContain('text/html');
   const html = await htmlResponse.text();
   expect(html).toContain('<app-root');
-  expect(html).toContain('type="module"');
+  const hasModuleEntryPoint =
+    /<script\b[^>]*\btype=["']module["']/i.test(html) ||
+    /\bvar\s+scripts\s*=\s*\[\s*\[\s*["'][^"']+\.m?js["']\s*,\s*["']module["']/i.test(html);
+  expect(hasModuleEntryPoint, 'The deployed HTML must expose a module JavaScript entrypoint.').toBe(
+    true,
+  );
   if (process.env['PRODUCTION_SERVER_URL']) {
     const headers = htmlResponse.headers();
     if (/__CSP_NONCE__|\bngcspnonce\s*=/i.test(html)) {
