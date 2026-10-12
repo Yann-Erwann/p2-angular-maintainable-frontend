@@ -182,9 +182,9 @@ pnpm run docs
 pnpm run docs:serve
 ```
 
-Compodoc génère `documentation/`, versionné dans le dépôt. `docs:serve` régénère le site
-et le sert sur <http://127.0.0.1:8080>. Les commentaires expliquent les contrats
-et décisions utiles, sans objectif de couverture par symbole.
+Compodoc génère `documentation/`, ignoré par Git et conservé comme artefact CI.
+`docs:serve` régénère le site et le sert sur <http://127.0.0.1:8080>. Les commentaires
+expliquent les contrats et décisions utiles, sans objectif de couverture par symbole.
 
 Voir l’[architecture](docs/architecture/architecture.md),
 la [note d’architecture](docs/architecture/notes-architecture.md),

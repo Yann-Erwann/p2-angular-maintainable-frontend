@@ -2,8 +2,8 @@
 
 Statut : conservé et testé — 9 octobre 2026.
 
-`DataService` charge un JSON statique en tant que contenu `unknown`, le valide,
-traduit les erreurs en `DataLoadError` puis partage la réponse avec
+`OlympicDataService` charge un JSON statique en tant que contenu `unknown`, le valide,
+traduit les erreurs en `OlympicDataLoadError` puis partage la réponse avec
 `shareReplay({ bufferSize: 1, refCount: true })`.
 
 Les consommateurs simultanés partagent une requête. Une réponse terminée avec
