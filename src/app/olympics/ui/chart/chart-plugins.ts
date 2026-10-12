@@ -53,6 +53,37 @@ export const dashboardTooltipMedal: Plugin = {
   },
 };
 
+/** Place un libellé sans sortir des bornes ni boucler lorsque l’espace est saturé. */
+export function placeChartLabel(
+  preferred: number,
+  occupied: readonly number[],
+  min: number,
+  max: number,
+  distance: number,
+): number {
+  const lower = Math.max(0, Math.min(min, max));
+  const upper = Math.max(lower, max);
+  const safeDistance = Math.max(1, distance);
+  const initial = Number.isFinite(preferred) ? Math.max(lower, Math.min(upper, preferred)) : lower;
+  const maxSteps = Math.ceil((upper - lower) / safeDistance);
+
+  for (let step = 0; step <= maxSteps; step += 1) {
+    const candidates =
+      step === 0 ? [initial] : [initial + step * safeDistance, initial - step * safeDistance];
+    for (const candidate of candidates) {
+      if (
+        candidate >= lower &&
+        candidate <= upper &&
+        !occupied.some((value) => Math.abs(value - candidate) < safeDistance)
+      ) {
+        return candidate;
+      }
+    }
+  }
+
+  return initial;
+}
+
 /** Compteurs des secteurs et noms des pays autour du camembert, y compris sur mobile. */
 export const dashboardLabels = (items: readonly ChartItem[]): Plugin => ({
   id: 'dashboardMedalLabels',
@@ -63,28 +94,10 @@ export const dashboardLabels = (items: readonly ChartItem[]): Plugin => ({
     const labelGap = compact ? 6 : 12;
     const labelDistance = compact ? 18 : 20;
     const labelPositions: Record<'left' | 'right', number[]> = { left: [], right: [] };
-
-    const placeLabel = (preferred: number, side: 'left' | 'right'): number => {
-      const min = compact ? 12 : 14;
-      const max = chart.height - min;
-      let position = Math.max(min, Math.min(max, preferred));
-      const occupied = labelPositions[side];
-      while (occupied.some((value) => Math.abs(value - position) < labelDistance)) {
-        const next = position + labelDistance;
-        if (next <= max) {
-          position = next;
-          continue;
-        }
-        const previous = position - labelDistance;
-        if (previous >= min) {
-          position = previous;
-          continue;
-        }
-        break;
-      }
-      occupied.push(position);
-      return position;
-    };
+    const chartHeight = Number.isFinite(chart.height) ? Math.max(0, chart.height) : 0;
+    const margin = compact ? 12 : 14;
+    const min = Math.min(margin, chartHeight);
+    const max = Math.max(min, chartHeight - margin);
 
     ctx.save();
     chart.getDatasetMeta(0).data.forEach((element, index) => {
@@ -118,7 +131,14 @@ export const dashboardLabels = (items: readonly ChartItem[]): Plugin => ({
       const startX = element.x + cos * radius;
       const startY = element.y + sin * radius;
       const elbowX = element.x + cos * (radius + (compact ? 14 : 30));
-      const elbowY = placeLabel(element.y + sin * (radius + (compact ? 18 : 30)), side);
+      const elbowY = placeChartLabel(
+        element.y + sin * (radius + (compact ? 18 : 30)),
+        labelPositions[side],
+        min,
+        max,
+        labelDistance,
+      );
+      labelPositions[side].push(elbowY);
       const endX = right
         ? Math.min(width - textWidth - labelGap, elbowX + (compact ? 24 : 70))
         : Math.max(textWidth + labelGap, elbowX - (compact ? 20 : 30));

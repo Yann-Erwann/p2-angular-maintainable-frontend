@@ -16,20 +16,20 @@ sont des constats historiques et ne constituent pas une liste de travaux restant
 
 ### État technique établi
 
-| Élément                     | Fait du snapshot                                                      | Source                                 |
-| --------------------------- | --------------------------------------------------------------------- | -------------------------------------- |
-| Angular core / compiler-cli | 18.2.13 verrouillé                                                    | package-lock.json                      |
-| Angular CLI / build-angular | 18.2.20 verrouillé                                                    | package-lock.json                      |
-| TypeScript / RxJS           | 5.4.5 / 7.8.2                                                         | package-lock.json                      |
-| Chart.js / Zone.js          | 4.5.0 / 0.14.10                                                       | package-lock.json                      |
-| Jasmine / Karma             | 5.1.2 / 6.4.4                                                         | package-lock.json                      |
-| Architecture                | AppModule et AppRoutingModule, quatre composants                      | src/main.ts et src/app/                |
-| Route détail                | country/:countryName                                                  | app-routing.module.ts                  |
-| Gestionnaire                | package-lock.json et commandes npm                                    | manifeste et README                    |
-| Typage                      | strict et strictTemplates activés, any explicites présents            | tsconfig.json et composants            |
-| Environnement               | node:22-bookworm, workspace SSH                                       | .workspace/ et compose.workspace.yaml  |
-| Données                     | JSON local, HTTP dupliqué dans Home/Country                           | composants et assets/mock/olympic.json |
-| Tests                       | Snapshot historique : platform-browser-dynamic/testing et zone.js/testing | src/test.ts du snapshot               |
+| Élément                     | Fait du snapshot                                                          | Source                                 |
+| --------------------------- | ------------------------------------------------------------------------- | -------------------------------------- |
+| Angular core / compiler-cli | 18.2.13 verrouillé                                                        | package-lock.json                      |
+| Angular CLI / build-angular | 18.2.20 verrouillé                                                        | package-lock.json                      |
+| TypeScript / RxJS           | 5.4.5 / 7.8.2                                                             | package-lock.json                      |
+| Chart.js / Zone.js          | 4.5.0 / 0.14.10                                                           | package-lock.json                      |
+| Jasmine / Karma             | 5.1.2 / 6.4.4                                                             | package-lock.json                      |
+| Architecture                | AppModule et AppRoutingModule, quatre composants                          | src/main.ts et src/app/                |
+| Route détail                | country/:countryName                                                      | app-routing.module.ts                  |
+| Gestionnaire                | package-lock.json et commandes npm                                        | manifeste et README                    |
+| Typage                      | strict et strictTemplates activés, any explicites présents                | tsconfig.json et composants            |
+| Environnement               | node:22-bookworm, workspace SSH                                           | .workspace/ et compose.workspace.yaml  |
+| Données                     | JSON local, HTTP dupliqué dans Home/Country                               | composants et assets/mock/olympic.json |
+| Tests                       | Snapshot historique : platform-browser-dynamic/testing et zone.js/testing | src/test.ts du snapshot                |
 
 Les versions sont des résolutions de lockfile, pas des versions exécutées. Aucun node_modules ni dossier .git n’est fourni. L’inventaire complet des dépendances et leur traitement sont dans issues-commits.md.
 
@@ -171,7 +171,7 @@ A18, A20, A21 et A22 ne sont pas transformés en défauts fictifs. Le manque d�
 | `src/app/not-found/`                                                      | NotFoundComponent et retour vers l’accueil                                    |
 | `src/assets/mock/olympic.json`                                            | Source des données actuelle conservée                                         |
 | `src/environments/`                                                       | Configurations existantes, sans endpoint futur inventé                        |
-| `src/testing/vitest.setup.ts`                                             | Compatibilité jsdom pour les APIs DOM manquantes                               |
+| `src/testing/vitest.setup.ts`                                             | Compatibilité jsdom pour les APIs DOM manquantes                              |
 | `karma.conf.cjs`                                                          | Proposition de configuration du runner Node, à confirmer après diagnostic I04 |
 | `pnpm-lock.yaml`                                                          | Résolution générée par pnpm après import, à versionner avec les manifestes    |
 | `.workspace/` et `compose.workspace.yaml`                                 | Environnement de développement SSH existant                                   |
