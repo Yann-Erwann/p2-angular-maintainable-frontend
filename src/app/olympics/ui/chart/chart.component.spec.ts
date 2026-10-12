@@ -137,9 +137,8 @@ describe('OlympicChartComponent', () => {
     expect(selected).toHaveBeenCalledWith(1);
     key('Home');
     expect(fixture.componentInstance.selectedIndex()).toBe(0);
-    expect(key('Tab').defaultPrevented).toBe(true);
-    expect(fixture.componentInstance.selectedIndex()).toBe(1);
     expect(key('Tab').defaultPrevented).toBe(false);
+    expect(fixture.componentInstance.selectedIndex()).toBe(0);
     expect(vi.mocked(renderer.create).mock.calls.length).toBe(1);
     (fixture.nativeElement as HTMLElement).dispatchEvent(
       new FocusEvent('focusout', { relatedTarget: document.body }),
@@ -163,7 +162,7 @@ describe('OlympicChartComponent', () => {
     expect((fixture.nativeElement as HTMLElement).querySelector('button')).toBeNull();
   });
 
-  it('should provide complete fallback data and accessible keyboard instructions without buttons', () => {
+  it('should provide complete fallback data and accessible keyboard instructions', () => {
     fixture.componentRef.setInput('items', [
       { label: 'France', value: 30 },
       { label: 'Italy', value: 20 },
@@ -175,6 +174,7 @@ describe('OlympicChartComponent', () => {
     expect(canvas.getAttribute('role')).toBe('img');
     expect(canvas.getAttribute('aria-label')).toBe('Total medals by country chart');
     expect(canvas.getAttribute('aria-describedby')).toBe('data-caption data-caption-keys');
+    expect(page.querySelector('#data-caption-keys')?.textContent).toContain('Tab leaves the chart');
     expect(page.querySelector('#data-caption-keys')?.textContent).toContain('Enter or Space');
     expect(page.querySelector('button')).toBeNull();
     fixture.componentInstance.onKeydown(new KeyboardEvent('keydown', { key: 'ArrowRight' }));
@@ -182,7 +182,17 @@ describe('OlympicChartComponent', () => {
     expect(page.querySelector('[role="status"]')?.textContent?.trim()).toBe('Italy: 20 medals');
   });
 
-  it('should visit every chart item with Tab and allow exiting at either boundary', () => {
+  it('should expose one tab stop for every chart canvas', () => {
+    fixture.detectChanges();
+    const canvas = (fixture.nativeElement as HTMLElement).querySelector('canvas')!;
+    expect(canvas.getAttribute('tabindex')).toBe('0');
+
+    fixture.componentRef.setInput('type', 'line');
+    fixture.detectChanges();
+    expect(canvas.getAttribute('tabindex')).toBe('0');
+  });
+
+  it('should leave the chart on Tab and explore every chart item with arrows', () => {
     fixture.componentRef.setInput('items', [
       { label: 'France', value: 30 },
       { label: 'Italy', value: 20 },
@@ -190,29 +200,20 @@ describe('OlympicChartComponent', () => {
     ]);
     fixture.detectChanges();
     const canvas = (fixture.nativeElement as HTMLElement).querySelector('canvas')!;
-    const tab = (shiftKey = false) => {
-      const event = new KeyboardEvent('keydown', {
-        key: 'Tab',
-        shiftKey,
-        bubbles: true,
-        cancelable: true,
-      });
+    const key = (value: string) => {
+      const event = new KeyboardEvent('keydown', { key: value, bubbles: true, cancelable: true });
       canvas.dispatchEvent(event);
       fixture.detectChanges();
       return event.defaultPrevented;
     };
     canvas.dispatchEvent(new FocusEvent('focus'));
     expect(fixture.componentInstance.selectedIndex()).toBe(0);
-    expect(tab()).toBe(true);
+    expect(key('ArrowRight')).toBe(true);
     expect(fixture.componentInstance.selection()).toBe('Italy: 20 medals');
-    expect(tab()).toBe(true);
+    expect(key('ArrowRight')).toBe(true);
     expect(fixture.componentInstance.selection()).toBe('Spain: 10 medals');
-    expect(tab()).toBe(false);
-    expect(tab(true)).toBe(true);
-    expect(fixture.componentInstance.selectedIndex()).toBe(1);
-    expect(tab(true)).toBe(true);
-    expect(fixture.componentInstance.selectedIndex()).toBe(0);
-    expect(tab(true)).toBe(false);
+    expect(key('Tab')).toBe(false);
+    expect(fixture.componentInstance.selectedIndex()).toBe(2);
     fixture.componentInstance.rememberTabDirection(
       new KeyboardEvent('keydown', { key: 'Tab', shiftKey: true }),
     );

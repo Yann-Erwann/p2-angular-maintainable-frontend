@@ -130,19 +130,10 @@ export class OlympicChartComponent {
       this.rendered?.focusPoint(null);
   }
 
-  /**
-   * Tab laisse sortir le focus aux extrémités ; les flèches permettent une exploration circulaire.
-   */
+  /** Les flèches permettent une exploration circulaire ; Tab sort du graphique. */
   onKeydown(event: KeyboardEvent): void {
     if (event.altKey || event.ctrlKey || event.metaKey) return;
     switch (event.key) {
-      case 'Tab': {
-        const next = this.selectedIndex() + (event.shiftKey ? -1 : 1);
-        if (next < 0 || next >= this.items().length) return;
-        this.selectedIndex.set(next);
-        this.highlight();
-        break;
-      }
       case 'ArrowLeft':
       case 'ArrowUp':
         this.move(-1);
