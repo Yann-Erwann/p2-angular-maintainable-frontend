@@ -67,26 +67,28 @@ export class OlympicChartComponent {
 
   /** Crée le graphique après le rendu du canvas et nettoie l’instance précédente. */
   constructor() {
-    afterRenderEffect((onCleanup) => {
-      const chart = this.renderer.create(
-        this.canvas().nativeElement,
-        {
-          type: this.type(),
-          items: this.items(),
-        },
-        (index) => this.pointSelected.emit(index),
-      );
-      this.rendered = chart;
-      untracked(() => {
-        this.selectedIndex.set(
-          Math.min(this.selectedIndex(), Math.max(0, this.items().length - 1)),
+    afterRenderEffect({
+      read: (onCleanup) => {
+        const chart = this.renderer.create(
+          this.canvas().nativeElement,
+          {
+            type: this.type(),
+            items: this.items(),
+          },
+          (index) => this.pointSelected.emit(index),
         );
-        if (this.host.nativeElement.contains(document.activeElement)) this.highlight();
-      });
-      onCleanup(() => {
-        chart.destroy();
-        if (this.rendered === chart) this.rendered = undefined;
-      });
+        this.rendered = chart;
+        untracked(() => {
+          this.selectedIndex.set(
+            Math.min(this.selectedIndex(), Math.max(0, this.items().length - 1)),
+          );
+          if (this.host.nativeElement.contains(document.activeElement)) this.highlight();
+        });
+        onCleanup(() => {
+          chart.destroy();
+          if (this.rendered === chart) this.rendered = undefined;
+        });
+      },
     });
   }
 
