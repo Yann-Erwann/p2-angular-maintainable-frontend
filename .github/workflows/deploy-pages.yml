@@ -108,7 +108,7 @@ jobs:
 
       - name: Build production artifact
         run: |
-          pnpm run build --configuration production --base-href /
+          pnpm run build --configuration production --base-href / --deploy-url /
           node --input-type=module <<'NODE'
           import { randomBytes } from 'node:crypto';
           import { readFileSync, writeFileSync } from 'node:fs';
@@ -178,17 +178,26 @@ jobs:
           if (!/<base\b[^>]*\bhref=["']\/["']/i.test(html)) {
             throw new Error('Angular base href must be / for Cloudflare Pages');
           }
+          const modulePreloads = [...html.matchAll(/<link\b[^>]*>/gi)]
+            .map((match) => match[0])
+            .filter((tag) => /\brel=["']modulepreload["']/i.test(tag))
+            .map((tag) => tag.match(/\bhref=["']([^"']+)["']/i)?.[1])
+            .filter((src) => src !== undefined);
+          if (modulePreloads.some((src) => !src.startsWith('/'))) {
+            throw new Error('Modulepreload URLs must be absolute from the Cloudflare Pages root');
+          }
           const sources = [...html.matchAll(/<script\b[^>]*\bsrc=["']([^"']+)["'][^>]*>/gi)]
             .map((match) => match[1])
             .filter((src) => !/^(https?:)?\/\//i.test(src) && /\.m?js(?:[?#]|$)/i.test(src));
-          if (sources.length === 0) throw new Error('No local JavaScript entrypoints in index.html');
-          for (const src of sources) {
+          const assetSources = [...new Set([...sources, ...modulePreloads])];
+          if (assetSources.length === 0) throw new Error('No local JavaScript entrypoints in index.html');
+          for (const src of assetSources) {
             const relativePath = decodeURIComponent(new URL(src, 'https://local.invalid/').pathname.slice(1));
             if (!existsSync(join(site, relativePath))) {
               throw new Error(`Missing JavaScript entrypoint: ${relativePath}`);
             }
           }
-          console.log(`Validated ${sources.length} local JavaScript entrypoint(s)`);
+          console.log(`Validated ${assetSources.length} local JavaScript asset reference(s)`);
           NODE
 
       - name: Prepare local E2E artifact
