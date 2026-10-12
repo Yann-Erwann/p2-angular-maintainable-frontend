@@ -30,6 +30,7 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/robots.txt",
+              "src/_headers",
               {
                 "glob": "olympic.json",
                 "input": "src/assets/mock",

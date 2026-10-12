@@ -1,5 +1,18 @@
 import { expect, test } from '@playwright/test';
 
+function parseCsp(value: string): ReadonlyMap<string, readonly string[]> {
+  const directives = new Map<string, readonly string[]>();
+  for (const rawDirective of value.split(';')) {
+    const parts = rawDirective.trim().split(/\s+/);
+    if (parts.length === 1 && parts[0] === '') continue;
+    const [name, ...sources] = parts;
+    if (!name || directives.has(name))
+      throw new Error(`Invalid or duplicate CSP directive: ${name}`);
+    directives.set(name, sources);
+  }
+  return directives;
+}
+
 test('the deployed application serves HTML, data and working navigation', async ({
   baseURL,
   page,
@@ -15,6 +28,38 @@ test('the deployed application serves HTML, data and working navigation', async 
   const html = await htmlResponse.text();
   expect(html).toContain('<app-root');
   expect(html).toContain('type="module"');
+  if (process.env['PRODUCTION_SERVER_URL']) {
+    const headers = htmlResponse.headers();
+    const nonce = html.match(/\bngcspnonce=["']([^"']+)["']/i)?.[1];
+    if (!nonce || !/^[A-Za-z0-9+/]{22}==$/.test(nonce)) {
+      throw new Error('The deployed HTML must expose a generated CSP nonce for Angular styles.');
+    }
+    const csp = headers['content-security-policy'];
+    if (!csp) throw new Error('The deployed application is missing Content-Security-Policy.');
+    const directives = parseCsp(csp);
+    const expectedDirectives = new Map<string, readonly string[]>([
+      ['default-src', ["'self'"]],
+      ['base-uri', ["'self'"]],
+      ['object-src', ["'none'"]],
+      ['frame-ancestors', ["'none'"]],
+      ['script-src', ["'self'", `'nonce-${nonce}'`]],
+      ['style-src', ["'self'", `'nonce-${nonce}'`]],
+      ['img-src', ["'self'", 'data:']],
+      ['connect-src', ["'self'"]],
+      ['font-src', ["'self'", 'data:']],
+      ['form-action', ["'self'"]],
+    ]);
+    expect(directives.size).toBe(expectedDirectives.size);
+    for (const [name, sources] of expectedDirectives) {
+      expect(directives.get(name), `Unexpected ${name} CSP directive`).toEqual(sources);
+    }
+    expect(headers['x-content-type-options']).toBe('nosniff');
+    expect(headers['x-frame-options']).toBe('DENY');
+    expect(headers['referrer-policy']).toBe('strict-origin-when-cross-origin');
+    expect(headers['permissions-policy']).toBe(
+      'camera=(), microphone=(), geolocation=(), payment=(), usb=()',
+    );
+  }
 
   const dataResponse = await request.get(new URL('assets/mock/olympic.json', base).href);
   expect(dataResponse.ok()).toBe(true);
