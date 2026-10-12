@@ -10,7 +10,7 @@
                 <mxCell id="a-title" parent="1" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=34;fontColor=#16354A;fontStyle=1;" value="01 — Application actuelle" vertex="1">
                     <mxGeometry height="52" width="2070" x="55" y="66" as="geometry"/>
                 </mxCell>
-                <mxCell id="a-subtitle" parent="1" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=18;fontColor=#4E6273;" value="État observé dans src/app : Angular 21 standalone, routes lazy-loadées et tests conservés près du code." vertex="1">
+                <mxCell id="a-subtitle" parent="1" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=18;fontColor=#4E6273;" value="État observé dans src/app : Angular 21 standalone, seule la route country/:id est lazy-loadée et les tests unitaires restent près du code." vertex="1">
                     <mxGeometry height="40" width="2070" x="55" y="124" as="geometry"/>
                 </mxCell>
                 <mxCell id="a-note" parent="1" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;fillColor=#E2F3EB;strokeColor=#9BCDB4;fontFamily=DejaVu Sans;fontSize=15;fontColor=#146A4A;spacingLeft=14;" value="Les dossiers et fichiers représentés existent dans le dépôt actuel. Aucun AppModule, Repository ou composant graphique séparé n’est inventé." vertex="1">
@@ -72,7 +72,7 @@
                         <mxGeometry height="154" width="330" x="340" y="62" as="geometry"/>
                     </mxCell>
                 </object>
-                <mxCell id="a-routing-text" parent="a-routing" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=top;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans Mono;fontSize=12;fontColor=#6334A5;spacingLeft=10;spacingTop=10;" value="routing/&#xa;&#xa;olympics.routes.ts&#xa;country-id.parser.ts&#xa;country-id.parser.spec.ts" vertex="1">
+                <mxCell id="a-routing-text" parent="a-routing" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=top;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans Mono;fontSize=12;fontColor=#6334A5;spacingLeft=10;spacingTop=10;" value="routing/&#xa;&#xa;olympics.routes.ts" vertex="1">
                     <mxGeometry height="136" width="310" x="10" y="9" as="geometry"/>
                 </mxCell>
                 <object label="&#xa;" path="src/app/olympics/services" kind="directory" id="a-services">
@@ -199,7 +199,7 @@
                         <mxGeometry height="160" width="400" x="680" y="220" as="geometry"/>
                     </mxCell>
                 </object>
-                <mxCell id="p-e2e-text" parent="p-e2e" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=top;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans Mono;fontSize=13;fontColor=#146A4A;spacingLeft=10;spacingTop=10;" value="e2e/&#xa;&#xa;olympics.spec.ts&#xa;lighthouse.spec.ts" vertex="1">
+                <mxCell id="p-e2e-text" parent="p-e2e" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=top;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans Mono;fontSize=13;fontColor=#146A4A;spacingLeft=10;spacingTop=10;" value="e2e/&#xa;&#xa;olympics.spec.ts&#xa;lighthouse.spec.ts&#xa;verify-deployment.spec.ts" vertex="1">
                     <mxGeometry height="140" width="380" x="10" y="10" as="geometry"/>
                 </mxCell>
                 <object label="" path="src" kind="directory" id="p-src">
@@ -213,12 +213,12 @@
                 <mxCell id="p-src-label" parent="p-src" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=18;fontColor=#6334A5;fontStyle=1;" value="src/" vertex="1">
                     <mxGeometry height="39" width="908" x="16" y="3" as="geometry"/>
                 </mxCell>
-                <object label="Points d’entrée&#xa;index.html&#xa;main.ts&#xa;polyfills.ts&#xa;styles.scss&#xa;favicon.ico&#xa;robots.txt" path="src/main.ts" kind="file-group" id="p-entry">
+                <object label="Points d’entrée / déploiement&#xa;index.html&#xa;main.ts&#xa;polyfills.ts&#xa;styles.scss&#xa;favicon.ico&#xa;robots.txt&#xa;_headers" path="src/main.ts" kind="file-group" id="p-entry">
                     <mxCell parent="p-src" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#F8F3FF;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=12;fontColor=#6334A5;" vertex="1">
                         <mxGeometry height="170" width="440" x="15" y="60" as="geometry"/>
                     </mxCell>
                 </object>
-                <object label="assets/images/&#xa;.gitkeep&#xa;not-found-signpost.svg&#xa;telesport-header-small.webp&#xa;telesport-header.webp&#xa;telesport-home-header-desktop.png&#xa;telesport-home-desktop.png&#xa;teleSport-home-small.webp&#xa;teleSport-home.webp&#xa;teleSport.png&#xa;teleSport-small.webp&#xa;teleSport.webp&#xa;assets/mock/olympic.json" path="src/assets" kind="directory-group" id="p-assets">
+                <object label="assets/images/&#xa;.gitkeep&#xa;not-found-signpost.svg&#xa;telesport-header-mobile.webp&#xa;telesport-header-small.webp&#xa;telesport-header.webp&#xa;assets/mock/olympic.json" path="src/assets" kind="directory-group" id="p-assets">
                     <mxCell parent="p-src" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#F8F3FF;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=12;fontColor=#6334A5;" vertex="1">
                         <mxGeometry height="154" width="440" x="475" y="60" as="geometry"/>
                     </mxCell>
@@ -265,7 +265,7 @@
                         <mxGeometry height="150" width="520" x="1690" y="950" as="geometry"/>
                     </mxCell>
                 </object>
-                <mxCell id="p-github-text" parent="p-github" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=top;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans Mono;fontSize=12;fontColor=#245775;spacingLeft=10;spacingTop=10;" value=".github/&#xa;&#xa;workflows/deploy-pages.yml&#xa;&#xa;e2e/&#xa;verify-deployment.spec.ts" vertex="1">
+                <mxCell id="p-github-text" parent="p-github" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=top;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans Mono;fontSize=12;fontColor=#245775;spacingLeft=10;spacingTop=10;" value=".github/&#xa;&#xa;workflows/deploy-pages.yml" vertex="1">
                     <mxGeometry height="130" width="500" x="10" y="10" as="geometry"/>
                 </mxCell>
                 <object label="" path=".vscode" kind="directory" id="p-vscode">
@@ -279,7 +279,7 @@
                 <mxCell id="p-note" parent="1" style="rounded=1;arcSize=8;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;fillColor=#F0E9FF;strokeColor=#C6B1E5;fontFamily=DejaVu Sans;fontSize=14;fontColor=#6334A5;spacingLeft=14;" value="Non représentés comme couches applicatives : node_modules/, dist/, .angular/cache/, playwright-report/, test-results/ et validation-artifacts/ sont des sorties locales ou générées." vertex="1">
                     <mxGeometry height="42" width="2155" x="55" y="1300" as="geometry"/>
                 </mxCell>
-                <mxCell id="p-footer" parent="1" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=14;fontColor=#5B7081;" value="src/app est détaillé dans l’onglet 01 ; les noms et chemins reflètent l’inventaire du dépôt au 10/10/2026." vertex="1">
+                <mxCell id="p-footer" parent="1" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=14;fontColor=#5B7081;" value="src/app est détaillé dans l’onglet 01 ; les noms et chemins reflètent l’inventaire du dépôt au 12/10/2026." vertex="1">
                     <mxGeometry height="26" width="2070" x="55" y="1360" as="geometry"/>
                 </mxCell>
             </root>

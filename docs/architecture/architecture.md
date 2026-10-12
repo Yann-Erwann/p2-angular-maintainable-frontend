@@ -29,7 +29,7 @@ Les noms HomeComponent et CountryComponent sont conservés et remplissent les r�
 | `src/app/olympics/ui/`                              | Graphique, en-tête et retours d’état présentés par les pages             |
 | `src/app/olympics/pages/home/`                      | HomeComponent et projection du dashboard                                 |
 | `src/app/olympics/pages/country/`                   | CountryComponent et projection de la fiche pays                          |
-| `src/app/olympics/routing/`                         | Routes et parsing des paramètres de la fonctionnalité Olympics           |
+| `src/app/olympics/routing/`                         | Routes de la fonctionnalité Olympics                                     |
 | `src/app/pages/not-found/`                          | NotFoundComponent et retour vers l’accueil                               |
 | `src/assets/mock/olympic.json`                      | Source des données actuelle conservée                                    |
 | `src/environments/`                                 | Configurations existantes, sans endpoint futur inventé                   |
@@ -63,14 +63,14 @@ L’application actuelle est standalone : `app.module.ts` et `app-routing.module
 
 ## 3. Composants et responsabilités
 
-| Composant             | Rôle                                                              | Entrées / sorties                                               | Ce qu’il ne possède pas              |
-| --------------------- | ----------------------------------------------------------------- | --------------------------------------------------------------- | ------------------------------------ |
-| AppComponent          | Coquille sémantique et affichage des routes                       | RouterOutlet                                                    | Données olympiques, calculs          |
-| HomeComponent         | Contexte, chargement du dashboard, KPI, composition et navigation | État depuis OlympicDataService, événements countrySelected      | Instance Chart.js, URL HTTP          |
-| CountryComponent      | ID depuis ActivatedRoute, sélection, état et présentation du pays | ID de route, données, retour accueil                            | Transport HTTP, moteur graphique     |
-| HeaderComponent       | Afficher titre et indicateurs dans les deux pages                 | title: string, indicators: readonly Indicator[]                 | Service, routing ou calculs métier   |
-| OlympicChartComponent | Rendu du graphique de médailles en camembert ou en courbe         | type, items et dataDescriptionId ; sortie pointSelected: number | Chargement, agrégation et navigation |
-| NotFoundComponent     | Message pour destination/pays introuvable et retour               | RouterLink vers /                                               | Chargement de données                |
+| Composant             | Rôle                                                              | Entrées / sorties                                                    | Ce qu’il ne possède pas              |
+| --------------------- | ----------------------------------------------------------------- | -------------------------------------------------------------------- | ------------------------------------ |
+| AppComponent          | Coquille sémantique et affichage des routes                       | RouterOutlet                                                         | Données olympiques, calculs          |
+| HomeComponent         | Contexte, chargement du dashboard, KPI, composition et navigation | État depuis OlympicDataService, événement pointSelected du graphique | Instance Chart.js, URL HTTP          |
+| CountryComponent      | ID depuis ActivatedRoute, sélection, état et présentation du pays | ID de route, données, retour accueil                                 | Transport HTTP, moteur graphique     |
+| HeaderComponent       | Afficher titre et indicateurs dans les deux pages                 | title: string, indicators: readonly Indicator[]                      | Service, routing ou calculs métier   |
+| OlympicChartComponent | Rendu du graphique de médailles en camembert ou en courbe         | type, items et dataDescriptionId ; sortie pointSelected: number      | Chargement, agrégation et navigation |
+| NotFoundComponent     | Message pour destination/pays introuvable et retour               | RouterLink vers /                                                    | Chargement de données                |
 
 HeaderComponent est la réutilisation explicite requise. `OlympicChartComponent` encapsule les deux rendus Chart.js actuels : camembert pour l’accueil et courbe pour le détail pays.
 
@@ -156,14 +156,14 @@ L’état local de chaque page distingue chargement, données, vide et erreur. L
 
 Les pages utilisent des subscriptions impératives bornées à la destruction avec `takeUntilDestroyed` et `DestroyRef`. `AppComponent` utilise également des signals pour l’état dérivé de la navigation. Il n’y a pas d’AsyncPipe pour ces flux et pas de subscriptions imbriquées.
 
-| Situation                         | Rendu attendu                                                   |
-| --------------------------------- | --------------------------------------------------------------- |
-| Requête en cours                  | Squelette ou spinner, pas d’anciens KPI présentés comme actuels |
-| Collection vide à l’accueil       | Aucune donnée                                                   |
-| Pays existant sans participations | Pays affiché, KPI à zéro et absence explicite de série          |
-| Erreur HTTP                       | Message compréhensible et retour, pas une 404 trompeuse         |
-| Pays inexistant / ID invalide     | NotFoundComponent                                               |
-| Données valides                   | Header, graphique, alternative textuelle et navigation          |
+| Situation                         | Rendu attendu                                                              |
+| --------------------------------- | -------------------------------------------------------------------------- |
+| Requête en cours                  | Placeholders et valeurs neutres, pas d’anciens KPI présentés comme actuels |
+| Collection vide à l’accueil       | Aucune donnée                                                              |
+| Pays existant sans participations | Pays affiché, KPI à zéro et absence explicite de série                     |
+| Erreur HTTP                       | Message compréhensible et retour, pas une 404 trompeuse                    |
+| Pays inexistant / ID invalide     | NotFoundComponent                                                          |
+| Données valides                   | Header, graphique, alternative textuelle et navigation                     |
 
 ## 7. Patterns et frontières
 
@@ -189,7 +189,7 @@ Les flèches représentent les dépendances de consommation. Les détails du tra
 | Observable / composition RxJS | Modèle réactif, proche d’Observer | Gérer asynchronisme, annulation et durée de vie |
 | DI Angular                    | Mécanisme du framework            | Fournir les dépendances selon leur scope        |
 | Union discriminée d’état      | Technique de typage               | Empêcher des états UI contradictoires           |
-| Composants Chart.js dédiés    | Encapsulation du rendu impératif  | Isoler l’instance et son nettoyage              |
+| Composant Chart.js encapsulé  | Encapsulation du rendu impératif  | Isoler l’instance et son nettoyage              |
 
 **Repository n’est pas retenu.** Une source JSON et une future API ne démontrent pas à elles seules le besoin d’une interface repository et de plusieurs implémentations. OlympicDataService représente déjà la frontière utile. Réexaminer si des règles de persistance, des sources substituables ou un domaine indépendant du transport imposent un contrat supplémentaire.
 
@@ -243,7 +243,7 @@ Le socle standalone actuel répartit la composition dans :
 - app.routes.ts pour les routes
 - chaque composant pour ses imports de template
 
-L’application est actuellement sous Angular 21 et le passage standalone est déjà effectué. Les routes Olympics sont lazy-loadées via `olympics.routes.ts`.
+L’application est actuellement sous Angular 21 et le passage standalone est déjà effectué. Seule la route `country/:id` est lazy-loadée via `loadComponent` dans `olympics.routes.ts` ; l’accueil reste chargé statiquement. Le graphique d’accueil est rendu après le chargement des données ; le graphique pays est différé via `@defer`.
 
 L’application utilise `provideZonelessChangeDetection()`. Les tests unitaires
 utilisent le builder `@angular/build:unit-test` avec Vitest et jsdom dans Node.js,
