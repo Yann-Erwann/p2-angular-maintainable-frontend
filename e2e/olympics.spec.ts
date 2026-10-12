@@ -111,9 +111,7 @@ test('empty data and a country without participations retain their distinct mean
   await expect(page.locator('canvas')).toHaveCount(0);
 });
 
-test('the chart supports keyboard selection and focus exits at both boundaries', async ({
-  page,
-}) => {
+test('the chart supports arrow selection and focus exits at both boundaries', async ({ page }) => {
   await page.goto('./');
   const canvas = page.locator('canvas');
   await expect(canvas).toBeVisible();
@@ -125,9 +123,9 @@ test('the chart supports keyboard selection and focus exits at both boundaries',
   await expect(page.locator('h1')).toBeFocused();
   await expect(canvas).toBeVisible();
   await canvas.focus();
-  await page.keyboard.press('Tab');
+  await page.keyboard.press('ArrowRight');
   await expect(page.locator('.olympic-chart__selection')).toHaveText('2016: 45 medals');
-  await page.keyboard.press('Tab');
+  await page.keyboard.press('ArrowRight');
   await expect(page.locator('.olympic-chart__selection')).toHaveText('2020: 33 medals');
   await page.keyboard.press('Tab');
   await expect(canvas).not.toBeFocused();
