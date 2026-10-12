@@ -10,7 +10,7 @@ test('home → France → Italy → history → home reuses the JSON response', 
   await page.getByRole('link', { name: 'France' }).click();
   await expect(page).toHaveTitle('France | Olympic Games');
   await expect(page.locator('app-header dd')).toHaveText(['3', '113', '1238']);
-  await page.getByRole('button', { name: 'Country', exact: true }).click();
+  await page.getByRole('button', { name: 'France', exact: true }).click();
   await page.getByRole('button', { name: 'Italy', exact: true }).click();
   await expect(page).toHaveTitle('Italy | Olympic Games');
   await page.goBack();
@@ -163,8 +163,9 @@ test('country dropdown supports Tab, Enter, Escape and outside dismissal', async
   page,
 }, testInfo) => {
   await page.goto('country/5');
-  const trigger = page.getByRole('button', { name: 'Country', exact: true });
+  const trigger = page.locator('.country-picker__trigger');
   await expect(page).toHaveTitle('France | Olympic Games');
+  await expect(trigger).toHaveAccessibleName('France');
   await trigger.focus();
   await page.keyboard.press('Enter');
   const dropdown = page.locator('#country-options');
