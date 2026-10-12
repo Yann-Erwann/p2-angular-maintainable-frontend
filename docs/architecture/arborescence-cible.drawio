@@ -213,7 +213,7 @@
                 <mxCell id="p-src-label" parent="p-src" style="text;html=0;whiteSpace=wrap;align=left;verticalAlign=middle;strokeColor=none;fillColor=none;fontFamily=DejaVu Sans;fontSize=18;fontColor=#6334A5;fontStyle=1;" value="src/" vertex="1">
                     <mxGeometry height="39" width="908" x="16" y="3" as="geometry"/>
                 </mxCell>
-                <object label="Points d’entrée / déploiement&#xa;index.html&#xa;main.ts&#xa;polyfills.ts&#xa;styles.scss&#xa;favicon.ico&#xa;robots.txt&#xa;_headers" path="src/main.ts" kind="file-group" id="p-entry">
+                <object label="Points d’entrée / déploiement&#xa;index.html&#xa;main.ts&#xa;styles.scss&#xa;favicon.ico&#xa;robots.txt&#xa;_headers" path="src/main.ts" kind="file-group" id="p-entry">
                     <mxCell parent="p-src" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;align=left;verticalAlign=middle;spacingLeft=10;fillColor=#F8F3FF;strokeColor=none;fontFamily=DejaVu Sans Mono;fontSize=12;fontColor=#6334A5;" vertex="1">
                         <mxGeometry height="170" width="440" x="15" y="60" as="geometry"/>
                     </mxCell>

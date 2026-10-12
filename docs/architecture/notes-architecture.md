@@ -29,7 +29,7 @@ sont des constats historiques et ne constituent pas une liste de travaux restant
 | Typage                      | strict et strictTemplates activés, any explicites présents            | tsconfig.json et composants            |
 | Environnement               | node:22-bookworm, workspace SSH                                       | .workspace/ et compose.workspace.yaml  |
 | Données                     | JSON local, HTTP dupliqué dans Home/Country                           | composants et assets/mock/olympic.json |
-| Tests                       | Bootstrap importe platform-browser-dynamic/testing et zone.js/testing | src/test.ts                            |
+| Tests                       | Snapshot historique : platform-browser-dynamic/testing et zone.js/testing | src/test.ts du snapshot               |
 
 Les versions sont des résolutions de lockfile, pas des versions exécutées. Aucun node_modules ni dossier .git n’est fourni. L’inventaire complet des dépendances et leur traitement sont dans issues-commits.md.
 
@@ -171,7 +171,7 @@ A18, A20, A21 et A22 ne sont pas transformés en défauts fictifs. Le manque d�
 | `src/app/not-found/`                                                      | NotFoundComponent et retour vers l’accueil                                    |
 | `src/assets/mock/olympic.json`                                            | Source des données actuelle conservée                                         |
 | `src/environments/`                                                       | Configurations existantes, sans endpoint futur inventé                        |
-| `src/polyfills.ts` et `src/test.ts`                                       | Polyfills et bootstrap des tests à adapter selon les migrations réelles       |
+| `src/testing/vitest.setup.ts`                                             | Compatibilité jsdom pour les APIs DOM manquantes                               |
 | `karma.conf.cjs`                                                          | Proposition de configuration du runner Node, à confirmer après diagnostic I04 |
 | `pnpm-lock.yaml`                                                          | Résolution générée par pnpm après import, à versionner avec les manifestes    |
 | `.workspace/` et `compose.workspace.yaml`                                 | Environnement de développement SSH existant                                   |
@@ -248,7 +248,7 @@ Les migrations ne sont pas déjà faites. Le plan détaillé I01–I40 donne les
 | Angular 18 → 21                                         | Paliers C28/C29/C30, éventuel alignement préalable C27                                   |
 | Autres dépendances                                      | Inventaire exhaustif et examen ciblé I31–I35, pas de latest global                       |
 
-Le bootstrap cible utilise bootstrapApplication et conserve explicitement le mode Zone.js pour isoler la migration Angular 21. La conversion zoneless, un changement de builder et une migration vers Vitest restent des décisions séparées. Le bootstrap de tests importe actuellement @angular/platform-browser-dynamic/testing, le passage standalone ne justifie donc pas sa désinstallation automatique.
+Le bootstrap actuel utilise `bootstrapApplication` avec `provideZonelessChangeDetection()` et le builder `@angular/build:unit-test` exécute les tests avec Vitest et jsdom. L’application ne charge plus Zone.js, et `@angular/platform-browser-dynamic` n’est plus nécessaire : aucun import ni configuration de test ne l’utilise.
 
 La préparation à l’API reste une frontière de code : remplacer le transport dans DataService et y mapper d’éventuels DTO. Aucun serveur, endpoint, variable d’environnement, mécanisme d’authentification ou contrat de pagination n’est fourni. Le backend réel, les rôles et la persistence serveur sont hors scope du PDF.
 

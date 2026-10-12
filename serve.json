@@ -13,7 +13,7 @@
       ]
     },
     {
-      "source": "@(main|polyfills|styles|chunk)-????????.@(js|css)",
+      "source": "@(main|styles|chunk)-????????.@(js|css)",
       "headers": [
         {
           "key": "Cache-Control",
