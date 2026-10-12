@@ -334,13 +334,13 @@ jobs:
       - name: Verify deployed pages and data
         run: pnpm exec playwright test e2e/verify-deployment.spec.ts --project=chromium
         env:
-          PRODUCTION_SERVER_URL: ${{ needs.deploy.outputs.deployment_url }}
+          PRODUCTION_SERVER_URL: ${{ needs.deploy.outputs.page_url }}
 
       - name: Prepare deployed Lighthouse routes
         id: lighthouse_routes
         if: always()
         env:
-          PRODUCTION_SERVER_URL: ${{ needs.deploy.outputs.deployment_url }}
+          PRODUCTION_SERVER_URL: ${{ needs.deploy.outputs.page_url }}
         run: |
           node --input-type=module <<'NODE' >> "$GITHUB_ENV"
           const base = process.env.PRODUCTION_SERVER_URL.endsWith('/')
@@ -359,7 +359,7 @@ jobs:
         if: always() && steps.lighthouse_routes.outcome == 'success'
         run: pnpm exec playwright test e2e/lighthouse.spec.ts --project=lighthouse
         env:
-          PRODUCTION_SERVER_URL: ${{ needs.deploy.outputs.deployment_url }}
+          PRODUCTION_SERVER_URL: ${{ needs.deploy.outputs.page_url }}
           LIGHTHOUSE_RUNS: ${{ (github.event_name == 'workflow_dispatch' && inputs.full_lighthouse) && '3' || '1' }}
 
       - name: Upload deployment diagnostics
